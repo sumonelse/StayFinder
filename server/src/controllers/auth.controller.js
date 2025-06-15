@@ -178,4 +178,12 @@ class AuthController extends BaseController {
 
 // Create and export a singleton instance
 const authController = new AuthController()
+
+// Bind all methods to the instance to preserve 'this' context
+Object.getOwnPropertyNames(AuthController.prototype)
+    .filter((method) => method !== "constructor")
+    .forEach((method) => {
+        authController[method] = authController[method].bind(authController)
+    })
+
 export default authController

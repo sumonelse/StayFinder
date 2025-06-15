@@ -32,4 +32,12 @@ class HomeController extends BaseController {
 
 // Create and export a singleton instance
 const homeController = new HomeController()
+
+// Bind all methods to the instance to preserve 'this' context
+Object.getOwnPropertyNames(HomeController.prototype)
+    .filter((method) => method !== "constructor")
+    .forEach((method) => {
+        homeController[method] = homeController[method].bind(homeController)
+    })
+
 export default homeController

@@ -197,4 +197,13 @@ class BookingController extends BaseController {
 
 // Create and export a singleton instance
 const bookingController = new BookingController()
+
+// Bind all methods to the instance to preserve 'this' context
+Object.getOwnPropertyNames(BookingController.prototype)
+    .filter((method) => method !== "constructor")
+    .forEach((method) => {
+        bookingController[method] =
+            bookingController[method].bind(bookingController)
+    })
+
 export default bookingController

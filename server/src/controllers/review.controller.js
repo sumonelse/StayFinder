@@ -243,4 +243,13 @@ class ReviewController extends BaseController {
 
 // Create and export a singleton instance
 const reviewController = new ReviewController()
+
+// Bind all methods to the instance to preserve 'this' context
+Object.getOwnPropertyNames(ReviewController.prototype)
+    .filter((method) => method !== "constructor")
+    .forEach((method) => {
+        reviewController[method] =
+            reviewController[method].bind(reviewController)
+    })
+
 export default reviewController
