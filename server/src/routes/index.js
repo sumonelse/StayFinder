@@ -1,13 +1,25 @@
 import express from "express"
 import healthRoutes from "./health.routes.js"
+import authRoutes from "./auth.routes.js"
+import propertyRoutes from "./property.routes.js"
+import bookingRoutes from "./booking.routes.js"
+import reviewRoutes from "./review.routes.js"
 
 const router = express.Router()
 
 // Health check routes
 router.use("/health", healthRoutes)
 
-// Add other routes here as they are developed
-// Example: router.use("/users", userRoutes)
-// Example: router.use("/properties", propertyRoutes)
+// Authentication routes
+router.use("/auth", authRoutes)
+
+// Property routes
+router.use("/properties", propertyRoutes)
+
+// Booking routes
+router.use("/bookings", bookingRoutes)
+
+// Review routes
+router.use("/reviews", reviewRoutes)
 
 export default router
