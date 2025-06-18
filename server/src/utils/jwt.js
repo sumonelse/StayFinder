@@ -33,5 +33,9 @@ export const verifyToken = (token) => {
         throw new Error("JWT_SECRET is not defined in environment variables")
     }
 
+    if (!token) {
+        throw new Error("Token is required for verification")
+    }
+
     return jwt.verify(token, process.env.JWT_SECRET)
 }
