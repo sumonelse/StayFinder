@@ -1,0 +1,135 @@
+/* Button Styles */
+.btn {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2;
+}
+
+.btn-sm {
+    @apply px-3 py-1.5 text-sm;
+}
+
+.btn-lg {
+    @apply px-6 py-3 text-lg;
+}
+
+.btn-primary {
+    @apply bg-primary-600 text-white hover:bg-primary-700 shadow-sm;
+}
+
+.btn-secondary {
+    @apply bg-secondary-100 text-secondary-700 hover:bg-secondary-200 shadow-sm;
+}
+
+.btn-outline {
+    @apply border border-primary-600 text-primary-600 hover:bg-primary-50;
+}
+
+.btn-ghost {
+    @apply text-primary-600 hover:bg-primary-50;
+}
+
+.btn-accent {
+    @apply bg-accent-500 text-white hover:bg-accent-600 shadow-sm;
+}
+
+.btn-danger {
+    @apply bg-danger-600 text-white hover:bg-danger-700 shadow-sm;
+}
+
+/* Form Styles */
+.form-group {
+    @apply mb-4;
+}
+
+.form-label {
+    @apply block text-secondary-700 font-medium mb-1;
+}
+
+.form-hint {
+    @apply mt-1 text-sm text-secondary-500;
+}
+
+.form-error {
+    @apply mt-1 text-sm text-danger-600;
+}
+
+.input-field {
+    @apply w-full px-3 py-2 border border-secondary-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-secondary-900 placeholder-secondary-400;
+}
+
+.input-error {
+    @apply border-danger-300 focus:ring-danger-500 focus:border-danger-500;
+}
+
+/* Badge Styles */
+.badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+
+.badge-primary {
+    @apply bg-primary-100 text-primary-800;
+}
+
+.badge-secondary {
+    @apply bg-secondary-100 text-secondary-800;
+}
+
+.badge-accent {
+    @apply bg-accent-100 text-accent-800;
+}
+
+.badge-success {
+    @apply bg-success-100 text-success-800;
+}
+
+.badge-warning {
+    @apply bg-warning-100 text-warning-800;
+}
+
+.badge-danger {
+    @apply bg-danger-100 text-danger-800;
+}
+
+/* Card Styles */
+.card {
+    @apply bg-white rounded-xl shadow-card overflow-hidden;
+}
+
+.card-hover {
+    @apply transition-all duration-300 hover:shadow-card-hover;
+}
+
+.card-interactive {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover;
+}
+
+/* Tooltip Styles */
+.tooltip {
+    @apply relative inline-block;
+}
+
+.tooltip-text {
+    @apply absolute z-10 invisible opacity-0 bg-secondary-800 text-white text-xs rounded-lg py-1 px-2 transition-opacity duration-300;
+}
+
+.tooltip:hover .tooltip-text {
+    @apply visible opacity-100;
+}
+
+/* Glass Effect */
+.glass {
+    @apply bg-white/70 backdrop-blur-md border border-white/20;
+}
+
+/* Scrollbar Styling */
+.scrollbar-thin {
+    scrollbar-width: thin;
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
