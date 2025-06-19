@@ -10,26 +10,13 @@ import {
     FaBed,
     FaBath,
     FaUsers,
-    FaHeart,
-    FaStar,
-    FaFilter,
     FaHome,
-    FaBuilding,
-    FaWarehouse,
-    FaHotel,
-    FaCity,
     FaList,
     FaThLarge,
     FaDollarSign,
 } from "react-icons/fa"
-import { FaSliders } from "react-icons/fa6"
 import { IoIosRocket } from "react-icons/io"
-import {
-    MdVerified,
-    MdLocationOn,
-    MdOutlineExplore,
-    MdTune,
-} from "react-icons/md"
+import { MdOutlineExplore, MdTune } from "react-icons/md"
 import { propertyService } from "../../services/api"
 import { useAuth } from "../../context/AuthContext"
 import PropertyCard from "../../components/properties/PropertyCard"
@@ -63,15 +50,6 @@ const PropertyListPage = () => {
     const [viewMode, setViewMode] = useState("grid") // grid or list
     const searchInputRef = useRef(null)
     const locationInputRef = useRef(null)
-
-    // Property types with icons for quick filtering
-    const propertyTypes = [
-        { name: "Apartment", icon: <FaBuilding />, value: "apartment" },
-        { name: "House", icon: <FaHome />, value: "house" },
-        { name: "Villa", icon: <FaHotel />, value: "villa" },
-        { name: "Cabin", icon: <FaWarehouse />, value: "cabin" },
-        { name: "Condo", icon: <FaCity />, value: "condo" },
-    ]
 
     // Calculate active filters count
     useEffect(() => {
@@ -295,52 +273,6 @@ const PropertyListPage = () => {
                                 </div>
                             </form>
                         </div>
-                    </div>
-                </div>
-
-                {/* Quick Filter Categories */}
-                <div className="mb-6 overflow-x-auto scrollbar-hide">
-                    <div className="flex gap-3 pb-2 min-w-max">
-                        {propertyTypes.map((type) => (
-                            <button
-                                key={type.value}
-                                onClick={() => togglePropertyType(type.value)}
-                                className={`flex flex-col items-center justify-center p-3 rounded-xl transition-all min-w-[100px] ${
-                                    filters.type === type.value
-                                        ? "bg-primary-50 text-primary-700 border-2 border-primary-500 shadow-md"
-                                        : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50"
-                                }`}
-                            >
-                                <div
-                                    className={`text-2xl mb-1 ${
-                                        filters.type === type.value
-                                            ? "text-primary-600"
-                                            : "text-gray-500"
-                                    }`}
-                                >
-                                    {type.icon}
-                                </div>
-                                <span className="text-sm font-medium">
-                                    {type.name}
-                                </span>
-                            </button>
-                        ))}
-
-                        <button
-                            onClick={(e) => {
-                                e.preventDefault()
-                                e.stopPropagation()
-                                setIsFilterModalOpen(true)
-                            }}
-                            className="flex flex-col items-center justify-center p-3 rounded-xl transition-all min-w-[100px] bg-white text-gray-700 border border-gray-200 hover:bg-gray-50"
-                        >
-                            <div className="text-2xl mb-1 text-primary-500">
-                                <FaSliders />
-                            </div>
-                            <span className="text-sm font-medium">
-                                More Filters
-                            </span>
-                        </button>
                     </div>
                 </div>
 
