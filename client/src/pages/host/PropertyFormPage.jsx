@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { useQuery, useMutation } from "@tanstack/react-query"
 import {
@@ -9,7 +9,6 @@ import {
     FaImage,
     FaList,
     FaCheck,
-    FaPlus,
     FaTimes,
     FaSpinner,
 } from "react-icons/fa"

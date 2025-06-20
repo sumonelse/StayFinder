@@ -23,7 +23,7 @@ import HostPropertiesPage from "../pages/host/HostPropertiesPage"
 import HostBookingsPage from "../pages/host/HostBookingsPage"
 import PropertyFormPage from "../pages/host/PropertyFormPage"
 import HostPropertyDetailPage from "../pages/host/HostPropertyDetailPage"
-import DatePickerDemo from "../pages/DatePickerDemo"
+
 import NotFoundPage from "../pages/NotFoundPage"
 import ProtectedRoute from "./ProtectedRoute"
 
@@ -84,10 +84,6 @@ const router = createBrowserRouter([
                         <FavoritesPage />
                     </ProtectedRoute>
                 ),
-            },
-            {
-                path: "datepicker-demo",
-                element: <DatePickerDemo />,
             },
         ],
     },

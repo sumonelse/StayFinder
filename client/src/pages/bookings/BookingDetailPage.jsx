@@ -15,7 +15,6 @@ import {
     FaBed,
     FaBath,
     FaHome,
-    FaStar,
     FaShieldAlt,
     FaInfoCircle,
     FaRegClock,

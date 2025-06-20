@@ -10,7 +10,6 @@ import {
     FaSignOutAlt,
     FaChevronDown,
     FaSearch,
-    FaMapMarkerAlt,
     FaBuilding,
     FaCompass,
     FaCog,

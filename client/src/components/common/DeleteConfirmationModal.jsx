@@ -1,4 +1,3 @@
-import React from "react"
 import PropTypes from "prop-types"
 import { FaTrash, FaExclamationTriangle } from "react-icons/fa"
 import { ConfirmationModal } from "../ui"

@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom"
 import {
     FaStar,
-    FaMapMarkerAlt,
     FaHeart,
     FaRegHeart,
     FaBed,
@@ -9,8 +8,6 @@ import {
     FaUsers,
     FaAngleRight,
     FaCheck,
-    FaRegCalendarAlt,
-    FaTag,
 } from "react-icons/fa"
 import { MdVerified, MdLocationOn } from "react-icons/md"
 import { useAuth } from "../../context/AuthContext"
