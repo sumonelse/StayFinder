@@ -14,6 +14,9 @@ import {
     FaList,
     FaThLarge,
     FaDollarSign,
+    FaFilter,
+    FaSlidersH,
+    FaSort,
 } from "react-icons/fa"
 import { IoIosRocket } from "react-icons/io"
 import { MdOutlineExplore, MdTune } from "react-icons/md"
@@ -21,7 +24,7 @@ import { propertyService } from "../../services/api"
 import { useAuth } from "../../context/AuthContext"
 import PropertyCard from "../../components/properties/PropertyCard"
 import FilterModal from "../../components/properties/FilterModal"
-import { Card, Badge } from "../../components/ui"
+import { Card, Badge, Button } from "../../components/ui"
 
 /**
  * Redesigned modern property listing page with enhanced UI/UX
@@ -48,6 +51,7 @@ const PropertyListPage = () => {
     const [isFilterModalOpen, setIsFilterModalOpen] = useState(false)
     const [activeFilters, setActiveFilters] = useState(0)
     const [viewMode, setViewMode] = useState("grid") // grid or list
+    const [isFilterSectionVisible, setIsFilterSectionVisible] = useState(false)
     const searchInputRef = useRef(null)
     const locationInputRef = useRef(null)
 
@@ -195,23 +199,31 @@ const PropertyListPage = () => {
         }).format(price)
     }
 
+    // Property type options for quick filters
+    const propertyTypes = [
+        { value: "apartment", label: "Apartments", icon: <FaHome /> },
+        { value: "house", label: "Houses", icon: <FaHome /> },
+        { value: "villa", label: "Villas", icon: <FaHome /> },
+        { value: "condo", label: "Condos", icon: <FaHome /> },
+    ]
+
     return (
         <div className="min-h-screen bg-gray-50">
             <div className="container mx-auto px-4 py-8">
                 {/* Hero Section with Search */}
                 <div className="bg-gradient-to-r from-primary-600 to-primary-700 rounded-2xl shadow-lg mb-8 overflow-hidden">
                     <div className="px-6 py-8 md:px-10 md:py-12 max-w-4xl">
-                        <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                        <h1 className="text-3xl md:text-4xl font-bold text-white mb-4 animate-fadeIn">
                             Find Your Perfect Stay
                         </h1>
-                        <p className="text-primary-100 mb-6 max-w-2xl">
+                        <p className="text-primary-100 mb-6 max-w-2xl animate-fadeIn animation-delay-200">
                             Discover amazing properties for your next adventure.
                             Use our advanced filters to find exactly what you're
                             looking for.
                         </p>
 
                         {/* Enhanced Search Bar */}
-                        <div className="bg-white rounded-xl shadow-md p-2 md:p-3 flex flex-col md:flex-row gap-2">
+                        <div className="bg-white rounded-xl shadow-md p-2 md:p-3 flex flex-col md:flex-row gap-2 animate-fadeIn animation-delay-300">
                             <form
                                 onSubmit={handleSearch}
                                 className="flex flex-1 flex-col md:flex-row gap-2 w-full"
@@ -276,9 +288,166 @@ const PropertyListPage = () => {
                     </div>
                 </div>
 
+                {/* Quick Filter Categories */}
+                <div className="mb-6 overflow-x-auto hide-scrollbar">
+                    <div className="flex space-x-3 pb-2 min-w-max">
+                        {propertyTypes.map((type) => (
+                            <button
+                                key={type.value}
+                                onClick={() => togglePropertyType(type.value)}
+                                className={`flex flex-col items-center justify-center px-6 py-3 rounded-xl transition-all ${
+                                    filters.type === type.value
+                                        ? "bg-primary-100 text-primary-700 border-2 border-primary-300"
+                                        : "bg-white text-secondary-700 border border-secondary-200 hover:bg-secondary-50"
+                                }`}
+                            >
+                                <div className={`text-xl mb-1 ${
+                                    filters.type === type.value
+                                        ? "text-primary-600"
+                                        : "text-secondary-500"
+                                }`}>
+                                    {type.icon}
+                                </div>
+                                <span className="text-sm font-medium">{type.label}</span>
+                            </button>
+                        ))}
+                        
+                        <button
+                            onClick={() => setIsFilterSectionVisible(!isFilterSectionVisible)}
+                            className="flex flex-col items-center justify-center px-6 py-3 rounded-xl bg-white text-secondary-700 border border-secondary-200 hover:bg-secondary-50 transition-all"
+                        >
+                            <div className="text-xl mb-1 text-secondary-500">
+                                <FaSlidersH />
+                            </div>
+                            <span className="text-sm font-medium">More Filters</span>
+                        </button>
+                    </div>
+                </div>
+
+                {/* Expanded Filter Section */}
+                {isFilterSectionVisible && (
+                    <div className="mb-6 bg-white rounded-xl shadow-sm p-5 border border-gray-100 animate-fadeIn">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            {/* Price Range */}
+                            <div>
+                                <h3 className="text-sm font-semibold text-secondary-700 mb-2">Price Range</h3>
+                                <div className="flex items-center gap-2">
+                                    <div className="relative flex-1">
+                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <FaDollarSign className="text-secondary-400" />
+                                        </div>
+                                        <input
+                                            type="number"
+                                            name="minPrice"
+                                            placeholder="Min"
+                                            value={filters.minPrice}
+                                            onChange={handleFilterChange}
+                                            className="pl-8 py-2 w-full rounded-lg border-gray-200 text-sm"
+                                        />
+                                    </div>
+                                    <span className="text-secondary-400">-</span>
+                                    <div className="relative flex-1">
+                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <FaDollarSign className="text-secondary-400" />
+                                        </div>
+                                        <input
+                                            type="number"
+                                            name="maxPrice"
+                                            placeholder="Max"
+                                            value={filters.maxPrice}
+                                            onChange={handleFilterChange}
+                                            className="pl-8 py-2 w-full rounded-lg border-gray-200 text-sm"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Bedrooms & Bathrooms */}
+                            <div>
+                                <h3 className="text-sm font-semibold text-secondary-700 mb-2">Rooms</h3>
+                                <div className="flex gap-2">
+                                    <div className="relative flex-1">
+                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <FaBed className="text-secondary-400" />
+                                        </div>
+                                        <select
+                                            name="bedrooms"
+                                            value={filters.bedrooms}
+                                            onChange={handleFilterChange}
+                                            className="pl-8 py-2 w-full rounded-lg border-gray-200 text-sm"
+                                        >
+                                            <option value="">Any Beds</option>
+                                            <option value="1">1+ Beds</option>
+                                            <option value="2">2+ Beds</option>
+                                            <option value="3">3+ Beds</option>
+                                            <option value="4">4+ Beds</option>
+                                        </select>
+                                    </div>
+                                    <div className="relative flex-1">
+                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <FaBath className="text-secondary-400" />
+                                        </div>
+                                        <select
+                                            name="bathrooms"
+                                            value={filters.bathrooms}
+                                            onChange={handleFilterChange}
+                                            className="pl-8 py-2 w-full rounded-lg border-gray-200 text-sm"
+                                        >
+                                            <option value="">Any Baths</option>
+                                            <option value="1">1+ Baths</option>
+                                            <option value="2">2+ Baths</option>
+                                            <option value="3">3+ Baths</option>
+                                            <option value="4">4+ Baths</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Guests */}
+                            <div>
+                                <h3 className="text-sm font-semibold text-secondary-700 mb-2">Guests</h3>
+                                <div className="relative">
+                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <FaUsers className="text-secondary-400" />
+                                    </div>
+                                    <select
+                                        name="maxGuests"
+                                        value={filters.maxGuests}
+                                        onChange={handleFilterChange}
+                                        className="pl-8 py-2 w-full rounded-lg border-gray-200 text-sm"
+                                    >
+                                        <option value="">Any Guests</option>
+                                        <option value="1">1+ Guests</option>
+                                        <option value="2">2+ Guests</option>
+                                        <option value="4">4+ Guests</option>
+                                        <option value="6">6+ Guests</option>
+                                        <option value="8">8+ Guests</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex justify-end mt-4">
+                            <Button 
+                                variant="text" 
+                                onClick={clearAllFilters}
+                                className="mr-2"
+                            >
+                                Clear All
+                            </Button>
+                            <Button 
+                                variant="primary" 
+                                onClick={() => setIsFilterSectionVisible(false)}
+                            >
+                                Apply Filters
+                            </Button>
+                        </div>
+                    </div>
+                )}
+
                 {/* Active Filters Pills */}
                 {activeFilters > 0 && (
-                    <div className="mb-6 bg-white rounded-xl shadow-sm p-3 border border-gray-100">
+                    <div className="mb-6 bg-white rounded-xl shadow-sm p-3 border border-gray-100 animate-fadeIn">
                         <div className="flex flex-wrap items-center gap-2">
                             <span className="text-sm text-gray-600 font-medium">
                                 Active filters:
@@ -535,9 +704,7 @@ const PropertyListPage = () => {
 
                                     {/* Sort Dropdown */}
                                     <div className="flex items-center gap-2 bg-white rounded-lg border border-gray-200 px-3 py-2">
-                                        <span className="text-gray-600 text-sm">
-                                            Sort:
-                                        </span>
+                                        <FaSort className="text-secondary-500" />
                                         <select
                                             name="sort"
                                             value={filters.sort}
@@ -570,15 +737,20 @@ const PropertyListPage = () => {
                                 }`}
                             >
                                 {data?.properties ? (
-                                    data.properties.map((property) => (
-                                        <PropertyCard
+                                    data.properties.map((property, index) => (
+                                        <div 
                                             key={property._id}
-                                            property={property}
-                                            onToggleFavorite={
-                                                handleToggleFavorite
-                                            }
-                                            viewMode={viewMode}
-                                        />
+                                            className="animate-fadeIn"
+                                            style={{ animationDelay: `${index * 0.05}s` }}
+                                        >
+                                            <PropertyCard
+                                                property={property}
+                                                onToggleFavorite={
+                                                    handleToggleFavorite
+                                                }
+                                                viewMode={viewMode}
+                                            />
+                                        </div>
                                     ))
                                 ) : (
                                     <div className="col-span-full text-center py-10">

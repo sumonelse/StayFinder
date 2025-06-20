@@ -10,6 +10,7 @@ import {
     FaAngleRight,
     FaCheck,
     FaRegCalendarAlt,
+    FaTag,
 } from "react-icons/fa"
 import { MdVerified, MdLocationOn } from "react-icons/md"
 import { useAuth } from "../../context/AuthContext"
@@ -132,7 +133,7 @@ const PropertyCard = ({ property, onToggleFavorite, viewMode = "grid" }) => {
                                 {property.pricePeriod === "night" ||
                                 property.pricePeriod === "nightly"
                                     ? "night"
-                                    : property.pricePeriod || "month"}
+                                    : property.pricePeriod || "night"}
                             </span>
                         </div>
 
@@ -329,7 +330,7 @@ const PropertyCard = ({ property, onToggleFavorite, viewMode = "grid" }) => {
                                     {property.pricePeriod === "night" ||
                                     property.pricePeriod === "nightly"
                                         ? "night"
-                                        : property.pricePeriod || "month"}
+                                        : property.pricePeriod || "night"}
                                 </span>
                             </div>
                         </div>
