@@ -1,33 +1,108 @@
-import React, { useState, useRef, useEffect } from "react"
+import React, { useState, forwardRef } from "react"
 import PropTypes from "prop-types"
-import {
-    FaCalendarAlt,
-    FaChevronLeft,
-    FaChevronRight,
-    FaTimes,
-} from "react-icons/fa"
+import ReactDatePicker from "react-datepicker"
+import { format, isValid, parse, addMonths } from "date-fns"
+import { FaCalendarAlt, FaTimes } from "react-icons/fa"
+import "react-datepicker/dist/react-datepicker.css"
+import "../../styles/datepicker.css"
+
+// Custom header component for the DatePicker
+const CustomHeader = ({
+    date,
+    decreaseMonth,
+    increaseMonth,
+    prevMonthButtonDisabled,
+    nextMonthButtonDisabled,
+    monthDate,
+    customHeaderCount,
+}) => {
+    // For the second calendar in range selection, show the next month
+    // customHeaderCount is 0 for the first calendar and 1 for the second
+    const displayDate = customHeaderCount === 1 ? addMonths(date, 1) : date
+
+    return (
+        <div className="flex items-center justify-between px-2 py-2 mb-1">
+            <button
+                onClick={decreaseMonth}
+                disabled={prevMonthButtonDisabled || customHeaderCount === 1}
+                type="button"
+                className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-pink-100 text-pink-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                aria-label="Previous Month"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                >
+                    <path d="M15 18l-6-6 6-6" />
+                </svg>
+            </button>
+
+            <div className="text-pink-800 font-medium text-center">
+                {format(displayDate, "MMMM yyyy")}
+            </div>
+
+            <button
+                onClick={increaseMonth}
+                disabled={nextMonthButtonDisabled || customHeaderCount === 0}
+                type="button"
+                className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-pink-100 text-pink-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                aria-label="Next Month"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                >
+                    <path d="M9 18l6-6-6-6" />
+                </svg>
+            </button>
+        </div>
+    )
+}
 
 /**
- * DatePicker component with accessible design
+ * Enhanced DatePicker component using react-datepicker
  *
  * @param {Object} props - Component props
  * @param {string} props.id - Input ID
  * @param {string} [props.label] - Input label
  * @param {string} [props.value] - Selected date in YYYY-MM-DD format
+ * @param {string} [props.startDate] - Start date for range selection in YYYY-MM-DD format
+ * @param {string} [props.endDate] - End date for range selection in YYYY-MM-DD format
  * @param {Function} props.onChange - Function called when date changes
+ * @param {Function} [props.onRangeChange] - Function called when date range changes
  * @param {string} [props.placeholder] - Input placeholder
  * @param {string} [props.error] - Error message
  * @param {string} [props.hint] - Hint text
  * @param {boolean} [props.disabled=false] - Whether the input is disabled
  * @param {boolean} [props.required=false] - Whether the input is required
- * @param {string} [props.minDate] - Minimum selectable date in YYYY-MM-DD format
- * @param {string} [props.maxDate] - Maximum selectable date in YYYY-MM-DD format
+ * @param {string|Date} [props.minDate] - Minimum selectable date
+ * @param {string|Date} [props.maxDate] - Maximum selectable date
+ * @param {boolean} [props.selectsRange=false] - Whether to enable date range selection
+ * @param {boolean} [props.showMonthYearPicker=false] - Whether to show month/year picker
+ * @param {boolean} [props.inline=false] - Whether to display the calendar inline
  */
 const DatePicker = ({
     id,
     label,
     value,
+    startDate,
+    endDate,
     onChange,
+    onRangeChange,
     placeholder = "Select date",
     error,
     hint,
@@ -35,189 +110,178 @@ const DatePicker = ({
     required = false,
     minDate,
     maxDate,
+    selectsRange = false,
+    showMonthYearPicker = false,
+    inline = false,
     ...props
 }) => {
-    const [isOpen, setIsOpen] = useState(false)
-    const [currentMonth, setCurrentMonth] = useState(
-        value ? new Date(value) : new Date()
-    )
-    const [inputValue, setInputValue] = useState(
-        value ? formatDateForDisplay(new Date(value)) : ""
-    )
+    // Parse string dates to Date objects
+    const parseDate = (dateStr) => {
+        if (!dateStr) return null
+        if (dateStr instanceof Date) return dateStr
 
-    const datePickerRef = useRef(null)
-    const inputRef = useRef(null)
+        const parsedDate = parse(dateStr, "yyyy-MM-dd", new Date())
+        return isValid(parsedDate) ? parsedDate : null
+    }
 
-    // Close datepicker when clicking outside
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (
-                datePickerRef.current &&
-                !datePickerRef.current.contains(event.target)
-            ) {
-                setIsOpen(false)
-            }
-        }
+    // Initialize state based on props
+    const [dateRange, setDateRange] = useState([
+        parseDate(startDate),
+        parseDate(endDate),
+    ])
 
-        document.addEventListener("mousedown", handleClickOutside)
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside)
-        }
-    }, [])
+    // For range selection, calculate the next month for the second calendar
+    const getNextMonthDate = (date) => {
+        if (!date) return null
+        const nextMonth = new Date(date)
+        nextMonth.setMonth(nextMonth.getMonth() + 1)
+        return nextMonth
+    }
+
+    const selectedDate = parseDate(value)
 
     // Format date as YYYY-MM-DD
-    function formatDateForValue(date) {
-        return date.toISOString().split("T")[0]
+    const formatDateForValue = (date) => {
+        if (!date) return ""
+        return format(date, "yyyy-MM-dd")
     }
 
-    // Format date for display (e.g., Jan 1, 2023)
-    function formatDateForDisplay(date) {
-        return date.toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-        })
-    }
-
-    // Handle date selection
-    function handleDateSelect(date) {
-        const formattedDate = formatDateForValue(date)
-        setInputValue(formatDateForDisplay(date))
-        onChange(formattedDate)
-        setIsOpen(false)
-    }
-
-    // Handle input change
-    function handleInputChange(e) {
-        setInputValue(e.target.value)
-
-        // Try to parse the date
-        const parsedDate = new Date(e.target.value)
-        if (!isNaN(parsedDate.getTime())) {
-            onChange(formatDateForValue(parsedDate))
-            setCurrentMonth(parsedDate)
+    // Handle date selection for single date
+    const handleDateChange = (date) => {
+        if (onChange) {
+            onChange(date ? formatDateForValue(date) : "")
         }
     }
 
-    // Clear the date
-    function handleClear() {
-        setInputValue("")
-        onChange("")
-    }
+    // Handle date range selection
+    const handleRangeChange = (dates) => {
+        const [start, end] = dates
+        setDateRange(dates)
 
-    // Navigate to previous month
-    function prevMonth() {
-        setCurrentMonth(
-            new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1)
-        )
-    }
-
-    // Navigate to next month
-    function nextMonth() {
-        setCurrentMonth(
-            new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1)
-        )
-    }
-
-    // Get days in month
-    function getDaysInMonth(year, month) {
-        return new Date(year, month + 1, 0).getDate()
-    }
-
-    // Get day of week for first day of month (0 = Sunday, 6 = Saturday)
-    function getFirstDayOfMonth(year, month) {
-        return new Date(year, month, 1).getDay()
-    }
-
-    // Check if date is selectable
-    function isDateSelectable(date) {
-        if (disabled) return false
-
-        const dateValue = formatDateForValue(date)
-
-        if (minDate && dateValue < minDate) return false
-        if (maxDate && dateValue > maxDate) return false
-
-        return true
-    }
-
-    // Check if date is selected
-    function isDateSelected(date) {
-        return value === formatDateForValue(date)
-    }
-
-    // Check if date is today
-    function isToday(date) {
-        const today = new Date()
-        return (
-            date.getDate() === today.getDate() &&
-            date.getMonth() === today.getMonth() &&
-            date.getFullYear() === today.getFullYear()
-        )
-    }
-
-    // Render calendar days
-    function renderCalendarDays() {
-        const year = currentMonth.getFullYear()
-        const month = currentMonth.getMonth()
-        const daysInMonth = getDaysInMonth(year, month)
-        const firstDayOfMonth = getFirstDayOfMonth(year, month)
-
-        const days = []
-
-        // Add empty cells for days before the first day of the month
-        for (let i = 0; i < firstDayOfMonth; i++) {
-            days.push(<div key={`empty-${i}`} className="h-9 w-9"></div>)
+        if (onRangeChange) {
+            onRangeChange({
+                startDate: start ? formatDateForValue(start) : "",
+                endDate: end ? formatDateForValue(end) : "",
+            })
         }
+    }
 
-        // Add days of the month
-        for (let day = 1; day <= daysInMonth; day++) {
-            const date = new Date(year, month, day)
-            const selectable = isDateSelectable(date)
-            const selected = isDateSelected(date)
-            const today = isToday(date)
-
-            days.push(
-                <button
-                    key={day}
-                    type="button"
-                    onClick={() => selectable && handleDateSelect(date)}
-                    disabled={!selectable}
-                    className={`h-9 w-9 rounded-full flex items-center justify-center text-sm focus:outline-none ${
-                        selected
-                            ? "bg-primary-600 text-white font-medium"
-                            : today
-                            ? "bg-primary-50 text-primary-700 font-medium"
-                            : selectable
-                            ? "hover:bg-secondary-100"
-                            : "text-secondary-300 cursor-not-allowed"
+    // Custom input component
+    const CustomInput = forwardRef(
+        ({ value, onClick, onChange: inputOnChange }, ref) => (
+            <div className="relative">
+                <input
+                    ref={ref}
+                    id={id}
+                    type="text"
+                    value={value}
+                    onChange={inputOnChange}
+                    onClick={onClick}
+                    placeholder={placeholder}
+                    disabled={disabled}
+                    required={required}
+                    aria-invalid={error ? "true" : "false"}
+                    aria-describedby={
+                        error ? `${id}-error` : hint ? `${id}-hint` : undefined
+                    }
+                    className={`input-field pr-10 cursor-pointer ${
+                        error ? "input-error" : ""
                     }`}
-                    aria-label={date.toLocaleDateString("en-US", {
-                        month: "long",
-                        day: "numeric",
-                        year: "numeric",
-                    })}
-                    aria-selected={selected}
-                >
-                    {day}
-                </button>
-            )
-        }
+                    readOnly
+                />
 
-        return days
-    }
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-pink-500">
+                    <FaCalendarAlt />
+                </div>
 
-    // Base classes
-    const inputClasses = [
-        "input-field pr-10",
-        error ? "input-error" : "",
-        "cursor-pointer",
-    ]
-        .filter(Boolean)
-        .join(" ")
+                {value && (
+                    <button
+                        type="button"
+                        className="absolute inset-y-0 right-0 flex items-center pr-8 text-pink-400 hover:text-pink-600"
+                        onClick={(e) => {
+                            e.stopPropagation()
+                            selectsRange
+                                ? handleRangeChange([null, null])
+                                : handleDateChange(null)
+                        }}
+                        aria-label="Clear date"
+                    >
+                        <FaTimes />
+                    </button>
+                )}
+            </div>
+        )
+    )
+
+    CustomInput.displayName = "CustomDatePickerInput"
+
+    // Process min/max dates
+    const minDateObj = parseDate(minDate)
+    const maxDateObj = parseDate(maxDate)
+
+    // Base component
+    const datepickerComponent = (
+        <ReactDatePicker
+            selected={selectsRange ? dateRange[0] : selectedDate}
+            onChange={selectsRange ? handleRangeChange : handleDateChange}
+            startDate={selectsRange ? dateRange[0] : undefined}
+            endDate={selectsRange ? dateRange[1] : undefined}
+            selectsRange={selectsRange}
+            minDate={minDateObj}
+            maxDate={maxDateObj}
+            showMonthYearPicker={showMonthYearPicker}
+            inline={inline}
+            customInput={<CustomInput />}
+            dateFormat="MMM d, yyyy"
+            calendarClassName="shadow-lg border border-pink-200 rounded-lg overflow-hidden"
+            wrapperClassName="w-full"
+            popperClassName="z-50"
+            popperPlacement="bottom-start"
+            showPopperArrow={false}
+            disabled={disabled}
+            monthsShown={selectsRange ? 2 : 1}
+            fixedHeight
+            formatWeekDay={(day) => day.substring(0, 1)}
+            focusedInput={selectsRange ? "startDate" : undefined}
+            openToDate={selectedDate || dateRange[0] || new Date()}
+            nextMonthButtonLabel="Next Month"
+            previousMonthButtonLabel="Previous Month"
+            {...(selectsRange && {
+                renderMonthContent: (month, shortMonth) => (
+                    <span aria-label={`Month of ${shortMonth}`}>
+                        {shortMonth}
+                    </span>
+                ),
+                calendarStartDay: 1,
+                monthShowsDuplicateDaysEnd: false,
+                monthShowsDuplicateDaysStart: false,
+                onMonthChange: (date) => {
+                    // This ensures both months stay in sync
+                    return date
+                },
+            })}
+            renderCustomHeader={({ ...props }) => <CustomHeader {...props} />}
+            dayClassName={(date) => {
+                const baseClasses = "rounded-full"
+                const today =
+                    format(date, "yyyy-MM-dd") ===
+                    format(new Date(), "yyyy-MM-dd")
+
+                if (today) {
+                    return `${baseClasses} bg-pink-50 text-pink-700 font-medium`
+                }
+
+                return baseClasses
+            }}
+            calendarContainer={({ className, children }) => (
+                <div className={`${className} p-2`}>{children}</div>
+            )}
+            {...props}
+        />
+    )
 
     return (
-        <div className="form-group" ref={datePickerRef}>
+        <div className="form-group">
             {label && (
                 <label htmlFor={id} className="form-label">
                     {label}
@@ -227,117 +291,7 @@ const DatePicker = ({
                 </label>
             )}
 
-            <div className="relative">
-                <input
-                    ref={inputRef}
-                    id={id}
-                    type="text"
-                    value={inputValue}
-                    onChange={handleInputChange}
-                    onClick={() => !disabled && setIsOpen(true)}
-                    placeholder={placeholder}
-                    disabled={disabled}
-                    required={required}
-                    aria-invalid={error ? "true" : "false"}
-                    aria-describedby={
-                        error ? `${id}-error` : hint ? `${id}-hint` : undefined
-                    }
-                    className={inputClasses}
-                    readOnly
-                    {...props}
-                />
-
-                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-secondary-500">
-                    <FaCalendarAlt />
-                </div>
-
-                {inputValue && (
-                    <button
-                        type="button"
-                        className="absolute inset-y-0 right-0 flex items-center pr-8 text-secondary-400 hover:text-secondary-600"
-                        onClick={handleClear}
-                        aria-label="Clear date"
-                    >
-                        <FaTimes />
-                    </button>
-                )}
-
-                {isOpen && (
-                    <div className="absolute z-10 mt-1 bg-white rounded-lg shadow-lg border border-secondary-200 p-4 w-72">
-                        {/* Calendar header */}
-                        <div className="flex justify-between items-center mb-4">
-                            <button
-                                type="button"
-                                onClick={prevMonth}
-                                className="p-1 rounded-full hover:bg-secondary-100 text-secondary-600"
-                                aria-label="Previous month"
-                            >
-                                <FaChevronLeft />
-                            </button>
-
-                            <h3 className="font-medium text-secondary-900">
-                                {currentMonth.toLocaleDateString("en-US", {
-                                    month: "long",
-                                    year: "numeric",
-                                })}
-                            </h3>
-
-                            <button
-                                type="button"
-                                onClick={nextMonth}
-                                className="p-1 rounded-full hover:bg-secondary-100 text-secondary-600"
-                                aria-label="Next month"
-                            >
-                                <FaChevronRight />
-                            </button>
-                        </div>
-
-                        {/* Day names */}
-                        <div className="grid grid-cols-7 gap-1 mb-2">
-                            {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map(
-                                (day) => (
-                                    <div
-                                        key={day}
-                                        className="h-9 flex items-center justify-center text-xs font-medium text-secondary-500"
-                                    >
-                                        {day}
-                                    </div>
-                                )
-                            )}
-                        </div>
-
-                        {/* Calendar days */}
-                        <div className="grid grid-cols-7 gap-1">
-                            {renderCalendarDays()}
-                        </div>
-
-                        {/* Today button */}
-                        <div className="mt-4 pt-2 border-t border-secondary-100 flex justify-between">
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    const today = new Date()
-                                    if (isDateSelectable(today)) {
-                                        handleDateSelect(today)
-                                    }
-                                }}
-                                className="text-sm text-primary-600 hover:text-primary-700 font-medium"
-                                disabled={!isDateSelectable(new Date())}
-                            >
-                                Today
-                            </button>
-
-                            <button
-                                type="button"
-                                onClick={() => setIsOpen(false)}
-                                className="text-sm text-secondary-600 hover:text-secondary-700 font-medium"
-                            >
-                                Close
-                            </button>
-                        </div>
-                    </div>
-                )}
-            </div>
+            {datepickerComponent}
 
             {error && (
                 <p id={`${id}-error`} className="form-error" role="alert">
@@ -358,14 +312,26 @@ DatePicker.propTypes = {
     id: PropTypes.string.isRequired,
     label: PropTypes.string,
     value: PropTypes.string,
-    onChange: PropTypes.func.isRequired,
+    startDate: PropTypes.string,
+    endDate: PropTypes.string,
+    onChange: PropTypes.func,
+    onRangeChange: PropTypes.func,
     placeholder: PropTypes.string,
     error: PropTypes.string,
     hint: PropTypes.string,
     disabled: PropTypes.bool,
     required: PropTypes.bool,
-    minDate: PropTypes.string,
-    maxDate: PropTypes.string,
+    minDate: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.instanceOf(Date),
+    ]),
+    maxDate: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.instanceOf(Date),
+    ]),
+    selectsRange: PropTypes.bool,
+    showMonthYearPicker: PropTypes.bool,
+    inline: PropTypes.bool,
 }
 
 export default DatePicker

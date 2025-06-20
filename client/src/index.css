@@ -478,6 +478,57 @@
         @apply outline-none ring-2 ring-primary-500 ring-offset-2;
     }
 
+    /* Print-specific utilities */
+    @media print {
+        .print\:hidden {
+            display: none !important;
+        }
+
+        .print\:block {
+            display: block !important;
+        }
+
+        .print\:p-0 {
+            padding: 0 !important;
+        }
+
+        .print\:py-0 {
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+        }
+
+        .print\:px-0 {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+
+        .print\:shadow-none {
+            box-shadow: none !important;
+        }
+
+        .print\:text-black {
+            color: #000 !important;
+        }
+
+        .print\:bg-white {
+            background-color: #fff !important;
+        }
+
+        .print\:border-none {
+            border: none !important;
+        }
+    }
+
+    /* Print mode specific styles */
+    .print-mode {
+        background-color: white;
+    }
+
+    .print-mode * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
     /* Gradient text */
     .text-gradient {
         @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-accent-500;

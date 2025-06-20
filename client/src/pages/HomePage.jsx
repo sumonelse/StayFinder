@@ -251,40 +251,25 @@ const HomePage = () => {
                                         />
                                     </div>
 
-                                    <div>
+                                    <div className="col-span-2">
                                         <DatePicker
-                                            id="checkIn"
-                                            label="Check In"
-                                            value={searchParams.checkIn}
-                                            onChange={(date) =>
+                                            id="dateRange"
+                                            label="Check In - Check Out"
+                                            startDate={searchParams.checkIn}
+                                            endDate={searchParams.checkOut}
+                                            selectsRange={true}
+                                            onRangeChange={({
+                                                startDate,
+                                                endDate,
+                                            }) =>
                                                 setSearchParams((prev) => ({
                                                     ...prev,
-                                                    checkIn: date,
+                                                    checkIn: startDate,
+                                                    checkOut: endDate,
                                                 }))
                                             }
-                                            placeholder="Select date"
+                                            placeholder="Select date range"
                                             minDate={
-                                                new Date()
-                                                    .toISOString()
-                                                    .split("T")[0]
-                                            }
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <DatePicker
-                                            id="checkOut"
-                                            label="Check Out"
-                                            value={searchParams.checkOut}
-                                            onChange={(date) =>
-                                                setSearchParams((prev) => ({
-                                                    ...prev,
-                                                    checkOut: date,
-                                                }))
-                                            }
-                                            placeholder="Select date"
-                                            minDate={
-                                                searchParams.checkIn ||
                                                 new Date()
                                                     .toISOString()
                                                     .split("T")[0]

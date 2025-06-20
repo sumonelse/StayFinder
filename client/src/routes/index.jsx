@@ -1,5 +1,11 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import MainLayout from "../layouts/MainLayout"
+import {
+    MainLayout,
+    DashboardLayout,
+    AuthLayout,
+    ErrorLayout,
+    PrintLayout,
+} from "../layouts"
 import HomePage from "../pages/HomePage"
 import LoginPage from "../pages/auth/LoginPage"
 import RegisterPage from "../pages/auth/RegisterPage"
@@ -17,34 +23,19 @@ import HostPropertiesPage from "../pages/host/HostPropertiesPage"
 import HostBookingsPage from "../pages/host/HostBookingsPage"
 import PropertyFormPage from "../pages/host/PropertyFormPage"
 import HostPropertyDetailPage from "../pages/host/HostPropertyDetailPage"
+import DatePickerDemo from "../pages/DatePickerDemo"
 import NotFoundPage from "../pages/NotFoundPage"
 import ProtectedRoute from "./ProtectedRoute"
 
 const router = createBrowserRouter([
+    // Main Layout - For public pages and user pages
     {
         path: "/",
         element: <MainLayout />,
-        errorElement: <NotFoundPage />,
         children: [
             {
                 index: true,
                 element: <HomePage />,
-            },
-            {
-                path: "login",
-                element: <LoginPage />,
-            },
-            {
-                path: "register",
-                element: <RegisterPage />,
-            },
-            {
-                path: "forgot-password",
-                element: <ForgotPasswordPage />,
-            },
-            {
-                path: "reset-password",
-                element: <ResetPasswordPage />,
             },
             {
                 path: "properties",
@@ -95,52 +86,97 @@ const router = createBrowserRouter([
                 ),
             },
             {
-                path: "host",
+                path: "datepicker-demo",
+                element: <DatePickerDemo />,
+            },
+        ],
+    },
+
+    // Auth Layout - For authentication pages
+    {
+        path: "/",
+        element: <AuthLayout />,
+        children: [
+            {
+                path: "login",
+                element: <LoginPage />,
+            },
+            {
+                path: "register",
+                element: <RegisterPage />,
+            },
+            {
+                path: "forgot-password",
+                element: <ForgotPasswordPage />,
+            },
+            {
+                path: "reset-password",
+                element: <ResetPasswordPage />,
+            },
+        ],
+    },
+
+    // Dashboard Layout - For host and admin pages
+    {
+        path: "/host",
+        element: (
+            <ProtectedRoute requiredRole="host">
+                <DashboardLayout />
+            </ProtectedRoute>
+        ),
+        children: [
+            {
+                index: true,
+                element: <HostDashboardPage />,
+            },
+            {
+                path: "properties",
+                element: <HostPropertiesPage />,
+            },
+            {
+                path: "bookings",
+                element: <HostBookingsPage />,
+            },
+            {
+                path: "properties/add",
+                element: <PropertyFormPage />,
+            },
+            {
+                path: "properties/:id/edit",
+                element: <PropertyFormPage />,
+            },
+            {
+                path: "properties/:id",
+                element: <HostPropertyDetailPage />,
+            },
+        ],
+    },
+
+    // Print Layout - For printable pages
+    {
+        path: "/print",
+        element: <PrintLayout />,
+        children: [
+            {
+                path: "booking/:id",
                 element: (
-                    <ProtectedRoute requiredRole="host">
-                        <HostDashboardPage />
+                    <ProtectedRoute>
+                        <BookingDetailPage printMode={true} />
                     </ProtectedRoute>
                 ),
             },
+            // Add more printable pages as needed
+        ],
+    },
+
+    // Error Layout - For error pages
+    {
+        path: "*",
+        element: <ErrorLayout />,
+        children: [
             {
-                path: "host/properties",
-                element: (
-                    <ProtectedRoute requiredRole="host">
-                        <HostPropertiesPage />
-                    </ProtectedRoute>
-                ),
-            },
-            {
-                path: "host/bookings",
-                element: (
-                    <ProtectedRoute requiredRole="host">
-                        <HostBookingsPage />
-                    </ProtectedRoute>
-                ),
-            },
-            {
-                path: "host/properties/add",
-                element: (
-                    <ProtectedRoute requiredRole="host">
-                        <PropertyFormPage />
-                    </ProtectedRoute>
-                ),
-            },
-            {
-                path: "host/properties/:id/edit",
-                element: (
-                    <ProtectedRoute requiredRole="host">
-                        <PropertyFormPage />
-                    </ProtectedRoute>
-                ),
-            },
-            {
-                path: "host/properties/:id",
-                element: (
-                    <ProtectedRoute requiredRole="host">
-                        <HostPropertyDetailPage />
-                    </ProtectedRoute>
-                ),
+                path: "*",
+                element: <NotFoundPage />,
             },
         ],
     },
