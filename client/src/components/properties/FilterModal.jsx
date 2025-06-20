@@ -4,7 +4,7 @@ import {
     FaMapMarkerAlt,
     FaBed,
     FaBath,
-    FaDollarSign,
+    FaRupeeSign,
     FaUsers,
     FaWifi,
     FaSwimmingPool,
@@ -29,6 +29,7 @@ import {
 } from "react-icons/md"
 import { IoIosRocket } from "react-icons/io"
 import Modal from "../ui/Modal"
+import { formatPrice, getCurrencySymbol } from "../../utils/currency"
 
 /**
  * Redesigned modal component for property filters with modern UI and improved UX
@@ -153,16 +154,6 @@ const FilterModal = ({
     // Toggle category expansion
     const toggleCategory = (category) => {
         setExpandedCategory(expandedCategory === category ? null : category)
-    }
-
-    // Format price for display
-    const formatPrice = (price) => {
-        if (!price) return ""
-        return new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-            minimumFractionDigits: 0,
-        }).format(price)
     }
 
     // Count active filters
@@ -293,7 +284,7 @@ const FilterModal = ({
                             onClick={() => toggleCategory("priceRange")}
                         >
                             <div className="flex items-center">
-                                <FaDollarSign className="mr-2 text-primary-500" />
+                                <FaRupeeSign className="mr-2 text-primary-500" />
                                 <span className="text-lg">Price Range</span>
                             </div>
                             <div className="flex items-center">
@@ -305,7 +296,7 @@ const FilterModal = ({
                                                 ? formatPrice(
                                                       localFilters.minPrice
                                                   )
-                                                : "$0"}{" "}
+                                                : `${getCurrencySymbol()}0`}{" "}
                                             -{" "}
                                             {localFilters.maxPrice
                                                 ? formatPrice(
@@ -344,7 +335,7 @@ const FilterModal = ({
                                 <div className="flex items-center gap-3">
                                     <div className="relative flex-1">
                                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <FaDollarSign className="text-primary-500" />
+                                            <FaRupeeSign className="text-primary-500" />
                                         </div>
                                         <input
                                             type="number"
@@ -358,7 +349,7 @@ const FilterModal = ({
                                     <span className="text-gray-400">to</span>
                                     <div className="relative flex-1">
                                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <FaDollarSign className="text-primary-500" />
+                                            <FaRupeeSign className="text-primary-500" />
                                         </div>
                                         <input
                                             type="number"
@@ -383,10 +374,10 @@ const FilterModal = ({
                                 </div>
 
                                 <div className="mt-4 flex justify-between text-sm text-gray-500">
-                                    <span>$0</span>
-                                    <span>$500</span>
-                                    <span>$1000</span>
-                                    <span>$1500+</span>
+                                    <span>{getCurrencySymbol()}0</span>
+                                    <span>{getCurrencySymbol()}500</span>
+                                    <span>{getCurrencySymbol()}1000</span>
+                                    <span>{getCurrencySymbol()}1500+</span>
                                 </div>
 
                                 <div className="mt-4 flex flex-wrap gap-2">
@@ -410,7 +401,8 @@ const FilterModal = ({
                                                         : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
                                                 }`}
                                             >
-                                                Under ${price}
+                                                Under {getCurrencySymbol()}
+                                                {price}
                                             </button>
                                         )
                                     )}

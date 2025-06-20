@@ -20,6 +20,7 @@ import {
     FaRegCommentDots,
 } from "react-icons/fa"
 import { propertyService, bookingService } from "../../services/api"
+import { formatPrice } from "../../utils/currency"
 import { useAuth } from "../../context/AuthContext"
 
 /**
@@ -130,15 +131,6 @@ const BookingPage = () => {
     }
 
     const bookingDetails = calculateBookingDetails()
-
-    // Format price with currency
-    const formatPrice = (price) => {
-        return new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-            minimumFractionDigits: 0,
-        }).format(price)
-    }
 
     // Handle input changes
     const handleInputChange = (e) => {

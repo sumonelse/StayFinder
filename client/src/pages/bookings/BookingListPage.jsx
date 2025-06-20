@@ -10,6 +10,7 @@ import {
     FaFilter,
 } from "react-icons/fa"
 import { bookingService } from "../../services/api"
+import { formatPrice } from "../../utils/currency"
 
 /**
  * Booking list page component
@@ -95,15 +96,6 @@ const BookingListPage = () => {
                     </span>
                 )
         }
-    }
-
-    // Format price with currency
-    const formatPrice = (price) => {
-        return new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-            minimumFractionDigits: 0,
-        }).format(price)
     }
 
     // Loading state

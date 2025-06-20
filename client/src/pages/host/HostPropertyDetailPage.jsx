@@ -16,6 +16,7 @@ import {
     FaToggleOff,
 } from "react-icons/fa"
 import { propertyService, bookingService } from "../../services/api"
+import { formatPrice } from "../../utils/currency"
 
 /**
  * Host property detail page component
@@ -82,15 +83,6 @@ const HostPropertyDetailPage = () => {
             month: "short",
             day: "numeric",
         })
-    }
-
-    // Format price with currency
-    const formatPrice = (price) => {
-        return new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-            minimumFractionDigits: 0,
-        }).format(price)
     }
 
     // Loading state

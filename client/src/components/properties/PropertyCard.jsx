@@ -15,6 +15,7 @@ import {
 import { MdVerified, MdLocationOn } from "react-icons/md"
 import { useAuth } from "../../context/AuthContext"
 import { Card, Badge } from "../ui"
+import { formatPrice } from "../../utils/currency"
 
 /**
  * Enhanced Property card component with modern styling and animations
@@ -25,15 +26,6 @@ const PropertyCard = ({ property, onToggleFavorite, viewMode = "grid" }) => {
 
     // Check if property is in user's favorites
     const isFavorite = user?.favorites?.includes(property._id)
-
-    // Format price with currency
-    const formatPrice = (price) => {
-        return new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-            minimumFractionDigits: 0,
-        }).format(price)
-    }
 
     // Handle favorite toggle with improved event handling
     const handleFavoriteClick = (e) => {

@@ -30,6 +30,7 @@ import {
     FaExclamationCircle,
 } from "react-icons/fa"
 import { bookingService } from "../../services/api"
+import { formatPrice } from "../../utils/currency"
 
 /**
  * Enhanced Booking detail page component
@@ -75,24 +76,6 @@ const BookingDetailPage = () => {
             setShowCancelModal(false)
         },
     })
-
-    // Format date
-    const formatDate = (dateString) => {
-        return new Date(dateString).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-        })
-    }
-
-    // Format price with currency
-    const formatPrice = (price) => {
-        return new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-            minimumFractionDigits: 0,
-        }).format(price)
-    }
 
     // Calculate number of nights
     const calculateNights = (startDate, endDate) => {

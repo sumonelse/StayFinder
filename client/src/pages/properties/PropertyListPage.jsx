@@ -13,7 +13,7 @@ import {
     FaHome,
     FaList,
     FaThLarge,
-    FaDollarSign,
+    FaRupeeSign,
     FaFilter,
     FaSlidersH,
     FaSort,
@@ -25,6 +25,7 @@ import { useAuth } from "../../context/AuthContext"
 import PropertyCard from "../../components/properties/PropertyCard"
 import FilterModal from "../../components/properties/FilterModal"
 import { Card, Badge, Button } from "../../components/ui"
+import { getCurrencySymbol } from "../../utils/currency"
 
 /**
  * Redesigned modern property listing page with enhanced UI/UX
@@ -190,15 +191,6 @@ const PropertyListPage = () => {
         if (locationInputRef.current) locationInputRef.current.value = ""
     }
 
-    // Format price for display
-    const formatPrice = (price) => {
-        return new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-            minimumFractionDigits: 0,
-        }).format(price)
-    }
-
     // Property type options for quick filters
     const propertyTypes = [
         { value: "apartment", label: "Apartments", icon: <FaHome /> },
@@ -301,25 +293,35 @@ const PropertyListPage = () => {
                                         : "bg-white text-secondary-700 border border-secondary-200 hover:bg-secondary-50"
                                 }`}
                             >
-                                <div className={`text-xl mb-1 ${
-                                    filters.type === type.value
-                                        ? "text-primary-600"
-                                        : "text-secondary-500"
-                                }`}>
+                                <div
+                                    className={`text-xl mb-1 ${
+                                        filters.type === type.value
+                                            ? "text-primary-600"
+                                            : "text-secondary-500"
+                                    }`}
+                                >
                                     {type.icon}
                                 </div>
-                                <span className="text-sm font-medium">{type.label}</span>
+                                <span className="text-sm font-medium">
+                                    {type.label}
+                                </span>
                             </button>
                         ))}
-                        
+
                         <button
-                            onClick={() => setIsFilterSectionVisible(!isFilterSectionVisible)}
+                            onClick={() =>
+                                setIsFilterSectionVisible(
+                                    !isFilterSectionVisible
+                                )
+                            }
                             className="flex flex-col items-center justify-center px-6 py-3 rounded-xl bg-white text-secondary-700 border border-secondary-200 hover:bg-secondary-50 transition-all"
                         >
                             <div className="text-xl mb-1 text-secondary-500">
                                 <FaSlidersH />
                             </div>
-                            <span className="text-sm font-medium">More Filters</span>
+                            <span className="text-sm font-medium">
+                                More Filters
+                            </span>
                         </button>
                     </div>
                 </div>
@@ -330,11 +332,13 @@ const PropertyListPage = () => {
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             {/* Price Range */}
                             <div>
-                                <h3 className="text-sm font-semibold text-secondary-700 mb-2">Price Range</h3>
+                                <h3 className="text-sm font-semibold text-secondary-700 mb-2">
+                                    Price Range
+                                </h3>
                                 <div className="flex items-center gap-2">
                                     <div className="relative flex-1">
                                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <FaDollarSign className="text-secondary-400" />
+                                            <FaRupeeSign className="text-secondary-400" />
                                         </div>
                                         <input
                                             type="number"
@@ -345,10 +349,12 @@ const PropertyListPage = () => {
                                             className="pl-8 py-2 w-full rounded-lg border-gray-200 text-sm"
                                         />
                                     </div>
-                                    <span className="text-secondary-400">-</span>
+                                    <span className="text-secondary-400">
+                                        -
+                                    </span>
                                     <div className="relative flex-1">
                                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <FaDollarSign className="text-secondary-400" />
+                                            <FaRupeeSign className="text-secondary-400" />
                                         </div>
                                         <input
                                             type="number"
@@ -364,7 +370,9 @@ const PropertyListPage = () => {
 
                             {/* Bedrooms & Bathrooms */}
                             <div>
-                                <h3 className="text-sm font-semibold text-secondary-700 mb-2">Rooms</h3>
+                                <h3 className="text-sm font-semibold text-secondary-700 mb-2">
+                                    Rooms
+                                </h3>
                                 <div className="flex gap-2">
                                     <div className="relative flex-1">
                                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -405,7 +413,9 @@ const PropertyListPage = () => {
 
                             {/* Guests */}
                             <div>
-                                <h3 className="text-sm font-semibold text-secondary-700 mb-2">Guests</h3>
+                                <h3 className="text-sm font-semibold text-secondary-700 mb-2">
+                                    Guests
+                                </h3>
                                 <div className="relative">
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <FaUsers className="text-secondary-400" />
@@ -428,15 +438,15 @@ const PropertyListPage = () => {
                         </div>
 
                         <div className="flex justify-end mt-4">
-                            <Button 
-                                variant="text" 
+                            <Button
+                                variant="text"
                                 onClick={clearAllFilters}
                                 className="mr-2"
                             >
                                 Clear All
                             </Button>
-                            <Button 
-                                variant="primary" 
+                            <Button
+                                variant="primary"
                                 onClick={() => setIsFilterSectionVisible(false)}
                             >
                                 Apply Filters
@@ -498,13 +508,17 @@ const PropertyListPage = () => {
 
                             {(filters.minPrice || filters.maxPrice) && (
                                 <span className="bg-primary-50 text-primary-700 text-sm px-3 py-1 rounded-full flex items-center border border-primary-100">
-                                    <FaDollarSign className="mr-1 text-xs" />
+                                    <FaRupeeSign className="mr-1 text-xs" />
                                     {filters.minPrice
-                                        ? `$${filters.minPrice}`
-                                        : "$0"}{" "}
+                                        ? `${getCurrencySymbol()}${
+                                              filters.minPrice
+                                          }`
+                                        : `${getCurrencySymbol()}0`}{" "}
                                     -
                                     {filters.maxPrice
-                                        ? ` $${filters.maxPrice}`
+                                        ? ` ${getCurrencySymbol()}${
+                                              filters.maxPrice
+                                          }`
                                         : " Any"}
                                     <button
                                         onClick={() => {
@@ -738,10 +752,14 @@ const PropertyListPage = () => {
                             >
                                 {data?.properties ? (
                                     data.properties.map((property, index) => (
-                                        <div 
+                                        <div
                                             key={property._id}
                                             className="animate-fadeIn"
-                                            style={{ animationDelay: `${index * 0.05}s` }}
+                                            style={{
+                                                animationDelay: `${
+                                                    index * 0.05
+                                                }s`,
+                                            }}
                                         >
                                             <PropertyCard
                                                 property={property}

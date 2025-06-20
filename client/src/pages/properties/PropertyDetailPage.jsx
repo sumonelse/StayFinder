@@ -43,6 +43,7 @@ import { useAuth } from "../../context/AuthContext"
 import ImageGallery from "../../components/property/ImageGallery"
 import ShareModal from "../../components/property/ShareModal"
 import { Button, Badge, DatePicker } from "../../components/ui"
+import { formatPrice } from "../../utils/currency"
 
 /**
  * Enhanced Property detail page component
@@ -202,15 +203,6 @@ const PropertyDetailPage = () => {
         } catch (err) {
             console.error("Error toggling favorite:", err)
         }
-    }
-
-    // Format price with currency
-    const formatPrice = (price) => {
-        return new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-            minimumFractionDigits: 0,
-        }).format(price)
     }
 
     // Format date

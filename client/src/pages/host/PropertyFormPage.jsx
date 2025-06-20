@@ -5,7 +5,7 @@ import {
     FaArrowLeft,
     FaHome,
     FaMapMarkerAlt,
-    FaDollarSign,
+    FaRupeeSign,
     FaImage,
     FaList,
     FaCheck,
@@ -472,7 +472,9 @@ const PropertyFormPage = () => {
                 <div className="flex items-center justify-between">
                     <div
                         className={`flex items-center ${
-                            currentStep >= 1 ? "text-primary-600" : "text-gray-400"
+                            currentStep >= 1
+                                ? "text-primary-600"
+                                : "text-gray-400"
                         }`}
                     >
                         <div
@@ -496,12 +498,16 @@ const PropertyFormPage = () => {
                     </div>
                     <div
                         className={`flex items-center ${
-                            currentStep >= 2 ? "text-primary-600" : "text-gray-400"
+                            currentStep >= 2
+                                ? "text-primary-600"
+                                : "text-gray-400"
                         }`}
                     >
                         <div
                             className={`flex items-center justify-center w-8 h-8 rounded-full ${
-                                currentStep >= 2 ? "bg-primary-100" : "bg-gray-100"
+                                currentStep >= 2
+                                    ? "bg-primary-100"
+                                    : "bg-gray-100"
                             } mr-2`}
                         >
                             <FaMapMarkerAlt />
@@ -518,15 +524,19 @@ const PropertyFormPage = () => {
                     </div>
                     <div
                         className={`flex items-center ${
-                            currentStep >= 3 ? "text-primary-600" : "text-gray-400"
+                            currentStep >= 3
+                                ? "text-primary-600"
+                                : "text-gray-400"
                         }`}
                     >
                         <div
                             className={`flex items-center justify-center w-8 h-8 rounded-full ${
-                                currentStep >= 3 ? "bg-primary-100" : "bg-gray-100"
+                                currentStep >= 3
+                                    ? "bg-primary-100"
+                                    : "bg-gray-100"
                             } mr-2`}
                         >
-                            <FaDollarSign />
+                            <FaRupeeSign />
                         </div>
                         <span className="hidden md:inline">Details</span>
                     </div>
@@ -540,12 +550,16 @@ const PropertyFormPage = () => {
                     </div>
                     <div
                         className={`flex items-center ${
-                            currentStep >= 4 ? "text-primary-600" : "text-gray-400"
+                            currentStep >= 4
+                                ? "text-primary-600"
+                                : "text-gray-400"
                         }`}
                     >
                         <div
                             className={`flex items-center justify-center w-8 h-8 rounded-full ${
-                                currentStep >= 4 ? "bg-primary-100" : "bg-gray-100"
+                                currentStep >= 4
+                                    ? "bg-primary-100"
+                                    : "bg-gray-100"
                             } mr-2`}
                         >
                             <FaImage />
@@ -562,12 +576,16 @@ const PropertyFormPage = () => {
                     </div>
                     <div
                         className={`flex items-center ${
-                            currentStep >= 5 ? "text-primary-600" : "text-gray-400"
+                            currentStep >= 5
+                                ? "text-primary-600"
+                                : "text-gray-400"
                         }`}
                     >
                         <div
                             className={`flex items-center justify-center w-8 h-8 rounded-full ${
-                                currentStep >= 5 ? "bg-primary-100" : "bg-gray-100"
+                                currentStep >= 5
+                                    ? "bg-primary-100"
+                                    : "bg-gray-100"
                             } mr-2`}
                         >
                             <FaList />
@@ -826,7 +844,7 @@ const PropertyFormPage = () => {
                                     </label>
                                     <div className="relative">
                                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <FaDollarSign className="text-gray-400" />
+                                            <FaRupeeSign className="text-gray-400" />
                                         </div>
                                         <input
                                             type="number"
@@ -886,7 +904,7 @@ const PropertyFormPage = () => {
                                     </label>
                                     <div className="relative">
                                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <FaDollarSign className="text-gray-400" />
+                                            <FaRupeeSign className="text-gray-400" />
                                         </div>
                                         <input
                                             type="number"
@@ -920,7 +938,7 @@ const PropertyFormPage = () => {
                                     </label>
                                     <div className="relative">
                                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <FaDollarSign className="text-gray-400" />
+                                            <FaRupeeSign className="text-gray-400" />
                                         </div>
                                         <input
                                             type="number"

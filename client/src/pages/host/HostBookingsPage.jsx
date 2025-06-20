@@ -11,6 +11,7 @@ import {
     FaExclamationTriangle,
 } from "react-icons/fa"
 import { bookingService } from "../../services/api"
+import { formatPrice } from "../../utils/currency"
 
 /**
  * Host bookings page component
@@ -110,15 +111,6 @@ const HostBookingsPage = () => {
             month: "short",
             day: "numeric",
         })
-    }
-
-    // Format price with currency
-    const formatPrice = (price) => {
-        return new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-            minimumFractionDigits: 0,
-        }).format(price)
     }
 
     // Get status badge

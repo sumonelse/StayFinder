@@ -11,6 +11,7 @@ import {
     FaMoneyBillWave,
 } from "react-icons/fa"
 import { propertyService, bookingService } from "../../services/api"
+import { formatPrice } from "../../utils/currency"
 import { useAuth } from "../../context/AuthContext"
 
 /**
@@ -41,15 +42,6 @@ const HostDashboardPage = () => {
             month: "short",
             day: "numeric",
         })
-    }
-
-    // Format price with currency
-    const formatPrice = (price) => {
-        return new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-            minimumFractionDigits: 0,
-        }).format(price)
     }
 
     // Calculate dashboard stats

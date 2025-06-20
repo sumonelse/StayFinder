@@ -13,6 +13,7 @@ import {
     FaFilter,
 } from "react-icons/fa"
 import { propertyService } from "../../services/api"
+import { formatPrice } from "../../utils/currency"
 import { useAuth } from "../../context/AuthContext"
 
 /**
@@ -100,15 +101,6 @@ const HostPropertiesPage = () => {
         if (propertyToDelete) {
             deletePropertyMutation.mutate(propertyToDelete)
         }
-    }
-
-    // Format price with currency
-    const formatPrice = (price) => {
-        return new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-            minimumFractionDigits: 0,
-        }).format(price)
     }
 
     // Loading state

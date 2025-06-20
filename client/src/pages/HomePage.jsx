@@ -28,6 +28,7 @@ import { IoIosRocket } from "react-icons/io"
 import { RiVipCrownFill } from "react-icons/ri"
 import { MdExplore, MdOutlineVerified } from "react-icons/md"
 import { Button, Input, DatePicker } from "../components/ui"
+import { formatPrice } from "../utils/currency"
 
 /**
  * Enhanced Home page component with modern UI elements and animations
@@ -191,15 +192,6 @@ const HomePage = () => {
             count: 156,
         },
     ]
-
-    // Format price with currency
-    const formatPrice = (price) => {
-        return new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-            minimumFractionDigits: 0,
-        }).format(price)
-    }
 
     return (
         <div className="flex flex-col">
