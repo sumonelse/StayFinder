@@ -53,9 +53,7 @@ const CustomHeader = React.memo(
 
                 <button
                     onClick={increaseMonth}
-                    disabled={
-                        nextMonthButtonDisabled || customHeaderCount === 0
-                    }
+                    disabled={nextMonthButtonDisabled}
                     type="button"
                     className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-pink-100 text-pink-600 disabled:opacity-50 disabled:cursor-not-allowed"
                     aria-label="Next Month"
