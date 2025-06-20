@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from "react"
+import React, { useState, useEffect, forwardRef } from "react"
 import PropTypes from "prop-types"
 import ReactDatePicker from "react-datepicker"
 import { format, isValid, parse, addMonths } from "date-fns"
@@ -7,70 +7,86 @@ import "react-datepicker/dist/react-datepicker.css"
 import "../../styles/datepicker.css"
 
 // Custom header component for the DatePicker
-const CustomHeader = ({
-    date,
-    decreaseMonth,
-    increaseMonth,
-    prevMonthButtonDisabled,
-    nextMonthButtonDisabled,
-    monthDate,
-    customHeaderCount,
-}) => {
-    // For the second calendar in range selection, show the next month
-    // customHeaderCount is 0 for the first calendar and 1 for the second
-    const displayDate = customHeaderCount === 1 ? addMonths(date, 1) : date
+const CustomHeader = React.memo(
+    ({
+        date,
+        decreaseMonth,
+        increaseMonth,
+        prevMonthButtonDisabled,
+        nextMonthButtonDisabled,
+        monthDate,
+        customHeaderCount,
+    }) => {
+        // For the second calendar in range selection, show the next month
+        // customHeaderCount is 0 for the first calendar and 1 for the second
+        const displayDate = customHeaderCount === 1 ? addMonths(date, 1) : date
 
-    return (
-        <div className="flex items-center justify-between px-2 py-2 mb-1">
-            <button
-                onClick={decreaseMonth}
-                disabled={prevMonthButtonDisabled || customHeaderCount === 1}
-                type="button"
-                className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-pink-100 text-pink-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                aria-label="Previous Month"
-            >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+        return (
+            <div className="flex items-center justify-between px-2 py-2 mb-1">
+                <button
+                    onClick={decreaseMonth}
+                    disabled={
+                        prevMonthButtonDisabled || customHeaderCount === 1
+                    }
+                    type="button"
+                    className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-pink-100 text-pink-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                    aria-label="Previous Month"
                 >
-                    <path d="M15 18l-6-6 6-6" />
-                </svg>
-            </button>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    >
+                        <path d="M15 18l-6-6 6-6" />
+                    </svg>
+                </button>
 
-            <div className="text-pink-800 font-medium text-center">
-                {format(displayDate, "MMMM yyyy")}
+                <div className="text-pink-800 font-medium text-center">
+                    {format(displayDate, "MMMM yyyy")}
+                </div>
+
+                <button
+                    onClick={increaseMonth}
+                    disabled={
+                        nextMonthButtonDisabled || customHeaderCount === 0
+                    }
+                    type="button"
+                    className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-pink-100 text-pink-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                    aria-label="Next Month"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    >
+                        <path d="M9 18l6-6-6-6" />
+                    </svg>
+                </button>
             </div>
+        )
+    }
+)
 
-            <button
-                onClick={increaseMonth}
-                disabled={nextMonthButtonDisabled || customHeaderCount === 0}
-                type="button"
-                className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-pink-100 text-pink-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                aria-label="Next Month"
-            >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                >
-                    <path d="M9 18l6-6-6-6" />
-                </svg>
-            </button>
-        </div>
-    )
+CustomHeader.propTypes = {
+    date: PropTypes.instanceOf(Date).isRequired,
+    decreaseMonth: PropTypes.func.isRequired,
+    increaseMonth: PropTypes.func.isRequired,
+    prevMonthButtonDisabled: PropTypes.bool,
+    nextMonthButtonDisabled: PropTypes.bool,
+    monthDate: PropTypes.instanceOf(Date),
+    customHeaderCount: PropTypes.number,
 }
 
 /**
@@ -130,15 +146,14 @@ const DatePicker = ({
         parseDate(endDate),
     ])
 
-    // For range selection, calculate the next month for the second calendar
-    const getNextMonthDate = (date) => {
-        if (!date) return null
-        const nextMonth = new Date(date)
-        nextMonth.setMonth(nextMonth.getMonth() + 1)
-        return nextMonth
-    }
-
     const selectedDate = parseDate(value)
+
+    // Update dateRange when props change
+    useEffect(() => {
+        if (selectsRange) {
+            setDateRange([parseDate(startDate), parseDate(endDate)])
+        }
+    }, [startDate, endDate, selectsRange])
 
     // Format date as YYYY-MM-DD
     const formatDateForValue = (date) => {
@@ -205,6 +220,7 @@ const DatePicker = ({
                                 : handleDateChange(null)
                         }}
                         aria-label="Clear date"
+                        tabIndex={0}
                     >
                         <FaTimes />
                     </button>
@@ -332,6 +348,12 @@ DatePicker.propTypes = {
     selectsRange: PropTypes.bool,
     showMonthYearPicker: PropTypes.bool,
     inline: PropTypes.bool,
+    // Allow additional react-datepicker props
+    className: PropTypes.string,
+    calendarClassName: PropTypes.string,
+    wrapperClassName: PropTypes.string,
+    popperClassName: PropTypes.string,
+    dateFormat: PropTypes.string,
 }
 
 export default DatePicker
