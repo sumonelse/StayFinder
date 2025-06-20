@@ -333,7 +333,7 @@ const RegisterPage = () => {
                                                 <FaGoogle className="text-red-500" />
                                             )}
                                             {provider === "Facebook" && (
-                                                <FaFacebook className="text-blue-600" />
+                                                <FaFacebook className="text-primary-600" />
                                             )}
                                             {provider === "Apple" && (
                                                 <FaApple className="text-secondary-900" />

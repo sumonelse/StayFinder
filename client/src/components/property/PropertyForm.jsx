@@ -122,7 +122,7 @@ const PropertyForm = ({
                             id="title"
                             type="text"
                             {...register("title")}
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
                         />
                         {errors.title && (
                             <p className="mt-1 text-sm text-red-600">
@@ -143,7 +143,7 @@ const PropertyForm = ({
                             id="description"
                             rows={4}
                             {...register("description")}
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
                         />
                         {errors.description && (
                             <p className="mt-1 text-sm text-red-600">
@@ -163,7 +163,7 @@ const PropertyForm = ({
                         <select
                             id="type"
                             {...register("type")}
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
                         >
                             <option value="apartment">Apartment</option>
                             <option value="house">House</option>
@@ -196,7 +196,7 @@ const PropertyForm = ({
                                 min="0"
                                 step="0.01"
                                 {...register("price", { valueAsNumber: true })}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
                             />
                             {errors.price && (
                                 <p className="mt-1 text-sm text-red-600">
@@ -215,7 +215,7 @@ const PropertyForm = ({
                             <select
                                 id="pricePeriod"
                                 {...register("pricePeriod")}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
                             >
                                 <option value="night">Per Night</option>
                                 <option value="week">Per Week</option>
@@ -249,7 +249,7 @@ const PropertyForm = ({
                             type="number"
                             min="0"
                             {...register("bedrooms", { valueAsNumber: true })}
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
                         />
                         {errors.bedrooms && (
                             <p className="mt-1 text-sm text-red-600">
@@ -272,7 +272,7 @@ const PropertyForm = ({
                             min="0"
                             step="0.5"
                             {...register("bathrooms", { valueAsNumber: true })}
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
                         />
                         {errors.bathrooms && (
                             <p className="mt-1 text-sm text-red-600">
@@ -294,7 +294,7 @@ const PropertyForm = ({
                             type="number"
                             min="1"
                             {...register("maxGuests", { valueAsNumber: true })}
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
                         />
                         {errors.maxGuests && (
                             <p className="mt-1 text-sm text-red-600">
@@ -319,7 +319,7 @@ const PropertyForm = ({
                 <button
                     type="submit"
                     disabled={isLoading}
-                    className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+                    className="px-6 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50"
                 >
                     {isLoading
                         ? "Saving..."

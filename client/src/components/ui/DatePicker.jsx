@@ -29,7 +29,7 @@ const CustomHeader = React.memo(
                         prevMonthButtonDisabled || customHeaderCount === 1
                     }
                     type="button"
-                    className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-pink-100 text-pink-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-primary-100 text-primary-600 disabled:opacity-50 disabled:cursor-not-allowed"
                     aria-label="Previous Month"
                 >
                     <svg
@@ -47,7 +47,7 @@ const CustomHeader = React.memo(
                     </svg>
                 </button>
 
-                <div className="text-pink-800 font-medium text-center">
+                <div className="text-primary-800 font-medium text-center">
                     {format(displayDate, "MMMM yyyy")}
                 </div>
 
@@ -55,7 +55,7 @@ const CustomHeader = React.memo(
                     onClick={increaseMonth}
                     disabled={nextMonthButtonDisabled}
                     type="button"
-                    className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-pink-100 text-pink-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-primary-100 text-primary-600 disabled:opacity-50 disabled:cursor-not-allowed"
                     aria-label="Next Month"
                 >
                     <svg
@@ -203,14 +203,14 @@ const DatePicker = ({
                     readOnly
                 />
 
-                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-pink-500">
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-primary-500">
                     <FaCalendarAlt />
                 </div>
 
                 {value && (
                     <button
                         type="button"
-                        className="absolute inset-y-0 right-0 flex items-center pr-8 text-pink-400 hover:text-pink-600"
+                        className="absolute inset-y-0 right-0 flex items-center pr-8 text-primary-400 hover:text-primary-600"
                         onClick={(e) => {
                             e.stopPropagation()
                             selectsRange
@@ -247,7 +247,7 @@ const DatePicker = ({
             inline={inline}
             customInput={<CustomInput />}
             dateFormat="MMM d, yyyy"
-            calendarClassName="shadow-lg border border-pink-200 rounded-lg overflow-hidden"
+            calendarClassName="shadow-lg border border-primary-200 rounded-lg overflow-hidden"
             wrapperClassName="w-full"
             popperClassName="z-50"
             popperPlacement="bottom-start"
@@ -282,7 +282,7 @@ const DatePicker = ({
                     format(new Date(), "yyyy-MM-dd")
 
                 if (today) {
-                    return `${baseClasses} bg-pink-50 text-pink-700 font-medium`
+                    return `${baseClasses} bg-primary-50 text-primary-700 font-medium`
                 }
 
                 return baseClasses

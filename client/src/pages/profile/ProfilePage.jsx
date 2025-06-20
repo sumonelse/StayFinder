@@ -240,7 +240,7 @@ const ProfilePage = () => {
                     <button
                         className={`px-6 py-3 text-sm font-medium ${
                             activeTab === "profile"
-                                ? "border-b-2 border-blue-500 text-blue-600"
+                                ? "border-b-2 border-primary-500 text-primary-600"
                                 : "text-gray-500 hover:text-gray-700"
                         }`}
                         onClick={() => setActiveTab("profile")}
@@ -250,7 +250,7 @@ const ProfilePage = () => {
                     <button
                         className={`px-6 py-3 text-sm font-medium ${
                             activeTab === "security"
-                                ? "border-b-2 border-blue-500 text-blue-600"
+                                ? "border-b-2 border-primary-500 text-primary-600"
                                 : "text-gray-500 hover:text-gray-700"
                         }`}
                         onClick={() => setActiveTab("security")}
@@ -306,7 +306,7 @@ const ProfilePage = () => {
                                                 errors.name
                                                     ? "border-red-500"
                                                     : "border-gray-300"
-                                            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                            } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                         />
                                     </div>
                                     {errors.name && (
@@ -338,7 +338,7 @@ const ProfilePage = () => {
                                                 errors.email
                                                     ? "border-red-500"
                                                     : "border-gray-300"
-                                            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                            } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                         />
                                     </div>
                                     {errors.email && (
@@ -371,7 +371,7 @@ const ProfilePage = () => {
                                                 errors.phone
                                                     ? "border-red-500"
                                                     : "border-gray-300"
-                                            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                            } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                         />
                                     </div>
                                     {errors.phone && (
@@ -407,7 +407,7 @@ const ProfilePage = () => {
                                                     profileData.address.street
                                                 }
                                                 onChange={handleProfileChange}
-                                                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                                             />
                                         </div>
                                     </div>
@@ -424,7 +424,7 @@ const ProfilePage = () => {
                                             name="address.city"
                                             value={profileData.address.city}
                                             onChange={handleProfileChange}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                                         />
                                     </div>
                                     <div>
@@ -440,7 +440,7 @@ const ProfilePage = () => {
                                             name="address.state"
                                             value={profileData.address.state}
                                             onChange={handleProfileChange}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                                         />
                                     </div>
                                     <div>
@@ -456,7 +456,7 @@ const ProfilePage = () => {
                                             name="address.zipCode"
                                             value={profileData.address.zipCode}
                                             onChange={handleProfileChange}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                                         />
                                     </div>
                                     <div>
@@ -472,7 +472,7 @@ const ProfilePage = () => {
                                             name="address.country"
                                             value={profileData.address.country}
                                             onChange={handleProfileChange}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                                         />
                                     </div>
                                 </div>
@@ -493,7 +493,7 @@ const ProfilePage = () => {
                                     value={profileData.bio}
                                     onChange={handleProfileChange}
                                     placeholder="Tell others about yourself..."
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                                 ></textarea>
                                 <p className="mt-1 text-sm text-gray-500">
                                     This information will be displayed on your
@@ -506,7 +506,7 @@ const ProfilePage = () => {
                                 <button
                                     type="submit"
                                     disabled={updateProfileMutation.isLoading}
-                                    className="bg-blue-600 text-white py-2 px-6 rounded-md font-medium hover:bg-blue-700 transition-colors disabled:bg-blue-300"
+                                    className="bg-primary-600 text-white py-2 px-6 rounded-md font-medium hover:bg-primary-700 transition-colors disabled:bg-primary-300"
                                 >
                                     {updateProfileMutation.isLoading
                                         ? "Saving..."
@@ -558,7 +558,7 @@ const ProfilePage = () => {
                                                     errors.currentPassword
                                                         ? "border-red-500"
                                                         : "border-gray-300"
-                                                } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                                } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                             />
                                         </div>
                                         {errors.currentPassword && (
@@ -590,7 +590,7 @@ const ProfilePage = () => {
                                                     errors.newPassword
                                                         ? "border-red-500"
                                                         : "border-gray-300"
-                                                } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                                } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                             />
                                         </div>
                                         {errors.newPassword && (
@@ -624,7 +624,7 @@ const ProfilePage = () => {
                                                     errors.confirmPassword
                                                         ? "border-red-500"
                                                         : "border-gray-300"
-                                                } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                                } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                             />
                                         </div>
                                         {errors.confirmPassword && (
@@ -641,7 +641,7 @@ const ProfilePage = () => {
                                         disabled={
                                             changePasswordMutation.isLoading
                                         }
-                                        className="bg-blue-600 text-white py-2 px-6 rounded-md font-medium hover:bg-blue-700 transition-colors disabled:bg-blue-300"
+                                        className="bg-primary-600 text-white py-2 px-6 rounded-md font-medium hover:bg-primary-700 transition-colors disabled:bg-primary-300"
                                     >
                                         {changePasswordMutation.isLoading
                                             ? "Changing..."

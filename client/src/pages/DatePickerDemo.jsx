@@ -24,13 +24,13 @@ const DatePickerDemo = () => {
 
     return (
         <div className="container mx-auto py-12 px-4">
-            <h1 className="text-3xl font-bold mb-8 text-center text-pink-700">
+            <h1 className="text-3xl font-bold mb-8 text-center text-primary-700">
                 DatePicker Component Demo
             </h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                <div className="bg-white p-6 rounded-lg shadow-md border border-pink-100">
-                    <h2 className="text-xl font-semibold mb-4 text-pink-600">
+                <div className="bg-white p-6 rounded-lg shadow-md border border-primary-100">
+                    <h2 className="text-xl font-semibold mb-4 text-primary-600">
                         Basic DatePicker
                     </h2>
                     <DatePicker
@@ -42,8 +42,8 @@ const DatePickerDemo = () => {
                         hint="Click to select any date"
                     />
                     {singleDate && (
-                        <div className="mt-4 p-3 bg-pink-50 rounded-md">
-                            <p className="text-sm text-pink-800">
+                        <div className="mt-4 p-3 bg-primary-50 rounded-md">
+                            <p className="text-sm text-primary-800">
                                 Selected date:{" "}
                                 <span className="font-medium">
                                     {singleDate}
@@ -53,8 +53,8 @@ const DatePickerDemo = () => {
                     )}
                 </div>
 
-                <div className="bg-white p-6 rounded-lg shadow-md border border-pink-100">
-                    <h2 className="text-xl font-semibold mb-4 text-pink-600">
+                <div className="bg-white p-6 rounded-lg shadow-md border border-primary-100">
+                    <h2 className="text-xl font-semibold mb-4 text-primary-600">
                         Date Range Picker
                     </h2>
                     <DatePicker
@@ -68,8 +68,8 @@ const DatePickerDemo = () => {
                         hint="Click to select a range of dates"
                     />
                     {(dateRange.startDate || dateRange.endDate) && (
-                        <div className="mt-4 p-3 bg-pink-50 rounded-md">
-                            <p className="text-sm text-pink-800">
+                        <div className="mt-4 p-3 bg-primary-50 rounded-md">
+                            <p className="text-sm text-primary-800">
                                 {dateRange.startDate && (
                                     <span>
                                         From:{" "}
@@ -96,8 +96,8 @@ const DatePickerDemo = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="bg-white p-6 rounded-lg shadow-md border border-pink-100">
-                    <h2 className="text-xl font-semibold mb-4 text-pink-600">
+                <div className="bg-white p-6 rounded-lg shadow-md border border-primary-100">
+                    <h2 className="text-xl font-semibold mb-4 text-primary-600">
                         With Min/Max Date Constraints
                     </h2>
                     <DatePicker
@@ -114,8 +114,8 @@ const DatePickerDemo = () => {
                     />
                 </div>
 
-                <div className="bg-white p-6 rounded-lg shadow-md border border-pink-100">
-                    <h2 className="text-xl font-semibold mb-4 text-pink-600">
+                <div className="bg-white p-6 rounded-lg shadow-md border border-primary-100">
+                    <h2 className="text-xl font-semibold mb-4 text-primary-600">
                         Month Picker
                     </h2>
                     <DatePicker
@@ -129,8 +129,8 @@ const DatePickerDemo = () => {
                         hint="Click to select a month and year"
                     />
                     {selectedMonth && (
-                        <div className="mt-4 p-3 bg-pink-50 rounded-md">
-                            <p className="text-sm text-pink-800">
+                        <div className="mt-4 p-3 bg-primary-50 rounded-md">
+                            <p className="text-sm text-primary-800">
                                 Selected month:{" "}
                                 <span className="font-medium">
                                     {new Date(selectedMonth).toLocaleDateString(
@@ -144,8 +144,8 @@ const DatePickerDemo = () => {
                 </div>
             </div>
 
-            <div className="mt-8 bg-white p-6 rounded-lg shadow-md border border-pink-100">
-                <h2 className="text-xl font-semibold mb-4 text-pink-600">
+            <div className="mt-8 bg-white p-6 rounded-lg shadow-md border border-primary-100">
+                <h2 className="text-xl font-semibold mb-4 text-primary-600">
                     Inline Calendar
                 </h2>
                 <div className="flex flex-col md:flex-row gap-8 items-start">
@@ -159,10 +159,10 @@ const DatePickerDemo = () => {
                         />
                     </div>
                     <div className="flex-1">
-                        <h3 className="text-lg font-medium mb-3 text-pink-600">
+                        <h3 className="text-lg font-medium mb-3 text-primary-600">
                             Features:
                         </h3>
-                        <ul className="list-disc pl-5 space-y-2 text-pink-700">
+                        <ul className="list-disc pl-5 space-y-2 text-primary-700">
                             <li>Single date selection</li>
                             <li>Date range selection</li>
                             <li>Month/year picker</li>

@@ -450,7 +450,7 @@ const PropertyFormPage = () => {
             <div className="mb-6">
                 <button
                     onClick={() => navigate("/host/properties")}
-                    className="flex items-center text-blue-600 hover:text-blue-800 mb-2"
+                    className="flex items-center text-primary-600 hover:text-primary-800 mb-2"
                 >
                     <FaArrowLeft className="mr-2" />
                     <span>Back to properties</span>
@@ -472,12 +472,14 @@ const PropertyFormPage = () => {
                 <div className="flex items-center justify-between">
                     <div
                         className={`flex items-center ${
-                            currentStep >= 1 ? "text-blue-600" : "text-gray-400"
+                            currentStep >= 1 ? "text-primary-600" : "text-gray-400"
                         }`}
                     >
                         <div
                             className={`flex items-center justify-center w-8 h-8 rounded-full ${
-                                currentStep >= 1 ? "bg-blue-100" : "bg-gray-100"
+                                currentStep >= 1
+                                    ? "bg-primary-100"
+                                    : "bg-gray-100"
                             } mr-2`}
                         >
                             <FaHome />
@@ -486,7 +488,7 @@ const PropertyFormPage = () => {
                     </div>
                     <div className="flex-1 h-1 mx-2 bg-gray-200">
                         <div
-                            className="h-1 bg-blue-600"
+                            className="h-1 bg-primary-600"
                             style={{
                                 width: `${currentStep > 1 ? "100%" : "0%"}`,
                             }}
@@ -494,12 +496,12 @@ const PropertyFormPage = () => {
                     </div>
                     <div
                         className={`flex items-center ${
-                            currentStep >= 2 ? "text-blue-600" : "text-gray-400"
+                            currentStep >= 2 ? "text-primary-600" : "text-gray-400"
                         }`}
                     >
                         <div
                             className={`flex items-center justify-center w-8 h-8 rounded-full ${
-                                currentStep >= 2 ? "bg-blue-100" : "bg-gray-100"
+                                currentStep >= 2 ? "bg-primary-100" : "bg-gray-100"
                             } mr-2`}
                         >
                             <FaMapMarkerAlt />
@@ -508,7 +510,7 @@ const PropertyFormPage = () => {
                     </div>
                     <div className="flex-1 h-1 mx-2 bg-gray-200">
                         <div
-                            className="h-1 bg-blue-600"
+                            className="h-1 bg-primary-600"
                             style={{
                                 width: `${currentStep > 2 ? "100%" : "0%"}`,
                             }}
@@ -516,12 +518,12 @@ const PropertyFormPage = () => {
                     </div>
                     <div
                         className={`flex items-center ${
-                            currentStep >= 3 ? "text-blue-600" : "text-gray-400"
+                            currentStep >= 3 ? "text-primary-600" : "text-gray-400"
                         }`}
                     >
                         <div
                             className={`flex items-center justify-center w-8 h-8 rounded-full ${
-                                currentStep >= 3 ? "bg-blue-100" : "bg-gray-100"
+                                currentStep >= 3 ? "bg-primary-100" : "bg-gray-100"
                             } mr-2`}
                         >
                             <FaDollarSign />
@@ -530,7 +532,7 @@ const PropertyFormPage = () => {
                     </div>
                     <div className="flex-1 h-1 mx-2 bg-gray-200">
                         <div
-                            className="h-1 bg-blue-600"
+                            className="h-1 bg-primary-600"
                             style={{
                                 width: `${currentStep > 3 ? "100%" : "0%"}`,
                             }}
@@ -538,12 +540,12 @@ const PropertyFormPage = () => {
                     </div>
                     <div
                         className={`flex items-center ${
-                            currentStep >= 4 ? "text-blue-600" : "text-gray-400"
+                            currentStep >= 4 ? "text-primary-600" : "text-gray-400"
                         }`}
                     >
                         <div
                             className={`flex items-center justify-center w-8 h-8 rounded-full ${
-                                currentStep >= 4 ? "bg-blue-100" : "bg-gray-100"
+                                currentStep >= 4 ? "bg-primary-100" : "bg-gray-100"
                             } mr-2`}
                         >
                             <FaImage />
@@ -552,7 +554,7 @@ const PropertyFormPage = () => {
                     </div>
                     <div className="flex-1 h-1 mx-2 bg-gray-200">
                         <div
-                            className="h-1 bg-blue-600"
+                            className="h-1 bg-primary-600"
                             style={{
                                 width: `${currentStep > 4 ? "100%" : "0%"}`,
                             }}
@@ -560,12 +562,12 @@ const PropertyFormPage = () => {
                     </div>
                     <div
                         className={`flex items-center ${
-                            currentStep >= 5 ? "text-blue-600" : "text-gray-400"
+                            currentStep >= 5 ? "text-primary-600" : "text-gray-400"
                         }`}
                     >
                         <div
                             className={`flex items-center justify-center w-8 h-8 rounded-full ${
-                                currentStep >= 5 ? "bg-blue-100" : "bg-gray-100"
+                                currentStep >= 5 ? "bg-primary-100" : "bg-gray-100"
                             } mr-2`}
                         >
                             <FaList />
@@ -601,7 +603,7 @@ const PropertyFormPage = () => {
                                         errors.title
                                             ? "border-red-500"
                                             : "border-gray-300"
-                                    } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                    } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                     placeholder="e.g., Cozy Apartment in Downtown"
                                 />
                                 {errors.title && (
@@ -628,7 +630,7 @@ const PropertyFormPage = () => {
                                         errors.description
                                             ? "border-red-500"
                                             : "border-gray-300"
-                                    } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                    } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                     placeholder="Describe your property in detail..."
                                 ></textarea>
                                 {errors.description && (
@@ -658,7 +660,7 @@ const PropertyFormPage = () => {
                                         errors.type
                                             ? "border-red-500"
                                             : "border-gray-300"
-                                    } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                    } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                 >
                                     <option value="apartment">Apartment</option>
                                     <option value="house">House</option>
@@ -701,7 +703,7 @@ const PropertyFormPage = () => {
                                         errors["address.street"]
                                             ? "border-red-500"
                                             : "border-gray-300"
-                                    } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                    } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                     placeholder="e.g., 123 Main St"
                                 />
                                 {errors["address.street"] && (
@@ -729,7 +731,7 @@ const PropertyFormPage = () => {
                                             errors["address.city"]
                                                 ? "border-red-500"
                                                 : "border-gray-300"
-                                        } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                        } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                         placeholder="e.g., New York"
                                     />
                                     {errors["address.city"] && (
@@ -752,7 +754,7 @@ const PropertyFormPage = () => {
                                         name="address.state"
                                         value={propertyData.address.state}
                                         onChange={handleInputChange}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                                         placeholder="e.g., NY"
                                     />
                                 </div>
@@ -772,7 +774,7 @@ const PropertyFormPage = () => {
                                         name="address.zipCode"
                                         value={propertyData.address.zipCode}
                                         onChange={handleInputChange}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                                         placeholder="e.g., 10001"
                                     />
                                 </div>
@@ -794,7 +796,7 @@ const PropertyFormPage = () => {
                                             errors["address.country"]
                                                 ? "border-red-500"
                                                 : "border-gray-300"
-                                        } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                        } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                         placeholder="e.g., United States"
                                     />
                                     {errors["address.country"] && (
@@ -838,7 +840,7 @@ const PropertyFormPage = () => {
                                                 errors.price
                                                     ? "border-red-500"
                                                     : "border-gray-300"
-                                            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                            } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                             placeholder="e.g., 100"
                                         />
                                     </div>
@@ -861,7 +863,7 @@ const PropertyFormPage = () => {
                                         name="pricePeriod"
                                         value={propertyData.pricePeriod}
                                         onChange={handleInputChange}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                                     >
                                         <option value="nightly">
                                             Per Night
@@ -898,7 +900,7 @@ const PropertyFormPage = () => {
                                                 errors.cleaningFee
                                                     ? "border-red-500"
                                                     : "border-gray-300"
-                                            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                            } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                             placeholder="e.g., 50"
                                         />
                                     </div>
@@ -932,7 +934,7 @@ const PropertyFormPage = () => {
                                                 errors.serviceFee
                                                     ? "border-red-500"
                                                     : "border-gray-300"
-                                            } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                            } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                             placeholder="e.g., 30"
                                         />
                                     </div>
@@ -963,7 +965,7 @@ const PropertyFormPage = () => {
                                             errors.bedrooms
                                                 ? "border-red-500"
                                                 : "border-gray-300"
-                                        } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                        } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                     />
                                     {errors.bedrooms && (
                                         <p className="mt-1 text-sm text-red-600">
@@ -991,7 +993,7 @@ const PropertyFormPage = () => {
                                             errors.bathrooms
                                                 ? "border-red-500"
                                                 : "border-gray-300"
-                                        } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                        } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                     />
                                     {errors.bathrooms && (
                                         <p className="mt-1 text-sm text-red-600">
@@ -1018,7 +1020,7 @@ const PropertyFormPage = () => {
                                             errors.maxGuests
                                                 ? "border-red-500"
                                                 : "border-gray-300"
-                                        } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                        } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                     />
                                     {errors.maxGuests && (
                                         <p className="mt-1 text-sm text-red-600">
@@ -1041,7 +1043,7 @@ const PropertyFormPage = () => {
                                                 isAvailable: e.target.checked,
                                             }))
                                         }
-                                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                        className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                                     />
                                     <label
                                         htmlFor="isAvailable"
@@ -1142,7 +1144,7 @@ const PropertyFormPage = () => {
                                             onChange={() =>
                                                 handleAmenityChange(amenity.id)
                                             }
-                                            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                            className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                                         />
                                         <label
                                             htmlFor={`amenity-${amenity.id}`}
@@ -1176,7 +1178,7 @@ const PropertyFormPage = () => {
                                             updatePropertyMutation.isLoading ||
                                             isUploading
                                         }
-                                        className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-blue-300 flex items-center"
+                                        className="px-6 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 disabled:bg-primary-300 flex items-center"
                                     >
                                         {createPropertyMutation.isLoading ||
                                         updatePropertyMutation.isLoading ? (
@@ -1216,7 +1218,7 @@ const PropertyFormPage = () => {
                             <button
                                 type="button"
                                 onClick={handleNextStep}
-                                className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                                className="px-6 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700"
                             >
                                 Next
                             </button>

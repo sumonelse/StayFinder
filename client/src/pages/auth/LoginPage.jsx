@@ -348,7 +348,7 @@ const LoginPage = () => {
                                 aria-label="Sign in with Facebook"
                             >
                                 <FaFacebook
-                                    className="text-blue-600"
+                                    className="text-primary-600"
                                     size={18}
                                 />
                             </button>

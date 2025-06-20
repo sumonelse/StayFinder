@@ -147,7 +147,7 @@ const HostBookingsPage = () => {
                 )
             case "completed":
                 return (
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
                         <FaCheckCircle className="mr-1" />
                         Completed
                     </span>
@@ -226,12 +226,12 @@ const HostBookingsPage = () => {
                                 name="search"
                                 placeholder="Search by guest name..."
                                 defaultValue={filters.search}
-                                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                             />
                         </div>
                         <button
                             type="submit"
-                            className="ml-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                            className="ml-2 px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700"
                         >
                             Search
                         </button>
@@ -262,7 +262,7 @@ const HostBookingsPage = () => {
                                 name="status"
                                 value={filters.status}
                                 onChange={handleFilterChange}
-                                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                             >
                                 <option value="">All Statuses</option>
                                 <option value="pending">Pending</option>
@@ -283,7 +283,7 @@ const HostBookingsPage = () => {
                                 name="propertyId"
                                 value={filters.propertyId}
                                 onChange={handleFilterChange}
-                                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                             >
                                 <option value="">All Properties</option>
                                 {data?.properties?.map((property) => (
@@ -463,7 +463,7 @@ const HostBookingsPage = () => {
                                                 )}
                                                 <Link
                                                     to={`/messages?userId=${booking.user._id}`}
-                                                    className="text-blue-600 hover:text-blue-900"
+                                                    className="text-primary-600 hover:text-primary-900"
                                                 >
                                                     Message
                                                 </Link>
@@ -495,7 +495,7 @@ const HostBookingsPage = () => {
                                     onClick={() => handlePageChange(index + 1)}
                                     className={`px-3 py-1 rounded-md ${
                                         filters.page === index + 1
-                                            ? "bg-blue-600 text-white"
+                                            ? "bg-primary-600 text-white"
                                             : "bg-white border border-gray-300"
                                     }`}
                                 >
@@ -554,7 +554,7 @@ const HostBookingsPage = () => {
                                         onChange={(e) =>
                                             setActionReason(e.target.value)
                                         }
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                                         placeholder="Please provide a reason for cancellation"
                                     ></textarea>
                                 </div>

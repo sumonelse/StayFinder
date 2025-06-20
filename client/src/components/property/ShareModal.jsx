@@ -67,7 +67,7 @@ const ShareModal = ({ isOpen, onClose, title, url }) => {
                         rel="noopener noreferrer"
                         className="flex flex-col items-center justify-center p-4 rounded-lg border border-secondary-200 hover:bg-secondary-50 transition-colors"
                     >
-                        <FaFacebook className="text-blue-600 text-2xl mb-2" />
+                        <FaFacebook className="text-primary-600 text-2xl mb-2" />
                         <span className="text-sm text-secondary-700">
                             Facebook
                         </span>
@@ -79,7 +79,7 @@ const ShareModal = ({ isOpen, onClose, title, url }) => {
                         rel="noopener noreferrer"
                         className="flex flex-col items-center justify-center p-4 rounded-lg border border-secondary-200 hover:bg-secondary-50 transition-colors"
                     >
-                        <FaTwitter className="text-blue-400 text-2xl mb-2" />
+                        <FaTwitter className="text-primary-400 text-2xl mb-2" />
                         <span className="text-sm text-secondary-700">
                             Twitter
                         </span>

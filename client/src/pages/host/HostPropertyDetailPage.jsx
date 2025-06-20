@@ -140,7 +140,7 @@ const HostPropertyDetailPage = () => {
                 <div>
                     <button
                         onClick={() => navigate("/host/properties")}
-                        className="flex items-center text-blue-600 hover:text-blue-800 mb-2"
+                        className="flex items-center text-primary-600 hover:text-primary-800 mb-2"
                     >
                         <FaArrowLeft className="mr-2" />
                         <span>Back to properties</span>
@@ -152,7 +152,7 @@ const HostPropertyDetailPage = () => {
                 <div className="mt-4 md:mt-0 flex space-x-2">
                     <Link
                         to={`/host/properties/${id}/edit`}
-                        className="inline-flex items-center bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition-colors"
+                        className="inline-flex items-center bg-primary-600 text-white px-4 py-2 rounded-md font-medium hover:bg-primary-700 transition-colors"
                     >
                         <FaEdit className="mr-2" />
                         <span>Edit Property</span>
@@ -241,7 +241,7 @@ const HostPropertyDetailPage = () => {
                                 </span>
                                 <button
                                     onClick={handleToggleAvailability}
-                                    className="ml-2 text-blue-600 hover:text-blue-800"
+                                    className="ml-2 text-primary-600 hover:text-primary-800"
                                     title={
                                         property.isAvailable
                                             ? "Mark as unavailable"
@@ -381,7 +381,7 @@ const HostPropertyDetailPage = () => {
                             </h2>
                             <Link
                                 to={`/host/bookings?propertyId=${id}`}
-                                className="text-blue-600 hover:text-blue-800"
+                                className="text-primary-600 hover:text-primary-800"
                             >
                                 View all
                             </Link>
@@ -427,7 +427,7 @@ const HostPropertyDetailPage = () => {
                                                         : booking.status ===
                                                           "cancelled"
                                                         ? "bg-red-100 text-red-800"
-                                                        : "bg-blue-100 text-blue-800"
+                                                        : "bg-primary-100 text-primary-800"
                                                 }`}
                                             >
                                                 {booking.status
@@ -526,7 +526,7 @@ const HostPropertyDetailPage = () => {
                             <div className="space-y-3">
                                 <Link
                                     to={`/host/properties/${id}/edit`}
-                                    className="block w-full text-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                                    className="block w-full text-center px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 transition-colors"
                                 >
                                     Edit Property
                                 </Link>

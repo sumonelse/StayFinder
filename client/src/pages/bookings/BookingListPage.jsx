@@ -83,7 +83,7 @@ const BookingListPage = () => {
                 )
             case "completed":
                 return (
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
                         <FaCheckCircle className="mr-1" />
                         Completed
                     </span>
@@ -175,7 +175,7 @@ const BookingListPage = () => {
                                 name="status"
                                 value={filters.status}
                                 onChange={handleFilterChange}
-                                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                             >
                                 <option value="">All Statuses</option>
                                 <option value="pending">Pending</option>
@@ -199,7 +199,7 @@ const BookingListPage = () => {
                     </p>
                     <Link
                         to="/properties"
-                        className="inline-block bg-blue-600 text-white px-6 py-3 rounded-md font-medium hover:bg-blue-700 transition-colors"
+                        className="inline-block bg-primary-600 text-white px-6 py-3 rounded-md font-medium hover:bg-primary-700 transition-colors"
                     >
                         Find properties
                     </Link>
@@ -309,7 +309,7 @@ const BookingListPage = () => {
                                     onClick={() => handlePageChange(index + 1)}
                                     className={`px-3 py-1 rounded-md ${
                                         filters.page === index + 1
-                                            ? "bg-blue-600 text-white"
+                                            ? "bg-primary-600 text-white"
                                             : "bg-white border border-gray-300"
                                     }`}
                                 >

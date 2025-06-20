@@ -127,7 +127,7 @@ const BookingDetailPage = () => {
                 )
             case "completed":
                 return (
-                    <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-blue-50 text-blue-800 border border-blue-200 shadow-sm">
+                    <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-primary-50 text-primary-800 border border-primary-200 shadow-sm">
                         <FaCheckCircle className="mr-2" />
                         Completed
                     </span>
@@ -593,25 +593,25 @@ const BookingDetailPage = () => {
                                 )}
 
                                 {booking.status === "completed" && (
-                                    <div className="bg-blue-50 p-5 flex items-start">
-                                        <div className="bg-blue-100 p-3 rounded-full mr-4 flex-shrink-0">
+                                    <div className="bg-primary-50 p-5 flex items-start">
+                                        <div className="bg-primary-100 p-3 rounded-full mr-4 flex-shrink-0">
                                             <FaCheckCircle
-                                                className="text-blue-600"
+                                                className="text-primary-600"
                                                 size={20}
                                             />
                                         </div>
                                         <div>
-                                            <p className="font-medium text-blue-800 mb-1">
+                                            <p className="font-medium text-primary-800 mb-1">
                                                 Stay completed
                                             </p>
-                                            <p className="text-blue-700 mb-2">
+                                            <p className="text-primary-700 mb-2">
                                                 Your stay has been completed. We
                                                 hope you had a great time!
                                             </p>
                                             {!booking.hasReview && (
                                                 <Link
                                                     to={`/reviews/add?propertyId=${booking.property._id}&bookingId=${booking._id}`}
-                                                    className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                                                    className="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
                                                 >
                                                     <FaRegStar className="mr-2" />
                                                     Leave a review

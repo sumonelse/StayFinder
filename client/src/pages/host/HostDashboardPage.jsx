@@ -120,7 +120,7 @@ const HostDashboardPage = () => {
                 <div className="mt-4 md:mt-0">
                     <Link
                         to="/host/properties/add"
-                        className="inline-flex items-center bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition-colors"
+                        className="inline-flex items-center bg-primary-600 text-white px-4 py-2 rounded-md font-medium hover:bg-primary-700 transition-colors"
                     >
                         <FaPlus className="mr-2" />
                         <span>Add New Property</span>
@@ -132,7 +132,7 @@ const HostDashboardPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 <div className="bg-white rounded-lg shadow-md p-6">
                     <div className="flex items-center">
-                        <div className="p-3 rounded-full bg-blue-100 text-blue-600 mr-4">
+                        <div className="p-3 rounded-full bg-primary-100 text-primary-600 mr-4">
                             <FaHome className="text-xl" />
                         </div>
                         <div>
@@ -199,7 +199,7 @@ const HostDashboardPage = () => {
                     <h2 className="text-xl font-semibold">Recent Bookings</h2>
                     <Link
                         to="/host/bookings"
-                        className="text-blue-600 hover:text-blue-800"
+                        className="text-primary-600 hover:text-primary-800"
                     >
                         View all
                     </Link>
@@ -312,7 +312,7 @@ const HostDashboardPage = () => {
                                                         : booking.status ===
                                                           "cancelled"
                                                         ? "bg-red-100 text-red-800"
-                                                        : "bg-blue-100 text-blue-800"
+                                                        : "bg-primary-100 text-primary-800"
                                                 }`}
                                             >
                                                 {booking.status
@@ -338,7 +338,7 @@ const HostDashboardPage = () => {
                     <h2 className="text-xl font-semibold">Your Properties</h2>
                     <Link
                         to="/host/properties"
-                        className="text-blue-600 hover:text-blue-800"
+                        className="text-primary-600 hover:text-primary-800"
                     >
                         View all
                     </Link>
@@ -357,7 +357,7 @@ const HostDashboardPage = () => {
                         </p>
                         <Link
                             to="/host/properties/add"
-                            className="inline-flex items-center bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition-colors"
+                            className="inline-flex items-center bg-primary-600 text-white px-4 py-2 rounded-md font-medium hover:bg-primary-700 transition-colors"
                         >
                             <FaPlus className="mr-2" />
                             <span>Add Property</span>
@@ -412,13 +412,13 @@ const HostDashboardPage = () => {
                                     <div className="mt-4 flex space-x-2">
                                         <Link
                                             to={`/properties/${property._id}`}
-                                            className="text-blue-600 hover:text-blue-800 text-sm"
+                                            className="text-primary-600 hover:text-primary-800 text-sm"
                                         >
                                             View
                                         </Link>
                                         <Link
                                             to={`/host/properties/${property._id}/edit`}
-                                            className="text-blue-600 hover:text-blue-800 text-sm"
+                                            className="text-primary-600 hover:text-primary-800 text-sm"
                                         >
                                             Edit
                                         </Link>

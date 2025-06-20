@@ -106,7 +106,7 @@ const FavoritesPage = () => {
                         placeholder="Search your favorites..."
                         value={searchTerm}
                         onChange={handleSearchChange}
-                        className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full md:w-64"
+                        className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 w-full md:w-64"
                     />
                 </div>
             </div>
@@ -125,7 +125,7 @@ const FavoritesPage = () => {
                     </p>
                     <Link
                         to="/properties"
-                        className="inline-block bg-blue-600 text-white px-6 py-3 rounded-md font-medium hover:bg-blue-700 transition-colors"
+                        className="inline-block bg-primary-600 text-white px-6 py-3 rounded-md font-medium hover:bg-primary-700 transition-colors"
                     >
                         Find properties
                     </Link>

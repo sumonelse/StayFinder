@@ -82,7 +82,7 @@ const ProfileForm = ({ initialData, onSubmit, isLoading = false }) => {
                                 id="name"
                                 type="text"
                                 {...register("name")}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
                             />
                             {errors.name && (
                                 <p className="mt-1 text-sm text-red-600">
@@ -103,7 +103,7 @@ const ProfileForm = ({ initialData, onSubmit, isLoading = false }) => {
                                 id="email"
                                 type="email"
                                 {...register("email")}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
                             />
                             {errors.email && (
                                 <p className="mt-1 text-sm text-red-600">
@@ -124,7 +124,7 @@ const ProfileForm = ({ initialData, onSubmit, isLoading = false }) => {
                                 id="phone"
                                 type="tel"
                                 {...register("phone")}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
                             />
                             {errors.phone && (
                                 <p className="mt-1 text-sm text-red-600">
@@ -145,7 +145,7 @@ const ProfileForm = ({ initialData, onSubmit, isLoading = false }) => {
                                 id="bio"
                                 rows={4}
                                 {...register("bio")}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
                                 placeholder="Tell others about yourself..."
                             />
                             {errors.bio && (
@@ -163,7 +163,7 @@ const ProfileForm = ({ initialData, onSubmit, isLoading = false }) => {
                 <button
                     type="submit"
                     disabled={isLoading}
-                    className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+                    className="px-6 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50"
                 >
                     {isLoading ? "Saving..." : "Update Profile"}
                 </button>

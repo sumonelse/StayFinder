@@ -157,7 +157,7 @@ const HostPropertiesPage = () => {
                 <div className="mt-4 md:mt-0">
                     <Link
                         to="/host/properties/add"
-                        className="inline-flex items-center bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition-colors"
+                        className="inline-flex items-center bg-primary-600 text-white px-4 py-2 rounded-md font-medium hover:bg-primary-700 transition-colors"
                     >
                         <FaPlus className="mr-2" />
                         <span>Add New Property</span>
@@ -181,12 +181,12 @@ const HostPropertiesPage = () => {
                                 name="search"
                                 placeholder="Search properties..."
                                 defaultValue={filters.search}
-                                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                             />
                         </div>
                         <button
                             type="submit"
-                            className="ml-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                            className="ml-2 px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700"
                         >
                             Search
                         </button>
@@ -217,7 +217,7 @@ const HostPropertiesPage = () => {
                                 name="status"
                                 value={filters.status}
                                 onChange={handleFilterChange}
-                                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                             >
                                 <option value="">All Statuses</option>
                                 <option value="available">Available</option>
@@ -239,7 +239,7 @@ const HostPropertiesPage = () => {
                                 name="type"
                                 value={filters.type}
                                 onChange={handleFilterChange}
-                                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                             >
                                 <option value="">All Types</option>
                                 <option value="apartment">Apartment</option>
@@ -264,7 +264,7 @@ const HostPropertiesPage = () => {
                     </p>
                     <Link
                         to="/host/properties/add"
-                        className="inline-flex items-center bg-blue-600 text-white px-6 py-3 rounded-md font-medium hover:bg-blue-700 transition-colors"
+                        className="inline-flex items-center bg-primary-600 text-white px-6 py-3 rounded-md font-medium hover:bg-primary-700 transition-colors"
                     >
                         <FaPlus className="mr-2" />
                         <span>Add Property</span>
@@ -402,7 +402,7 @@ const HostPropertiesPage = () => {
                                             <div className="flex space-x-2">
                                                 <Link
                                                     to={`/properties/${property._id}`}
-                                                    className="text-blue-600 hover:text-blue-900"
+                                                    className="text-primary-600 hover:text-primary-900"
                                                     title="View property"
                                                 >
                                                     <FaEye />
@@ -477,7 +477,7 @@ const HostPropertiesPage = () => {
                                     onClick={() => handlePageChange(index + 1)}
                                     className={`px-3 py-1 rounded-md ${
                                         filters.page === index + 1
-                                            ? "bg-blue-600 text-white"
+                                            ? "bg-primary-600 text-white"
                                             : "bg-white border border-gray-300"
                                     }`}
                                 >

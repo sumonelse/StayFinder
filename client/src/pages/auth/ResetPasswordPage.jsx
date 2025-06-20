@@ -326,16 +326,16 @@ const ResetPasswordPage = () => {
                                 )}
                             </div>
 
-                            <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                            <div className="bg-primary-50 p-4 rounded-lg border border-primary-100">
                                 <div className="flex">
                                     <div className="flex-shrink-0">
-                                        <FaShieldAlt className="h-5 w-5 text-blue-600" />
+                                        <FaShieldAlt className="h-5 w-5 text-primary-600" />
                                     </div>
                                     <div className="ml-3">
-                                        <h3 className="text-sm font-medium text-blue-800">
+                                        <h3 className="text-sm font-medium text-primary-800">
                                             Password security tips
                                         </h3>
-                                        <div className="mt-2 text-sm text-blue-700">
+                                        <div className="mt-2 text-sm text-primary-700">
                                             <ul className="list-disc pl-5 space-y-1">
                                                 <li>
                                                     Use a unique password you
