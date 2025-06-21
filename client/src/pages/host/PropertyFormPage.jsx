@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { useQuery, useMutation } from "@tanstack/react-query"
 import {
@@ -26,6 +26,8 @@ const PropertyFormPage = () => {
     const navigate = useNavigate()
     const { user } = useAuth()
     const isEditMode = !!id
+
+    console.log("PropertyFormPage rendered, isEditMode:", isEditMode, "id:", id)
 
     // Form state
     const [propertyData, setPropertyData] = useState({
@@ -104,15 +106,47 @@ const PropertyFormPage = () => {
         queryKey: ["property", id],
         queryFn: () => propertyService.getPropertyById(id),
         enabled: isEditMode,
-        onSuccess: (data) => {
-            setPropertyData({
-                ...data,
-                price: data.price.toString(),
-                cleaningFee: data.cleaningFee?.toString() || "",
-                serviceFee: data.serviceFee?.toString() || "",
-            })
-        },
     })
+
+    // Use useEffect to update form data when property details are loaded
+    useEffect(() => {
+        if (isEditMode && propertyDetails) {
+            console.log("Property data fetched:", propertyDetails)
+
+            // Ensure all required fields are present in the data
+            setPropertyData({
+                ...propertyData, // Keep default values for any missing fields
+                ...propertyDetails, // Override with fetched data
+
+                // Convert numeric values to strings for form inputs
+                price: propertyDetails.price?.toString() || "",
+                cleaningFee: propertyDetails.cleaningFee?.toString() || "",
+                serviceFee: propertyDetails.serviceFee?.toString() || "",
+
+                // Ensure nested objects are properly structured
+                address: {
+                    ...propertyData.address,
+                    ...(propertyDetails.address || {}),
+                },
+
+                rules: {
+                    ...propertyData.rules,
+                    ...(propertyDetails.rules || {}),
+                    // Ensure additionalRules is an array
+                    additionalRules:
+                        propertyDetails.rules?.additionalRules || [],
+                },
+
+                // Ensure location is properly structured
+                location: propertyDetails.location || propertyData.location,
+
+                // Ensure images is an array
+                images: Array.isArray(propertyDetails.images)
+                    ? propertyDetails.images
+                    : [],
+            })
+        }
+    }, [isEditMode, propertyDetails])
 
     // Create property mutation
     const createPropertyMutation = useMutation({
@@ -444,13 +478,16 @@ const PropertyFormPage = () => {
             return
         }
 
+        // Log the current property data for debugging
+        console.log("Submitting property data:", propertyData)
+
         // Images are now handled by the PropertyImageUploader component
         // and already stored in propertyData.images
 
         // Prepare data for submission
         const submissionData = {
             ...propertyData,
-            price: parseFloat(propertyData.price),
+            price: parseFloat(propertyData.price || 0),
             // Make sure pricePeriod is one of the allowed values
             pricePeriod: propertyData.pricePeriod || "night",
             // Ensure location is properly formatted
@@ -459,14 +496,16 @@ const PropertyFormPage = () => {
                 coordinates: [0, 0], // Default coordinates if none provided
             },
             // Make sure images are in the correct format (array of objects with url property)
-            images: propertyData.images.map((img) => {
-                // If img is already an object with url property, return it as is
-                if (typeof img === "object" && img.url) {
-                    return img
-                }
-                // If img is a string (URL), convert it to the required object format
-                return { url: img, caption: "" }
-            }),
+            images: Array.isArray(propertyData.images)
+                ? propertyData.images.map((img) => {
+                      // If img is already an object with url property, return it as is
+                      if (typeof img === "object" && img.url) {
+                          return img
+                      }
+                      // If img is a string (URL), convert it to the required object format
+                      return { url: img, caption: "" }
+                  })
+                : [],
             // Convert fees to numbers if they exist
             cleaningFee: propertyData.cleaningFee
                 ? parseFloat(propertyData.cleaningFee)
@@ -474,8 +513,26 @@ const PropertyFormPage = () => {
             serviceFee: propertyData.serviceFee
                 ? parseFloat(propertyData.serviceFee)
                 : undefined,
-            // Include rules
-            rules: propertyData.rules,
+            // Ensure address is properly formatted
+            address: propertyData.address || {
+                street: "",
+                city: "",
+                state: "",
+                zipCode: "",
+                country: "",
+            },
+            // Include rules with defaults if missing
+            rules: {
+                checkIn: "3:00 PM",
+                checkOut: "11:00 AM",
+                smoking: false,
+                pets: false,
+                parties: false,
+                events: false,
+                quietHours: "10:00 PM - 7:00 AM",
+                additionalRules: [],
+                ...(propertyData.rules || {}),
+            },
             // Remove fields that are not allowed in the request
             isAvailable: undefined,
         }
@@ -492,9 +549,37 @@ const PropertyFormPage = () => {
     if (isEditMode && propertyLoading) {
         return (
             <div className="container mx-auto px-4 py-8">
+                <div className="flex items-center justify-center mb-4">
+                    <FaSpinner className="animate-spin text-primary-600 mr-2 text-xl" />
+                    <h2 className="text-xl font-semibold">
+                        Loading property data...
+                    </h2>
+                </div>
                 <div className="animate-pulse">
                     <div className="h-8 bg-gray-200 rounded w-1/3 mb-6"></div>
                     <div className="h-96 bg-gray-200 rounded mb-6"></div>
+                </div>
+            </div>
+        )
+    }
+
+    // Error state
+    if (isEditMode && propertyError) {
+        return (
+            <div className="container mx-auto px-4 py-8">
+                <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6">
+                    <div className="flex items-center">
+                        <FaTimes className="text-red-500 mr-2" />
+                        <p className="text-red-700">
+                            Error loading property data. Please try again later.
+                        </p>
+                    </div>
+                    <button
+                        onClick={() => navigate("/host/properties")}
+                        className="mt-4 px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700"
+                    >
+                        Back to Properties
+                    </button>
                 </div>
             </div>
         )
