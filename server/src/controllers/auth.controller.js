@@ -1,5 +1,7 @@
+import crypto from "crypto"
 import BaseController from "./base.controller.js"
 import { userService } from "../services/index.js"
+import User from "../models/user.model.js"
 
 /**
  * Controller for authentication-related routes
@@ -171,6 +173,55 @@ class AuthController extends BaseController {
                 res,
                 error.message || "Error fetching favorites",
                 error.message.includes("not found") ? 404 : 500
+            )
+        }
+    }
+
+    /**
+     * Forgot password - send reset email
+     * @route POST /api/auth/forgot-password
+     * @param {Object} req - Express request object
+     * @param {Object} res - Express response object
+     */
+    async forgotPassword(req, res) {
+        try {
+            const { email } = req.body
+            await userService.forgotPassword(email)
+
+            return this.sendSuccess(
+                res,
+                null,
+                "Password reset email sent successfully"
+            )
+        } catch (error) {
+            return this.sendError(
+                res,
+                error.message || "Error sending password reset email",
+                error.message.includes("not found") ? 404 : 500
+            )
+        }
+    }
+
+    /**
+     * Reset password with token
+     * @route POST /api/auth/reset-password
+     * @param {Object} req - Express request object
+     * @param {Object} res - Express response object
+     */
+    async resetPassword(req, res) {
+        try {
+            const { token, newPassword } = req.body
+            await userService.resetPassword(token, newPassword)
+
+            return this.sendSuccess(res, null, "Password reset successfully")
+        } catch (error) {
+            return this.sendError(
+                res,
+                error.message || "Error resetting password",
+                error.message.includes("Invalid") ||
+                    error.message.includes("expired")
+                    ? 400
+                    : 500
             )
         }
     }

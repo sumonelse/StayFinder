@@ -1,4 +1,5 @@
 import { Property, User } from "../models/index.js"
+import mongoose from "mongoose"
 
 /**
  * Service for property-related operations
@@ -310,22 +311,37 @@ class PropertyService {
             throw new Error("Property not found")
         }
 
-        // This would typically be calculated from the Review model
-        // For now, we'll just update the property to show the method
-        // In a real implementation, you would aggregate reviews for this property
+        // Import Review model dynamically to avoid circular dependency
+        const { Review } = await import("../models/index.js")
 
-        // Example of how this might be implemented:
-        // const result = await Review.aggregate([
-        //     { $match: { property: mongoose.Types.ObjectId(propertyId), isApproved: true } },
-        //     { $group: { _id: null, avgRating: { $avg: "$rating" }, count: { $sum: 1 } } }
-        // ]);
+        // Aggregate reviews to calculate average rating
+        const result = await Review.aggregate([
+            {
+                $match: {
+                    property: new mongoose.Types.ObjectId(propertyId),
+                    isApproved: true,
+                },
+            },
+            {
+                $group: {
+                    _id: null,
+                    avgRating: { $avg: "$rating" },
+                    count: { $sum: 1 },
+                },
+            },
+        ])
 
-        // const avgRating = result.length > 0 ? result[0].avgRating : 0;
-        // const reviewCount = result.length > 0 ? result[0].count : 0;
+        const avgRating =
+            result.length > 0 ? Math.round(result[0].avgRating * 10) / 10 : 0
+        const reviewCount = result.length > 0 ? result[0].count : 0
 
-        // await Property.findByIdAndUpdate(propertyId, { avgRating, reviewCount });
+        // Update property with new rating and count
+        await Property.findByIdAndUpdate(propertyId, {
+            avgRating,
+            reviewCount,
+        })
 
-        return property
+        return { avgRating, reviewCount }
     }
 }
 

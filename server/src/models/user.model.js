@@ -48,8 +48,16 @@ const userSchema = new mongoose.Schema(
                 ref: "Property",
             },
         ],
-        resetPasswordToken: String,
-        resetPasswordExpires: Date,
+
+        // Password reset fields
+        passwordResetToken: {
+            type: String,
+            default: null,
+        },
+        passwordResetExpires: {
+            type: Date,
+            default: null,
+        },
     },
     {
         timestamps: true,

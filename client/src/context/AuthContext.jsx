@@ -1,5 +1,14 @@
 import { createContext, useContext, useState, useEffect } from "react"
 import { authService } from "../services/api"
+import {
+    setAuthToken,
+    getAuthToken,
+    setUserData,
+    getUserData,
+    clearAuthData,
+    isAuthenticated as checkIsAuthenticated,
+    setupTokenRefresh,
+} from "../utils/auth"
 
 // Create the auth context
 const AuthContext = createContext(null)
@@ -25,15 +34,42 @@ export const AuthProvider = ({ children }) => {
         const checkAuthStatus = async () => {
             setIsLoading(true)
             try {
-                const token = localStorage.getItem("token")
-                if (token) {
-                    const userData = await authService.getCurrentUser()
-                    setUser(userData)
-                    setIsAuthenticated(true)
+                const token = getAuthToken()
+                const userData = getUserData()
+
+                if (token && checkIsAuthenticated()) {
+                    // Token exists and is valid
+                    if (userData) {
+                        setUser(userData)
+                        setIsAuthenticated(true)
+
+                        // Setup automatic token refresh
+                        setupTokenRefresh(async () => {
+                            try {
+                                const refreshedData =
+                                    await authService.getCurrentUser()
+                                setUser(refreshedData)
+                            } catch (error) {
+                                console.error("Token refresh failed:", error)
+                                logout()
+                            }
+                        })
+                    } else {
+                        // Token exists but no user data, fetch from server
+                        const freshUserData = await authService.getCurrentUser()
+                        setUser(freshUserData)
+                        setUserData(freshUserData)
+                        setIsAuthenticated(true)
+                    }
+                } else {
+                    // No token or expired token
+                    clearAuthData()
+                    setUser(null)
+                    setIsAuthenticated(false)
                 }
             } catch (err) {
                 console.error("Auth check failed:", err)
-                localStorage.removeItem("token")
+                clearAuthData()
                 setUser(null)
                 setIsAuthenticated(false)
             } finally {
@@ -50,9 +86,22 @@ export const AuthProvider = ({ children }) => {
         setError(null)
         try {
             const { user, token } = await authService.login(email, password)
-            localStorage.setItem("token", token)
+            setAuthToken(token)
+            setUserData(user)
             setUser(user)
             setIsAuthenticated(true)
+
+            // Setup automatic token refresh
+            setupTokenRefresh(async () => {
+                try {
+                    const refreshedData = await authService.getCurrentUser()
+                    setUser(refreshedData)
+                    setUserData(refreshedData)
+                } catch (error) {
+                    console.error("Token refresh failed:", error)
+                    logout()
+                }
+            })
             return user
         } catch (err) {
             setError(err.message || "Login failed")
@@ -68,9 +117,22 @@ export const AuthProvider = ({ children }) => {
         setError(null)
         try {
             const { user, token } = await authService.register(userData)
-            localStorage.setItem("token", token)
+            setAuthToken(token)
+            setUserData(user)
             setUser(user)
             setIsAuthenticated(true)
+
+            // Setup automatic token refresh
+            setupTokenRefresh(async () => {
+                try {
+                    const refreshedData = await authService.getCurrentUser()
+                    setUser(refreshedData)
+                    setUserData(refreshedData)
+                } catch (error) {
+                    console.error("Token refresh failed:", error)
+                    logout()
+                }
+            })
             return user
         } catch (err) {
             setError(err.message || "Registration failed")
@@ -82,9 +144,10 @@ export const AuthProvider = ({ children }) => {
 
     // Logout function
     const logout = () => {
-        localStorage.removeItem("token")
+        clearAuthData()
         setUser(null)
         setIsAuthenticated(false)
+        setError(null)
     }
 
     // Update user profile
@@ -93,7 +156,9 @@ export const AuthProvider = ({ children }) => {
         setError(null)
         try {
             const updatedUser = await authService.updateProfile(userData)
-            setUser({ ...user, ...updatedUser })
+            const newUserData = { ...user, ...updatedUser }
+            setUser(newUserData)
+            setUserData(newUserData)
             return updatedUser
         } catch (err) {
             setError(err.message || "Profile update failed")

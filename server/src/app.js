@@ -7,6 +7,12 @@ import errorHandler from "./middlewares/errorHandler.js"
 import configureLogger from "./middlewares/logger.js"
 import { configureSecurity } from "./middlewares/security.js"
 import homeController from "./controllers/home.controller.js"
+import logger from "./utils/logger.js"
+import {
+    httpLogger,
+    errorLogger,
+    securityLogger,
+} from "./middlewares/logging.middleware.js"
 
 /**
  * Express application setup
@@ -41,6 +47,8 @@ const setupApp = () => {
 
     // Configure and apply logging middleware
     app.use(configureLogger(config.env))
+    app.use(httpLogger)
+    app.use(securityLogger)
 
     // Apply routes
     app.use("/api", routes)
@@ -52,6 +60,7 @@ const setupApp = () => {
     app.use("*", homeController.notFound.bind(homeController))
 
     // Error handling middleware (must be last)
+    app.use(errorLogger)
     app.use(errorHandler)
 
     return app

@@ -174,6 +174,84 @@ class UserService {
 
         return user.favorites
     }
+
+    /**
+     * Send password reset email
+     * @param {String} email - User email
+     */
+    async forgotPassword(email) {
+        const user = await User.findOne({ email })
+        if (!user) {
+            throw new Error("User not found")
+        }
+
+        // Generate reset token (expires in 1 hour)
+        const resetToken = jwt.sign(
+            { userId: user._id, type: "password_reset" },
+            process.env.JWT_SECRET,
+            { expiresIn: "1h" }
+        )
+
+        // Store reset token in user document
+        user.passwordResetToken = resetToken
+        user.passwordResetExpires = new Date(Date.now() + 60 * 60 * 1000) // 1 hour
+        await user.save()
+
+        // Send reset email
+        const { notificationService } = await import("./index.js")
+        await notificationService.sendPasswordReset(
+            email,
+            user.name,
+            resetToken
+        )
+
+        return { success: true }
+    }
+
+    /**
+     * Reset password with token
+     * @param {String} token - Reset token
+     * @param {String} newPassword - New password
+     */
+    async resetPassword(token, newPassword) {
+        try {
+            // Verify token
+            const decoded = jwt.verify(token, process.env.JWT_SECRET)
+
+            if (decoded.type !== "password_reset") {
+                throw new Error("Invalid reset token")
+            }
+
+            const user = await User.findById(decoded.userId)
+            if (!user) {
+                throw new Error("User not found")
+            }
+
+            // Check if token matches and hasn't expired
+            if (
+                user.passwordResetToken !== token ||
+                user.passwordResetExpires < new Date()
+            ) {
+                throw new Error("Invalid or expired reset token")
+            }
+
+            // Update password and clear reset token
+            user.password = newPassword
+            user.passwordResetToken = undefined
+            user.passwordResetExpires = undefined
+            await user.save()
+
+            return { success: true }
+        } catch (error) {
+            if (
+                error.name === "JsonWebTokenError" ||
+                error.name === "TokenExpiredError"
+            ) {
+                throw new Error("Invalid or expired reset token")
+            }
+            throw error
+        }
+    }
 }
 
 export default new UserService()

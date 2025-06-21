@@ -62,6 +62,33 @@ export const userValidators = {
         }),
         profilePicture: Joi.string().allow(""),
     }),
+
+    /**
+     * Validate forgot password request
+     */
+    forgotPassword: Joi.object({
+        email: Joi.string().required().email().trim().lowercase().messages({
+            "string.empty": "Email is required",
+            "string.email": "Please enter a valid email address",
+            "any.required": "Email is required",
+        }),
+    }),
+
+    /**
+     * Validate password reset request
+     */
+    resetPassword: Joi.object({
+        token: Joi.string().required().messages({
+            "string.empty": "Reset token is required",
+            "any.required": "Reset token is required",
+        }),
+        newPassword: Joi.string().required().min(8).max(30).messages({
+            "string.empty": "New password is required",
+            "string.min": "Password must be at least 8 characters long",
+            "string.max": "Password cannot exceed 30 characters",
+            "any.required": "New password is required",
+        }),
+    }),
 }
 
 /**

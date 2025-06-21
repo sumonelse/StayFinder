@@ -1,7 +1,8 @@
 import express from "express"
 import uploadController from "../controllers/upload.controller.js"
-import upload from "../middlewares/upload.middleware.js"
+import upload, { handleUploadError } from "../middlewares/upload.middleware.js"
 import { authenticate, authorize } from "../middlewares/auth.js"
+import { uploadLimiter } from "../middlewares/rateLimit.middleware.js"
 
 const router = express.Router()
 
@@ -17,14 +18,18 @@ if (!fs.existsSync(uploadsDir)) {
 router.post(
     "/single",
     authenticate,
+    uploadLimiter,
     upload.single("image"),
+    handleUploadError,
     uploadController.uploadSingleImage
 )
 
 router.post(
     "/multiple",
     authenticate,
+    uploadLimiter,
     upload.array("images", 10),
+    handleUploadError,
     uploadController.uploadMultipleImages
 )
 
@@ -33,7 +38,9 @@ router.post(
     "/property/single",
     authenticate,
     authorize(["host", "admin"]),
+    uploadLimiter,
     upload.single("image"),
+    handleUploadError,
     uploadController.uploadSingleImage
 )
 
@@ -41,8 +48,20 @@ router.post(
     "/property/multiple",
     authenticate,
     authorize(["host", "admin"]),
+    uploadLimiter,
     upload.array("images", 10),
+    handleUploadError,
     uploadController.uploadMultipleImages
+)
+
+// Profile picture upload
+router.post(
+    "/profile-picture",
+    authenticate,
+    uploadLimiter,
+    upload.single("profilePicture"),
+    handleUploadError,
+    uploadController.uploadSingleImage
 )
 
 export default router

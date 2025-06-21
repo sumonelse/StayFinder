@@ -1,5 +1,6 @@
-import { Review, Booking, Property } from "../models/index.js"
+import { Review, Booking, Property, User } from "../models/index.js"
 import mongoose from "mongoose"
+import notificationService from "./notification.service.js"
 
 /**
  * Service for review-related operations
@@ -61,8 +62,30 @@ class ReviewService {
 
         await review.save()
 
-        // Update property rating
-        await this.updatePropertyRating(propertyId)
+        // Update property rating using property service
+        const { propertyService } = await import("./index.js")
+        await propertyService.updatePropertyRating(propertyId)
+
+        // Send notification to host about new review
+        try {
+            const property = await Property.findById(propertyId)
+            const host = await User.findById(property.host)
+            const reviewer = await User.findById(reviewerId)
+
+            await notificationService.sendReviewNotification(
+                review,
+                property,
+                host,
+                reviewer
+            )
+            console.log(`✅ Review notification sent to host: ${host.email}`)
+        } catch (emailError) {
+            console.error(
+                "❌ Error sending review notification:",
+                emailError.message
+            )
+            // Don't fail the review if email fails
+        }
 
         return review
     }
@@ -158,8 +181,9 @@ class ReviewService {
             { new: true, runValidators: true }
         )
 
-        // Update property rating
-        await this.updatePropertyRating(review.property)
+        // Update property rating using property service
+        const { propertyService } = await import("./index.js")
+        await propertyService.updatePropertyRating(review.property)
 
         return updatedReview
     }
@@ -187,8 +211,9 @@ class ReviewService {
 
         await Review.findByIdAndDelete(reviewId)
 
-        // Update property rating
-        await this.updatePropertyRating(review.property)
+        // Update property rating using property service
+        const { propertyService } = await import("./index.js")
+        await propertyService.updatePropertyRating(review.property)
 
         return { success: true }
     }
@@ -267,38 +292,6 @@ class ReviewService {
     }
 
     /**
-     * Update property rating based on reviews
-     * @param {String} propertyId - Property ID
-     */
-    async updatePropertyRating(propertyId) {
-        // Aggregate reviews to calculate average rating
-        const result = await Review.aggregate([
-            {
-                $match: {
-                    property: new mongoose.Types.ObjectId(propertyId),
-                    isApproved: true,
-                },
-            },
-            {
-                $group: {
-                    _id: null,
-                    avgRating: { $avg: "$rating" },
-                    count: { $sum: 1 },
-                },
-            },
-        ])
-
-        const avgRating = result.length > 0 ? result[0].avgRating : 0
-        const reviewCount = result.length > 0 ? result[0].count : 0
-
-        // Update property with new rating and count
-        await Property.findByIdAndUpdate(propertyId, {
-            avgRating,
-            reviewCount,
-        })
-    }
-
-    /**
      * Get all reviews that need moderation (admin only)
      * @param {Object} queryParams - Query parameters for pagination
      * @returns {Object} Reviews and pagination info
@@ -364,8 +357,9 @@ class ReviewService {
 
         await review.save()
 
-        // Update property rating
-        await this.updatePropertyRating(review.property)
+        // Update property rating using property service
+        const { propertyService } = await import("./index.js")
+        await propertyService.updatePropertyRating(review.property)
 
         return review
     }

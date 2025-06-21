@@ -1,4 +1,5 @@
 import { Booking, Property, User } from "../models/index.js"
+import notificationService from "./notification.service.js"
 
 /**
  * Service for booking-related operations
@@ -93,7 +94,131 @@ class BookingService {
         })
 
         await booking.save()
+
+        // Send notifications
+        try {
+            const host = await User.findById(property.host)
+            const guest = await User.findById(userId)
+
+            // Send notification to host about new booking
+            await notificationService.sendNewBookingNotification(
+                booking,
+                property,
+                host,
+                guest
+            )
+
+            console.log(`✅ Booking notification sent to host: ${host.email}`)
+        } catch (emailError) {
+            console.error(
+                "❌ Error sending booking notification:",
+                emailError.message
+            )
+            // Don't fail the booking if email fails
+        }
+
         return booking
+    }
+
+    /**
+     * Check property availability for given dates
+     * @param {String} propertyId - Property ID
+     * @param {Date} checkInDate - Check-in date
+     * @param {Date} checkOutDate - Check-out date
+     * @param {String} excludeBookingId - Booking ID to exclude from check (for updates)
+     * @returns {Object} Availability status
+     */
+    async checkAvailability(
+        propertyId,
+        checkInDate,
+        checkOutDate,
+        excludeBookingId = null
+    ) {
+        // Validate dates
+        const checkIn = new Date(checkInDate)
+        const checkOut = new Date(checkOutDate)
+        const now = new Date()
+
+        if (checkIn < now) {
+            return {
+                isAvailable: false,
+                reason: "Check-in date cannot be in the past",
+            }
+        }
+
+        if (checkOut <= checkIn) {
+            return {
+                isAvailable: false,
+                reason: "Check-out date must be after check-in date",
+            }
+        }
+
+        // Check if property exists and is available
+        const property = await Property.findById(propertyId)
+        if (!property) {
+            throw new Error("Property not found")
+        }
+
+        if (!property.isAvailable || !property.isApproved) {
+            return {
+                isAvailable: false,
+                reason: "Property is not available for booking",
+            }
+        }
+
+        // Build query for existing bookings
+        const query = {
+            property: propertyId,
+            status: { $in: ["pending", "confirmed"] },
+            $or: [
+                {
+                    checkInDate: { $lt: checkOut },
+                    checkOutDate: { $gt: checkIn },
+                },
+            ],
+        }
+
+        // Exclude specific booking if provided (for updates)
+        if (excludeBookingId) {
+            query._id = { $ne: excludeBookingId }
+        }
+
+        const existingBookings = await Booking.find(query)
+
+        if (existingBookings.length > 0) {
+            return {
+                isAvailable: false,
+                reason: "Property is already booked for these dates",
+                conflictingBookings: existingBookings.map((booking) => ({
+                    id: booking._id,
+                    checkInDate: booking.checkInDate,
+                    checkOutDate: booking.checkOutDate,
+                    status: booking.status,
+                })),
+            }
+        }
+
+        // Calculate number of nights
+        const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24))
+        let totalPrice = property.price * nights
+
+        // Apply price period adjustments
+        if (property.pricePeriod === "week") {
+            totalPrice = property.price * Math.ceil(nights / 7)
+        } else if (property.pricePeriod === "month") {
+            totalPrice = property.price * Math.ceil(nights / 30)
+        }
+
+        return {
+            isAvailable: true,
+            nights,
+            pricePerNight: property.price,
+            totalPrice,
+            property: {
+                title: property.title,
+                maxGuests: property.maxGuests,
+            },
+        }
     }
 
     /**
@@ -243,9 +368,9 @@ class BookingService {
     async updateBookingStatus(bookingId, updateData, userId, userRole) {
         const { status, reason } = updateData
 
-        if (!["confirmed", "cancelled"].includes(status)) {
+        if (!["confirmed", "cancelled", "completed"].includes(status)) {
             throw new Error(
-                "Invalid status. Must be 'confirmed' or 'cancelled'"
+                "Invalid status. Must be 'confirmed', 'cancelled', or 'completed'"
             )
         }
 
@@ -264,22 +389,122 @@ class BookingService {
             throw new Error("You don't have permission to update this booking")
         }
 
+        // Validate status transitions
+        const validTransitions = {
+            pending: ["confirmed", "cancelled"],
+            confirmed: ["completed", "cancelled"],
+            cancelled: [], // Cannot change from cancelled
+            completed: [], // Cannot change from completed
+        }
+
+        if (!validTransitions[booking.status]?.includes(status)) {
+            throw new Error(
+                `Cannot change booking status from ${booking.status} to ${status}`
+            )
+        }
+
         // Only host or admin can confirm bookings
         if (status === "confirmed" && !isHost && !isAdmin) {
             throw new Error("Only the host or admin can confirm bookings")
         }
+
+        // Only host or admin can mark as completed
+        if (status === "completed" && !isHost && !isAdmin) {
+            throw new Error(
+                "Only the host or admin can mark bookings as completed"
+            )
+        }
+
+        // Validate cancellation reason
+        if (status === "cancelled" && !reason) {
+            throw new Error("Cancellation reason is required")
+        }
+
+        // Store previous status for logging
+        const previousStatus = booking.status
 
         // Update booking status
         booking.status = status
 
         // If cancelling, record reason and who cancelled
         if (status === "cancelled") {
-            booking.cancellationReason = reason || "No reason provided"
+            booking.cancellationReason = reason
             booking.cancelledBy = isHost ? "host" : isGuest ? "guest" : "admin"
             booking.cancelledAt = new Date()
+
+            // Update payment status for cancellations
+            if (booking.paymentStatus === "paid") {
+                booking.paymentStatus = "refunded"
+            }
         }
 
+        // If completing, update completion date
+        if (status === "completed") {
+            booking.completedAt = new Date()
+        }
+
+        booking.updatedAt = new Date()
         await booking.save()
+
+        // Send notifications based on status change
+        try {
+            const host = await User.findById(booking.host)
+            const guest = await User.findById(booking.guest)
+            const property = await Property.findById(booking.property)
+
+            if (status === "confirmed") {
+                // Send confirmation email to guest
+                await notificationService.sendBookingConfirmation(
+                    booking,
+                    property,
+                    guest
+                )
+                console.log(
+                    `✅ Booking confirmation sent to guest: ${guest.email}`
+                )
+            } else if (status === "cancelled") {
+                // Send cancellation emails to both parties
+                const cancelledBy = isHost
+                    ? "host"
+                    : isGuest
+                      ? "guest"
+                      : "admin"
+
+                // Email to guest
+                await notificationService.sendBookingCancellation(
+                    booking,
+                    property,
+                    guest.email,
+                    guest.name,
+                    cancelledBy
+                )
+
+                // Email to host (if not cancelled by host)
+                if (!isHost) {
+                    await notificationService.sendBookingCancellation(
+                        booking,
+                        property,
+                        host.email,
+                        host.name,
+                        cancelledBy
+                    )
+                }
+
+                console.log(`✅ Booking cancellation notifications sent`)
+            }
+        } catch (emailError) {
+            console.error(
+                "❌ Error sending status change notification:",
+                emailError.message
+            )
+            // Don't fail the status update if email fails
+        }
+
+        // Log status change for audit trail
+        console.log(
+            `Booking ${bookingId} status changed from ${previousStatus} to ${status} by user ${userId}`
+        )
+
         return booking
     }
 

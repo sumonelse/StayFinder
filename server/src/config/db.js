@@ -15,7 +15,7 @@ const connectDB = async () => {
             socketTimeoutMS: 45000, // Close sockets after 45s of inactivity
         })
 
-        console.log("MongoDB connected successfully")
+        console.log("✅ Database connected successfully")
 
         // Handle connection errors after initial connection
         mongoose.connection.on("error", (err) => {

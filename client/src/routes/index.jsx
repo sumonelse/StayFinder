@@ -38,6 +38,22 @@ const router = createBrowserRouter([
                 element: <HomePage />,
             },
             {
+                path: "login",
+                element: <LoginPage />,
+            },
+            {
+                path: "register",
+                element: <RegisterPage />,
+            },
+            {
+                path: "forgot-password",
+                element: <ForgotPasswordPage />,
+            },
+            {
+                path: "reset-password",
+                element: <ResetPasswordPage />,
+            },
+            {
                 path: "properties",
                 element: <PropertyListPage />,
             },
@@ -89,28 +105,13 @@ const router = createBrowserRouter([
     },
 
     // Auth Layout - For authentication pages
-    {
-        path: "/",
-        element: <AuthLayout />,
-        children: [
-            {
-                path: "login",
-                element: <LoginPage />,
-            },
-            {
-                path: "register",
-                element: <RegisterPage />,
-            },
-            {
-                path: "forgot-password",
-                element: <ForgotPasswordPage />,
-            },
-            {
-                path: "reset-password",
-                element: <ResetPasswordPage />,
-            },
-        ],
-    },
+    // {
+    //     path: "/",
+    //     element: <AuthLayout />,
+    //     children: [
+
+    //     ],
+    // },
 
     // Dashboard Layout - For host and admin pages
     {
