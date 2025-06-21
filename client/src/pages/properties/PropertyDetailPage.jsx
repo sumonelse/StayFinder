@@ -34,13 +34,38 @@ import {
     FaBookmark,
     FaChevronRight,
     FaChevronDown,
+    FaCompass,
+    FaUtensils,
+    FaPizzaSlice,
+    FaGlassMartiniAlt,
+    FaLandmark,
+    FaTree,
+    FaStore,
+    FaTheaterMasks,
+    FaWalking,
+    FaSubway,
+    FaBus,
+    FaBicycle,
+    FaShoppingBasket,
+    FaShoppingCart,
+    FaPrescriptionBottleAlt,
+    FaHospital,
+    FaRegClock,
+    FaRegSmile,
+    FaRegCommentDots,
 } from "react-icons/fa"
 import { propertyService, reviewService } from "../../services/api"
 import { useAuth } from "../../context/AuthContext"
 import ImageGallery from "../../components/property/ImageGallery"
 import ShareModal from "../../components/property/ShareModal"
+import AvailabilityCalendar from "../../components/property/AvailabilityCalendar"
+import PropertyRules from "../../components/property/PropertyRules"
 import { Button, Badge, DatePicker } from "../../components/ui"
 import { formatPrice } from "../../utils/currency"
+import {
+    calculateBookingPrice,
+    calculateNights,
+} from "../../utils/bookingCalculator"
 
 /**
  * Enhanced Property detail page component
@@ -96,14 +121,14 @@ const PropertyDetailPage = () => {
         window.scrollTo(0, 0)
     }, [])
 
-    // Calculate stay duration when dates change
+    // Calculate stay duration when dates change using our utility
     useEffect(() => {
         if (selectedDates.startDate && selectedDates.endDate) {
-            const checkIn = new Date(selectedDates.startDate)
-            const checkOut = new Date(selectedDates.endDate)
-            const diffTime = Math.abs(checkOut - checkIn)
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-            setStayDuration(diffDays || 1)
+            const nights = calculateNights(
+                selectedDates.startDate,
+                selectedDates.endDate
+            )
+            setStayDuration(nights || 1)
         }
     }, [selectedDates])
 
@@ -794,6 +819,17 @@ const PropertyDetailPage = () => {
                             </div>
                         </div>
 
+                        {/* House Rules */}
+                        <div ref={rulesRef} id="rules" className="scroll-mt-20">
+                            <div className="bg-white p-6 rounded-xl border border-secondary-100 shadow-sm mb-8 hover:shadow-md transition-shadow">
+                                <PropertyRules
+                                    rules={property.rules || {}}
+                                    showAll={false}
+                                    maxInitialRules={5}
+                                />
+                            </div>
+                        </div>
+
                         {/* Location */}
                         <div
                             ref={locationRef}
@@ -843,6 +879,219 @@ const PropertyDetailPage = () => {
                                         airport. Public transportation is easily
                                         accessible.
                                     </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Local Recommendations */}
+                        <div className="bg-white p-6 rounded-xl border border-secondary-100 shadow-sm mb-8 hover:shadow-md transition-shadow">
+                            <h2 className="text-2xl font-semibold mb-5 text-secondary-900 flex items-center">
+                                <FaCompass className="mr-3 text-primary-500" />
+                                Local Recommendations
+                            </h2>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                <div className="bg-secondary-50 p-4 rounded-xl border border-secondary-100">
+                                    <h3 className="font-medium text-secondary-900 mb-3 flex items-center">
+                                        <FaUtensils className="text-primary-500 mr-2" />
+                                        Dining
+                                    </h3>
+                                    <ul className="space-y-3">
+                                        <li className="flex items-start">
+                                            <div className="bg-white p-2 rounded-lg mr-3 flex-shrink-0">
+                                                <FaCoffee className="text-amber-600" />
+                                            </div>
+                                            <div>
+                                                <p className="font-medium text-secondary-900">
+                                                    Morning Brew Café
+                                                </p>
+                                                <p className="text-sm text-secondary-600">
+                                                    Great breakfast spot, 5 min
+                                                    walk
+                                                </p>
+                                            </div>
+                                        </li>
+                                        <li className="flex items-start">
+                                            <div className="bg-white p-2 rounded-lg mr-3 flex-shrink-0">
+                                                <FaPizzaSlice className="text-red-600" />
+                                            </div>
+                                            <div>
+                                                <p className="font-medium text-secondary-900">
+                                                    Napoli's Italian
+                                                </p>
+                                                <p className="text-sm text-secondary-600">
+                                                    Authentic Italian cuisine,
+                                                    10 min walk
+                                                </p>
+                                            </div>
+                                        </li>
+                                        <li className="flex items-start">
+                                            <div className="bg-white p-2 rounded-lg mr-3 flex-shrink-0">
+                                                <FaGlassMartiniAlt className="text-purple-600" />
+                                            </div>
+                                            <div>
+                                                <p className="font-medium text-secondary-900">
+                                                    Skyline Lounge
+                                                </p>
+                                                <p className="text-sm text-secondary-600">
+                                                    Rooftop bar with city views,
+                                                    15 min drive
+                                                </p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div className="bg-secondary-50 p-4 rounded-xl border border-secondary-100">
+                                    <h3 className="font-medium text-secondary-900 mb-3 flex items-center">
+                                        <FaLandmark className="text-primary-500 mr-2" />
+                                        Attractions
+                                    </h3>
+                                    <ul className="space-y-3">
+                                        <li className="flex items-start">
+                                            <div className="bg-white p-2 rounded-lg mr-3 flex-shrink-0">
+                                                <FaTree className="text-green-600" />
+                                            </div>
+                                            <div>
+                                                <p className="font-medium text-secondary-900">
+                                                    Central Park
+                                                </p>
+                                                <p className="text-sm text-secondary-600">
+                                                    Beautiful park with walking
+                                                    trails, 8 min walk
+                                                </p>
+                                            </div>
+                                        </li>
+                                        <li className="flex items-start">
+                                            <div className="bg-white p-2 rounded-lg mr-3 flex-shrink-0">
+                                                <FaStore className="text-blue-600" />
+                                            </div>
+                                            <div>
+                                                <p className="font-medium text-secondary-900">
+                                                    Downtown Shopping
+                                                </p>
+                                                <p className="text-sm text-secondary-600">
+                                                    Boutiques and local shops,
+                                                    12 min drive
+                                                </p>
+                                            </div>
+                                        </li>
+                                        <li className="flex items-start">
+                                            <div className="bg-white p-2 rounded-lg mr-3 flex-shrink-0">
+                                                <FaTheaterMasks className="text-yellow-600" />
+                                            </div>
+                                            <div>
+                                                <p className="font-medium text-secondary-900">
+                                                    City Arts Center
+                                                </p>
+                                                <p className="text-sm text-secondary-600">
+                                                    Museum and performances, 20
+                                                    min drive
+                                                </p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="bg-secondary-50 p-4 rounded-xl border border-secondary-100">
+                                    <h3 className="font-medium text-secondary-900 mb-3 flex items-center">
+                                        <FaWalking className="text-primary-500 mr-2" />
+                                        Getting Around
+                                    </h3>
+                                    <ul className="space-y-3">
+                                        <li className="flex items-start">
+                                            <div className="bg-white p-2 rounded-lg mr-3 flex-shrink-0">
+                                                <FaSubway className="text-orange-600" />
+                                            </div>
+                                            <div>
+                                                <p className="font-medium text-secondary-900">
+                                                    Metro Station
+                                                </p>
+                                                <p className="text-sm text-secondary-600">
+                                                    Central Line, 7 min walk
+                                                </p>
+                                            </div>
+                                        </li>
+                                        <li className="flex items-start">
+                                            <div className="bg-white p-2 rounded-lg mr-3 flex-shrink-0">
+                                                <FaBus className="text-green-600" />
+                                            </div>
+                                            <div>
+                                                <p className="font-medium text-secondary-900">
+                                                    Bus Stop
+                                                </p>
+                                                <p className="text-sm text-secondary-600">
+                                                    Routes 10, 15, and 22, 3 min
+                                                    walk
+                                                </p>
+                                            </div>
+                                        </li>
+                                        <li className="flex items-start">
+                                            <div className="bg-white p-2 rounded-lg mr-3 flex-shrink-0">
+                                                <FaBicycle className="text-blue-600" />
+                                            </div>
+                                            <div>
+                                                <p className="font-medium text-secondary-900">
+                                                    Bike Rental
+                                                </p>
+                                                <p className="text-sm text-secondary-600">
+                                                    City Bikes station, 5 min
+                                                    walk
+                                                </p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div className="bg-secondary-50 p-4 rounded-xl border border-secondary-100">
+                                    <h3 className="font-medium text-secondary-900 mb-3 flex items-center">
+                                        <FaShoppingBasket className="text-primary-500 mr-2" />
+                                        Essentials
+                                    </h3>
+                                    <ul className="space-y-3">
+                                        <li className="flex items-start">
+                                            <div className="bg-white p-2 rounded-lg mr-3 flex-shrink-0">
+                                                <FaShoppingCart className="text-red-600" />
+                                            </div>
+                                            <div>
+                                                <p className="font-medium text-secondary-900">
+                                                    Grocery Store
+                                                </p>
+                                                <p className="text-sm text-secondary-600">
+                                                    Fresh Market, 4 min walk
+                                                </p>
+                                            </div>
+                                        </li>
+                                        <li className="flex items-start">
+                                            <div className="bg-white p-2 rounded-lg mr-3 flex-shrink-0">
+                                                <FaPrescriptionBottleAlt className="text-green-600" />
+                                            </div>
+                                            <div>
+                                                <p className="font-medium text-secondary-900">
+                                                    Pharmacy
+                                                </p>
+                                                <p className="text-sm text-secondary-600">
+                                                    City Pharmacy, 6 min walk
+                                                </p>
+                                            </div>
+                                        </li>
+                                        <li className="flex items-start">
+                                            <div className="bg-white p-2 rounded-lg mr-3 flex-shrink-0">
+                                                <FaHospital className="text-blue-600" />
+                                            </div>
+                                            <div>
+                                                <p className="font-medium text-secondary-900">
+                                                    Medical Center
+                                                </p>
+                                                <p className="text-sm text-secondary-600">
+                                                    Community Hospital, 10 min
+                                                    drive
+                                                </p>
+                                            </div>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -1243,129 +1492,129 @@ const PropertyDetailPage = () => {
                                     </div>
 
                                     <div className="mb-5">
-                                        {/* Date selection with responsive layout */}
+                                        {/* Date selection with visual calendar */}
                                         <div className="mb-4">
                                             <label className="block text-xs text-secondary-500 mb-2 font-medium">
-                                                DATES
+                                                SELECT DATES
                                             </label>
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 border border-secondary-200 rounded-lg overflow-hidden shadow-sm hover:border-primary-300 transition-colors">
-                                                <div className="p-3 bg-white">
-                                                    <label className="block text-xs text-secondary-500 mb-1 font-medium">
-                                                        CHECK-IN
-                                                    </label>
-                                                    <DatePicker
-                                                        id="check-in-date"
-                                                        value={
-                                                            selectedDates.startDate
-                                                        }
-                                                        onChange={(date) => {
-                                                            setSelectedDates(
-                                                                (prev) => ({
-                                                                    startDate:
-                                                                        date,
-                                                                    endDate:
-                                                                        prev.endDate,
-                                                                })
-                                                            )
-                                                            // Update stay duration
-                                                            if (
-                                                                date &&
-                                                                selectedDates.endDate
-                                                            ) {
-                                                                const start =
-                                                                    new Date(
-                                                                        date
-                                                                    )
-                                                                const end =
-                                                                    new Date(
-                                                                        selectedDates.endDate
-                                                                    )
-                                                                const diffTime =
-                                                                    Math.abs(
-                                                                        end -
-                                                                            start
-                                                                    )
-                                                                const diffDays =
-                                                                    Math.ceil(
-                                                                        diffTime /
-                                                                            (1000 *
-                                                                                60 *
-                                                                                60 *
-                                                                                24)
-                                                                    )
-                                                                setStayDuration(
-                                                                    diffDays ||
-                                                                        1
-                                                                )
-                                                            }
-                                                        }}
-                                                        minDate={
-                                                            new Date()
+
+                                            <AvailabilityCalendar
+                                                propertyId={id}
+                                                initialStartDate={
+                                                    selectedDates.startDate
+                                                }
+                                                initialEndDate={
+                                                    selectedDates.endDate
+                                                }
+                                                onDateSelect={(dates) => {
+                                                    setSelectedDates(dates)
+                                                }}
+                                            />
+
+                                            {/* Quick date selection buttons */}
+                                            <div className="mt-3 flex flex-wrap gap-2">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        const today = new Date()
+                                                        const tomorrow =
+                                                            new Date(today)
+                                                        tomorrow.setDate(
+                                                            tomorrow.getDate() +
+                                                                1
+                                                        )
+                                                        const dayAfter =
+                                                            new Date(today)
+                                                        dayAfter.setDate(
+                                                            dayAfter.getDate() +
+                                                                2
+                                                        )
+
+                                                        setSelectedDates({
+                                                            startDate: tomorrow
                                                                 .toISOString()
-                                                                .split("T")[0]
-                                                        }
-                                                        placeholder="Add date"
-                                                    />
-                                                </div>
-                                                <div className="p-3 bg-white border-t sm:border-t-0 sm:border-l border-secondary-200">
-                                                    <label className="block text-xs text-secondary-500 mb-1 font-medium">
-                                                        CHECK-OUT
-                                                    </label>
-                                                    <DatePicker
-                                                        id="check-out-date"
-                                                        value={
-                                                            selectedDates.endDate
-                                                        }
-                                                        onChange={(date) => {
-                                                            setSelectedDates(
-                                                                (prev) => ({
-                                                                    startDate:
-                                                                        prev.startDate,
-                                                                    endDate:
-                                                                        date,
-                                                                })
-                                                            )
-                                                            // Update stay duration
-                                                            if (
-                                                                selectedDates.startDate &&
-                                                                date
-                                                            ) {
-                                                                const start =
-                                                                    new Date(
-                                                                        selectedDates.startDate
-                                                                    )
-                                                                const end =
-                                                                    new Date(
-                                                                        date
-                                                                    )
-                                                                const diffTime =
-                                                                    Math.abs(
-                                                                        end -
-                                                                            start
-                                                                    )
-                                                                const diffDays =
-                                                                    Math.ceil(
-                                                                        diffTime /
-                                                                            (1000 *
-                                                                                60 *
-                                                                                60 *
-                                                                                24)
-                                                                    )
-                                                                setStayDuration(
-                                                                    diffDays ||
-                                                                        1
-                                                                )
-                                                            }
-                                                        }}
-                                                        minDate={
-                                                            selectedDates.startDate ||
-                                                            new Date()
+                                                                .split("T")[0],
+                                                            endDate: dayAfter
                                                                 .toISOString()
-                                                                .split("T")[0]
-                                                        }
-                                                        placeholder="Add date"
-                                                    />
-                                                </div>
+                                                                .split("T")[0],
+                                                        })
+                                                    }}
+                                                    className="px-3 py-1 text-xs bg-secondary-100 hover:bg-secondary-200 text-secondary-800 rounded-full transition-colors"
+                                                >
+                                                    Tomorrow · 1 night
+                                                </button>
+
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        const today = new Date()
+                                                        const thisWeekend =
+                                                            new Date(today)
+                                                        // Find the next Friday
+                                                        const daysUntilFriday =
+                                                            (5 -
+                                                                today.getDay() +
+                                                                7) %
+                                                            7
+                                                        thisWeekend.setDate(
+                                                            today.getDate() +
+                                                                daysUntilFriday
+                                                        )
+
+                                                        const sundayAfter =
+                                                            new Date(
+                                                                thisWeekend
+                                                            )
+                                                        sundayAfter.setDate(
+                                                            thisWeekend.getDate() +
+                                                                2
+                                                        )
+
+                                                        setSelectedDates({
+                                                            startDate:
+                                                                thisWeekend
+                                                                    .toISOString()
+                                                                    .split(
+                                                                        "T"
+                                                                    )[0],
+                                                            endDate: sundayAfter
+                                                                .toISOString()
+                                                                .split("T")[0],
+                                                        })
+                                                    }}
+                                                    className="px-3 py-1 text-xs bg-secondary-100 hover:bg-secondary-200 text-secondary-800 rounded-full transition-colors"
+                                                >
+                                                    This weekend
+                                                </button>
+
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        const today = new Date()
+                                                        const nextWeek =
+                                                            new Date(today)
+                                                        nextWeek.setDate(
+                                                            today.getDate() + 7
+                                                        )
+                                                        const weekAfter =
+                                                            new Date(today)
+                                                        weekAfter.setDate(
+                                                            today.getDate() + 14
+                                                        )
+
+                                                        setSelectedDates({
+                                                            startDate: nextWeek
+                                                                .toISOString()
+                                                                .split("T")[0],
+                                                            endDate: weekAfter
+                                                                .toISOString()
+                                                                .split("T")[0],
+                                                        })
+                                                    }}
+                                                    className="px-3 py-1 text-xs bg-secondary-100 hover:bg-secondary-200 text-secondary-800 rounded-full transition-colors"
+                                                >
+                                                    Next week · 7 nights
+                                                </button>
                                             </div>
                                         </div>
 
@@ -1403,7 +1652,7 @@ const PropertyDetailPage = () => {
                                     </div>
 
                                     <Link
-                                        to={`/bookings/new?propertyId=${id}&checkIn=${selectedDates.startDate}&checkOut=${selectedDates.endDate}&guests=${guestCount}`}
+                                        to={`/properties/${id}/book?checkIn=${selectedDates.startDate}&checkOut=${selectedDates.endDate}&guests=${guestCount}`}
                                         className="btn btn-primary w-full py-3 text-lg font-medium mb-4 shadow-md hover:shadow-lg transition-shadow"
                                     >
                                         Book now
@@ -1413,82 +1662,104 @@ const PropertyDetailPage = () => {
                                         You won't be charged yet
                                     </div>
 
-                                    <div className="space-y-3 text-secondary-700">
-                                        <div className="flex justify-between items-center">
-                                            <span className="flex items-center">
-                                                {formatPrice(property.price)} x{" "}
-                                                {stayDuration}{" "}
-                                                {stayDuration === 1
-                                                    ? "night"
-                                                    : "nights"}
-                                                <FaInfoCircle
-                                                    className="ml-1 text-secondary-400 cursor-help"
-                                                    size={12}
-                                                    title="Base rate per night"
-                                                />
-                                            </span>
-                                            <span>
-                                                {formatPrice(
-                                                    property.price *
-                                                        stayDuration
-                                                )}
-                                            </span>
-                                        </div>
-                                        <div className="flex justify-between items-center">
-                                            <span className="flex items-center">
-                                                Cleaning fee
-                                                <FaInfoCircle
-                                                    className="ml-1 text-secondary-400 cursor-help"
-                                                    size={12}
-                                                    title="One-time fee charged by host to cover the cost of cleaning their space"
-                                                />
-                                            </span>
-                                            <span>
-                                                {formatPrice(
-                                                    property.cleaningFee || 0
-                                                )}
-                                            </span>
-                                        </div>
-                                        <div className="flex justify-between items-center">
-                                            <span className="flex items-center">
-                                                Service fee
-                                                <FaInfoCircle
-                                                    className="ml-1 text-secondary-400 cursor-help"
-                                                    size={12}
-                                                    title="This helps us run our platform and offer services like 24/7 support"
-                                                />
-                                            </span>
-                                            <span>
-                                                {formatPrice(
-                                                    property.serviceFee ||
-                                                        Math.round(
-                                                            property.price *
-                                                                stayDuration *
-                                                                0.12
+                                    {selectedDates.startDate &&
+                                    selectedDates.endDate ? (
+                                        <>
+                                            <div className="space-y-3 text-secondary-700">
+                                                {(() => {
+                                                    const bookingPrice =
+                                                        calculateBookingPrice(
+                                                            property,
+                                                            selectedDates.startDate,
+                                                            selectedDates.endDate
                                                         )
-                                                )}
-                                            </span>
+
+                                                    return (
+                                                        <>
+                                                            <div className="flex justify-between items-center">
+                                                                <span className="flex items-center">
+                                                                    {formatPrice(
+                                                                        property.price
+                                                                    )}{" "}
+                                                                    x{" "}
+                                                                    {
+                                                                        bookingPrice.nights
+                                                                    }{" "}
+                                                                    {bookingPrice.nights ===
+                                                                    1
+                                                                        ? "night"
+                                                                        : "nights"}
+                                                                    <FaInfoCircle
+                                                                        className="ml-1 text-secondary-400 cursor-help"
+                                                                        size={
+                                                                            12
+                                                                        }
+                                                                        title={`Base rate per ${property.pricePeriod}`}
+                                                                    />
+                                                                </span>
+                                                                <span>
+                                                                    {formatPrice(
+                                                                        bookingPrice.subtotal
+                                                                    )}
+                                                                </span>
+                                                            </div>
+                                                            <div className="flex justify-between items-center">
+                                                                <span className="flex items-center">
+                                                                    Cleaning fee
+                                                                    <FaInfoCircle
+                                                                        className="ml-1 text-secondary-400 cursor-help"
+                                                                        size={
+                                                                            12
+                                                                        }
+                                                                        title="One-time fee charged by host to cover the cost of cleaning their space"
+                                                                    />
+                                                                </span>
+                                                                <span>
+                                                                    {formatPrice(
+                                                                        bookingPrice.cleaningFee
+                                                                    )}
+                                                                </span>
+                                                            </div>
+                                                            <div className="flex justify-between items-center">
+                                                                <span className="flex items-center">
+                                                                    Service fee
+                                                                    <FaInfoCircle
+                                                                        className="ml-1 text-secondary-400 cursor-help"
+                                                                        size={
+                                                                            12
+                                                                        }
+                                                                        title="This helps us run our platform and offer services like 24/7 support"
+                                                                    />
+                                                                </span>
+                                                                <span>
+                                                                    {formatPrice(
+                                                                        bookingPrice.serviceFee
+                                                                    )}
+                                                                </span>
+                                                            </div>
+
+                                                            <hr className="my-4 border-secondary-100" />
+
+                                                            <div className="flex justify-between font-bold text-lg text-secondary-900">
+                                                                <span>
+                                                                    Total
+                                                                </span>
+                                                                <span>
+                                                                    {formatPrice(
+                                                                        bookingPrice.total
+                                                                    )}
+                                                                </span>
+                                                            </div>
+                                                        </>
+                                                    )
+                                                })()}
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <div className="text-center text-secondary-600 py-3">
+                                            Select dates to see prices
                                         </div>
-                                    </div>
-
-                                    <hr className="my-4 border-secondary-100" />
-
-                                    <div className="flex justify-between font-bold text-lg text-secondary-900">
-                                        <span>Total</span>
-                                        <span>
-                                            {formatPrice(
-                                                property.price * stayDuration +
-                                                    (property.cleaningFee ||
-                                                        0) +
-                                                    (property.serviceFee ||
-                                                        Math.round(
-                                                            property.price *
-                                                                stayDuration *
-                                                                0.12
-                                                        ))
-                                            )}
-                                        </span>
-                                    </div>
+                                    )}
                                 </div>
                             </div>
 
@@ -1503,6 +1774,68 @@ const PropertyDetailPage = () => {
                                         StayFinder website or app.
                                     </span>
                                 </div>
+                            </div>
+
+                            {/* Quick rules summary */}
+                            <div className="mt-4 bg-white rounded-xl shadow-sm border border-secondary-100 p-4 hover:shadow-md transition-shadow">
+                                <h3 className="font-medium text-secondary-900 mb-3 flex items-center">
+                                    <FaClipboardList className="mr-2 text-primary-500" />
+                                    Key things to know
+                                </h3>
+                                <div className="space-y-2 text-sm text-secondary-700">
+                                    <div className="flex items-start">
+                                        <FaRegClock className="mt-0.5 mr-2 text-primary-500 flex-shrink-0" />
+                                        <div>
+                                            <span className="font-medium">
+                                                Check-in:
+                                            </span>{" "}
+                                            {property.rules?.checkIn ||
+                                                "3:00 PM"}
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start">
+                                        <FaRegClock className="mt-0.5 mr-2 text-primary-500 flex-shrink-0" />
+                                        <div>
+                                            <span className="font-medium">
+                                                Check-out:
+                                            </span>{" "}
+                                            {property.rules?.checkOut ||
+                                                "11:00 AM"}
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start">
+                                        <FaRegSmile className="mt-0.5 mr-2 text-primary-500 flex-shrink-0" />
+                                        <div>
+                                            <span className="font-medium">
+                                                Pets:
+                                            </span>{" "}
+                                            {property.rules?.pets
+                                                ? "Allowed"
+                                                : "Not allowed"}
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start">
+                                        <FaRegCommentDots className="mt-0.5 mr-2 text-primary-500 flex-shrink-0" />
+                                        <div>
+                                            <span className="font-medium">
+                                                Parties:
+                                            </span>{" "}
+                                            {property.rules?.parties
+                                                ? "Allowed"
+                                                : "Not allowed"}
+                                        </div>
+                                    </div>
+                                </div>
+                                <button
+                                    onClick={() => scrollToSection("rules")}
+                                    className="mt-3 text-primary-600 hover:text-primary-800 text-sm font-medium flex items-center"
+                                >
+                                    View all rules
+                                    <FaChevronRight
+                                        className="ml-1"
+                                        size={12}
+                                    />
+                                </button>
                             </div>
 
                             {/* Contact Host Button */}

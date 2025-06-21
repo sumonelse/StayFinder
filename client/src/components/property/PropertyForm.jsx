@@ -1,9 +1,10 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import PropTypes from "prop-types"
 import PropertyImageUploader from "./PropertyImageUploader"
+import LocationPicker from "./LocationPicker"
 
 // Form validation schema
 const propertySchema = z.object({
@@ -24,6 +25,14 @@ const propertySchema = z.object({
     ]),
     price: z.number().positive("Price must be positive"),
     pricePeriod: z.enum(["night", "week", "month"]),
+    cleaningFee: z
+        .number()
+        .min(0, "Cleaning fee must be non-negative")
+        .optional(),
+    serviceFee: z
+        .number()
+        .min(0, "Service fee must be non-negative")
+        .optional(),
     bedrooms: z.number().int().min(0),
     bathrooms: z.number().min(0),
     maxGuests: z.number().int().min(1, "Maximum guests must be at least 1"),
@@ -38,6 +47,25 @@ const propertySchema = z.object({
         coordinates: z.array(z.number()).length(2),
     }),
     amenities: z.array(z.string()),
+    rules: z
+        .object({
+            checkIn: z.string().optional(),
+            checkOut: z.string().optional(),
+            smoking: z.boolean().optional(),
+            pets: z.boolean().optional(),
+            parties: z.boolean().optional(),
+            events: z.boolean().optional(),
+            quietHours: z.string().optional(),
+            additionalRules: z
+                .array(
+                    z.object({
+                        title: z.string(),
+                        description: z.string(),
+                    })
+                )
+                .optional(),
+        })
+        .optional(),
 })
 
 /**
@@ -68,6 +96,8 @@ const PropertyForm = ({
             type: "apartment",
             price: 0,
             pricePeriod: "night",
+            cleaningFee: undefined,
+            serviceFee: undefined,
             bedrooms: 1,
             bathrooms: 1,
             maxGuests: 2,
@@ -82,6 +112,16 @@ const PropertyForm = ({
                 coordinates: [0, 0], // [longitude, latitude]
             },
             amenities: [],
+            rules: {
+                checkIn: "3:00 PM",
+                checkOut: "11:00 AM",
+                smoking: false,
+                pets: false,
+                parties: false,
+                events: false,
+                quietHours: "10:00 PM - 7:00 AM",
+                additionalRules: [],
+            },
         },
     })
 
@@ -182,7 +222,7 @@ const PropertyForm = ({
                     </div>
 
                     {/* Price */}
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-2 gap-4 mb-4">
                         <div>
                             <label
                                 htmlFor="price"
@@ -226,6 +266,69 @@ const PropertyForm = ({
                                     {errors.pricePeriod.message}
                                 </p>
                             )}
+                        </div>
+                    </div>
+
+                    {/* Additional Fees */}
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label
+                                htmlFor="cleaningFee"
+                                className="block text-sm font-medium text-gray-700"
+                            >
+                                Cleaning Fee (optional)
+                            </label>
+                            <input
+                                id="cleaningFee"
+                                type="number"
+                                min="0"
+                                step="0.01"
+                                {...register("cleaningFee", {
+                                    valueAsNumber: true,
+                                    setValueAs: (v) =>
+                                        v === "" ? undefined : parseFloat(v),
+                                })}
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                            />
+                            {errors.cleaningFee && (
+                                <p className="mt-1 text-sm text-red-600">
+                                    {errors.cleaningFee.message}
+                                </p>
+                            )}
+                            <p className="mt-1 text-xs text-gray-500">
+                                One-time fee charged to guests for cleaning the
+                                property
+                            </p>
+                        </div>
+
+                        <div>
+                            <label
+                                htmlFor="serviceFee"
+                                className="block text-sm font-medium text-gray-700"
+                            >
+                                Service Fee (optional)
+                            </label>
+                            <input
+                                id="serviceFee"
+                                type="number"
+                                min="0"
+                                step="0.01"
+                                {...register("serviceFee", {
+                                    valueAsNumber: true,
+                                    setValueAs: (v) =>
+                                        v === "" ? undefined : parseFloat(v),
+                                })}
+                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                            />
+                            {errors.serviceFee && (
+                                <p className="mt-1 text-sm text-red-600">
+                                    {errors.serviceFee.message}
+                                </p>
+                            )}
+                            <p className="mt-1 text-xs text-gray-500">
+                                Additional fee charged to guests for each
+                                booking
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -305,8 +408,43 @@ const PropertyForm = ({
                 </div>
             </div>
 
+            {/* Property Location */}
+            <div className="bg-white p-6 rounded-lg shadow-sm mb-6">
+                <h2 className="text-xl font-semibold mb-4">
+                    Property Location
+                </h2>
+                <p className="text-gray-600 mb-4">
+                    Use the map below to pinpoint your property's exact
+                    location. You can search for an address or click directly on
+                    the map.
+                </p>
+
+                <LocationPicker
+                    initialLocation={watch("location")}
+                    onLocationChange={(location) => {
+                        setValue(
+                            "location",
+                            {
+                                type: "Point",
+                                coordinates: location.coordinates,
+                            },
+                            { shouldValidate: true }
+                        )
+                    }}
+                    address={watch("address")}
+                />
+
+                {errors.location && (
+                    <p className="mt-2 text-sm text-red-600">
+                        {errors.location.message ||
+                            "Please set a valid location"}
+                    </p>
+                )}
+            </div>
+
             {/* Property Images */}
             <div className="bg-white p-6 rounded-lg shadow-sm">
+                <h2 className="text-xl font-semibold mb-4">Property Images</h2>
                 <PropertyImageUploader
                     onImagesUploaded={handleImagesUploaded}
                     initialImages={initialData?.images || []}

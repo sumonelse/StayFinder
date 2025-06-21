@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { useParams, useNavigate, Link } from "react-router-dom"
+import { useParams, useNavigate, Link, useLocation } from "react-router-dom"
 import { useQuery, useMutation } from "@tanstack/react-query"
 import {
     FaArrowLeft,
@@ -18,10 +18,13 @@ import {
     FaRegStar,
     FaRegSmile,
     FaRegCommentDots,
+    FaClipboardList,
 } from "react-icons/fa"
 import { propertyService, bookingService } from "../../services/api"
 import { formatPrice } from "../../utils/currency"
+import { calculateBookingPrice } from "../../utils/bookingCalculator"
 import { useAuth } from "../../context/AuthContext"
+import PropertyRules from "../../components/property/PropertyRules"
 
 /**
  * Enhanced Booking page component
@@ -30,7 +33,14 @@ import { useAuth } from "../../context/AuthContext"
 const BookingPage = () => {
     const { id } = useParams()
     const navigate = useNavigate()
+    const location = useLocation()
     const { user } = useAuth()
+
+    // Parse query parameters
+    const queryParams = new URLSearchParams(location.search)
+    const checkInParam = queryParams.get("checkIn")
+    const checkOutParam = queryParams.get("checkOut")
+    const guestsParam = queryParams.get("guests")
 
     // Scroll to top on page load
     useEffect(() => {
@@ -39,9 +49,9 @@ const BookingPage = () => {
 
     // Form state
     const [bookingData, setBookingData] = useState({
-        startDate: "",
-        endDate: "",
-        guests: 1,
+        checkInDate: checkInParam || "",
+        checkOutDate: checkOutParam || "",
+        numberOfGuests: guestsParam ? parseInt(guestsParam) : 1,
         specialRequests: "",
     })
 
@@ -87,20 +97,24 @@ const BookingPage = () => {
         queryKey: [
             "availability",
             id,
-            bookingData.startDate,
-            bookingData.endDate,
+            bookingData.checkInDate,
+            bookingData.checkOutDate,
         ],
         queryFn: () =>
             bookingService.getPropertyAvailability(id, {
-                startDate: bookingData.startDate,
-                endDate: bookingData.endDate,
+                checkInDate: bookingData.checkInDate,
+                checkOutDate: bookingData.checkOutDate,
             }),
-        enabled: !!(id && bookingData.startDate && bookingData.endDate),
+        enabled: !!(id && bookingData.checkInDate && bookingData.checkOutDate),
     })
 
-    // Calculate booking details
+    // Calculate booking details using our utility function
     const calculateBookingDetails = () => {
-        if (!property || !bookingData.startDate || !bookingData.endDate) {
+        if (
+            !property ||
+            !bookingData.checkInDate ||
+            !bookingData.checkOutDate
+        ) {
             return {
                 nights: 0,
                 subtotal: 0,
@@ -110,24 +124,11 @@ const BookingPage = () => {
             }
         }
 
-        // Calculate number of nights
-        const start = new Date(bookingData.startDate)
-        const end = new Date(bookingData.endDate)
-        const nights = Math.round((end - start) / (1000 * 60 * 60 * 24))
-
-        // Calculate fees
-        const subtotal = property.price * nights
-        const cleaningFee = property.cleaningFee || 0
-        const serviceFee = property.serviceFee || Math.round(subtotal * 0.12)
-        const total = subtotal + cleaningFee + serviceFee
-
-        return {
-            nights,
-            subtotal,
-            cleaningFee,
-            serviceFee,
-            total,
-        }
+        return calculateBookingPrice(
+            property,
+            bookingData.checkInDate,
+            bookingData.checkOutDate
+        )
     }
 
     const bookingDetails = calculateBookingDetails()
@@ -153,33 +154,34 @@ const BookingPage = () => {
     const validateForm = () => {
         const newErrors = {}
 
-        if (!bookingData.startDate) {
-            newErrors.startDate = "Check-in date is required"
+        if (!bookingData.checkInDate) {
+            newErrors.checkInDate = "Check-in date is required"
         }
 
-        if (!bookingData.endDate) {
-            newErrors.endDate = "Check-out date is required"
+        if (!bookingData.checkOutDate) {
+            newErrors.checkOutDate = "Check-out date is required"
         }
 
-        if (bookingData.startDate && bookingData.endDate) {
-            const start = new Date(bookingData.startDate)
-            const end = new Date(bookingData.endDate)
+        if (bookingData.checkInDate && bookingData.checkOutDate) {
+            const start = new Date(bookingData.checkInDate)
+            const end = new Date(bookingData.checkOutDate)
 
             if (start >= end) {
-                newErrors.endDate = "Check-out date must be after check-in date"
+                newErrors.checkOutDate =
+                    "Check-out date must be after check-in date"
             }
 
             if (start < new Date().setHours(0, 0, 0, 0)) {
-                newErrors.startDate = "Check-in date cannot be in the past"
+                newErrors.checkInDate = "Check-in date cannot be in the past"
             }
         }
 
-        if (!bookingData.guests || bookingData.guests < 1) {
-            newErrors.guests = "At least 1 guest is required"
+        if (!bookingData.numberOfGuests || bookingData.numberOfGuests < 1) {
+            newErrors.numberOfGuests = "At least 1 guest is required"
         }
 
-        if (property && bookingData.guests > property.maxGuests) {
-            newErrors.guests = `Maximum ${property.maxGuests} guests allowed`
+        if (property && bookingData.numberOfGuests > property.maxGuests) {
+            newErrors.numberOfGuests = `Maximum ${property.maxGuests} guests allowed`
         }
 
         setErrors(newErrors)
@@ -195,7 +197,7 @@ const BookingPage = () => {
         }
 
         // Check availability one more time
-        if (bookingData.startDate && bookingData.endDate) {
+        if (bookingData.checkInDate && bookingData.checkOutDate) {
             const result = await checkAvailability()
 
             if (!result.data.available) {
@@ -210,10 +212,10 @@ const BookingPage = () => {
 
         // Create booking data
         const bookingPayload = {
-            property: id,
-            startDate: bookingData.startDate,
-            endDate: bookingData.endDate,
-            guests: parseInt(bookingData.guests),
+            propertyId: id,
+            checkInDate: bookingData.checkInDate,
+            checkOutDate: bookingData.checkOutDate,
+            numberOfGuests: parseInt(bookingData.numberOfGuests),
             specialRequests: bookingData.specialRequests,
             totalPrice: bookingDetails.total,
         }
@@ -345,7 +347,7 @@ const BookingPage = () => {
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
                                         <label
-                                            htmlFor="startDate"
+                                            htmlFor="checkInDate"
                                             className="form-label"
                                         >
                                             Check-in
@@ -356,30 +358,30 @@ const BookingPage = () => {
                                             </div>
                                             <input
                                                 type="date"
-                                                id="startDate"
-                                                name="startDate"
-                                                value={bookingData.startDate}
+                                                id="checkInDate"
+                                                name="checkInDate"
+                                                value={bookingData.checkInDate}
                                                 onChange={handleInputChange}
                                                 className={`input-field pl-10 ${
-                                                    errors.startDate
+                                                    errors.checkInDate
                                                         ? "border-red-300 focus:border-red-500 focus:ring-red-500"
                                                         : ""
                                                 }`}
                                             />
                                         </div>
-                                        {errors.startDate && (
+                                        {errors.checkInDate && (
                                             <p className="mt-2 text-sm text-red-600 flex items-center">
                                                 <FaExclamationCircle
                                                     className="mr-1"
                                                     size={12}
                                                 />
-                                                {errors.startDate}
+                                                {errors.checkInDate}
                                             </p>
                                         )}
                                     </div>
                                     <div>
                                         <label
-                                            htmlFor="endDate"
+                                            htmlFor="checkOutDate"
                                             className="form-label"
                                         >
                                             Check-out
@@ -390,32 +392,32 @@ const BookingPage = () => {
                                             </div>
                                             <input
                                                 type="date"
-                                                id="endDate"
-                                                name="endDate"
-                                                value={bookingData.endDate}
+                                                id="checkOutDate"
+                                                name="checkOutDate"
+                                                value={bookingData.checkOutDate}
                                                 onChange={handleInputChange}
                                                 className={`input-field pl-10 ${
-                                                    errors.endDate
+                                                    errors.checkOutDate
                                                         ? "border-red-300 focus:border-red-500 focus:ring-red-500"
                                                         : ""
                                                 }`}
                                             />
                                         </div>
-                                        {errors.endDate && (
+                                        {errors.checkOutDate && (
                                             <p className="mt-2 text-sm text-red-600 flex items-center">
                                                 <FaExclamationCircle
                                                     className="mr-1"
                                                     size={12}
                                                 />
-                                                {errors.endDate}
+                                                {errors.checkOutDate}
                                             </p>
                                         )}
                                     </div>
                                 </div>
 
                                 {/* Availability message */}
-                                {bookingData.startDate &&
-                                    bookingData.endDate && (
+                                {bookingData.checkInDate &&
+                                    bookingData.checkOutDate && (
                                         <div className="mt-3">
                                             {availabilityLoading ? (
                                                 <p className="text-secondary-600 flex items-center">
@@ -453,12 +455,12 @@ const BookingPage = () => {
                                         <FaUsers className="text-secondary-400" />
                                     </div>
                                     <select
-                                        id="guests"
-                                        name="guests"
-                                        value={bookingData.guests}
+                                        id="numberOfGuests"
+                                        name="numberOfGuests"
+                                        value={bookingData.numberOfGuests}
                                         onChange={handleInputChange}
                                         className={`input-field pl-10 appearance-none ${
-                                            errors.guests
+                                            errors.numberOfGuests
                                                 ? "border-red-300 focus:border-red-500 focus:ring-red-500"
                                                 : ""
                                         }`}
@@ -476,13 +478,13 @@ const BookingPage = () => {
                                         )}
                                     </select>
                                 </div>
-                                {errors.guests && (
+                                {errors.numberOfGuests && (
                                     <p className="mt-2 text-sm text-red-600 flex items-center">
                                         <FaExclamationCircle
                                             className="mr-1"
                                             size={12}
                                         />
-                                        {errors.guests}
+                                        {errors.numberOfGuests}
                                     </p>
                                 )}
 
@@ -493,6 +495,30 @@ const BookingPage = () => {
                                         {property.maxGuests} guests. Additional
                                         guests may not be allowed.
                                     </span>
+                                </div>
+                            </div>
+
+                            {/* House Rules */}
+                            <div className="mb-8">
+                                <h3 className="text-lg font-medium mb-3 text-secondary-900 flex items-center">
+                                    <FaClipboardList className="text-primary-500 mr-2" />
+                                    House Rules
+                                </h3>
+                                <div className="bg-secondary-50 p-4 rounded-lg border border-secondary-100">
+                                    <PropertyRules
+                                        rules={property?.rules || {}}
+                                        showAll={true}
+                                        className="text-sm"
+                                    />
+
+                                    <div className="mt-4 pt-3 border-t border-secondary-200 text-secondary-600 text-sm flex items-center">
+                                        <FaInfoCircle className="text-primary-500 mr-2 flex-shrink-0" />
+                                        <span>
+                                            By proceeding with this booking, you
+                                            agree to follow the house rules set
+                                            by the host.
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -593,8 +619,8 @@ const BookingPage = () => {
                                     type="submit"
                                     disabled={
                                         isSubmitting ||
-                                        (bookingData.startDate &&
-                                            bookingData.endDate &&
+                                        (bookingData.checkInDate &&
+                                            bookingData.checkOutDate &&
                                             availabilityData &&
                                             !availabilityData.available)
                                     }
@@ -676,7 +702,8 @@ const BookingPage = () => {
                             </div>
 
                             {/* Trip details */}
-                            {bookingData.startDate && bookingData.endDate ? (
+                            {bookingData.checkInDate &&
+                            bookingData.checkOutDate ? (
                                 <div className="bg-secondary-50 p-4 rounded-lg border border-secondary-100 mb-6">
                                     <h3 className="font-medium text-secondary-900 mb-2">
                                         Trip details
@@ -688,7 +715,7 @@ const BookingPage = () => {
                                             </p>
                                             <p className="font-medium text-secondary-900">
                                                 {new Date(
-                                                    bookingData.startDate
+                                                    bookingData.checkInDate
                                                 ).toLocaleDateString("en-US", {
                                                     weekday: "short",
                                                     month: "short",
@@ -702,7 +729,7 @@ const BookingPage = () => {
                                             </p>
                                             <p className="font-medium text-secondary-900">
                                                 {new Date(
-                                                    bookingData.endDate
+                                                    bookingData.checkOutDate
                                                 ).toLocaleDateString("en-US", {
                                                     weekday: "short",
                                                     month: "short",
@@ -715,8 +742,9 @@ const BookingPage = () => {
                                                 Guests
                                             </p>
                                             <p className="font-medium text-secondary-900">
-                                                {bookingData.guests}{" "}
-                                                {bookingData.guests === 1
+                                                {bookingData.numberOfGuests}{" "}
+                                                {bookingData.numberOfGuests ===
+                                                1
                                                     ? "guest"
                                                     : "guests"}
                                             </p>

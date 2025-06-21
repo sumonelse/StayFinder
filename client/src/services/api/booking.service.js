@@ -69,7 +69,7 @@ const bookingService = {
     /**
      * Get booking availability for a property
      * @param {string} propertyId - Property ID
-     * @param {Object} params - Query parameters (startDate, endDate)
+     * @param {Object} params - Query parameters (checkInDate, checkOutDate)
      * @returns {Promise<Object>} Availability info
      */
     async getPropertyAvailability(propertyId, params) {

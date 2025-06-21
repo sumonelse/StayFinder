@@ -121,8 +121,17 @@ const propertySchema = new mongoose.Schema(
             default: false,
         },
         rules: {
-            type: [String],
-            default: [],
+            type: Object,
+            default: {
+                checkIn: "3:00 PM",
+                checkOut: "11:00 AM",
+                smoking: false,
+                pets: false,
+                parties: false,
+                events: false,
+                quietHours: "10:00 PM - 7:00 AM",
+                additionalRules: [],
+            },
         },
         avgRating: {
             type: Number,

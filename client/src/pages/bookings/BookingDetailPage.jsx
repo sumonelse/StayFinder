@@ -27,9 +27,24 @@ import {
     FaRegUser,
     FaRegBuilding,
     FaExclamationCircle,
+    FaClipboardList,
+    FaSuitcase,
+    FaCheck,
+    FaRegCircle,
+    FaRoute,
+    FaMapMarkedAlt,
+    FaCar,
+    FaTaxi,
+    FaBus,
+    FaLightbulb,
+    FaPhoneAlt,
+    FaUmbrellaBeach,
+    FaFirstAid,
 } from "react-icons/fa"
 import { bookingService } from "../../services/api"
 import { formatPrice } from "../../utils/currency"
+import { calculateNights } from "../../utils/bookingCalculator"
+import PropertyRules from "../../components/property/PropertyRules"
 
 /**
  * Enhanced Booking detail page component
@@ -494,6 +509,143 @@ const BookingDetailPage = () => {
                             </div>
                         )}
 
+                        {/* House Rules */}
+                        <div className="mb-8">
+                            <h3 className="font-medium text-secondary-900 mb-3 flex items-center">
+                                <FaClipboardList className="text-primary-500 mr-2" />
+                                House Rules
+                            </h3>
+                            <div className="bg-secondary-50 p-4 rounded-xl border border-secondary-100">
+                                <PropertyRules
+                                    rules={booking.property.rules || {}}
+                                    showAll={true}
+                                    className="text-sm"
+                                />
+
+                                <div className="mt-4 pt-3 border-t border-secondary-200 text-secondary-600 text-sm flex items-center">
+                                    <FaInfoCircle className="text-primary-500 mr-2 flex-shrink-0" />
+                                    <span>
+                                        Please make sure to follow these house
+                                        rules during your stay.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* What to bring */}
+                        <div className="mb-8">
+                            <h3 className="font-medium text-secondary-900 mb-3 flex items-center">
+                                <FaSuitcase className="text-primary-500 mr-2" />
+                                What to Bring
+                            </h3>
+                            <div className="bg-secondary-50 p-4 rounded-xl border border-secondary-100">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div className="bg-white p-3 rounded-lg border border-secondary-100">
+                                        <h4 className="font-medium text-secondary-900 mb-2 flex items-center">
+                                            <FaCheckCircle
+                                                className="text-green-500 mr-2"
+                                                size={14}
+                                            />
+                                            Provided by Host
+                                        </h4>
+                                        <ul className="space-y-2 text-sm text-secondary-700">
+                                            <li className="flex items-start">
+                                                <FaCheck
+                                                    className="text-green-500 mt-0.5 mr-2 flex-shrink-0"
+                                                    size={12}
+                                                />
+                                                <span>
+                                                    Towels and bed linens
+                                                </span>
+                                            </li>
+                                            <li className="flex items-start">
+                                                <FaCheck
+                                                    className="text-green-500 mt-0.5 mr-2 flex-shrink-0"
+                                                    size={12}
+                                                />
+                                                <span>
+                                                    Basic toiletries (soap,
+                                                    shampoo)
+                                                </span>
+                                            </li>
+                                            <li className="flex items-start">
+                                                <FaCheck
+                                                    className="text-green-500 mt-0.5 mr-2 flex-shrink-0"
+                                                    size={12}
+                                                />
+                                                <span>Kitchen essentials</span>
+                                            </li>
+                                            <li className="flex items-start">
+                                                <FaCheck
+                                                    className="text-green-500 mt-0.5 mr-2 flex-shrink-0"
+                                                    size={12}
+                                                />
+                                                <span>Wi-Fi access</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div className="bg-white p-3 rounded-lg border border-secondary-100">
+                                        <h4 className="font-medium text-secondary-900 mb-2 flex items-center">
+                                            <FaExclamationCircle
+                                                className="text-amber-500 mr-2"
+                                                size={14}
+                                            />
+                                            Suggested Items
+                                        </h4>
+                                        <ul className="space-y-2 text-sm text-secondary-700">
+                                            <li className="flex items-start">
+                                                <FaRegCircle
+                                                    className="text-amber-500 mt-0.5 mr-2 flex-shrink-0"
+                                                    size={12}
+                                                />
+                                                <span>Personal toiletries</span>
+                                            </li>
+                                            <li className="flex items-start">
+                                                <FaRegCircle
+                                                    className="text-amber-500 mt-0.5 mr-2 flex-shrink-0"
+                                                    size={12}
+                                                />
+                                                <span>
+                                                    Clothing appropriate for the
+                                                    season
+                                                </span>
+                                            </li>
+                                            <li className="flex items-start">
+                                                <FaRegCircle
+                                                    className="text-amber-500 mt-0.5 mr-2 flex-shrink-0"
+                                                    size={12}
+                                                />
+                                                <span>
+                                                    Chargers for electronic
+                                                    devices
+                                                </span>
+                                            </li>
+                                            <li className="flex items-start">
+                                                <FaRegCircle
+                                                    className="text-amber-500 mt-0.5 mr-2 flex-shrink-0"
+                                                    size={12}
+                                                />
+                                                <span>
+                                                    Any special dietary
+                                                    requirements
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div className="mt-4 pt-3 border-t border-secondary-200 text-secondary-600 text-sm flex items-center">
+                                    <FaInfoCircle className="text-primary-500 mr-2 flex-shrink-0" />
+                                    <span>
+                                        Contact the host if you have any
+                                        specific questions about what's
+                                        provided.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
                         {/* Booking status information */}
                         <div className="mb-8">
                             <h3 className="font-medium text-secondary-900 mb-3 flex items-center">
@@ -606,7 +758,7 @@ const BookingDetailPage = () => {
                         </div>
 
                         {/* Cancellation policy */}
-                        <div>
+                        <div className="mb-8">
                             <h3 className="font-medium text-secondary-900 mb-3 flex items-center">
                                 <FaRegClock className="text-primary-500 mr-2" />
                                 Cancellation Policy
@@ -624,6 +776,138 @@ const BookingDetailPage = () => {
                                     which applies even if you cancel for illness
                                     or disruptions caused by COVID-19.
                                 </p>
+                            </div>
+                        </div>
+
+                        {/* Travel Tips */}
+                        <div>
+                            <h3 className="font-medium text-secondary-900 mb-3 flex items-center">
+                                <FaRoute className="text-primary-500 mr-2" />
+                                Travel Tips
+                            </h3>
+                            <div className="bg-secondary-50 p-4 rounded-xl border border-secondary-100">
+                                <div className="space-y-4">
+                                    <div className="bg-white p-3 rounded-lg border border-secondary-100">
+                                        <h4 className="font-medium text-secondary-900 mb-2 flex items-center">
+                                            <FaMapMarkedAlt
+                                                className="text-primary-500 mr-2"
+                                                size={14}
+                                            />
+                                            Getting There
+                                        </h4>
+                                        <p className="text-sm text-secondary-700 mb-2">
+                                            The property is located in{" "}
+                                            {booking.property.address.city},{" "}
+                                            {booking.property.address.country}.
+                                            Here are some transportation
+                                            options:
+                                        </p>
+                                        <ul className="space-y-2 text-sm text-secondary-700">
+                                            <li className="flex items-start">
+                                                <FaCar
+                                                    className="text-secondary-500 mt-0.5 mr-2 flex-shrink-0"
+                                                    size={12}
+                                                />
+                                                <span>
+                                                    By car: Use GPS navigation
+                                                    to{" "}
+                                                    {
+                                                        booking.property.address
+                                                            .street
+                                                    }
+                                                    ,{" "}
+                                                    {
+                                                        booking.property.address
+                                                            .city
+                                                    }
+                                                </span>
+                                            </li>
+                                            <li className="flex items-start">
+                                                <FaTaxi
+                                                    className="text-secondary-500 mt-0.5 mr-2 flex-shrink-0"
+                                                    size={12}
+                                                />
+                                                <span>
+                                                    Taxi or rideshare services
+                                                    are available in the area
+                                                </span>
+                                            </li>
+                                            <li className="flex items-start">
+                                                <FaBus
+                                                    className="text-secondary-500 mt-0.5 mr-2 flex-shrink-0"
+                                                    size={12}
+                                                />
+                                                <span>
+                                                    Public transportation: Check
+                                                    local transit options
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div className="bg-white p-3 rounded-lg border border-secondary-100">
+                                        <h4 className="font-medium text-secondary-900 mb-2 flex items-center">
+                                            <FaLightbulb
+                                                className="text-primary-500 mr-2"
+                                                size={14}
+                                            />
+                                            Helpful Tips
+                                        </h4>
+                                        <ul className="space-y-2 text-sm text-secondary-700">
+                                            <li className="flex items-start">
+                                                <FaRegClock
+                                                    className="text-secondary-500 mt-0.5 mr-2 flex-shrink-0"
+                                                    size={12}
+                                                />
+                                                <span>
+                                                    Plan to arrive during
+                                                    check-in hours:{" "}
+                                                    {booking.property.rules
+                                                        ?.checkIn ||
+                                                        "3:00 PM - 8:00 PM"}
+                                                </span>
+                                            </li>
+                                            <li className="flex items-start">
+                                                <FaPhoneAlt
+                                                    className="text-secondary-500 mt-0.5 mr-2 flex-shrink-0"
+                                                    size={12}
+                                                />
+                                                <span>
+                                                    Save the host's contact
+                                                    information for easy access
+                                                </span>
+                                            </li>
+                                            <li className="flex items-start">
+                                                <FaUmbrellaBeach
+                                                    className="text-secondary-500 mt-0.5 mr-2 flex-shrink-0"
+                                                    size={12}
+                                                />
+                                                <span>
+                                                    Check the weather forecast
+                                                    before your trip
+                                                </span>
+                                            </li>
+                                            <li className="flex items-start">
+                                                <FaFirstAid
+                                                    className="text-secondary-500 mt-0.5 mr-2 flex-shrink-0"
+                                                    size={12}
+                                                />
+                                                <span>
+                                                    Locate nearby medical
+                                                    facilities and pharmacies
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div className="mt-4 pt-3 border-t border-secondary-200 text-secondary-600 text-sm flex items-center">
+                                    <FaInfoCircle className="text-primary-500 mr-2 flex-shrink-0" />
+                                    <span>
+                                        Message your host for specific
+                                        directions or local recommendations.
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -37,7 +37,13 @@ const HostPropertiesPage = () => {
     // Fetch host properties
     const { data, isLoading, isError, error } = useQuery({
         queryKey: ["hostProperties", user?._id, filters],
-        queryFn: () => propertyService.getPropertiesByHost(user?._id, filters),
+        queryFn: () => {
+            if (!user || !user._id) {
+                throw new Error("User ID is required to fetch properties")
+            }
+            return propertyService.getPropertiesByHost(user._id, filters)
+        },
+        enabled: !!user && !!user._id, // Only run the query when user ID is available
     })
 
     // Toggle property availability mutation
@@ -103,8 +109,8 @@ const HostPropertiesPage = () => {
         }
     }
 
-    // Loading state
-    if (isLoading) {
+    // Loading state or waiting for user data
+    if (isLoading || !user || !user._id) {
         return (
             <div className="container mx-auto px-4 py-8">
                 <h1 className="text-3xl font-bold mb-6">Your Properties</h1>

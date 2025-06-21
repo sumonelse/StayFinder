@@ -62,6 +62,9 @@ const propertyService = {
      * @returns {Promise<Object>} Properties and pagination info
      */
     async getPropertiesByHost(hostId, params = {}) {
+        if (!hostId) {
+            throw new Error("Host ID is required to fetch properties")
+        }
         const response = await api.get(`/properties/host/${hostId}`, { params })
         return response.data
     },

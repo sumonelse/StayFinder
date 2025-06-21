@@ -11,6 +11,7 @@ import {
     FaCheck,
     FaTimes,
     FaSpinner,
+    FaClipboardList,
 } from "react-icons/fa"
 import { propertyService } from "../../services/api"
 import { useAuth } from "../../context/AuthContext"
@@ -48,6 +49,16 @@ const PropertyFormPage = () => {
         amenities: [],
         images: [],
         isAvailable: true,
+        rules: {
+            checkIn: "3:00 PM",
+            checkOut: "11:00 AM",
+            smoking: false,
+            pets: false,
+            parties: false,
+            events: false,
+            quietHours: "10:00 PM - 7:00 AM",
+            additionalRules: [],
+        },
         // Add location field which is required by the backend
         location: {
             type: "Point",
@@ -222,57 +233,99 @@ const PropertyFormPage = () => {
         })
     }
 
-    // Handle image selection
-    const handleImageSelect = (e) => {
-        const files = Array.from(e.target.files)
-        setImageFiles((prev) => [...prev, ...files])
-    }
-
-    // Remove selected image
-    const handleRemoveImage = (index) => {
-        setImageFiles((prev) => prev.filter((_, i) => i !== index))
-    }
-
-    // Remove existing image
-    const handleRemoveExistingImage = (index) => {
+    // Handle images uploaded through PropertyImageUploader
+    const handleImagesUploaded = (uploadedImages) => {
         setPropertyData((prev) => ({
             ...prev,
-            images: prev.images.filter((_, i) => i !== index),
+            images: uploadedImages,
+        }))
+
+        // Clear any image-related errors
+        if (errors.images) {
+            setErrors((prev) => ({
+                ...prev,
+                images: undefined,
+            }))
+        }
+    }
+
+    // Handle rule change for boolean values
+    const handleRuleChange = (ruleName) => {
+        setPropertyData((prev) => ({
+            ...prev,
+            rules: {
+                ...prev.rules,
+                [ruleName]: !prev.rules[ruleName],
+            },
         }))
     }
 
-    // Upload images
-    const uploadImages = async () => {
-        if (imageFiles.length === 0) return []
+    // Handle rule change for text values
+    const handleRuleTextChange = (ruleName, value) => {
+        setPropertyData((prev) => ({
+            ...prev,
+            rules: {
+                ...prev.rules,
+                [ruleName]: value,
+            },
+        }))
 
-        setIsUploading(true)
-        setUploadProgress(0)
-
-        try {
-            const uploadedUrls = []
-
-            for (let i = 0; i < imageFiles.length; i++) {
-                const file = imageFiles[i]
-                const formData = new FormData()
-                formData.append("image", file)
-
-                const response = await propertyService.uploadImage(formData)
-                uploadedUrls.push(response.url)
-
-                // Update progress
-                setUploadProgress(((i + 1) / imageFiles.length) * 100)
-            }
-
-            setIsUploading(false)
-            return uploadedUrls
-        } catch (error) {
-            setIsUploading(false)
+        // Clear related errors
+        if (errors[ruleName]) {
             setErrors((prev) => ({
                 ...prev,
-                images: "Failed to upload images. Please try again.",
+                [ruleName]: undefined,
             }))
-            return []
         }
+    }
+
+    // Add additional rule
+    const handleAddAdditionalRule = () => {
+        setPropertyData((prev) => ({
+            ...prev,
+            rules: {
+                ...prev.rules,
+                additionalRules: [
+                    ...prev.rules.additionalRules,
+                    { title: "", description: "" },
+                ],
+            },
+        }))
+    }
+
+    // Update additional rule
+    const handleUpdateAdditionalRule = (index, field, value) => {
+        setPropertyData((prev) => {
+            const additionalRules = [...prev.rules.additionalRules]
+            additionalRules[index] = {
+                ...additionalRules[index],
+                [field]: value,
+            }
+
+            return {
+                ...prev,
+                rules: {
+                    ...prev.rules,
+                    additionalRules,
+                },
+            }
+        })
+    }
+
+    // Remove additional rule
+    const handleRemoveAdditionalRule = (index) => {
+        setPropertyData((prev) => {
+            const additionalRules = [...prev.rules.additionalRules]
+            additionalRules.splice(index, 1)
+
+            return {
+                ...prev,
+                rules: {
+                    ...prev.rules,
+                    additionalRules,
+                },
+            }
+        })
     }
 
     // Validate form for current step
@@ -350,8 +403,18 @@ const PropertyFormPage = () => {
             }
         } else if (currentStep === 4) {
             // Images validation
-            if (propertyData.images.length === 0 && imageFiles.length === 0) {
+            if (propertyData.images.length === 0) {
                 newErrors.images = "At least one image is required"
+            }
+        } else if (currentStep === 5) {
+            // Amenities validation - no specific validation needed
+        } else if (currentStep === 6) {
+            // Rules validation
+            if (!propertyData.rules.checkIn) {
+                newErrors.checkIn = "Check-in time is required"
+            }
+            if (!propertyData.rules.checkOut) {
+                newErrors.checkOut = "Check-out time is required"
             }
         }
 
@@ -404,9 +467,16 @@ const PropertyFormPage = () => {
                 // If img is a string (URL), convert it to the required object format
                 return { url: img, caption: "" }
             }),
+            // Convert fees to numbers if they exist
+            cleaningFee: propertyData.cleaningFee
+                ? parseFloat(propertyData.cleaningFee)
+                : undefined,
+            serviceFee: propertyData.serviceFee
+                ? parseFloat(propertyData.serviceFee)
+                : undefined,
+            // Include rules
+            rules: propertyData.rules,
             // Remove fields that are not allowed in the request
-            cleaningFee: undefined,
-            serviceFee: undefined,
             isAvailable: undefined,
         }
 
@@ -590,6 +660,32 @@ const PropertyFormPage = () => {
                             <FaList />
                         </div>
                         <span className="hidden md:inline">Amenities</span>
+                    </div>
+                    <div className="flex-1 h-1 mx-2 bg-gray-200">
+                        <div
+                            className="h-1 bg-primary-600"
+                            style={{
+                                width: `${currentStep > 5 ? "100%" : "0%"}`,
+                            }}
+                        ></div>
+                    </div>
+                    <div
+                        className={`flex items-center ${
+                            currentStep >= 6
+                                ? "text-primary-600"
+                                : "text-gray-400"
+                        }`}
+                    >
+                        <div
+                            className={`flex items-center justify-center w-8 h-8 rounded-full ${
+                                currentStep >= 6
+                                    ? "bg-primary-100"
+                                    : "bg-gray-100"
+                            } mr-2`}
+                        >
+                            <FaClipboardList />
+                        </div>
+                        <span className="hidden md:inline">House Rules</span>
                     </div>
                 </div>
             </div>
@@ -1086,51 +1182,44 @@ const PropertyFormPage = () => {
                                 </div>
                             )}
 
-                            {/* Using our new PropertyImageUploader component */}
+                            {/* Using PropertyImageUploader component */}
                             <PropertyImageUploader
-                                onImagesUploaded={(uploadedImages) => {
-                                    // Update property data with uploaded images
-                                    setPropertyData((prev) => ({
-                                        ...prev,
-                                        images: [
-                                            ...prev.images,
-                                            ...uploadedImages.map((img) => ({
-                                                url: img.url,
-                                                caption: "",
-                                            })),
-                                        ],
-                                    }))
-                                }}
-                                initialImages={propertyData.images.map((img) =>
-                                    typeof img === "object" ? img.url : img
-                                )}
-                                token={user.token}
+                                onImagesUploaded={handleImagesUploaded}
+                                initialImages={propertyData.images}
+                                token={user?.token}
                                 className="mb-6"
                             />
-                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                                {propertyData.images.map((image, index) => (
-                                    <div key={index} className="relative group">
-                                        <img
-                                            src={
-                                                typeof image === "object"
-                                                    ? image.url
-                                                    : image
-                                            }
-                                            alt={`Property ${index + 1}`}
-                                            className="w-full h-32 object-cover rounded-md"
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={() =>
-                                                handleRemoveExistingImage(index)
-                                            }
-                                            className="absolute top-2 right-2 bg-red-600 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                                        >
-                                            <FaTimes />
-                                        </button>
+
+                            {propertyData.images.length > 0 && (
+                                <div className="mt-4">
+                                    <h3 className="text-lg font-medium mb-3">
+                                        Current Images
+                                    </h3>
+                                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                        {propertyData.images.map(
+                                            (image, index) => (
+                                                <div
+                                                    key={index}
+                                                    className="relative group"
+                                                >
+                                                    <img
+                                                        src={
+                                                            typeof image ===
+                                                            "object"
+                                                                ? image.url
+                                                                : image
+                                                        }
+                                                        alt={`Property ${
+                                                            index + 1
+                                                        }`}
+                                                        className="w-full h-32 object-cover rounded-md"
+                                                    />
+                                                </div>
+                                            )
+                                        )}
                                     </div>
-                                ))}
-                            </div>
+                                </div>
+                            )}
                         </div>
                     )}
 
@@ -1173,7 +1262,275 @@ const PropertyFormPage = () => {
                                 ))}
                             </div>
 
-                            <div className="border-t border-gray-200 pt-6">
+                            <div className="flex justify-between mt-6">
+                                <button
+                                    type="button"
+                                    onClick={handlePrevStep}
+                                    className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                                >
+                                    Back
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={handleNextStep}
+                                    className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                                >
+                                    Next: House Rules
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Step 6: House Rules */}
+                    {currentStep === 6 && (
+                        <div>
+                            <h2 className="text-xl font-semibold mb-4">
+                                House Rules
+                            </h2>
+
+                            <p className="text-gray-600 mb-4">
+                                Set the rules for your property to help guests
+                                understand what is allowed.
+                            </p>
+
+                            <div className="space-y-6">
+                                {/* Check-in and Check-out times */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                            Check-in time
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={propertyData.rules.checkIn}
+                                            onChange={(e) =>
+                                                handleRuleTextChange(
+                                                    "checkIn",
+                                                    e.target.value
+                                                )
+                                            }
+                                            placeholder="e.g. 3:00 PM - 8:00 PM"
+                                            className={`w-full px-3 py-2 border ${
+                                                errors.checkIn
+                                                    ? "border-red-500"
+                                                    : "border-gray-300"
+                                            } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
+                                        />
+                                        {errors.checkIn && (
+                                            <p className="mt-1 text-sm text-red-600">
+                                                {errors.checkIn}
+                                            </p>
+                                        )}
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                            Check-out time
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={propertyData.rules.checkOut}
+                                            onChange={(e) =>
+                                                handleRuleTextChange(
+                                                    "checkOut",
+                                                    e.target.value
+                                                )
+                                            }
+                                            placeholder="e.g. 11:00 AM"
+                                            className={`w-full px-3 py-2 border ${
+                                                errors.checkOut
+                                                    ? "border-red-500"
+                                                    : "border-gray-300"
+                                            } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
+                                        />
+                                        {errors.checkOut && (
+                                            <p className="mt-1 text-sm text-red-600">
+                                                {errors.checkOut}
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Quiet hours */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        Quiet hours
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={propertyData.rules.quietHours}
+                                        onChange={(e) =>
+                                            handleRuleTextChange(
+                                                "quietHours",
+                                                e.target.value
+                                            )
+                                        }
+                                        placeholder="e.g. 10:00 PM - 7:00 AM"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                    />
+                                </div>
+
+                                {/* Boolean rules */}
+                                <div className="space-y-3">
+                                    <h3 className="text-md font-medium text-gray-800">
+                                        What's allowed?
+                                    </h3>
+
+                                    <div className="flex items-center">
+                                        <input
+                                            type="checkbox"
+                                            id="smoking"
+                                            checked={propertyData.rules.smoking}
+                                            onChange={() =>
+                                                handleRuleChange("smoking")
+                                            }
+                                            className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                                        />
+                                        <label
+                                            htmlFor="smoking"
+                                            className="ml-2 block text-sm text-gray-700"
+                                        >
+                                            Smoking allowed
+                                        </label>
+                                    </div>
+
+                                    <div className="flex items-center">
+                                        <input
+                                            type="checkbox"
+                                            id="pets"
+                                            checked={propertyData.rules.pets}
+                                            onChange={() =>
+                                                handleRuleChange("pets")
+                                            }
+                                            className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                                        />
+                                        <label
+                                            htmlFor="pets"
+                                            className="ml-2 block text-sm text-gray-700"
+                                        >
+                                            Pets allowed
+                                        </label>
+                                    </div>
+
+                                    <div className="flex items-center">
+                                        <input
+                                            type="checkbox"
+                                            id="parties"
+                                            checked={propertyData.rules.parties}
+                                            onChange={() =>
+                                                handleRuleChange("parties")
+                                            }
+                                            className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                                        />
+                                        <label
+                                            htmlFor="parties"
+                                            className="ml-2 block text-sm text-gray-700"
+                                        >
+                                            Parties allowed
+                                        </label>
+                                    </div>
+
+                                    <div className="flex items-center">
+                                        <input
+                                            type="checkbox"
+                                            id="events"
+                                            checked={propertyData.rules.events}
+                                            onChange={() =>
+                                                handleRuleChange("events")
+                                            }
+                                            className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                                        />
+                                        <label
+                                            htmlFor="events"
+                                            className="ml-2 block text-sm text-gray-700"
+                                        >
+                                            Events allowed
+                                        </label>
+                                    </div>
+                                </div>
+
+                                {/* Additional rules */}
+                                <div>
+                                    <div className="flex justify-between items-center mb-2">
+                                        <h3 className="text-md font-medium text-gray-800">
+                                            Additional rules
+                                        </h3>
+                                        <button
+                                            type="button"
+                                            onClick={handleAddAdditionalRule}
+                                            className="text-primary-600 hover:text-primary-800 text-sm font-medium"
+                                        >
+                                            + Add rule
+                                        </button>
+                                    </div>
+
+                                    {propertyData.rules.additionalRules
+                                        .length === 0 ? (
+                                        <p className="text-gray-500 text-sm italic">
+                                            No additional rules added yet.
+                                        </p>
+                                    ) : (
+                                        <div className="space-y-3">
+                                            {propertyData.rules.additionalRules.map(
+                                                (rule, index) => (
+                                                    <div
+                                                        key={index}
+                                                        className="border border-gray-200 rounded-md p-3"
+                                                    >
+                                                        <div className="flex justify-between mb-2">
+                                                            <input
+                                                                type="text"
+                                                                value={
+                                                                    rule.title
+                                                                }
+                                                                onChange={(e) =>
+                                                                    handleUpdateAdditionalRule(
+                                                                        index,
+                                                                        "title",
+                                                                        e.target
+                                                                            .value
+                                                                    )
+                                                                }
+                                                                placeholder="Rule title"
+                                                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 mr-2"
+                                                            />
+                                                            <button
+                                                                type="button"
+                                                                onClick={() =>
+                                                                    handleRemoveAdditionalRule(
+                                                                        index
+                                                                    )
+                                                                }
+                                                                className="text-red-600 hover:text-red-800"
+                                                            >
+                                                                &times;
+                                                            </button>
+                                                        </div>
+                                                        <textarea
+                                                            value={
+                                                                rule.description
+                                                            }
+                                                            onChange={(e) =>
+                                                                handleUpdateAdditionalRule(
+                                                                    index,
+                                                                    "description",
+                                                                    e.target
+                                                                        .value
+                                                                )
+                                                            }
+                                                            placeholder="Rule description"
+                                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                                            rows={2}
+                                                        />
+                                                    </div>
+                                                )
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="border-t border-gray-200 pt-6 mt-6">
                                 <p className="text-gray-600 mb-4">
                                     Review your property details before
                                     submitting. You can go back to previous
@@ -1220,7 +1577,7 @@ const PropertyFormPage = () => {
                     )}
 
                     {/* Navigation buttons (except for last step) */}
-                    {currentStep < 5 && (
+                    {currentStep < 6 && (
                         <div className="flex justify-between mt-6">
                             <button
                                 type="button"

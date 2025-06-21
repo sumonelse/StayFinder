@@ -6,88 +6,210 @@ import notificationService from "./notification.service.js"
  */
 class BookingService {
     /**
+     * Validate booking dates
+     * @param {Date} checkInDate - Check-in date
+     * @param {Date} checkOutDate - Check-out date
+     * @returns {Object} Validation result with isValid and error message
+     */
+    validateDates(checkInDate, checkOutDate) {
+        const checkIn = new Date(checkInDate)
+        const checkOut = new Date(checkOutDate)
+        const today = new Date().setHours(0, 0, 0, 0)
+
+        if (checkIn < today) {
+            return {
+                isValid: false,
+                error: "Check-in date cannot be in the past",
+            }
+        }
+
+        if (checkOut <= checkIn) {
+            return {
+                isValid: false,
+                error: "Check-out date must be after check-in date",
+            }
+        }
+
+        return {
+            isValid: true,
+            checkIn,
+            checkOut,
+        }
+    }
+
+    /**
+     * Validate property availability
+     * @param {String} propertyId - Property ID
+     * @returns {Promise<Object>} Property details if valid
+     */
+    async validateProperty(propertyId) {
+        const propertyDetails = await Property.findById(propertyId)
+
+        if (!propertyDetails) {
+            throw new Error("Property not found")
+        }
+
+        if (!propertyDetails.isAvailable || !propertyDetails.isApproved) {
+            throw new Error("Property is not available for booking")
+        }
+
+        return propertyDetails
+    }
+
+    /**
+     * Build a query to find conflicting bookings
+     * @param {String} propertyId - Property ID
+     * @param {Date} checkIn - Check-in date
+     * @param {Date} checkOut - Check-out date
+     * @param {String} excludeBookingId - Optional booking ID to exclude
+     * @returns {Object} MongoDB query object
+     */
+    buildBookingConflictQuery(
+        propertyId,
+        checkIn,
+        checkOut,
+        excludeBookingId = null
+    ) {
+        const query = {
+            property: propertyId,
+            status: { $in: ["pending", "confirmed"] },
+            $or: [
+                {
+                    checkInDate: { $lt: checkOut },
+                    checkOutDate: { $gt: checkIn },
+                },
+            ],
+        }
+
+        // Exclude specific booking if provided (for updates)
+        if (excludeBookingId) {
+            query._id = { $ne: excludeBookingId }
+        }
+
+        return query
+    }
+
+    /**
+     * Get paginated bookings with common logic
+     * @param {Object} filter - MongoDB filter object
+     * @param {Object} queryParams - Query parameters
+     * @param {Array} populateOptions - Fields to populate
+     * @returns {Object} Bookings and pagination info
+     */
+    async getPaginatedBookings(filter, queryParams, populateOptions) {
+        const { page = 1, limit = 10, sort = "-createdAt" } = queryParams
+
+        // Count total documents
+        const total = await Booking.countDocuments(filter)
+
+        // Calculate pagination
+        const skip = (Number(page) - 1) * Number(limit)
+
+        // Get bookings
+        const bookings = await Booking.find(filter)
+            .sort(sort)
+            .skip(skip)
+            .limit(Number(limit))
+            .populate(populateOptions)
+
+        return {
+            bookings,
+            pagination: {
+                total,
+                page: Number(page),
+                limit: Number(limit),
+                pages: Math.ceil(total / Number(limit)),
+            },
+        }
+    }
+
+    /**
+     * Calculate total price for a booking
+     * @param {Object} propertyDetails - Property details
+     * @param {Date} checkIn - Check-in date
+     * @param {Date} checkOut - Check-out date
+     * @returns {Object} Price details
+     */
+    calculateTotalPrice(propertyDetails, checkIn, checkOut) {
+        const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24))
+        let totalPrice = propertyDetails.price * nights
+
+        // Apply price period adjustments
+        if (propertyDetails.pricePeriod === "week") {
+            totalPrice = propertyDetails.price * Math.ceil(nights / 7)
+        } else if (propertyDetails.pricePeriod === "month") {
+            totalPrice = propertyDetails.price * Math.ceil(nights / 30)
+        }
+
+        return {
+            nights,
+            pricePerNight: propertyDetails.price,
+            totalPrice,
+        }
+    }
+    /**
      * Create a new booking
      * @param {Object} bookingData - Booking data
      * @param {String} userId - User ID making the booking
      * @returns {Object} Created booking
      */
     async createBooking(bookingData, userId) {
+        // Extract booking data with consistent field names
         const {
             propertyId,
             checkInDate,
             checkOutDate,
             numberOfGuests,
             specialRequests,
+            totalPrice: providedTotalPrice,
         } = bookingData
 
         // Validate dates
-        const checkIn = new Date(checkInDate)
-        const checkOut = new Date(checkOutDate)
-        const today = new Date()
-
-        if (checkIn < today) {
-            throw new Error("Check-in date cannot be in the past")
+        const dateValidation = this.validateDates(checkInDate, checkOutDate)
+        if (!dateValidation.isValid) {
+            throw new Error(dateValidation.error)
         }
 
-        if (checkOut <= checkIn) {
-            throw new Error("Check-out date must be after check-in date")
-        }
+        const { checkIn, checkOut } = dateValidation
 
-        // Find property
-        const property = await Property.findById(propertyId)
-        if (!property) {
-            throw new Error("Property not found")
-        }
-
-        // Check if property is available
-        if (!property.isAvailable || !property.isApproved) {
-            throw new Error("Property is not available for booking")
-        }
+        // Validate property
+        const propertyDetails = await this.validateProperty(propertyId)
 
         // Check if number of guests is valid
-        if (numberOfGuests > property.maxGuests) {
+        if (numberOfGuests > propertyDetails.maxGuests) {
             throw new Error(
-                `Maximum number of guests allowed is ${property.maxGuests}`
+                `Maximum number of guests allowed is ${propertyDetails.maxGuests}`
             )
         }
 
         // Check if property is already booked for the selected dates
-        const existingBooking = await Booking.findOne({
-            property: propertyId,
-            status: { $in: ["pending", "confirmed"] },
-            $or: [
-                {
-                    // Check-in date falls within an existing booking
-                    checkInDate: { $lte: checkOut },
-                    checkOutDate: { $gte: checkIn },
-                },
-            ],
-        })
+        const query = this.buildBookingConflictQuery(
+            propertyId,
+            checkIn,
+            checkOut
+        )
+        const existingBooking = await Booking.findOne(query)
 
         if (existingBooking) {
             throw new Error("Property is already booked for the selected dates")
         }
 
         // Calculate total price
-        const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24))
-        let totalPrice = property.price * nights
-
-        // Apply price period adjustments
-        if (property.pricePeriod === "week") {
-            totalPrice = property.price * Math.ceil(nights / 7)
-        } else if (property.pricePeriod === "month") {
-            totalPrice = property.price * Math.ceil(nights / 30)
-        }
+        const { totalPrice, nights } = this.calculateTotalPrice(
+            propertyDetails,
+            checkIn,
+            checkOut
+        )
 
         // Create booking
         const booking = new Booking({
             property: propertyId,
             guest: userId,
-            host: property.host,
+            host: propertyDetails.host,
             checkInDate,
             checkOutDate,
             numberOfGuests,
-            totalPrice,
+            totalPrice: bookingData.totalPrice || totalPrice, // Use provided total price if available
             specialRequests,
             status: "pending",
             paymentStatus: "pending",
@@ -97,13 +219,13 @@ class BookingService {
 
         // Send notifications
         try {
-            const host = await User.findById(property.host)
+            const host = await User.findById(propertyDetails.host)
             const guest = await User.findById(userId)
 
             // Send notification to host about new booking
             await notificationService.sendNewBookingNotification(
                 booking,
-                property,
+                propertyDetails,
                 host,
                 guest
             )
@@ -135,53 +257,34 @@ class BookingService {
         excludeBookingId = null
     ) {
         // Validate dates
-        const checkIn = new Date(checkInDate)
-        const checkOut = new Date(checkOutDate)
-        const now = new Date()
-
-        if (checkIn < now) {
+        const dateValidation = this.validateDates(checkInDate, checkOutDate)
+        if (!dateValidation.isValid) {
             return {
                 isAvailable: false,
-                reason: "Check-in date cannot be in the past",
+                reason: dateValidation.error,
             }
         }
 
-        if (checkOut <= checkIn) {
-            return {
-                isAvailable: false,
-                reason: "Check-out date must be after check-in date",
-            }
-        }
+        const { checkIn, checkOut } = dateValidation
 
         // Check if property exists and is available
-        const property = await Property.findById(propertyId)
-        if (!property) {
-            throw new Error("Property not found")
-        }
-
-        if (!property.isAvailable || !property.isApproved) {
+        let propertyDetails
+        try {
+            propertyDetails = await this.validateProperty(propertyId)
+        } catch (error) {
             return {
                 isAvailable: false,
-                reason: "Property is not available for booking",
+                reason: error.message,
             }
         }
 
         // Build query for existing bookings
-        const query = {
-            property: propertyId,
-            status: { $in: ["pending", "confirmed"] },
-            $or: [
-                {
-                    checkInDate: { $lt: checkOut },
-                    checkOutDate: { $gt: checkIn },
-                },
-            ],
-        }
-
-        // Exclude specific booking if provided (for updates)
-        if (excludeBookingId) {
-            query._id = { $ne: excludeBookingId }
-        }
+        const query = this.buildBookingConflictQuery(
+            propertyId,
+            checkIn,
+            checkOut,
+            excludeBookingId
+        )
 
         const existingBookings = await Booking.find(query)
 
@@ -198,25 +301,21 @@ class BookingService {
             }
         }
 
-        // Calculate number of nights
-        const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24))
-        let totalPrice = property.price * nights
-
-        // Apply price period adjustments
-        if (property.pricePeriod === "week") {
-            totalPrice = property.price * Math.ceil(nights / 7)
-        } else if (property.pricePeriod === "month") {
-            totalPrice = property.price * Math.ceil(nights / 30)
-        }
+        // Calculate price
+        const priceDetails = this.calculateTotalPrice(
+            propertyDetails,
+            checkIn,
+            checkOut
+        )
 
         return {
             isAvailable: true,
-            nights,
-            pricePerNight: property.price,
-            totalPrice,
+            nights: priceDetails.nights,
+            pricePerNight: priceDetails.pricePerNight,
+            totalPrice: priceDetails.totalPrice,
             property: {
-                title: property.title,
-                maxGuests: property.maxGuests,
+                title: propertyDetails.title,
+                maxGuests: propertyDetails.maxGuests,
             },
         }
     }
@@ -228,46 +327,26 @@ class BookingService {
      * @returns {Object} Bookings and pagination info
      */
     async getUserBookings(userId, queryParams) {
-        const {
-            status,
-            page = 1,
-            limit = 10,
-            sort = "-createdAt",
-        } = queryParams
+        const { status } = queryParams
 
         // Build filter object
         const filter = { guest: userId }
         if (status) filter.status = status
 
-        // Count total documents
-        const total = await Booking.countDocuments(filter)
-
-        // Calculate pagination
-        const skip = (Number(page) - 1) * Number(limit)
-
-        // Get bookings
-        const bookings = await Booking.find(filter)
-            .sort(sort)
-            .skip(skip)
-            .limit(Number(limit))
-            .populate({
+        // Define populate options
+        const populateOptions = [
+            {
                 path: "property",
                 select: "title type address images price pricePeriod",
-            })
-            .populate({
+            },
+            {
                 path: "host",
                 select: "name email profilePicture",
-            })
-
-        return {
-            bookings,
-            pagination: {
-                total,
-                page: Number(page),
-                limit: Number(limit),
-                pages: Math.ceil(total / Number(limit)),
             },
-        }
+        ]
+
+        // Get paginated bookings
+        return this.getPaginatedBookings(filter, queryParams, populateOptions)
     }
 
     /**
@@ -277,46 +356,26 @@ class BookingService {
      * @returns {Object} Bookings and pagination info
      */
     async getHostBookings(hostId, queryParams) {
-        const {
-            status,
-            page = 1,
-            limit = 10,
-            sort = "-createdAt",
-        } = queryParams
+        const { status } = queryParams
 
         // Build filter object
         const filter = { host: hostId }
         if (status) filter.status = status
 
-        // Count total documents
-        const total = await Booking.countDocuments(filter)
-
-        // Calculate pagination
-        const skip = (Number(page) - 1) * Number(limit)
-
-        // Get bookings
-        const bookings = await Booking.find(filter)
-            .sort(sort)
-            .skip(skip)
-            .limit(Number(limit))
-            .populate({
+        // Define populate options
+        const populateOptions = [
+            {
                 path: "property",
                 select: "title type address images price pricePeriod",
-            })
-            .populate({
+            },
+            {
                 path: "guest",
                 select: "name email profilePicture",
-            })
-
-        return {
-            bookings,
-            pagination: {
-                total,
-                page: Number(page),
-                limit: Number(limit),
-                pages: Math.ceil(total / Number(limit)),
             },
-        }
+        ]
+
+        // Get paginated bookings
+        return this.getPaginatedBookings(filter, queryParams, populateOptions)
     }
 
     /**
@@ -547,73 +606,129 @@ class BookingService {
      * @returns {Object} Availability info
      */
     async getPropertyAvailability(propertyId, dateRange) {
-        const { startDate, endDate } = dateRange
+        // Extract date fields
+        const { checkInDate, checkOutDate, detailed = false } = dateRange
 
-        if (!startDate || !endDate) {
-            throw new Error("Start date and end date are required")
+        if (!checkInDate || !checkOutDate) {
+            throw new Error("Check-in date and check-out date are required")
         }
 
-        // Find property
-        const property = await Property.findById(propertyId)
-        if (!property) {
-            throw new Error("Property not found")
-        }
+        // Validate property
+        const propertyDetails = await this.validateProperty(propertyId)
 
-        // Check if property is available
-        if (!property.isAvailable || !property.isApproved) {
-            throw new Error("Property is not available for booking")
-        }
-
-        // Find bookings for the property in the date range
-        const bookings = await Booking.find({
-            property: propertyId,
-            status: { $in: ["pending", "confirmed"] },
-            $or: [
-                {
-                    checkInDate: {
-                        $gte: new Date(startDate),
-                        $lte: new Date(endDate),
-                    },
-                },
-                {
-                    checkOutDate: {
-                        $gte: new Date(startDate),
-                        $lte: new Date(endDate),
-                    },
-                },
-                {
-                    checkInDate: { $lte: new Date(startDate) },
-                    checkOutDate: { $gte: new Date(endDate) },
-                },
-            ],
-        }).select("checkInDate checkOutDate")
-
-        // Create an array of unavailable dates
-        const unavailableDates = []
-        bookings.forEach((booking) => {
-            const start = new Date(booking.checkInDate)
-            const end = new Date(booking.checkOutDate)
-            const dates = []
-
-            // Generate all dates between check-in and check-out
-            for (
-                let date = new Date(start);
-                date < end;
-                date.setDate(date.getDate() + 1)
-            ) {
-                dates.push(new Date(date))
+        // For specific date range check
+        if (!detailed) {
+            // Validate dates
+            const dateValidation = this.validateDates(checkInDate, checkOutDate)
+            if (!dateValidation.isValid) {
+                throw new Error(dateValidation.error)
             }
 
-            unavailableDates.push(...dates)
-        })
+            // Get check-in and check-out dates from validation
+            const { checkIn, checkOut } = dateValidation
 
-        return {
-            property: {
-                id: property._id,
-                title: property.title,
-                isAvailable: property.isAvailable,
-            },
-            unavailableDates,
+            // Find bookings for the property in the date range
+            const query = this.buildBookingConflictQuery(
+                propertyId,
+                checkIn,
+                checkOut
+            )
+            const bookings = await Booking.find(query).select(
+                "checkInDate checkOutDate"
+            )
+
+            // Create an array of unavailable dates
+            const unavailableDates = []
+            bookings.forEach((booking) => {
+                const start = new Date(booking.checkInDate)
+                const end = new Date(booking.checkOutDate)
+                const dates = []
+
+                // Generate all dates between check-in and check-out
+                for (
+                    let date = new Date(start);
+                    date < end;
+                    date.setDate(date.getDate() + 1)
+                ) {
+                    dates.push(new Date(date))
+                }
+
+                unavailableDates.push(...dates)
+            })
+
+            return {
+                property: {
+                    id: propertyDetails._id,
+                    title: propertyDetails.title,
+                    isAvailable: propertyDetails.isAvailable,
+                },
+                unavailableDates,
+                available: bookings.length === 0,
+            }
+        }
+        // For detailed availability map (used by calendar)
+        else {
+            // Parse dates
+            const start = new Date(checkInDate)
+            const end = new Date(checkOutDate)
+
+            // Ensure dates are valid
+            if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+                throw new Error("Invalid date format")
+            }
+
+            // Find all bookings for the property
+            const bookings = await Booking.find({
+                property: propertyId,
+                status: { $nin: ["cancelled", "rejected"] },
+                $or: [
+                    // Booking starts during the requested period
+                    { checkInDate: { $gte: start, $lt: end } },
+                    // Booking ends during the requested period
+                    { checkOutDate: { $gt: start, $lte: end } },
+                    // Booking spans the entire requested period
+                    {
+                        checkInDate: { $lte: start },
+                        checkOutDate: { $gte: end },
+                    },
+                ],
+            }).select("checkInDate checkOutDate")
+
+            // Create a map of dates to availability
+            const availabilityMap = {}
+
+            // Initialize all dates as available
+            for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
+                const dateString = d.toISOString().split("T")[0]
+                availabilityMap[dateString] = true
+            }
+
+            // Mark booked dates as unavailable
+            bookings.forEach((booking) => {
+                const bookingStart = new Date(booking.checkInDate)
+                const bookingEnd = new Date(booking.checkOutDate)
+
+                for (
+                    let d = new Date(bookingStart);
+                    d < bookingEnd;
+                    d.setDate(d.getDate() + 1)
+                ) {
+                    if (d >= start && d < end) {
+                        const dateString = d.toISOString().split("T")[0]
+                        availabilityMap[dateString] = false
+                    }
+                }
+            })
+
+            return {
+                property: {
+                    id: propertyDetails._id,
+                    title: propertyDetails.title,
+                    isAvailable: propertyDetails.isAvailable,
+                },
+                availabilityMap,
+                available: bookings.length === 0,
+            }
         }
     }
 }
