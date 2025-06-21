@@ -104,14 +104,7 @@ const router = createBrowserRouter([
         ],
     },
 
-    // Auth Layout - For authentication pages
-    // {
-    //     path: "/",
-    //     element: <AuthLayout />,
-    //     children: [
-
-    //     ],
-    // },
+    // Auth Layout is not currently used as auth pages are in MainLayout
 
     // Dashboard Layout - For host and admin pages
     {

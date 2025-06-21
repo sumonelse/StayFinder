@@ -12,9 +12,16 @@ const api = axios.create({
 // Add request interceptor to add auth token to requests
 api.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem("token")
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`
+        // Get encrypted token from localStorage
+        const encryptedToken = localStorage.getItem("stayfinder_token")
+        if (encryptedToken) {
+            try {
+                // Decrypt token
+                const token = JSON.parse(atob(encryptedToken))
+                config.headers.Authorization = `Bearer ${token}`
+            } catch (error) {
+                console.error("Error decrypting token:", error)
+            }
         }
         return config
     },
@@ -32,7 +39,9 @@ api.interceptors.response.use(
 
         // Handle token expiration
         if (error.response?.status === 401) {
-            localStorage.removeItem("token")
+            // Clear all auth data using the utility function
+            localStorage.removeItem("stayfinder_token")
+            localStorage.removeItem("stayfinder_user")
             window.location.href = "/login"
         }
 

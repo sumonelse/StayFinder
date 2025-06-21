@@ -25,8 +25,13 @@ const HostDashboardPage = () => {
     // Fetch host properties
     const { data: propertiesData, isLoading: propertiesLoading } = useQuery({
         queryKey: ["hostProperties", user?._id],
-        queryFn: () =>
-            propertyService.getPropertiesByHost(user?._id, { limit: 3 }),
+        queryFn: () => {
+            if (!user?._id) {
+                throw new Error("User ID is required to fetch properties")
+            }
+            return propertyService.getPropertiesByHost(user._id, { limit: 3 })
+        },
+        enabled: !!user?._id, // Only run query if user ID is available
     })
 
     // Fetch host bookings
@@ -256,20 +261,27 @@ const HostDashboardPage = () => {
                                                     <img
                                                         className="h-10 w-10 rounded-full"
                                                         src={
-                                                            booking.user
-                                                                .avatar ||
+                                                            booking.guest
+                                                                ?.profilePicture ||
                                                             "https://via.placeholder.com/40x40?text=Guest"
                                                         }
-                                                        alt={booking.user.name}
+                                                        alt={
+                                                            booking.guest
+                                                                ?.name ||
+                                                            "Guest"
+                                                        }
                                                     />
                                                 </div>
                                                 <div className="ml-4">
                                                     <div className="text-sm font-medium text-gray-900">
-                                                        {booking.user.name}
+                                                        {booking.guest?.name ||
+                                                            "Guest"}
                                                     </div>
                                                     <div className="text-sm text-gray-500">
-                                                        {booking.guests} guest
-                                                        {booking.guests !== 1
+                                                        {booking.numberOfGuests}{" "}
+                                                        guest
+                                                        {booking.numberOfGuests !==
+                                                        1
                                                             ? "s"
                                                             : ""}
                                                     </div>
@@ -286,10 +298,15 @@ const HostDashboardPage = () => {
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <div className="text-sm text-gray-900">
-                                                {formatDate(booking.startDate)}
+                                                {formatDate(
+                                                    booking.checkInDate
+                                                )}
                                             </div>
                                             <div className="text-sm text-gray-500">
-                                                to {formatDate(booking.endDate)}
+                                                to{" "}
+                                                {formatDate(
+                                                    booking.checkOutDate
+                                                )}
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">

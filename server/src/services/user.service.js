@@ -1,5 +1,7 @@
 import { User } from "../models/index.js"
 import { generateToken } from "../utils/jwt.js"
+import jwt from "jsonwebtoken"
+import notificationService from "./notification.service.js"
 
 /**
  * Service for user-related operations
@@ -35,7 +37,7 @@ class UserService {
 
         return {
             user: {
-                id: user._id,
+                _id: user._id,
                 name: user.name,
                 email: user.email,
                 role: user.role,
@@ -69,7 +71,7 @@ class UserService {
 
         return {
             user: {
-                id: user._id,
+                _id: user._id,
                 name: user.name,
                 email: user.email,
                 role: user.role,
@@ -185,6 +187,13 @@ class UserService {
             throw new Error("User not found")
         }
 
+        // Check if JWT_SECRET is defined
+        if (!process.env.JWT_SECRET) {
+            throw new Error(
+                "JWT_SECRET is not defined in environment variables"
+            )
+        }
+
         // Generate reset token (expires in 1 hour)
         const resetToken = jwt.sign(
             { userId: user._id, type: "password_reset" },
@@ -198,7 +207,6 @@ class UserService {
         await user.save()
 
         // Send reset email
-        const { notificationService } = await import("./index.js")
         await notificationService.sendPasswordReset(
             email,
             user.name,
@@ -215,6 +223,13 @@ class UserService {
      */
     async resetPassword(token, newPassword) {
         try {
+            // Check if JWT_SECRET is defined
+            if (!process.env.JWT_SECRET) {
+                throw new Error(
+                    "JWT_SECRET is not defined in environment variables"
+                )
+            }
+
             // Verify token
             const decoded = jwt.verify(token, process.env.JWT_SECRET)
 

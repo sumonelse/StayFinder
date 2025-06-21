@@ -50,7 +50,6 @@ export const AuthProvider = ({ children }) => {
                                     await authService.getCurrentUser()
                                 setUser(refreshedData)
                             } catch (error) {
-                                console.error("Token refresh failed:", error)
                                 logout()
                             }
                         })
@@ -68,7 +67,6 @@ export const AuthProvider = ({ children }) => {
                     setIsAuthenticated(false)
                 }
             } catch (err) {
-                console.error("Auth check failed:", err)
                 clearAuthData()
                 setUser(null)
                 setIsAuthenticated(false)
@@ -86,6 +84,7 @@ export const AuthProvider = ({ children }) => {
         setError(null)
         try {
             const { user, token } = await authService.login(email, password)
+
             setAuthToken(token)
             setUserData(user)
             setUser(user)
@@ -98,7 +97,6 @@ export const AuthProvider = ({ children }) => {
                     setUser(refreshedData)
                     setUserData(refreshedData)
                 } catch (error) {
-                    console.error("Token refresh failed:", error)
                     logout()
                 }
             })
@@ -117,6 +115,7 @@ export const AuthProvider = ({ children }) => {
         setError(null)
         try {
             const { user, token } = await authService.register(userData)
+
             setAuthToken(token)
             setUserData(user)
             setUser(user)
@@ -129,7 +128,6 @@ export const AuthProvider = ({ children }) => {
                     setUser(refreshedData)
                     setUserData(refreshedData)
                 } catch (error) {
-                    console.error("Token refresh failed:", error)
                     logout()
                 }
             })
@@ -156,7 +154,12 @@ export const AuthProvider = ({ children }) => {
         setError(null)
         try {
             const updatedUser = await authService.updateProfile(userData)
-            const newUserData = { ...user, ...updatedUser }
+
+            const newUserData = {
+                ...user,
+                ...updatedUser,
+            }
+
             setUser(newUserData)
             setUserData(newUserData)
             return updatedUser

@@ -311,7 +311,7 @@ class PropertyService {
             throw new Error("Property not found")
         }
 
-        // Import Review model dynamically to avoid circular dependency
+        // Import Review model from models index to avoid circular dependency
         const { Review } = await import("../models/index.js")
 
         // Aggregate reviews to calculate average rating

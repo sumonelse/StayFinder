@@ -210,8 +210,8 @@ class AuthController extends BaseController {
      */
     async resetPassword(req, res) {
         try {
-            const { token, newPassword } = req.body
-            await userService.resetPassword(token, newPassword)
+            const { token, password } = req.body
+            await userService.resetPassword(token, password)
 
             return this.sendSuccess(res, null, "Password reset successfully")
         } catch (error) {

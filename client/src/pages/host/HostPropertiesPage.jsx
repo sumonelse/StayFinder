@@ -38,12 +38,12 @@ const HostPropertiesPage = () => {
     const { data, isLoading, isError, error } = useQuery({
         queryKey: ["hostProperties", user?._id, filters],
         queryFn: () => {
-            if (!user || !user._id) {
+            if (!user?._id) {
                 throw new Error("User ID is required to fetch properties")
             }
             return propertyService.getPropertiesByHost(user._id, filters)
         },
-        enabled: !!user && !!user._id, // Only run the query when user ID is available
+        enabled: !!user?._id, // Only run the query when user ID is available
     })
 
     // Toggle property availability mutation
@@ -348,10 +348,12 @@ const HostPropertiesPage = () => {
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <div className="text-sm text-gray-900">
-                                                {property.address.city}
+                                                {property.address?.city ||
+                                                    "N/A"}
                                             </div>
                                             <div className="text-sm text-gray-500">
-                                                {property.address.country}
+                                                {property.address?.country ||
+                                                    "N/A"}
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
