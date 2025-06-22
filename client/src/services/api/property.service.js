@@ -41,8 +41,28 @@ const propertyService = {
      * @returns {Promise<Object>} Updated property
      */
     async updateProperty(id, propertyData) {
-        const response = await api.put(`/properties/${id}`, propertyData)
-        return response.data.property
+        try {
+            // Create a clean copy of the data to send to the server
+            const cleanData = { ...propertyData }
+
+            // Ensure rules is properly formatted
+            if (cleanData.rules) {
+                // Make sure additionalRules is an array
+                if (!Array.isArray(cleanData.rules.additionalRules)) {
+                    cleanData.rules.additionalRules = []
+                }
+            }
+
+            console.log("Cleaned data for update:", cleanData)
+            const response = await api.put(`/properties/${id}`, cleanData)
+            return response.data.property
+        } catch (error) {
+            console.error(
+                "Error updating property:",
+                error.response?.data || error.message
+            )
+            throw error
+        }
     },
 
     /**

@@ -166,13 +166,18 @@ const PropertyFormPage = () => {
 
     // Update property mutation
     const updatePropertyMutation = useMutation({
-        mutationFn: (data) => propertyService.updateProperty(id, data),
-        onSuccess: () => {
+        mutationFn: (data) => {
+            console.log("Sending update data:", data)
+            return propertyService.updateProperty(id, data)
+        },
+        onSuccess: (data) => {
+            console.log("Update successful:", data)
             navigate(`/host/properties/${id}`, {
                 state: { success: true },
             })
         },
         onError: (error) => {
+            console.error("Update failed:", error)
             setErrors({
                 form: error.message || "Failed to update property",
             })
@@ -521,8 +526,8 @@ const PropertyFormPage = () => {
                 zipCode: "",
                 country: "",
             },
-            // Include rules with defaults if missing
-            rules: {
+            // Include rules
+            rules: propertyData.rules || {
                 checkIn: "3:00 PM",
                 checkOut: "11:00 AM",
                 smoking: false,
@@ -531,10 +536,9 @@ const PropertyFormPage = () => {
                 events: false,
                 quietHours: "10:00 PM - 7:00 AM",
                 additionalRules: [],
-                ...(propertyData.rules || {}),
             },
-            // Remove fields that are not allowed in the request
-            isAvailable: undefined,
+            // Include isAvailable field
+            isAvailable: propertyData.isAvailable,
         }
 
         // Submit form

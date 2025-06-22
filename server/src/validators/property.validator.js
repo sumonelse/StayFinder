@@ -111,7 +111,32 @@ export const propertyValidators = {
                 "array.min": "At least one image is required",
                 "any.required": "At least one image is required",
             }),
-        rules: Joi.array().items(Joi.string()).default([]),
+        rules: Joi.object({
+            checkIn: Joi.string().required(),
+            checkOut: Joi.string().required(),
+            smoking: Joi.boolean().default(false),
+            pets: Joi.boolean().default(false),
+            parties: Joi.boolean().default(false),
+            events: Joi.boolean().default(false),
+            quietHours: Joi.string().default("10:00 PM - 7:00 AM"),
+            additionalRules: Joi.array()
+                .items(
+                    Joi.object({
+                        title: Joi.string().allow(""),
+                        description: Joi.string().allow(""),
+                    })
+                )
+                .default([]),
+        }).default({
+            checkIn: "3:00 PM",
+            checkOut: "11:00 AM",
+            smoking: false,
+            pets: false,
+            parties: false,
+            events: false,
+            quietHours: "10:00 PM - 7:00 AM",
+            additionalRules: [],
+        }),
     }),
 
     /**
@@ -181,7 +206,23 @@ export const propertyValidators = {
                 caption: Joi.string().allow("").default(""),
             })
         ),
-        rules: Joi.array().items(Joi.string()),
+        rules: Joi.object({
+            checkIn: Joi.string().allow(null, ""),
+            checkOut: Joi.string().allow(null, ""),
+            smoking: Joi.boolean().allow(null),
+            pets: Joi.boolean().allow(null),
+            parties: Joi.boolean().allow(null),
+            events: Joi.boolean().allow(null),
+            quietHours: Joi.string().allow(null, ""),
+            additionalRules: Joi.array()
+                .items(
+                    Joi.object({
+                        title: Joi.string().allow(""),
+                        description: Joi.string().allow(""),
+                    })
+                )
+                .allow(null),
+        }).allow(null),
         isAvailable: Joi.boolean(),
     }),
 }
