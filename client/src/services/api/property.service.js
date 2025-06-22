@@ -43,7 +43,7 @@ const propertyService = {
     async updateProperty(id, propertyData) {
         try {
             // Create a clean copy of the data to send to the server
-            const cleanData = { ...propertyData }
+            const cleanData = JSON.parse(JSON.stringify(propertyData))
 
             // Ensure rules is properly formatted
             if (cleanData.rules) {
@@ -51,6 +51,31 @@ const propertyService = {
                 if (!Array.isArray(cleanData.rules.additionalRules)) {
                     cleanData.rules.additionalRules = []
                 }
+            }
+
+            // Convert numeric string values to numbers
+            if (typeof cleanData.price === "string") {
+                cleanData.price = parseFloat(cleanData.price) || 0
+            }
+
+            if (typeof cleanData.cleaningFee === "string") {
+                cleanData.cleaningFee = parseFloat(cleanData.cleaningFee) || 0
+            }
+
+            if (typeof cleanData.serviceFee === "string") {
+                cleanData.serviceFee = parseFloat(cleanData.serviceFee) || 0
+            }
+
+            if (typeof cleanData.bedrooms === "string") {
+                cleanData.bedrooms = parseInt(cleanData.bedrooms) || 0
+            }
+
+            if (typeof cleanData.bathrooms === "string") {
+                cleanData.bathrooms = parseInt(cleanData.bathrooms) || 0
+            }
+
+            if (typeof cleanData.maxGuests === "string") {
+                cleanData.maxGuests = parseInt(cleanData.maxGuests) || 1
             }
 
             console.log("Cleaned data for update:", cleanData)

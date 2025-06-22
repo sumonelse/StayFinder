@@ -82,7 +82,7 @@ export const userValidators = {
             "string.empty": "Reset token is required",
             "any.required": "Reset token is required",
         }),
-        newPassword: Joi.string().required().min(8).max(30).messages({
+        password: Joi.string().required().min(8).max(30).messages({
             "string.empty": "New password is required",
             "string.min": "Password must be at least 8 characters long",
             "string.max": "Password cannot exceed 30 characters",
@@ -107,6 +107,8 @@ export const validateUser = (schema, property = "body") => {
             field: detail.path.join("."),
             message: detail.message,
         }))
+        console.log("body", req.body)
+        console.log("err", errors)
 
         return res.status(400).json({
             success: false,

@@ -74,6 +74,7 @@ const PropertyFormPage = () => {
     const [imageFiles, setImageFiles] = useState([])
     const [uploadProgress, setUploadProgress] = useState(0)
     const [isUploading, setIsUploading] = useState(false)
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
     // Amenities options
     const amenitiesOptions = [
@@ -489,12 +490,17 @@ const PropertyFormPage = () => {
         // Images are now handled by the PropertyImageUploader component
         // and already stored in propertyData.images
 
-        // Prepare data for submission
+        // Prepare data for submission - only include editable fields
         const submissionData = {
-            ...propertyData,
+            title: propertyData.title,
+            description: propertyData.description,
+            type: propertyData.type,
             price: parseFloat(propertyData.price || 0),
-            // Make sure pricePeriod is one of the allowed values
             pricePeriod: propertyData.pricePeriod || "night",
+            bedrooms: propertyData.bedrooms,
+            bathrooms: propertyData.bathrooms,
+            maxGuests: propertyData.maxGuests,
+            amenities: propertyData.amenities || [],
             // Ensure location is properly formatted
             location: propertyData.location || {
                 type: "Point",
@@ -505,7 +511,7 @@ const PropertyFormPage = () => {
                 ? propertyData.images.map((img) => {
                       // If img is already an object with url property, return it as is
                       if (typeof img === "object" && img.url) {
-                          return img
+                          return { url: img.url, caption: img.caption || "" }
                       }
                       // If img is a string (URL), convert it to the required object format
                       return { url: img, caption: "" }
@@ -543,7 +549,25 @@ const PropertyFormPage = () => {
 
         // Submit form
         if (isEditMode) {
-            updatePropertyMutation.mutate(submissionData)
+            // For updates, we'll use the property service directly to better handle the data
+            try {
+                setIsSubmitting(true)
+                const updatedProperty = await propertyService.updateProperty(
+                    id,
+                    submissionData
+                )
+                console.log("Property updated successfully:", updatedProperty)
+                navigate(`/host/properties/${id}`, {
+                    state: { success: true },
+                })
+            } catch (error) {
+                console.error("Failed to update property:", error)
+                setErrors({
+                    form: error.message || "Failed to update property",
+                })
+                window.scrollTo(0, 0)
+                setIsSubmitting(false)
+            }
         } else {
             createPropertyMutation.mutate(submissionData)
         }
@@ -1639,12 +1663,14 @@ const PropertyFormPage = () => {
                                         disabled={
                                             createPropertyMutation.isLoading ||
                                             updatePropertyMutation.isLoading ||
-                                            isUploading
+                                            isUploading ||
+                                            isSubmitting
                                         }
                                         className="px-6 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 disabled:bg-primary-300 flex items-center"
                                     >
                                         {createPropertyMutation.isLoading ||
-                                        updatePropertyMutation.isLoading ? (
+                                        updatePropertyMutation.isLoading ||
+                                        isSubmitting ? (
                                             <>
                                                 <FaSpinner className="animate-spin mr-2" />
                                                 {isEditMode

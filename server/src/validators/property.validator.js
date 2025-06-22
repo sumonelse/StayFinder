@@ -143,6 +143,8 @@ export const propertyValidators = {
      * Validate property update data
      */
     updateProperty: Joi.object({
+        // Allow any fields that might be sent from the client
+        // This makes the validator more lenient for updates
         title: Joi.string().trim().min(5).max(100).messages({
             "string.min": "Title must be at least 5 characters long",
             "string.max": "Title cannot exceed 100 characters",
@@ -231,18 +233,35 @@ export const propertyValidators = {
  * Middleware to validate request data against a schema
  * @param {Object} schema - Joi validation schema
  * @param {String} property - Request property to validate (body, params, query)
+ * @param {Object} options - Additional validation options
  * @returns {Function} Express middleware function
  */
-export const validateProperty = (schema, property = "body") => {
+export const validateProperty = (schema, property = "body", options = {}) => {
     return (req, res, next) => {
-        const { error } = schema.validate(req[property], { abortEarly: false })
+        // For update operations, strip unknown fields to prevent read-only field errors
+        const validationOptions = {
+            abortEarly: false,
+            stripUnknown: true,
+            ...options,
+        }
 
-        if (!error) return next()
+        const { error, value } = schema.validate(
+            req[property],
+            validationOptions
+        )
+
+        if (!error) {
+            // Update the request with the validated and stripped data
+            req[property] = value
+            return next()
+        }
 
         const errors = error.details.map((detail) => ({
             field: detail.path.join("."),
             message: detail.message,
         }))
+
+        console.log("Validation errors:", errors)
 
         return res.status(400).json({
             success: false,
