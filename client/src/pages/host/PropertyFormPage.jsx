@@ -16,6 +16,7 @@ import {
 import { propertyService } from "../../services/api"
 import { useAuth } from "../../context/AuthContext"
 import PropertyImageUploader from "../../components/property/PropertyImageUploader"
+import LocationPicker from "../../components/property/LocationPicker"
 
 /**
  * Property form page component
@@ -319,6 +320,25 @@ const PropertyFormPage = () => {
         }
     }
 
+    // Handle location change from the map
+    const handleLocationChange = (location) => {
+        setPropertyData((prev) => ({
+            ...prev,
+            location: {
+                type: "Point",
+                coordinates: location.coordinates,
+            },
+        }))
+
+        // Clear location-related errors if any
+        if (errors.location) {
+            setErrors((prev) => ({
+                ...prev,
+                location: undefined,
+            }))
+        }
+    }
+
     // Add additional rule
     const handleAddAdditionalRule = () => {
         setPropertyData((prev) => ({
@@ -400,6 +420,18 @@ const PropertyFormPage = () => {
 
             if (!propertyData.address.country.trim()) {
                 newErrors["address.country"] = "Country is required"
+            }
+
+            // Validate location coordinates
+            if (
+                !propertyData.location ||
+                !propertyData.location.coordinates ||
+                !Array.isArray(propertyData.location.coordinates) ||
+                propertyData.location.coordinates.length !== 2 ||
+                (propertyData.location.coordinates[0] === 0 &&
+                    propertyData.location.coordinates[1] === 0)
+            ) {
+                newErrors.location = "Please select a location on the map"
             }
         } else if (currentStep === 3) {
             // Details validation
@@ -483,11 +515,6 @@ const PropertyFormPage = () => {
         if (!validateCurrentStep()) {
             return
         }
-
-        // Log the current property data for debugging
-        console.log("Submitting property data:", propertyData)
-        console.log("isAvailable value:", propertyData.isAvailable)
-        console.log("Submission data isAvailable:", submissionData.isAvailable)
 
         // Images are now handled by the PropertyImageUploader component
         // and already stored in propertyData.images
@@ -1033,6 +1060,30 @@ const PropertyFormPage = () => {
                                         </p>
                                     )}
                                 </div>
+                            </div>
+
+                            <div className="mt-6">
+                                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                                    Pin Location on Map*
+                                </h3>
+                                <p className="text-sm text-gray-600 mb-4">
+                                    Drag the marker or click on the map to set
+                                    the exact location of your property. You can
+                                    also search for an address to find the
+                                    location.
+                                </p>
+
+                                <LocationPicker
+                                    initialLocation={propertyData.location}
+                                    onLocationChange={handleLocationChange}
+                                    address={propertyData.address}
+                                />
+
+                                {errors.location && (
+                                    <p className="mt-1 text-sm text-red-600">
+                                        {errors.location}
+                                    </p>
+                                )}
                             </div>
                         </div>
                     )}
