@@ -5,6 +5,7 @@ import {
     FaSpinner,
     FaExclamationCircle,
     FaCheckCircle,
+    FaInfoCircle,
 } from "react-icons/fa"
 import { bookingService } from "../../services/api"
 import { calculateNights } from "../../utils/bookingCalculator"
@@ -141,7 +142,63 @@ const AvailabilityCalendar = ({
         const start = new Date(selectedDates.startDate)
         const hovered = new Date(hoveredDate)
 
+        // Don't show hover effect if the date is not selectable
+        if (!isDateSelectable(date)) {
+            return false
+        }
+
+        // Check if there are any booked dates between start and hovered
+        const dateString = date.toISOString().split("T")[0]
+        const hoveredDateString = hoveredDate
+
+        // If there are booked dates in the range, don't show hover effect beyond the first booked date
+        for (
+            let day = new Date(start);
+            day <= date;
+            day.setDate(day.getDate() + 1)
+        ) {
+            const currentDateString = day.toISOString().split("T")[0]
+            // Skip the start date
+            if (
+                currentDateString !== selectedDates.startDate &&
+                (availabilityData[currentDateString] === false ||
+                    blockedDatesData[currentDateString] !== undefined)
+            ) {
+                return false
+            }
+        }
+
         return date > start && date <= hovered
+    }
+
+    // Helper function to check if a date is selectable
+    const isDateSelectable = (date) => {
+        return !isPastDate(date) && !isDateBooked(date) && !isDateBlocked(date)
+    }
+
+    // Check if there are any booked dates in a range
+    const hasBookedDatesInRange = (startDate, endDate) => {
+        const start = new Date(startDate)
+        const end = new Date(endDate)
+
+        // Check each date in the range
+        for (
+            let day = new Date(start);
+            day <= end;
+            day.setDate(day.getDate() + 1)
+        ) {
+            const dateString = day.toISOString().split("T")[0]
+            // Skip the start and end dates (check-in and check-out dates)
+            if (dateString !== startDate && dateString !== endDate) {
+                if (
+                    availabilityData[dateString] === false ||
+                    blockedDatesData[dateString] !== undefined
+                ) {
+                    return true
+                }
+            }
+        }
+        return false
     }
 
     // Handle date click
@@ -182,6 +239,46 @@ const AvailabilityCalendar = ({
                     })
                 }
             } else {
+                // Check if there are any booked dates in the selected range
+                if (
+                    hasBookedDatesInRange(selectedDates.startDate, dateString)
+                ) {
+                    // Create a more user-friendly alert
+                    const alertElement = document.createElement("div")
+                    alertElement.className =
+                        "fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50"
+                    alertElement.innerHTML = `
+                        <div class="bg-white rounded-lg shadow-xl p-6 max-w-md mx-4 animate-scaleIn">
+                            <div class="flex items-center text-red-600 mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+                                <h3 class="text-lg font-semibold">Unavailable Dates Selected</h3>
+                            </div>
+                            <p class="text-secondary-700 mb-4">Your selected date range includes dates that are already booked. Please select a different range.</p>
+                            <div class="flex justify-end">
+                                <button class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+                                    OK
+                                </button>
+                            </div>
+                        </div>
+                    `
+
+                    document.body.appendChild(alertElement)
+
+                    // Add click event to close the alert
+                    alertElement.addEventListener("click", (e) => {
+                        if (
+                            e.target.tagName === "BUTTON" ||
+                            e.target === alertElement
+                        ) {
+                            document.body.removeChild(alertElement)
+                        }
+                    })
+
+                    return
+                }
+
                 setSelectedDates({
                     startDate: selectedDates.startDate,
                     endDate: dateString,
@@ -199,7 +296,7 @@ const AvailabilityCalendar = ({
 
     // Handle date hover
     const handleDateHover = (dateInfo) => {
-        if (!dateInfo.isSelectable) return
+        // Always set hovered date even if not selectable to provide visual feedback
         setHoveredDate(dateInfo.dateString)
     }
 
@@ -316,7 +413,7 @@ const AvailabilityCalendar = ({
 
         // Today styling
         if (dayInfo.isToday) {
-            classes.push("font-bold border-2 border-blue-400")
+            classes.push("font-bold")
         }
 
         // Availability styling
@@ -330,22 +427,30 @@ const AvailabilityCalendar = ({
 
         // Selection styling
         if (dayInfo.isSelected) {
-            classes.push("bg-primary-500 text-white")
+            classes.push("bg-primary-500 text-white font-medium")
         } else if (dayInfo.isHovered) {
             classes.push("bg-primary-100 text-primary-800")
         }
 
-        // Range selection styling
+        // Range selection styling with improved visual indicators
         if (dayInfo.dateString === selectedDates.startDate) {
-            classes.push("bg-primary-500 text-white rounded-l-md")
+            classes.push(
+                "bg-primary-600 text-white rounded-l-md shadow-md z-10"
+            )
         }
         if (dayInfo.dateString === selectedDates.endDate) {
-            classes.push("bg-primary-500 text-white rounded-r-md")
+            classes.push(
+                "bg-primary-600 text-white rounded-r-md shadow-md z-10"
+            )
         }
 
-        // Hover effects for selectable dates
-        if (dayInfo.isSelectable && !dayInfo.isSelected && !dayInfo.isHovered) {
-            classes.push("hover:bg-gray-100")
+        // Add a visual connection between start and end dates
+        if (
+            dayInfo.isSelected &&
+            dayInfo.dateString !== selectedDates.startDate &&
+            dayInfo.dateString !== selectedDates.endDate
+        ) {
+            classes.push("bg-primary-100 border-t border-b border-primary-200")
         }
 
         return classes.join(" ")
@@ -373,9 +478,44 @@ const AvailabilityCalendar = ({
     const calendarDays = generateCalendarDays()
 
     return (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3">
+            {/* Compact Calendar Legend */}
+            <div className="mb-3 flex flex-wrap gap-2 text-xs">
+                <div className="flex items-center">
+                    <div className="w-3 h-3 bg-primary-500 rounded-sm mr-1"></div>
+                    <span>Selected</span>
+                </div>
+                <div className="flex items-center">
+                    <div className="w-3 h-3 bg-red-100 rounded-sm mr-1"></div>
+                    <span>Booked</span>
+                </div>
+                <div className="flex items-center">
+                    <div className="w-3 h-3 bg-yellow-50 rounded-sm mr-1"></div>
+                    <span>Checkout</span>
+                </div>
+                <div className="flex items-center">
+                    <div className="w-3 h-3 bg-orange-100 rounded-sm mr-1"></div>
+                    <span>Blocked</span>
+                </div>
+            </div>
+
+            {/* Selection instructions */}
+            {/* Simplified selection instructions */}
+            <div className="mb-3 text-sm text-secondary-700 flex items-center justify-center">
+                <FaInfoCircle className="mr-2 text-primary-500" />
+                <span>
+                    {!selectedDates.startDate
+                        ? "Select check-in date"
+                        : !selectedDates.endDate
+                        ? "Select check-out date"
+                        : `${formatDate(
+                              selectedDates.startDate
+                          )} - ${formatDate(selectedDates.endDate)}`}
+                </span>
+            </div>
+
             <div className="mb-4">
-                <div className="flex justify-between items-center mb-4">
+                <div className="flex justify-between items-center mb-2">
                     <button
                         onClick={goToPreviousMonth}
                         className="p-2 rounded-full hover:bg-gray-100 transition-colors"
@@ -447,12 +587,12 @@ const AvailabilityCalendar = ({
                 ) : (
                     <div>
                         {/* Calendar grid */}
-                        <div className="grid grid-cols-7 gap-1">
+                        <div className="grid grid-cols-7 gap-0.5">
                             {/* Days of week headers */}
                             {daysOfWeek.map((day) => (
                                 <div
                                     key={day}
-                                    className="text-center text-xs font-medium text-gray-500 py-2"
+                                    className="text-center text-xs font-medium text-gray-500 py-1"
                                 >
                                     {day}
                                 </div>
@@ -462,7 +602,7 @@ const AvailabilityCalendar = ({
                             {calendarDays.map((dayInfo, index) => (
                                 <div
                                     key={index}
-                                    className={`relative h-10 ${
+                                    className={`relative h-8 ${
                                         !dayInfo.day ? "" : "cursor-pointer"
                                     }`}
                                     onClick={() =>
@@ -476,19 +616,29 @@ const AvailabilityCalendar = ({
                                         <div
                                             className={`
                         flex items-center justify-center h-full w-full rounded-md text-sm relative
+                        ${
+                            dayInfo.isSelectable
+                                ? "hover:bg-primary-100 hover:scale-110 transition-transform"
+                                : ""
+                        }
                         ${getDateClassName(dayInfo)}
                       `}
                                             title={getDateTooltip(dayInfo)}
                                         >
                                             {dayInfo.day}
 
-                                            {/* Visual indicators */}
+                                            {/* Improved visual indicators */}
                                             {dayInfo.isBooked && (
-                                                <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-red-500 rounded-full"></div>
+                                                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-red-500"></div>
                                             )}
                                             {dayInfo.isBlocked && (
-                                                <div className="absolute top-0 right-0 w-2 h-2 bg-orange-500 rounded-full"></div>
+                                                <div className="absolute top-0 left-0 right-0 h-0.5 bg-orange-500"></div>
                                             )}
+                                            {dayInfo.isCheckoutOnly &&
+                                                !dayInfo.isSelected &&
+                                                !dayInfo.isHovered && (
+                                                    <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-yellow-500"></div>
+                                                )}
                                             {dayInfo.isToday && (
                                                 <div className="absolute top-0 left-0 w-2 h-2 bg-blue-500 rounded-full"></div>
                                             )}

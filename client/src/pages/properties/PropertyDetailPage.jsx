@@ -57,6 +57,7 @@ import {
     FaClock,
     FaTimesCircle,
     FaCheckCircle,
+    FaReceipt,
 } from "react-icons/fa"
 import {
     propertyService,
@@ -70,6 +71,7 @@ import AvailabilityCalendar from "../../components/property/AvailabilityCalendar
 import PropertyRules from "../../components/property/PropertyRules"
 import PropertyStatus from "../../components/property/PropertyStatus"
 import LocationMap from "../../components/property/LocationMap"
+import PriceBreakdownModal from "../../components/property/PriceBreakdownModal"
 import { Button, Badge, DatePicker } from "../../components/ui"
 import { formatPrice } from "../../utils/currency"
 import {
@@ -88,6 +90,8 @@ const PropertyDetailPage = () => {
         useAuth()
     const [showAllAmenities, setShowAllAmenities] = useState(false)
     const [showShareModal, setShowShareModal] = useState(false)
+    const [showPriceBreakdownModal, setShowPriceBreakdownModal] =
+        useState(false)
     const [selectedDates, setSelectedDates] = useState({
         startDate: "",
         endDate: "",
@@ -96,6 +100,7 @@ const PropertyDetailPage = () => {
     const [stayDuration, setStayDuration] = useState(3)
     const [activeSection, setActiveSection] = useState("overview")
     const [showReportModal, setShowReportModal] = useState(false)
+    const [bookingPriceDetails, setBookingPriceDetails] = useState(null)
 
     // Refs for scrolling to sections
     const bookingSectionRef = useRef(null)
@@ -162,16 +167,24 @@ const PropertyDetailPage = () => {
         window.scrollTo(0, 0)
     }, [])
 
-    // Calculate stay duration when dates change using our utility
+    // Calculate stay duration and booking price when dates change
     useEffect(() => {
-        if (selectedDates.startDate && selectedDates.endDate) {
+        if (selectedDates.startDate && selectedDates.endDate && property) {
             const nights = calculateNights(
                 selectedDates.startDate,
                 selectedDates.endDate
             )
             setStayDuration(nights || 1)
+
+            // Calculate and store booking price details
+            const priceDetails = calculateBookingPrice(
+                property,
+                selectedDates.startDate,
+                selectedDates.endDate
+            )
+            setBookingPriceDetails(priceDetails)
         }
-    }, [selectedDates])
+    }, [selectedDates, property])
 
     // Handle scroll to update active section
     useEffect(() => {
@@ -814,7 +827,7 @@ const PropertyDetailPage = () => {
 
                             {/* Property highlights */}
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                                <div className="bg-white p-5 rounded-xl border border-secondary-100 shadow-sm flex flex-col items-center justify-center text-center hover:border-primary-200 hover:shadow-md transition-all group">
+                                <div className="bg-white p-5 rounded-xl border border-secondary-100 shadow-sm flex flex-col items-center justify-center text-center hover:border-primary-200 hover:shadow-md transition-all group transform hover:scale-105">
                                     <div className="bg-primary-50 p-3 rounded-full mb-3 group-hover:bg-primary-100 transition-colors">
                                         <FaUsers
                                             className="text-primary-600"
@@ -829,7 +842,7 @@ const PropertyDetailPage = () => {
                                     </span>
                                 </div>
 
-                                <div className="bg-white p-5 rounded-xl border border-secondary-100 shadow-sm flex flex-col items-center justify-center text-center hover:border-primary-200 hover:shadow-md transition-all group">
+                                <div className="bg-white p-5 rounded-xl border border-secondary-100 shadow-sm flex flex-col items-center justify-center text-center hover:border-primary-200 hover:shadow-md transition-all group transform hover:scale-105">
                                     <div className="bg-primary-50 p-3 rounded-full mb-3 group-hover:bg-primary-100 transition-colors">
                                         <FaBed
                                             className="text-primary-600"
@@ -844,7 +857,7 @@ const PropertyDetailPage = () => {
                                     </span>
                                 </div>
 
-                                <div className="bg-white p-5 rounded-xl border border-secondary-100 shadow-sm flex flex-col items-center justify-center text-center hover:border-primary-200 hover:shadow-md transition-all group">
+                                <div className="bg-white p-5 rounded-xl border border-secondary-100 shadow-sm flex flex-col items-center justify-center text-center hover:border-primary-200 hover:shadow-md transition-all group transform hover:scale-105">
                                     <div className="bg-primary-50 p-3 rounded-full mb-3 group-hover:bg-primary-100 transition-colors">
                                         <FaBath
                                             className="text-primary-600"
@@ -859,7 +872,7 @@ const PropertyDetailPage = () => {
                                     </span>
                                 </div>
 
-                                <div className="bg-white p-5 rounded-xl border border-secondary-100 shadow-sm flex flex-col items-center justify-center text-center hover:border-primary-200 hover:shadow-md transition-all group">
+                                <div className="bg-white p-5 rounded-xl border border-secondary-100 shadow-sm flex flex-col items-center justify-center text-center hover:border-primary-200 hover:shadow-md transition-all group transform hover:scale-105">
                                     <div className="bg-primary-50 p-3 rounded-full mb-3 group-hover:bg-primary-100 transition-colors">
                                         <FaTag
                                             className="text-primary-600"
@@ -1634,11 +1647,23 @@ const PropertyDetailPage = () => {
                         id="booking"
                     >
                         <div className="sticky top-24">
-                            <div className="bg-white rounded-xl shadow-lg border border-secondary-100 overflow-hidden hover:shadow-xl transition-shadow">
+                            <div className="bg-white rounded-xl shadow-lg border border-primary-100 overflow-hidden hover:shadow-xl transition-all">
+                                <div className="bg-primary-50 py-2 px-4 border-b border-primary-100">
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-primary-800 font-medium">
+                                            Book this property
+                                        </span>
+                                        <span className="text-xs text-primary-600 bg-white px-2 py-1 rounded-full">
+                                            {property.isInstantBook
+                                                ? "Instant Book"
+                                                : "Request to Book"}
+                                        </span>
+                                    </div>
+                                </div>
                                 <div className="p-6">
                                     <div className="flex items-baseline justify-between mb-5">
                                         <div>
-                                            <span className="text-3xl font-bold text-secondary-900">
+                                            <span className="text-3xl font-bold text-secondary-900 group-hover:text-primary-600 transition-colors">
                                                 {formatPrice(property.price)}
                                             </span>
                                             <span className="text-secondary-600">
@@ -1647,7 +1672,7 @@ const PropertyDetailPage = () => {
                                             </span>
                                         </div>
                                         {property.avgRating > 0 && (
-                                            <div className="flex items-center bg-secondary-50 px-3 py-1 rounded-lg">
+                                            <div className="flex items-center bg-yellow-50 px-3 py-1 rounded-lg border border-yellow-100">
                                                 <FaStar className="text-yellow-500 mr-1" />
                                                 <span className="font-medium">
                                                     {property.avgRating.toFixed(
@@ -1660,6 +1685,17 @@ const PropertyDetailPage = () => {
                                             </div>
                                         )}
                                     </div>
+
+                                    {/* Special offer banner - if applicable */}
+                                    {property.discount && (
+                                        <div className="bg-green-50 border border-green-100 rounded-lg p-2 mb-4 flex items-center text-green-800">
+                                            <FaTag className="text-green-600 mr-2" />
+                                            <span className="text-sm font-medium">
+                                                Special offer:{" "}
+                                                {property.discount}% off
+                                            </span>
+                                        </div>
+                                    )}
 
                                     <div className="mb-5">
                                         {/* Date selection with visual calendar */}
@@ -1868,7 +1904,7 @@ const PropertyDetailPage = () => {
                                             return (
                                                 <Link
                                                     to={`/properties/${id}/book?checkIn=${selectedDates.startDate}&checkOut=${selectedDates.endDate}&guests=${guestCount}`}
-                                                    className="block w-full bg-primary-600 hover:bg-primary-700 text-white text-center py-3 text-lg font-medium mb-4 rounded-lg shadow-md hover:shadow-lg transition-all focus:ring-4 focus:ring-primary-200"
+                                                    className="block w-full bg-primary-600 hover:bg-primary-700 text-white text-center py-4 text-lg font-medium mb-4 rounded-lg shadow-md hover:shadow-lg transition-all focus:ring-4 focus:ring-primary-200 transform hover:scale-[1.02] active:scale-[0.98]"
                                                 >
                                                     <div className="flex items-center justify-center">
                                                         <FaCheckCircle className="mr-2" />
@@ -1881,7 +1917,7 @@ const PropertyDetailPage = () => {
                                         return (
                                             <button
                                                 disabled
-                                                className="w-full bg-gray-300 text-gray-500 text-center py-3 text-lg font-medium mb-4 rounded-lg cursor-not-allowed"
+                                                className="w-full bg-gray-200 text-gray-500 text-center py-4 text-lg font-medium mb-4 rounded-lg cursor-not-allowed border border-gray-300"
                                             >
                                                 <div className="flex items-center justify-center">
                                                     <FaCalendarAlt className="mr-2" />
@@ -1891,101 +1927,89 @@ const PropertyDetailPage = () => {
                                         )
                                     })()}
 
-                                    <div className="text-center text-secondary-600 text-sm mb-5 bg-secondary-50 py-2 rounded-lg">
+                                    <div className="text-center text-secondary-600 text-sm mb-5 bg-secondary-50 py-2 rounded-lg flex items-center justify-center">
+                                        <FaLock
+                                            className="text-secondary-500 mr-2"
+                                            size={12}
+                                        />
                                         You won't be charged yet
                                     </div>
 
                                     {selectedDates.startDate &&
                                     selectedDates.endDate ? (
                                         <>
-                                            <div className="space-y-3 text-secondary-700">
-                                                {(() => {
-                                                    const bookingPrice =
-                                                        calculateBookingPrice(
-                                                            property,
-                                                            selectedDates.startDate,
-                                                            selectedDates.endDate
+                                            <div className="text-secondary-700">
+                                                <div className="flex justify-between items-center font-bold text-lg text-secondary-900 mb-3">
+                                                    <span>Total price</span>
+                                                    <span>
+                                                        {formatPrice(
+                                                            bookingPriceDetails?.total ||
+                                                                0
+                                                        )}
+                                                    </span>
+                                                </div>
+
+                                                <button
+                                                    onClick={() =>
+                                                        setShowPriceBreakdownModal(
+                                                            true
                                                         )
+                                                    }
+                                                    className="w-full flex items-center justify-center py-2 text-primary-600 hover:text-primary-800 hover:bg-primary-50 rounded-lg transition-colors"
+                                                >
+                                                    <FaReceipt
+                                                        className="mr-2"
+                                                        size={14}
+                                                    />
+                                                    <span>
+                                                        View price breakdown
+                                                    </span>
+                                                </button>
 
-                                                    return (
-                                                        <>
-                                                            <div className="flex justify-between items-center">
-                                                                <span className="flex items-center">
-                                                                    {formatPrice(
-                                                                        property.price
-                                                                    )}{" "}
-                                                                    x{" "}
-                                                                    {
-                                                                        bookingPrice.nights
-                                                                    }{" "}
-                                                                    {bookingPrice.nights ===
-                                                                    1
-                                                                        ? "night"
-                                                                        : "nights"}
-                                                                    <FaInfoCircle
-                                                                        className="ml-1 text-secondary-400 cursor-help"
-                                                                        size={
-                                                                            12
-                                                                        }
-                                                                        title={`Base rate per ${property.pricePeriod}`}
-                                                                    />
-                                                                </span>
-                                                                <span>
-                                                                    {formatPrice(
-                                                                        bookingPrice.subtotal
-                                                                    )}
-                                                                </span>
-                                                            </div>
-                                                            <div className="flex justify-between items-center">
-                                                                <span className="flex items-center">
-                                                                    Cleaning fee
-                                                                    <FaInfoCircle
-                                                                        className="ml-1 text-secondary-400 cursor-help"
-                                                                        size={
-                                                                            12
-                                                                        }
-                                                                        title="One-time fee charged by host to cover the cost of cleaning their space"
-                                                                    />
-                                                                </span>
-                                                                <span>
-                                                                    {formatPrice(
-                                                                        bookingPrice.cleaningFee
-                                                                    )}
-                                                                </span>
-                                                            </div>
-                                                            <div className="flex justify-between items-center">
-                                                                <span className="flex items-center">
-                                                                    Service fee
-                                                                    <FaInfoCircle
-                                                                        className="ml-1 text-secondary-400 cursor-help"
-                                                                        size={
-                                                                            12
-                                                                        }
-                                                                        title="This helps us run our platform and offer services like 24/7 support"
-                                                                    />
-                                                                </span>
-                                                                <span>
-                                                                    {formatPrice(
-                                                                        bookingPrice.serviceFee
-                                                                    )}
-                                                                </span>
-                                                            </div>
+                                                <div className="text-sm text-secondary-600 mt-2 bg-secondary-50 p-2 rounded-lg">
+                                                    {bookingPriceDetails?.nights ||
+                                                        0}{" "}
+                                                    {bookingPriceDetails?.nights ===
+                                                    1
+                                                        ? "night"
+                                                        : "nights"}{" "}
+                                                    ·{" "}
+                                                    {formatPrice(
+                                                        property.price
+                                                    )}{" "}
+                                                    per night
+                                                </div>
+                                            </div>
 
-                                                            <hr className="my-4 border-secondary-100" />
-
-                                                            <div className="flex justify-between font-bold text-lg text-secondary-900">
-                                                                <span>
-                                                                    Total
-                                                                </span>
-                                                                <span>
-                                                                    {formatPrice(
-                                                                        bookingPrice.total
-                                                                    )}
-                                                                </span>
-                                                            </div>
-                                                        </>
+                                            {/* Price Breakdown Modal */}
+                                            <PriceBreakdownModal
+                                                isOpen={showPriceBreakdownModal}
+                                                onClose={() =>
+                                                    setShowPriceBreakdownModal(
+                                                        false
                                                     )
-                                                })()}
+                                                }
+                                                bookingPrice={
+                                                    bookingPriceDetails
+                                                }
+                                            />
+
+                                            {/* Share with friends */}
+                                            <div className="mt-4 pt-4 border-t border-secondary-100">
+                                                <button
+                                                    onClick={() =>
+                                                        setShowShareModal(true)
+                                                    }
+                                                    className="w-full flex items-center justify-center py-2 text-secondary-700 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
+                                                >
+                                                    <FaShare
+                                                        className="mr-2"
+                                                        size={14}
+                                                    />
+                                                    <span>
+                                                        Share with friends
+                                                    </span>
+                                                </button>
                                             </div>
                                         </>
                                     ) : (
@@ -2007,6 +2031,20 @@ const PropertyDetailPage = () => {
                                         StayFinder website or app.
                                     </span>
                                 </div>
+                            </div>
+
+                            {/* Report this property */}
+                            <div className="mt-3 text-center">
+                                <button
+                                    onClick={() => setShowReportModal(true)}
+                                    className="text-sm text-secondary-500 hover:text-secondary-700 hover:underline"
+                                >
+                                    <FaFlag
+                                        className="inline-block mr-1"
+                                        size={12}
+                                    />
+                                    Report this property
+                                </button>
                             </div>
 
                             {/* Quick rules summary */}
