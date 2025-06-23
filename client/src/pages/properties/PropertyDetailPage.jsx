@@ -72,7 +72,10 @@ import PropertyRules from "../../components/property/PropertyRules"
 import PropertyStatus from "../../components/property/PropertyStatus"
 import LocationMap from "../../components/property/LocationMap"
 import PriceBreakdownModal from "../../components/property/PriceBreakdownModal"
-import { Button, Badge, DatePicker } from "../../components/ui"
+import AmenitiesModal from "../../components/property/AmenitiesModal"
+import RulesModal from "../../components/property/RulesModal"
+import ReportModal from "../../components/property/ReportModal"
+import { Button, Badge } from "../../components/ui"
 import { formatPrice } from "../../utils/currency"
 import {
     calculateBookingPrice,
@@ -88,10 +91,11 @@ const PropertyDetailPage = () => {
     const navigate = useNavigate()
     const { user, isAuthenticated, addToFavorites, removeFromFavorites } =
         useAuth()
-    const [showAllAmenities, setShowAllAmenities] = useState(false)
     const [showShareModal, setShowShareModal] = useState(false)
     const [showPriceBreakdownModal, setShowPriceBreakdownModal] =
         useState(false)
+    const [showAmenitiesModal, setShowAmenitiesModal] = useState(false)
+    const [showRulesModal, setShowRulesModal] = useState(false)
     const [selectedDates, setSelectedDates] = useState({
         startDate: "",
         endDate: "",
@@ -513,107 +517,7 @@ const PropertyDetailPage = () => {
                     url={window.location.href}
                 />
 
-                {/* Report Listing Modal */}
-                {showReportModal && (
-                    <div className="fixed inset-0 bg-secondary-900/50 flex items-center justify-center z-50 p-4">
-                        <div className="bg-white rounded-xl shadow-xl max-w-md w-full animate-fadeIn">
-                            <div className="p-6">
-                                <div className="flex justify-between items-center mb-4">
-                                    <h3 className="text-xl font-semibold text-secondary-900 flex items-center">
-                                        <FaFlag className="text-red-500 mr-2" />
-                                        Report this listing
-                                    </h3>
-                                    <button
-                                        onClick={() =>
-                                            setShowReportModal(false)
-                                        }
-                                        className="text-secondary-500 hover:text-secondary-700"
-                                    >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            className="h-6 w-6"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth={2}
-                                                d="M6 18L18 6M6 6l12 12"
-                                            />
-                                        </svg>
-                                    </button>
-                                </div>
-
-                                <p className="text-secondary-700 mb-4">
-                                    Please select a reason for reporting this
-                                    property:
-                                </p>
-
-                                <div className="space-y-2 mb-4">
-                                    {[
-                                        "Inaccurate description or photos",
-                                        "Suspicious or fraudulent listing",
-                                        "Inappropriate content",
-                                        "Property is not available",
-                                        "Other concern",
-                                    ].map((reason) => (
-                                        <div
-                                            key={reason}
-                                            className="flex items-center p-3 border border-secondary-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 cursor-pointer transition-colors"
-                                        >
-                                            <input
-                                                type="radio"
-                                                name="reportReason"
-                                                id={reason}
-                                                className="mr-3 text-primary-600 focus:ring-primary-500"
-                                            />
-                                            <label
-                                                htmlFor={reason}
-                                                className="flex-1 cursor-pointer"
-                                            >
-                                                {reason}
-                                            </label>
-                                        </div>
-                                    ))}
-                                </div>
-
-                                <div className="mb-4">
-                                    <label className="block text-secondary-700 mb-2 font-medium">
-                                        Additional details (optional)
-                                    </label>
-                                    <textarea
-                                        className="w-full border-secondary-200 rounded-lg focus:ring-primary-500 focus:border-primary-500"
-                                        rows={3}
-                                        placeholder="Please provide any additional information that might help us understand your concern..."
-                                    ></textarea>
-                                </div>
-
-                                <div className="flex justify-end space-x-3">
-                                    <Button
-                                        variant="outline"
-                                        onClick={() =>
-                                            setShowReportModal(false)
-                                        }
-                                    >
-                                        Cancel
-                                    </Button>
-                                    <Button
-                                        variant="primary"
-                                        onClick={() => {
-                                            // Handle report submission
-                                            setShowReportModal(false)
-                                            // Show confirmation toast or message
-                                        }}
-                                    >
-                                        Submit Report
-                                    </Button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )}
+                {/* Report Listing Modal is now handled by the ReportModal component at the bottom of this file */}
 
                 {/* Section Navigation - Desktop */}
                 <div className="hidden md:block sticky top-0 z-20 bg-white border-b border-secondary-100 shadow-sm mb-6">
@@ -912,48 +816,39 @@ const PropertyDetailPage = () => {
                                     What this place offers
                                 </h2>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-y-5 gap-x-8">
-                                    {(showAllAmenities
-                                        ? property.amenities
-                                        : property.amenities.slice(0, 8)
-                                    ).map((amenity, index) => (
-                                        <div
-                                            key={index}
-                                            className="flex items-center text-secondary-700 group hover:text-secondary-900 transition-colors"
-                                        >
-                                            <div className="mr-4 bg-primary-50 p-2 rounded-full text-primary-600 group-hover:bg-primary-100 transition-colors">
-                                                {getAmenityIcon(amenity)}
+                                    {property.amenities
+                                        .slice(0, 6)
+                                        .map((amenity, index) => (
+                                            <div
+                                                key={index}
+                                                className="flex items-center text-secondary-700 group hover:text-secondary-900 transition-colors"
+                                            >
+                                                <div className="mr-4 bg-primary-50 p-2 rounded-full text-primary-600 group-hover:bg-primary-100 transition-colors">
+                                                    {getAmenityIcon(amenity)}
+                                                </div>
+                                                <span className="font-medium">
+                                                    {amenity}
+                                                </span>
                                             </div>
-                                            <span className="font-medium">
-                                                {amenity}
-                                            </span>
-                                        </div>
-                                    ))}
+                                        ))}
                                 </div>
 
-                                {property.amenities.length > 8 && (
+                                {property.amenities.length > 0 && (
                                     <button
                                         onClick={() =>
-                                            setShowAllAmenities(
-                                                !showAllAmenities
-                                            )
+                                            setShowAmenitiesModal(true)
                                         }
                                         className="mt-6 flex items-center px-4 py-2 border border-primary-200 text-primary-700 rounded-lg hover:bg-primary-50 transition-colors font-medium"
                                     >
-                                        {showAllAmenities ? (
-                                            <>
-                                                <FaChevronDown className="mr-2" />
-                                                Show less
-                                            </>
-                                        ) : (
-                                            <>
-                                                <FaChevronRight className="mr-2" />
-                                                Show all{" "}
-                                                {property.amenities.length}{" "}
-                                                amenities
-                                            </>
-                                        )}
+                                        <FaChevronRight className="mr-2" />
+                                        Show all {
+                                            property.amenities.length
+                                        }{" "}
+                                        amenities
                                     </button>
                                 )}
+
+                                {/* Amenities Modal is at the end of the file */}
                             </div>
                         </div>
 
@@ -1571,6 +1466,18 @@ const PropertyDetailPage = () => {
                                             <span>Self check-in available</span>
                                         </div>
                                     </div>
+
+                                    <div className="mt-4">
+                                        <button
+                                            onClick={() =>
+                                                setShowRulesModal(true)
+                                            }
+                                            className="flex items-center px-4 py-2 border border-primary-200 text-primary-700 rounded-lg hover:bg-primary-50 transition-colors font-medium"
+                                        >
+                                            <FaChevronRight className="mr-2" />
+                                            View all house rules
+                                        </button>
+                                    </div>
                                 </div>
 
                                 <div className="text-secondary-600 flex items-start">
@@ -1653,11 +1560,11 @@ const PropertyDetailPage = () => {
                                         <span className="text-primary-800 font-medium">
                                             Book this property
                                         </span>
-                                        <span className="text-xs text-primary-600 bg-white px-2 py-1 rounded-full">
-                                            {property.isInstantBook
-                                                ? "Instant Book"
-                                                : "Request to Book"}
-                                        </span>
+                                        {property.isInstantBook && (
+                                            <span className="text-xs text-primary-600 bg-white px-2 py-1 rounded-full">
+                                                Instant Book
+                                            </span>
+                                        )}
                                     </div>
                                 </div>
                                 <div className="p-6">
@@ -2033,20 +1940,6 @@ const PropertyDetailPage = () => {
                                 </div>
                             </div>
 
-                            {/* Report this property */}
-                            <div className="mt-3 text-center">
-                                <button
-                                    onClick={() => setShowReportModal(true)}
-                                    className="text-sm text-secondary-500 hover:text-secondary-700 hover:underline"
-                                >
-                                    <FaFlag
-                                        className="inline-block mr-1"
-                                        size={12}
-                                    />
-                                    Report this property
-                                </button>
-                            </div>
-
                             {/* Quick rules summary */}
                             <div className="mt-4 bg-white rounded-xl shadow-sm border border-secondary-100 p-4 hover:shadow-md transition-shadow">
                                 <h3 className="font-medium text-secondary-900 mb-3 flex items-center">
@@ -2227,6 +2120,43 @@ const PropertyDetailPage = () => {
                     </button>
                 </div>
             </div>
+
+            {/* Modals */}
+            <ShareModal
+                isOpen={showShareModal}
+                onClose={() => setShowShareModal(false)}
+                title={property?.title || ""}
+                url={window.location.href}
+            />
+
+            <ReportModal
+                isOpen={showReportModal}
+                onClose={() => setShowReportModal(false)}
+                propertyId={id}
+            />
+
+            <RulesModal
+                isOpen={showRulesModal}
+                onClose={() => setShowRulesModal(false)}
+                rules={{
+                    checkIn: "After 3:00 PM",
+                    checkOut: "Before 11:00 AM",
+                    smoking: false,
+                    pets: true,
+                    parties: false,
+                    additionalRules: [
+                        "Please respect the house rules and be considerate of neighbors.",
+                        "Excessive noise after 10 PM is not allowed.",
+                        "Self check-in available",
+                    ],
+                }}
+            />
+
+            <AmenitiesModal
+                isOpen={showAmenitiesModal}
+                onClose={() => setShowAmenitiesModal(false)}
+                amenities={property?.amenities || []}
+            />
         </div>
     )
 }

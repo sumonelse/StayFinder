@@ -479,31 +479,9 @@ const AvailabilityCalendar = ({
 
     return (
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3">
-            {/* Compact Calendar Legend */}
-            <div className="mb-3 flex flex-wrap gap-2 text-xs">
-                <div className="flex items-center">
-                    <div className="w-3 h-3 bg-primary-500 rounded-sm mr-1"></div>
-                    <span>Selected</span>
-                </div>
-                <div className="flex items-center">
-                    <div className="w-3 h-3 bg-red-100 rounded-sm mr-1"></div>
-                    <span>Booked</span>
-                </div>
-                <div className="flex items-center">
-                    <div className="w-3 h-3 bg-yellow-50 rounded-sm mr-1"></div>
-                    <span>Checkout</span>
-                </div>
-                <div className="flex items-center">
-                    <div className="w-3 h-3 bg-orange-100 rounded-sm mr-1"></div>
-                    <span>Blocked</span>
-                </div>
-            </div>
-
-            {/* Selection instructions */}
             {/* Simplified selection instructions */}
-            <div className="mb-3 text-sm text-secondary-700 flex items-center justify-center">
-                <FaInfoCircle className="mr-2 text-primary-500" />
-                <span>
+            <div className="mb-2 text-xs text-secondary-700 flex items-center justify-center">
+                <span className="bg-primary-50 px-2 py-1 rounded-full">
                     {!selectedDates.startDate
                         ? "Select check-in date"
                         : !selectedDates.endDate
@@ -728,45 +706,6 @@ const AvailabilityCalendar = ({
                     </div>
                 </div>
             </div>
-
-            {/* Selected dates summary */}
-            {(selectedDates.startDate || selectedDates.endDate) && (
-                <div className="mt-4 pt-3 border-t border-gray-200">
-                    <div className="flex items-center text-sm">
-                        <FaCalendarAlt className="text-primary-500 mr-2" />
-                        <div>
-                            {selectedDates.startDate &&
-                                !selectedDates.endDate && (
-                                    <span>
-                                        Check-in:{" "}
-                                        <strong>
-                                            {new Date(
-                                                selectedDates.startDate
-                                            ).toLocaleDateString()}
-                                        </strong>
-                                    </span>
-                                )}
-
-                            {selectedDates.startDate &&
-                                selectedDates.endDate && (
-                                    <span>
-                                        <strong>
-                                            {new Date(
-                                                selectedDates.startDate
-                                            ).toLocaleDateString()}
-                                        </strong>
-                                        {" → "}
-                                        <strong>
-                                            {new Date(
-                                                selectedDates.endDate
-                                            ).toLocaleDateString()}
-                                        </strong>
-                                    </span>
-                                )}
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     )
 }
