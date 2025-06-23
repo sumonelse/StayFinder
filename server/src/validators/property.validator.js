@@ -137,6 +137,7 @@ export const propertyValidators = {
             quietHours: "10:00 PM - 7:00 AM",
             additionalRules: [],
         }),
+        isAvailable: Joi.boolean().default(true),
     }),
 
     /**
