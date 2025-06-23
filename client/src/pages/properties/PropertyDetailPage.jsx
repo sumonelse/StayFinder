@@ -58,13 +58,18 @@ import {
     FaTimesCircle,
     FaCheckCircle,
 } from "react-icons/fa"
-import { propertyService, reviewService } from "../../services/api"
+import {
+    propertyService,
+    reviewService,
+    bookingService,
+} from "../../services/api"
 import { useAuth } from "../../context/AuthContext"
 import ImageGallery from "../../components/property/ImageGallery"
 import ShareModal from "../../components/property/ShareModal"
 import AvailabilityCalendar from "../../components/property/AvailabilityCalendar"
 import PropertyRules from "../../components/property/PropertyRules"
 import PropertyStatus from "../../components/property/PropertyStatus"
+import LocationMap from "../../components/property/LocationMap"
 import { Button, Badge, DatePicker } from "../../components/ui"
 import { formatPrice } from "../../utils/currency"
 import {
@@ -120,6 +125,37 @@ const PropertyDetailPage = () => {
         queryFn: () => reviewService.getPropertyReviews(id, { limit: 5 }),
         enabled: !!id,
     })
+
+    // Check if user has a booking for this property
+    const [userHasBooking, setUserHasBooking] = useState(false)
+
+    const { data: userBookingsData } = useQuery({
+        queryKey: ["userBookingsForProperty", id, user?._id],
+        queryFn: async () => {
+            const result = await bookingService.getUserBookings()
+            return result.bookings || []
+        },
+        enabled: !!id && isAuthenticated,
+    })
+
+    // Process booking data in useEffect to ensure it runs when data changes
+    useEffect(() => {
+        if (!userBookingsData || !Array.isArray(userBookingsData)) {
+            return
+        }
+
+        // Check if property IDs match - convert to strings for safer comparison
+        const hasBookingForProperty = userBookingsData.some(
+            (booking) =>
+                booking.property &&
+                booking.property._id &&
+                booking.property._id.toString() === id.toString() &&
+                (booking.status === "confirmed" ||
+                    booking.status === "completed")
+        )
+
+        setUserHasBooking(hasBookingForProperty)
+    }, [userBookingsData, id])
 
     // Scroll to top on page load
     useEffect(() => {
@@ -930,35 +966,80 @@ const PropertyDetailPage = () => {
                                     <FaMapMarkerAlt className="mr-3 text-primary-500" />
                                     Location
                                 </h2>
-                                <div className="bg-secondary-50 rounded-xl h-[300px] flex items-center justify-center border border-secondary-100 overflow-hidden">
-                                    <div className="text-center text-secondary-700 p-6">
-                                        <div className="bg-white p-3 rounded-full inline-block mb-4 shadow-sm">
-                                            <FaMapMarkerAlt
-                                                className="text-primary-500"
-                                                size={28}
-                                            />
-                                        </div>
-                                        <p className="text-lg font-medium mb-2">
-                                            {property.address.city},{" "}
-                                            {property.address.state},{" "}
-                                            {property.address.country}
-                                        </p>
-                                        <p className="mb-4">
-                                            {property.address.street},{" "}
-                                            {property.address.zipCode}
-                                        </p>
-                                        <div className="bg-primary-50 p-3 rounded-lg inline-flex items-center text-primary-700 border border-primary-100">
-                                            <FaLock
-                                                className="mr-2"
-                                                size={14}
-                                            />
-                                            <span className="text-sm font-medium">
-                                                Exact location provided after
-                                                booking
-                                            </span>
+
+                                {userHasBooking ? (
+                                    // Show the map if user has a booking
+                                    <div>
+                                        <LocationMap
+                                            coordinates={
+                                                property.location?.coordinates
+                                            }
+                                            title={property.title}
+                                            height="300px"
+                                        />
+                                        <div className="mt-4 p-4 bg-green-50 rounded-lg border border-green-100">
+                                            <div className="flex items-start">
+                                                <FaCheckCircle className="text-green-500 mt-1 mr-3 flex-shrink-0" />
+                                                <div>
+                                                    <p className="font-medium text-green-800">
+                                                        Exact location shown
+                                                    </p>
+                                                    <p className="text-green-700 text-sm">
+                                                        {
+                                                            property.address
+                                                                .street
+                                                        }
+                                                        ,{" "}
+                                                        {property.address.city},{" "}
+                                                        {property.address.state}
+                                                        ,{" "}
+                                                        {
+                                                            property.address
+                                                                .zipCode
+                                                        }
+                                                        ,{" "}
+                                                        {
+                                                            property.address
+                                                                .country
+                                                        }
+                                                    </p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                ) : (
+                                    // Show placeholder with limited info if user doesn't have a booking
+                                    <div className="bg-secondary-50 rounded-xl h-[300px] flex items-center justify-center border border-secondary-100 overflow-hidden">
+                                        <div className="text-center text-secondary-700 p-6">
+                                            <div className="bg-white p-3 rounded-full inline-block mb-4 shadow-sm">
+                                                <FaMapMarkerAlt
+                                                    className="text-primary-500"
+                                                    size={28}
+                                                />
+                                            </div>
+                                            <p className="text-lg font-medium mb-2">
+                                                {property.address.city},{" "}
+                                                {property.address.state},{" "}
+                                                {property.address.country}
+                                            </p>
+                                            <p className="mb-4">
+                                                Neighborhood:{" "}
+                                                {property.neighborhood ||
+                                                    "Central area"}
+                                            </p>
+                                            <div className="bg-primary-50 p-3 rounded-lg inline-flex items-center text-primary-700 border border-primary-100">
+                                                <FaLock
+                                                    className="mr-2"
+                                                    size={14}
+                                                />
+                                                <span className="text-sm font-medium">
+                                                    Exact location provided
+                                                    after booking
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
                                 <div className="mt-4 text-secondary-600 flex items-start">
                                     <FaInfoCircle className="text-primary-500 mr-2 mt-1 flex-shrink-0" />
                                     <p className="text-sm">

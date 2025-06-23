@@ -25,10 +25,6 @@ const LocationMap = ({ coordinates, title, height = "300px" }) => {
             try {
                 // Only import if coordinates are provided
                 if (!coordinates || !coordinates[0] || !coordinates[1]) {
-                    console.log(
-                        "No coordinates provided to LocationMap:",
-                        coordinates
-                    )
                     return
                 }
 
@@ -55,10 +51,6 @@ const LocationMap = ({ coordinates, title, height = "300px" }) => {
                     try {
                         // Initialize map if it doesn't exist yet
                         if (!mapInstanceRef.current && mapRef.current) {
-                            console.log(
-                                "Creating new map with coordinates:",
-                                coordinates
-                            )
                             // Create map instance
                             mapInstanceRef.current = L.map(
                                 mapRef.current
