@@ -255,9 +255,6 @@ const AvailabilityCalendar = ({
                     }
                 )
 
-                // Debug the response
-                console.log("Availability API Response:", response)
-
                 // Update availability data
                 setAvailabilityData(response.availabilityMap || {})
                 setBlockedDatesData(response.blockedDates || {})

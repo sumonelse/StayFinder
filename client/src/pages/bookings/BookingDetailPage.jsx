@@ -45,6 +45,7 @@ import { bookingService } from "../../services/api"
 import { formatPrice } from "../../utils/currency"
 import { calculateNights } from "../../utils/bookingCalculator"
 import PropertyRules from "../../components/property/PropertyRules"
+import LocationMap from "../../components/property/LocationMap"
 
 /**
  * Enhanced Booking detail page component
@@ -796,12 +797,57 @@ const BookingDetailPage = () => {
                                             />
                                             Getting There
                                         </h4>
+
+                                        {/* Property Location Map */}
+                                        <div className="mb-4">
+                                            {/* Add console log to debug location data */}
+                                            {console.log(
+                                                "Property location data:",
+                                                booking.property.location
+                                            )}
+                                            <LocationMap
+                                                coordinates={
+                                                    booking.property.location
+                                                        ?.coordinates
+                                                }
+                                                title={booking.property.title}
+                                                height="200px"
+                                            />
+                                        </div>
+
                                         <p className="text-sm text-secondary-700 mb-2">
-                                            The property is located in{" "}
-                                            {booking.property.address.city},{" "}
-                                            {booking.property.address.country}.
-                                            Here are some transportation
-                                            options:
+                                            {booking.property.location
+                                                ?.coordinates ? (
+                                                <>
+                                                    The property is located in{" "}
+                                                    {
+                                                        booking.property.address
+                                                            .city
+                                                    }
+                                                    ,{" "}
+                                                    {
+                                                        booking.property.address
+                                                            .country
+                                                    }
+                                                    . Here are some
+                                                    transportation options:
+                                                </>
+                                            ) : (
+                                                <>
+                                                    The property is located in{" "}
+                                                    {
+                                                        booking.property.address
+                                                            .city
+                                                    }
+                                                    ,{" "}
+                                                    {
+                                                        booking.property.address
+                                                            .country
+                                                    }
+                                                    . Exact location coordinates
+                                                    are not available.
+                                                </>
+                                            )}
                                         </p>
                                         <ul className="space-y-2 text-sm text-secondary-700">
                                             <li className="flex items-start">
