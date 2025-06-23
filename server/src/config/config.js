@@ -36,7 +36,7 @@ const _config = {
         // CORS settings (additional to what's in app.js)
         cors: {
             allowedOrigins: [process.env.FRONTEND_DOMAIN],
-            allowedMethods: ["GET", "POST", "PUT", "DELETE"],
+            allowedMethods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
             allowedHeaders: ["Content-Type", "Authorization"],
             exposedHeaders: ["Content-Length", "X-Rate-Limit"],
             maxAge: 86400, // 24 hours in seconds

@@ -91,56 +91,83 @@ const DashboardLayout = () => {
     ).length
 
     // Navigation items based on user role
-    const navItems = [
-        {
-            label: "Dashboard",
-            icon: <FaChartBar />,
-            path: "/host",
-            exact: true,
-        },
-        {
-            label: "Properties",
-            icon: <FaHome />,
-            submenu: [
-                { label: "All Properties", path: "/host/properties" },
-                { label: "Add Property", path: "/host/properties/add" },
-            ],
-        },
-        {
-            label: "Bookings",
-            icon: <FaCalendarAlt />,
-            submenu: [
-                { label: "All Bookings", path: "/host/bookings" },
-                { label: "Pending Requests", path: "/host/bookings/pending" },
-            ],
-        },
-        {
-            label: "Reviews",
-            icon: <FaComments />,
-            path: "/host/reviews",
-        },
-        {
-            label: "Settings",
-            icon: <FaCog />,
-            path: "/host/settings",
-        },
-    ]
-
-    // Add admin-specific navigation items if user is admin
-    if (user?.role === "admin") {
-        navItems.push(
-            {
-                label: "Users",
-                icon: <FaUsers />,
-                path: "/admin/users",
-            },
-            {
-                label: "Reports",
-                icon: <FaList />,
-                path: "/admin/reports",
-            }
-        )
+    const getNavItems = () => {
+        if (user?.role === "admin") {
+            return [
+                {
+                    label: "Dashboard",
+                    icon: <FaChartBar />,
+                    path: "/admin",
+                    exact: true,
+                },
+                {
+                    label: "Properties",
+                    icon: <FaHome />,
+                    path: "/admin/properties",
+                },
+                {
+                    label: "Bookings",
+                    icon: <FaCalendarAlt />,
+                    path: "/admin/bookings",
+                },
+                {
+                    label: "Users",
+                    icon: <FaUsers />,
+                    path: "/admin/users",
+                },
+                {
+                    label: "Reviews",
+                    icon: <FaComments />,
+                    path: "/admin/reviews",
+                },
+                {
+                    label: "Settings",
+                    icon: <FaCog />,
+                    path: "/admin/settings",
+                },
+            ]
+        } else {
+            return [
+                {
+                    label: "Dashboard",
+                    icon: <FaChartBar />,
+                    path: "/host",
+                    exact: true,
+                },
+                {
+                    label: "Properties",
+                    icon: <FaHome />,
+                    submenu: [
+                        { label: "All Properties", path: "/host/properties" },
+                        { label: "Add Property", path: "/host/properties/add" },
+                    ],
+                },
+                {
+                    label: "Bookings",
+                    icon: <FaCalendarAlt />,
+                    submenu: [
+                        { label: "All Bookings", path: "/host/bookings" },
+                        {
+                            label: "Pending Requests",
+                            path: "/host/bookings/pending",
+                        },
+                    ],
+                },
+                {
+                    label: "Reviews",
+                    icon: <FaComments />,
+                    path: "/host/reviews",
+                },
+                {
+                    label: "Settings",
+                    icon: <FaCog />,
+                    path: "/host/settings",
+                },
+            ]
+        }
     }
+
+    const navItems = getNavItems()
 
     const isSubmenuActive = (submenuItems) => {
         return submenuItems.some((item) => location.pathname === item.path)

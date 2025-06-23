@@ -1,5 +1,6 @@
 import express from "express"
 import propertyController from "../controllers/property.controller.js"
+import blockedDateController from "../controllers/blockedDate.controller.js"
 import { authenticate, authorize } from "../middlewares/auth.js"
 import { validateProperty, propertyValidators } from "../validators/index.js"
 
@@ -33,6 +34,25 @@ router.patch(
     "/:id/availability",
     authenticate,
     propertyController.toggleAvailability
+)
+
+// Blocked dates routes (host only)
+router.post(
+    "/:propertyId/blocked-dates",
+    authenticate,
+    blockedDateController.blockDates
+)
+
+router.delete(
+    "/:propertyId/blocked-dates",
+    authenticate,
+    blockedDateController.unblockDates
+)
+
+router.get(
+    "/:propertyId/blocked-dates",
+    authenticate,
+    blockedDateController.getBlockedDates
 )
 
 // Admin only routes

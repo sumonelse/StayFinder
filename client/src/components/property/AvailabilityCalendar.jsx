@@ -25,7 +25,8 @@ const AvailabilityCalendar = ({
     })
     const [hoveredDate, setHoveredDate] = useState(null)
     const [availabilityData, setAvailabilityData] = useState({})
-    const [isLoading, setIsLoading] = useState(false)
+    const [blockedDatesData, setBlockedDatesData] = useState({})
+    const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState(null)
 
     // Generate calendar days for the current month
@@ -59,10 +60,14 @@ const AvailabilityCalendar = ({
                 isToday: isToday(date),
                 isPast: isPastDate(date),
                 isBooked: isDateBooked(date),
+                isBlocked: isDateBlocked(date),
                 isCheckoutOnly: isCheckoutOnlyDate(date),
                 isSelected: isDateSelected(date),
                 isHovered: isDateHovered(date),
-                isSelectable: !isPastDate(date) && !isDateBooked(date),
+                isSelectable:
+                    !isPastDate(date) &&
+                    !isDateBooked(date) &&
+                    !isDateBlocked(date),
             })
         }
 
@@ -90,6 +95,12 @@ const AvailabilityCalendar = ({
     const isDateBooked = (date) => {
         const dateString = date.toISOString().split("T")[0]
         return availabilityData[dateString] === false
+    }
+
+    // Check if a date is blocked by host
+    const isDateBlocked = (date) => {
+        const dateString = date.toISOString().split("T")[0]
+        return blockedDatesData[dateString] !== undefined
     }
 
     // Check if a date is checkout only (previous day is booked)
@@ -244,12 +255,22 @@ const AvailabilityCalendar = ({
                     }
                 )
 
+                // Debug the response
+                console.log("Availability API Response:", response)
+
                 // Update availability data
                 setAvailabilityData(response.availabilityMap || {})
+                setBlockedDatesData(response.blockedDates || {})
                 setIsLoading(false)
             } catch (err) {
                 console.error("Error fetching availability:", err)
-                setError("Failed to load availability data")
+                console.error("Property ID:", propertyId)
+                console.error("Date range:", { startDate, endDate })
+                setError(
+                    err.response?.data?.error ||
+                        err.message ||
+                        "Failed to load availability data"
+                )
                 setIsLoading(false)
             }
         }
@@ -283,6 +304,69 @@ const AvailabilityCalendar = ({
             month: "short",
             day: "numeric",
         })
+    }
+
+    // Get CSS classes for date styling
+    const getDateClassName = (dayInfo) => {
+        const classes = []
+
+        // Base styling
+        if (dayInfo.isPast) {
+            classes.push("text-gray-300 cursor-not-allowed")
+        } else {
+            classes.push("text-gray-700")
+        }
+
+        // Today styling
+        if (dayInfo.isToday) {
+            classes.push("font-bold border-2 border-blue-400")
+        }
+
+        // Availability styling
+        if (dayInfo.isBooked) {
+            classes.push("bg-red-100 text-red-600 cursor-not-allowed")
+        } else if (dayInfo.isBlocked) {
+            classes.push("bg-orange-100 text-orange-600 cursor-not-allowed")
+        } else if (dayInfo.isCheckoutOnly) {
+            classes.push("bg-yellow-50 text-yellow-600")
+        }
+
+        // Selection styling
+        if (dayInfo.isSelected) {
+            classes.push("bg-primary-500 text-white")
+        } else if (dayInfo.isHovered) {
+            classes.push("bg-primary-100 text-primary-800")
+        }
+
+        // Range selection styling
+        if (dayInfo.dateString === selectedDates.startDate) {
+            classes.push("bg-primary-500 text-white rounded-l-md")
+        }
+        if (dayInfo.dateString === selectedDates.endDate) {
+            classes.push("bg-primary-500 text-white rounded-r-md")
+        }
+
+        // Hover effects for selectable dates
+        if (dayInfo.isSelectable && !dayInfo.isSelected && !dayInfo.isHovered) {
+            classes.push("hover:bg-gray-100")
+        }
+
+        return classes.join(" ")
+    }
+
+    // Get tooltip text for date
+    const getDateTooltip = (dayInfo) => {
+        if (dayInfo.isPast) return "Past date"
+        if (dayInfo.isBooked) return "Already booked"
+        if (dayInfo.isBlocked) {
+            const blockInfo = blockedDatesData[dayInfo.dateString]
+            return `Blocked by host${
+                blockInfo?.reason ? ` (${blockInfo.reason})` : ""
+            }`
+        }
+        if (dayInfo.isCheckoutOnly) return "Check-out only"
+        if (dayInfo.isToday) return "Today"
+        return "Available"
     }
 
     // Generate days of week headers
@@ -348,9 +432,20 @@ const AvailabilityCalendar = ({
                         <span>Loading availability...</span>
                     </div>
                 ) : error ? (
-                    <div className="text-red-500 flex items-center justify-center py-4">
-                        <FaExclamationCircle className="mr-2" />
-                        <span>{error}</span>
+                    <div className="text-red-500 flex flex-col items-center justify-center py-8">
+                        <FaExclamationCircle className="mb-2" size={24} />
+                        <span className="text-sm font-medium mb-2">
+                            {error}
+                        </span>
+                        <button
+                            onClick={() => {
+                                setError(null)
+                                setIsLoading(true)
+                            }}
+                            className="text-xs text-primary-600 hover:text-primary-800 underline"
+                        >
+                            Try again
+                        </button>
                     </div>
                 ) : (
                     <div>
@@ -383,48 +478,22 @@ const AvailabilityCalendar = ({
                                     {dayInfo.day && (
                                         <div
                                             className={`
-                        flex items-center justify-center h-full w-full rounded-md text-sm
-                        ${dayInfo.isPast ? "text-gray-300" : "text-gray-700"}
-                        ${
-                            dayInfo.isToday
-                                ? "font-bold border border-primary-400"
-                                : ""
-                        }
-                        ${
-                            dayInfo.isBooked
-                                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                                : ""
-                        }
-                        ${dayInfo.isCheckoutOnly ? "bg-yellow-50" : ""}
-                        ${
-                            dayInfo.isSelected
-                                ? "bg-primary-100 text-primary-800"
-                                : ""
-                        }
-                        ${dayInfo.isHovered ? "bg-primary-50" : ""}
-                        ${
-                            dayInfo.isSelectable &&
-                            !dayInfo.isSelected &&
-                            !dayInfo.isHovered
-                                ? "hover:bg-gray-100"
-                                : ""
-                        }
-                        ${
-                            dayInfo.dateString === selectedDates.startDate
-                                ? "bg-primary-500 text-white rounded-l-md"
-                                : ""
-                        }
-                        ${
-                            dayInfo.dateString === selectedDates.endDate
-                                ? "bg-primary-500 text-white rounded-r-md"
-                                : ""
-                        }
+                        flex items-center justify-center h-full w-full rounded-md text-sm relative
+                        ${getDateClassName(dayInfo)}
                       `}
+                                            title={getDateTooltip(dayInfo)}
                                         >
                                             {dayInfo.day}
 
+                                            {/* Visual indicators */}
                                             {dayInfo.isBooked && (
                                                 <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-red-500 rounded-full"></div>
+                                            )}
+                                            {dayInfo.isBlocked && (
+                                                <div className="absolute top-0 right-0 w-2 h-2 bg-orange-500 rounded-full"></div>
+                                            )}
+                                            {dayInfo.isToday && (
+                                                <div className="absolute top-0 left-0 w-2 h-2 bg-blue-500 rounded-full"></div>
                                             )}
                                         </div>
                                     )}
@@ -479,22 +548,36 @@ const AvailabilityCalendar = ({
                 <div className="text-xs text-gray-500 mb-2 font-medium">
                     Legend:
                 </div>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-2 gap-2 text-xs">
                     <div className="flex items-center">
                         <div className="w-4 h-4 bg-primary-500 rounded-sm mr-2"></div>
-                        <span className="text-xs">Selected</span>
+                        <span>Selected</span>
                     </div>
                     <div className="flex items-center">
                         <div className="w-4 h-4 bg-gray-100 rounded-sm mr-2"></div>
-                        <span className="text-xs">Unavailable</span>
+                        <span>Available</span>
+                    </div>
+                    <div className="flex items-center">
+                        <div className="w-4 h-4 bg-red-100 rounded-sm mr-2 relative">
+                            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-red-500 rounded-full"></div>
+                        </div>
+                        <span>Booked</span>
+                    </div>
+                    <div className="flex items-center">
+                        <div className="w-4 h-4 bg-orange-100 rounded-sm mr-2 relative">
+                            <div className="absolute top-0 right-0 w-2 h-2 bg-orange-500 rounded-full"></div>
+                        </div>
+                        <span>Blocked by host</span>
                     </div>
                     <div className="flex items-center">
                         <div className="w-4 h-4 bg-yellow-50 rounded-sm mr-2"></div>
-                        <span className="text-xs">Checkout only</span>
+                        <span>Checkout only</span>
                     </div>
                     <div className="flex items-center">
-                        <div className="w-4 h-4 border border-primary-400 rounded-sm mr-2"></div>
-                        <span className="text-xs">Today</span>
+                        <div className="w-4 h-4 border-2 border-blue-400 rounded-sm mr-2 relative">
+                            <div className="absolute top-0 left-0 w-2 h-2 bg-blue-500 rounded-full"></div>
+                        </div>
+                        <span>Today</span>
                     </div>
                 </div>
             </div>

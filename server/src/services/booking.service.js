@@ -1,5 +1,6 @@
-import { Booking, Property, User } from "../models/index.js"
+import { Booking, Property, User, BlockedDate } from "../models/index.js"
 import notificationService from "./notification.service.js"
+import blockedDateService from "./blockedDate.service.js"
 
 /**
  * Service for booking-related operations
@@ -192,6 +193,30 @@ class BookingService {
 
         if (existingBooking) {
             throw new Error("Property is already booked for the selected dates")
+        }
+
+        // Check if any dates are manually blocked
+        const datesToCheck = []
+        for (
+            let date = new Date(checkIn);
+            date < checkOut;
+            date.setDate(date.getDate() + 1)
+        ) {
+            datesToCheck.push(date.toISOString().split("T")[0])
+        }
+
+        const blockedDatesMap = await blockedDateService.checkDatesBlocked(
+            propertyId,
+            datesToCheck
+        )
+        const blockedDates = Object.keys(blockedDatesMap).filter(
+            (date) => blockedDatesMap[date]
+        )
+
+        if (blockedDates.length > 0) {
+            throw new Error(
+                `Property is not available for the following dates: ${blockedDates.join(", ")}`
+            )
         }
 
         // Calculate total price
@@ -720,6 +745,25 @@ class BookingService {
                 }
             })
 
+            // Mark manually blocked dates as unavailable
+            const blockedDatesMap =
+                await blockedDateService.getBlockedDatesInRange(
+                    propertyId,
+                    start,
+                    end
+                )
+
+            Object.keys(blockedDatesMap).forEach((dateString) => {
+                if (availabilityMap.hasOwnProperty(dateString)) {
+                    availabilityMap[dateString] = false
+                }
+            })
+
+            // Check if any dates are available
+            const hasAvailableDates = Object.values(availabilityMap).some(
+                (isAvailable) => isAvailable
+            )
+
             return {
                 property: {
                     id: propertyDetails._id,
@@ -727,7 +771,8 @@ class BookingService {
                     isAvailable: propertyDetails.isAvailable,
                 },
                 availabilityMap,
-                available: bookings.length === 0,
+                blockedDates: blockedDatesMap,
+                available: bookings.length === 0 && hasAvailableDates,
             }
         }
     }

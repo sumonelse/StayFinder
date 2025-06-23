@@ -14,9 +14,11 @@ import {
     FaCheckCircle,
     FaToggleOn,
     FaToggleOff,
+    FaSpinner,
 } from "react-icons/fa"
 import { propertyService, bookingService } from "../../services/api"
 import { formatPrice } from "../../utils/currency"
+import HostCalendarManager from "../../components/property/HostCalendarManager"
 
 /**
  * Host property detail page component
@@ -450,6 +452,14 @@ const HostPropertyDetailPage = () => {
                             </div>
                         )}
                     </div>
+
+                    {/* Calendar Manager */}
+                    <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+                        <h2 className="text-xl font-semibold mb-4">
+                            Availability Calendar
+                        </h2>
+                        <HostCalendarManager propertyId={id} />
+                    </div>
                 </div>
 
                 {/* Right column - Stats and actions */}
@@ -530,13 +540,21 @@ const HostPropertyDetailPage = () => {
                                 </Link>
                                 <button
                                     onClick={handleToggleAvailability}
-                                    className={`w-full flex justify-center items-center px-4 py-2 rounded-md transition-colors ${
+                                    disabled={
+                                        toggleAvailabilityMutation.isPending
+                                    }
+                                    className={`w-full flex justify-center items-center px-4 py-2 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
                                         property.isAvailable
                                             ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-200"
                                             : "bg-green-100 text-green-800 hover:bg-green-200"
                                     }`}
                                 >
-                                    {property.isAvailable ? (
+                                    {toggleAvailabilityMutation.isPending ? (
+                                        <>
+                                            <FaSpinner className="animate-spin mr-2" />
+                                            Updating...
+                                        </>
+                                    ) : property.isAvailable ? (
                                         <>
                                             <FaToggleOff className="mr-2" />
                                             Mark as Unavailable

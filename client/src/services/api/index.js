@@ -3,6 +3,7 @@ import propertyService from "./property.service"
 import bookingService from "./booking.service"
 import reviewService from "./review.service"
 import uploadService from "./upload.service"
+import adminService from "./admin.service"
 
 export {
     authService,
@@ -10,4 +11,5 @@ export {
     bookingService,
     reviewService,
     uploadService,
+    adminService,
 }

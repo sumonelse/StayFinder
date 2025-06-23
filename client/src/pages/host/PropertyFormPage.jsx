@@ -486,6 +486,8 @@ const PropertyFormPage = () => {
 
         // Log the current property data for debugging
         console.log("Submitting property data:", propertyData)
+        console.log("isAvailable value:", propertyData.isAvailable)
+        console.log("Submission data isAvailable:", submissionData.isAvailable)
 
         // Images are now handled by the PropertyImageUploader component
         // and already stored in propertyData.images

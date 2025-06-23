@@ -5,6 +5,7 @@ import propertyRoutes from "./property.routes.js"
 import bookingRoutes from "./booking.routes.js"
 import reviewRoutes from "./review.routes.js"
 import uploadRoutes from "./upload.routes.js"
+import adminRoutes from "./admin.routes.js"
 
 const router = express.Router()
 
@@ -25,5 +26,8 @@ router.use("/reviews", reviewRoutes)
 
 // Upload routes
 router.use("/uploads", uploadRoutes)
+
+// Admin routes
+router.use("/admin", adminRoutes)
 
 export default router

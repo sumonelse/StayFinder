@@ -9,6 +9,7 @@ import {
     FaEye,
     FaToggleOn,
     FaToggleOff,
+    FaSpinner,
     FaStar,
     FaFilter,
 } from "react-icons/fa"
@@ -401,7 +402,7 @@ const HostPropertiesPage = () => {
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             <div className="flex space-x-2">
                                                 <Link
-                                                    to={`/properties/${property._id}`}
+                                                    to={`/host/properties/${property._id}`}
                                                     className="text-primary-600 hover:text-primary-900"
                                                     title="View property"
                                                 >
@@ -420,10 +421,13 @@ const HostPropertiesPage = () => {
                                                             property._id
                                                         )
                                                     }
-                                                    className={`${
+                                                    disabled={
+                                                        toggleAvailabilityMutation.isPending
+                                                    }
+                                                    className={`transition-colors disabled:opacity-50 ${
                                                         property.isAvailable
                                                             ? "text-green-600 hover:text-green-900"
-                                                            : "text-gray-600 hover:text-gray-900"
+                                                            : "text-red-600 hover:text-red-900"
                                                     }`}
                                                     title={
                                                         property.isAvailable
@@ -431,7 +435,9 @@ const HostPropertiesPage = () => {
                                                             : "Mark as available"
                                                     }
                                                 >
-                                                    {property.isAvailable ? (
+                                                    {toggleAvailabilityMutation.isPending ? (
+                                                        <FaSpinner className="animate-spin" />
+                                                    ) : property.isAvailable ? (
                                                         <FaToggleOn />
                                                     ) : (
                                                         <FaToggleOff />

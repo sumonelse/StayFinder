@@ -24,6 +24,9 @@ import HostBookingsPage from "../pages/host/HostBookingsPage"
 import PropertyFormPage from "../pages/host/PropertyFormPage"
 import HostPropertyDetailPage from "../pages/host/HostPropertyDetailPage"
 
+import AdminDashboardPage from "../pages/admin/AdminDashboardPage"
+import AdminPropertiesPage from "../pages/admin/AdminPropertiesPage"
+
 import NotFoundPage from "../pages/NotFoundPage"
 import ProtectedRoute from "./ProtectedRoute"
 
@@ -104,8 +107,6 @@ const router = createBrowserRouter([
         ],
     },
 
-    // Auth Layout is not currently used as auth pages are in MainLayout
-
     // Dashboard Layout - For host and admin pages
     {
         path: "/host",
@@ -138,6 +139,26 @@ const router = createBrowserRouter([
             {
                 path: "properties/:id",
                 element: <HostPropertyDetailPage />,
+            },
+        ],
+    },
+
+    // Admin Layout - For admin pages
+    {
+        path: "/admin",
+        element: (
+            <ProtectedRoute requiredRole="admin">
+                <DashboardLayout />
+            </ProtectedRoute>
+        ),
+        children: [
+            {
+                index: true,
+                element: <AdminDashboardPage />,
+            },
+            {
+                path: "properties",
+                element: <AdminPropertiesPage />,
             },
         ],
     },

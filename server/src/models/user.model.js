@@ -38,6 +38,14 @@ const userSchema = new mongoose.Schema(
             type: Boolean,
             default: false,
         },
+        isActive: {
+            type: Boolean,
+            default: true,
+        },
+        suspensionReason: {
+            type: String,
+            default: null,
+        },
         bio: {
             type: String,
             maxlength: 500,

@@ -272,7 +272,49 @@ const PropertyDetailPage = () => {
                         </div>
 
                         <div className="lg:col-span-1">
-                            <div className="h-[400px] bg-secondary-200 rounded-xl"></div>
+                            {/* Booking card skeleton */}
+                            <div className="bg-white rounded-xl shadow-lg border border-secondary-100 p-6">
+                                {/* Price skeleton */}
+                                <div className="flex items-baseline justify-between mb-5">
+                                    <div className="h-8 bg-secondary-200 rounded-lg w-24"></div>
+                                    <div className="h-6 bg-secondary-200 rounded-lg w-16"></div>
+                                </div>
+
+                                {/* Calendar skeleton */}
+                                <div className="mb-4">
+                                    <div className="h-4 bg-secondary-200 rounded w-20 mb-2"></div>
+                                    <div className="border border-secondary-200 rounded-lg p-4">
+                                        <div className="grid grid-cols-7 gap-1 mb-4">
+                                            {[...Array(7)].map((_, i) => (
+                                                <div
+                                                    key={i}
+                                                    className="h-8 bg-secondary-200 rounded"
+                                                ></div>
+                                            ))}
+                                        </div>
+                                        <div className="grid grid-cols-7 gap-1">
+                                            {[...Array(35)].map((_, i) => (
+                                                <div
+                                                    key={i}
+                                                    className="h-8 bg-secondary-100 rounded"
+                                                ></div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Guest selector skeleton */}
+                                <div className="mb-4">
+                                    <div className="h-4 bg-secondary-200 rounded w-16 mb-2"></div>
+                                    <div className="h-12 bg-secondary-200 rounded-lg"></div>
+                                </div>
+
+                                {/* Book button skeleton */}
+                                <div className="h-12 bg-secondary-200 rounded-lg mb-4"></div>
+
+                                {/* Total skeleton */}
+                                <div className="h-6 bg-secondary-200 rounded w-32"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1651,12 +1693,22 @@ const PropertyDetailPage = () => {
                                         </div>
                                     </div>
 
-                                    <Link
-                                        to={`/properties/${id}/book?checkIn=${selectedDates.startDate}&checkOut=${selectedDates.endDate}&guests=${guestCount}`}
-                                        className="btn btn-primary w-full py-3 text-lg font-medium mb-4 shadow-md hover:shadow-lg transition-shadow"
-                                    >
-                                        Book now
-                                    </Link>
+                                    {selectedDates.startDate &&
+                                    selectedDates.endDate ? (
+                                        <Link
+                                            to={`/properties/${id}/book?checkIn=${selectedDates.startDate}&checkOut=${selectedDates.endDate}&guests=${guestCount}`}
+                                            className="block w-full bg-primary-600 hover:bg-primary-700 text-white text-center py-3 text-lg font-medium mb-4 rounded-lg shadow-md hover:shadow-lg transition-all"
+                                        >
+                                            Book now
+                                        </Link>
+                                    ) : (
+                                        <button
+                                            disabled
+                                            className="w-full bg-gray-300 text-gray-500 text-center py-3 text-lg font-medium mb-4 rounded-lg cursor-not-allowed"
+                                        >
+                                            Select dates to book
+                                        </button>
+                                    )}
 
                                     <div className="text-center text-secondary-600 text-sm mb-5 bg-secondary-50 py-2 rounded-lg">
                                         You won't be charged yet
@@ -1921,6 +1973,39 @@ const PropertyDetailPage = () => {
                             </div>
                         ))}
                     </div>
+                </div>
+            </div>
+
+            {/* Sticky mobile booking bar */}
+            <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-50">
+                <div className="flex items-center justify-between p-4">
+                    <div>
+                        <div className="text-lg font-bold text-gray-900">
+                            {formatPrice(property.price)}
+                            <span className="text-sm font-normal text-gray-600">
+                                {" "}
+                                / night
+                            </span>
+                        </div>
+                        {property.avgRating > 0 && (
+                            <div className="flex items-center text-sm">
+                                <FaStar
+                                    className="text-yellow-500 mr-1"
+                                    size={12}
+                                />
+                                <span>{property.avgRating.toFixed(1)}</span>
+                                <span className="text-gray-500 ml-1">
+                                    ({property.reviewCount})
+                                </span>
+                            </div>
+                        )}
+                    </div>
+                    <button
+                        onClick={() => scrollToSection("booking")}
+                        className="bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                    >
+                        Check availability
+                    </button>
                 </div>
             </div>
         </div>

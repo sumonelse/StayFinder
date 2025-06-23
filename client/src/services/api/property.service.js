@@ -144,6 +144,63 @@ const propertyService = {
         const response = await api.get("/properties/nearby", { params })
         return response.data.properties
     },
+
+    /**
+     * Block dates for a property
+     * @param {string} propertyId - Property ID
+     * @param {Array<string>} dates - Array of date strings to block
+     * @param {string} reason - Reason for blocking
+     * @param {string} note - Optional note
+     * @returns {Promise<Object>} Blocked dates response
+     */
+    async blockDates(propertyId, dates, reason = "unavailable", note = "") {
+        const response = await api.post(
+            `/properties/${propertyId}/blocked-dates`,
+            {
+                dates,
+                reason,
+                note,
+            }
+        )
+        return response.data
+    },
+
+    /**
+     * Unblock dates for a property
+     * @param {string} propertyId - Property ID
+     * @param {Array<string>} dates - Array of date strings to unblock
+     * @returns {Promise<Object>} Unblock response
+     */
+    async unblockDates(propertyId, dates) {
+        const response = await api.delete(
+            `/properties/${propertyId}/blocked-dates`,
+            {
+                data: { dates },
+            }
+        )
+        return response.data
+    },
+
+    /**
+     * Get blocked dates for a property
+     * @param {string} propertyId - Property ID
+     * @param {number} year - Year (optional)
+     * @param {number} month - Month (optional)
+     * @returns {Promise<Object>} Blocked dates
+     */
+    async getBlockedDates(propertyId, year, month) {
+        const params = {}
+        if (year) params.year = year
+        if (month) params.month = month
+
+        const response = await api.get(
+            `/properties/${propertyId}/blocked-dates`,
+            {
+                params,
+            }
+        )
+        return response.data.blockedDates
+    },
 }
 
 export default propertyService

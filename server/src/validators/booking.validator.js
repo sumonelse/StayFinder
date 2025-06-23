@@ -111,6 +111,7 @@ export const validateBooking = (schema, property = "body") => {
             message: detail.message,
         }))
 
+        console.log("Validation errors:", errors)
         return res.status(400).json({
             success: false,
             message: "Validation failed",
