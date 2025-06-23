@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react"
 import PropTypes from "prop-types"
 import { FaMapMarkerAlt, FaSearch } from "react-icons/fa"
+import api from "../../services/api/axios"
 
 /**
  * Map component for selecting property location
@@ -110,19 +111,19 @@ const LocationPicker = ({
 
     // Handle search
     const handleSearch = async (e) => {
+        // Make sure to prevent default to avoid parent form submission
         e.preventDefault()
+        e.stopPropagation() // Stop event propagation to parent forms
+
         if (!searchQuery.trim()) return
 
         setIsSearching(true)
 
         try {
-            // Use Nominatim for geocoding (free OpenStreetMap geocoding service)
-            const response = await fetch(
-                `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-                    searchQuery
-                )}`
-            )
-            const data = await response.json()
+            // Use Axios with our backend proxy for geocoding
+            const data = await api.get(`/geocode/search`, {
+                params: { q: searchQuery },
+            })
 
             setGeocodeResults(data)
             setIsSearching(false)
@@ -186,12 +187,10 @@ const LocationPicker = ({
             setSearchQuery(addressString)
 
             try {
-                const response = await fetch(
-                    `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-                        addressString
-                    )}`
-                )
-                const data = await response.json()
+                // Use Axios with our backend proxy for geocoding
+                const data = await api.get(`/geocode/search`, {
+                    params: { q: addressString },
+                })
 
                 if (data.length > 0) {
                     const result = data[0]
@@ -224,7 +223,8 @@ const LocationPicker = ({
     return (
         <div className="space-y-4">
             <div className="flex flex-col space-y-2">
-                <form onSubmit={handleSearch} className="flex">
+                {/* Use div instead of form to avoid nested form issues */}
+                <div className="flex">
                     <div className="relative flex-grow">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <FaSearch className="text-gray-400" />
@@ -235,16 +235,24 @@ const LocationPicker = ({
                             onChange={(e) => setSearchQuery(e.target.value)}
                             placeholder="Search for a location"
                             className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                            onKeyDown={(e) => {
+                                // Handle Enter key press
+                                if (e.key === "Enter") {
+                                    e.preventDefault()
+                                    handleSearch(e)
+                                }
+                            }}
                         />
                     </div>
                     <button
-                        type="submit"
+                        type="button"
+                        onClick={handleSearch}
                         className="bg-primary-600 text-white px-4 py-2 rounded-r-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
                         disabled={isSearching}
                     >
                         {isSearching ? "Searching..." : "Search"}
                     </button>
-                </form>
+                </div>
 
                 {/* Search results */}
                 {geocodeResults.length > 0 && (

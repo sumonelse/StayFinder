@@ -6,6 +6,7 @@ import bookingRoutes from "./booking.routes.js"
 import reviewRoutes from "./review.routes.js"
 import uploadRoutes from "./upload.routes.js"
 import adminRoutes from "./admin.routes.js"
+import geocodeRoutes from "./geocode.routes.js"
 
 const router = express.Router()
 
@@ -29,5 +30,8 @@ router.use("/uploads", uploadRoutes)
 
 // Admin routes
 router.use("/admin", adminRoutes)
+
+// Geocoding proxy routes
+router.use("/geocode", geocodeRoutes)
 
 export default router
