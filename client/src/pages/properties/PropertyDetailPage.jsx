@@ -75,6 +75,7 @@ import PriceBreakdownModal from "../../components/property/PriceBreakdownModal"
 import AmenitiesModal from "../../components/property/AmenitiesModal"
 import RulesModal from "../../components/property/RulesModal"
 import ReportModal from "../../components/property/ReportModal"
+import DescriptionModal from "../../components/property/DescriptionModal"
 import { Button, Badge } from "../../components/ui"
 import { formatPrice } from "../../utils/currency"
 import {
@@ -96,6 +97,7 @@ const PropertyDetailPage = () => {
         useState(false)
     const [showAmenitiesModal, setShowAmenitiesModal] = useState(false)
     const [showRulesModal, setShowRulesModal] = useState(false)
+    const [showDescriptionModal, setShowDescriptionModal] = useState(false)
     const [selectedDates, setSelectedDates] = useState({
         startDate: "",
         endDate: "",
@@ -799,7 +801,32 @@ const PropertyDetailPage = () => {
                                     About this place
                                 </h2>
                                 <div className="text-secondary-700 space-y-4 leading-relaxed">
-                                    <p>{property.description}</p>
+                                    <p>
+                                        {property.description &&
+                                        property.description.length > 300
+                                            ? `${property.description.substring(
+                                                  0,
+                                                  300
+                                              )}...`
+                                            : property.description}
+                                    </p>
+                                    {property.description &&
+                                        property.description.length > 300 && (
+                                            <button
+                                                onClick={() =>
+                                                    setShowDescriptionModal(
+                                                        true
+                                                    )
+                                                }
+                                                className="mt-2 text-primary-600 hover:text-primary-800 font-medium flex items-center"
+                                            >
+                                                Read more
+                                                <FaChevronRight
+                                                    className="ml-1"
+                                                    size={12}
+                                                />
+                                            </button>
+                                        )}
                                 </div>
                             </div>
                         </div>
@@ -2147,6 +2174,13 @@ const PropertyDetailPage = () => {
                 isOpen={showAmenitiesModal}
                 onClose={() => setShowAmenitiesModal(false)}
                 amenities={property?.amenities || []}
+            />
+
+            <DescriptionModal
+                isOpen={showDescriptionModal}
+                onClose={() => setShowDescriptionModal(false)}
+                description={property?.description}
+                title={property?.title}
             />
         </div>
     )
