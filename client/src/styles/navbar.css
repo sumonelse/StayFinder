@@ -112,10 +112,6 @@
 
 /* Debug styles for mobile menu visibility */
 @media (max-width: 768px) {
-    #mobile-menu {
-        border-left: 3px solid #ef4444; /* Temporary debug border */
-    }
-
     #mobile-menu.translate-x-0 {
         transform: translateX(0) !important;
         visibility: visible !important;
