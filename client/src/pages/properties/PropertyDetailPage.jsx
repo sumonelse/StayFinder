@@ -852,16 +852,7 @@ const PropertyDetailPage = () => {
                             </div>
                         </div>
 
-                        {/* House Rules */}
-                        <div ref={rulesRef} id="rules" className="scroll-mt-20">
-                            <div className="bg-white p-6 rounded-xl border border-secondary-100 shadow-sm mb-8 hover:shadow-md transition-shadow">
-                                <PropertyRules
-                                    rules={property.rules || {}}
-                                    showAll={false}
-                                    maxInitialRules={5}
-                                />
-                            </div>
-                        </div>
+                        {/* House Rules section is now handled below */}
 
                         {/* Location */}
                         <div
