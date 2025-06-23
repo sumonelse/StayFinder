@@ -8,6 +8,11 @@ const router = express.Router()
  * @desc    Proxy for Nominatim geocoding search and reverse geocoding
  * @access  Public
  */
+/**
+ * @route   GET /api/geocode/search
+ * @desc    Proxy for Nominatim geocoding search and reverse geocoding
+ * @access  Public
+ */
 router.get("/search", async (req, res) => {
     try {
         const { q, reverse } = req.query
@@ -21,18 +26,24 @@ router.get("/search", async (req, res) => {
 
         // Check if this is a reverse geocoding request (coordinates to address)
         if (reverse === "true") {
-            // Parse coordinates from query
-            let lat, lon
+            // Parse and validate coordinates from query
+            const coords = q.split(",").map((coord) => parseFloat(coord.trim()))
 
-            // Check if q contains coordinates in format "lat,lon"
-            if (q.includes(",")) {
-                ;[lat, lon] = q
-                    .split(",")
-                    .map((coord) => parseFloat(coord.trim()))
-            } else {
+            if (coords.length !== 2 || coords.some(isNaN)) {
                 return res.status(400).json({
                     success: false,
-                    message: "Invalid coordinates format for reverse geocoding",
+                    message: "Invalid coordinates format. Expected: 'lat,lon'",
+                })
+            }
+
+            const [lat, lon] = coords
+
+            // Validate coordinate ranges
+            if (lat < -90 || lat > 90 || lon < -180 || lon > 180) {
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "Coordinates out of valid range. Latitude: -90 to 90, Longitude: -180 to 180",
                 })
             }
 
@@ -74,6 +85,24 @@ router.get("/search", async (req, res) => {
         res.json(response.data)
     } catch (error) {
         console.error("Geocoding proxy error:", error.message)
+
+        // Handle specific axios errors
+        if (error.response) {
+            return res.status(error.response.status).json({
+                success: false,
+                message: `External API error: ${error.response.statusText}`,
+            })
+        }
+
+        // Handle network/timeout errors
+        if (error.code === "ECONNREFUSED" || error.code === "ETIMEDOUT") {
+            return res.status(503).json({
+                success: false,
+                message: "Geocoding service temporarily unavailable",
+            })
+        }
+
+        // Generic error fallback
         res.status(500).json({
             success: false,
             message: "Error fetching geocoding data",
