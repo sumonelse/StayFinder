@@ -617,14 +617,15 @@ const Header = () => {
                 <div
                     id="mobile-menu"
                     ref={mobileMenuRef}
-                    className={`fixed top-0 right-0 h-full w-4/5 max-w-sm bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out ${
+                    className={`fixed top-0 right-0 h-screen w-4/5 max-w-sm bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out ${
                         isMenuOpen
                             ? "translate-x-0 mobile-menu-animation"
                             : "translate-x-full"
-                    } md:hidden overflow-y-auto scrollbar-thin`}
+                    } md:hidden overflow-y-auto scrollbar-thin flex flex-col`}
                     aria-hidden={!isMenuOpen}
                 >
-                    <div className="flex justify-between items-center p-4 border-b border-secondary-100 bg-primary-50">
+                    {/* Mobile Menu Header */}
+                    <div className="flex justify-between items-center p-4 border-b border-secondary-100 bg-primary-50 flex-shrink-0">
                         <Link
                             to="/"
                             className="flex items-center"
@@ -646,7 +647,8 @@ const Header = () => {
                         </button>
                     </div>
 
-                    <div className="p-4">
+                    {/* Mobile Menu Content */}
+                    <div className="flex-1 overflow-y-auto p-4">
                         {/* Mobile Search - Enhanced */}
                         <div className="relative mb-6">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -848,7 +850,8 @@ const Header = () => {
                             </div>
                         )}
 
-                        <div className="mt-8 pt-4 border-t border-secondary-100">
+                        {/* Mobile Menu Footer */}
+                        <div className="mt-auto pt-4 border-t border-secondary-100 flex-shrink-0">
                             {isAuthenticated ? (
                                 <Button
                                     variant="outline"
