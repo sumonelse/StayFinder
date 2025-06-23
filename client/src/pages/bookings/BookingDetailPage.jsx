@@ -288,7 +288,7 @@ const BookingDetailPage = () => {
                             <div className="md:w-1/3 h-56 md:h-auto relative">
                                 <img
                                     src={
-                                        booking.property.images[0] ||
+                                        booking.property.images[0].url ||
                                         "https://via.placeholder.com/300x200?text=No+Image"
                                     }
                                     alt={booking.property.title}
@@ -383,7 +383,7 @@ const BookingDetailPage = () => {
                                                 </p>
                                                 <p className="font-medium text-secondary-900">
                                                     {new Date(
-                                                        booking.startDate
+                                                        booking.checkInDate
                                                     ).toLocaleDateString(
                                                         "en-US",
                                                         {
@@ -412,7 +412,7 @@ const BookingDetailPage = () => {
                                                 </p>
                                                 <p className="font-medium text-secondary-900">
                                                     {new Date(
-                                                        booking.endDate
+                                                        booking.checkOutDate
                                                     ).toLocaleDateString(
                                                         "en-US",
                                                         {
@@ -433,8 +433,8 @@ const BookingDetailPage = () => {
                                     <div className="text-center bg-primary-50 py-2 px-4 rounded-lg border border-primary-100">
                                         <span className="font-medium text-primary-700">
                                             {calculateNights(
-                                                booking.startDate,
-                                                booking.endDate
+                                                booking.checkInDate,
+                                                booking.checkOutDate
                                             )}{" "}
                                             nights
                                         </span>
@@ -458,8 +458,9 @@ const BookingDetailPage = () => {
                                                     Number of guests
                                                 </p>
                                                 <p className="font-medium text-secondary-900">
-                                                    {booking.guests}{" "}
-                                                    {booking.guests === 1
+                                                    {booking.numberOfGuests}{" "}
+                                                    {booking.numberOfGuests ===
+                                                    1
                                                         ? "guest"
                                                         : "guests"}
                                                 </p>
@@ -922,25 +923,25 @@ const BookingDetailPage = () => {
                             <div className="w-24 h-24 rounded-full overflow-hidden mb-4 md:mb-0 md:mr-6 border-4 border-secondary-100 shadow-sm">
                                 <img
                                     src={
-                                        booking.property.host.avatar ||
+                                        booking.host.profilePicture ||
                                         "https://via.placeholder.com/100x100?text=Host"
                                     }
-                                    alt={booking.property.host.name}
+                                    alt={booking.host.name}
                                     className="w-full h-full object-cover"
                                 />
                             </div>
                             <div className="flex-1">
                                 <h3 className="font-medium text-xl text-secondary-900 mb-1">
-                                    {booking.property.host.name}
+                                    {booking.host.name}
                                 </h3>
                                 <div className="flex items-center mb-4">
                                     <span className="bg-primary-50 text-primary-700 text-sm px-3 py-1 rounded-full border border-primary-100">
                                         Host since{" "}
                                         {new Date(
-                                            booking.property.host.createdAt
+                                            booking.host.createdAt
                                         ).getFullYear()}
                                     </span>
-                                    {booking.property.host.isSuperhost && (
+                                    {booking.host.isSuperhost && (
                                         <span className="bg-yellow-50 text-yellow-700 text-sm px-3 py-1 rounded-full border border-yellow-100 ml-2">
                                             Superhost
                                         </span>
@@ -962,8 +963,7 @@ const BookingDetailPage = () => {
                                                         Phone
                                                     </p>
                                                     <p className="font-medium text-secondary-900">
-                                                        {booking.property.host
-                                                            .phone ||
+                                                        {booking.host.phone ||
                                                             "Not provided"}
                                                     </p>
                                                 </div>
@@ -977,8 +977,7 @@ const BookingDetailPage = () => {
                                                         Email
                                                     </p>
                                                     <p className="font-medium text-secondary-900">
-                                                        {booking.property.host
-                                                            .email ||
+                                                        {booking.host.email ||
                                                             "Not provided"}
                                                     </p>
                                                 </div>
@@ -1016,8 +1015,8 @@ const BookingDetailPage = () => {
                                     <span className="text-secondary-700">
                                         {formatPrice(booking.property.price)} x{" "}
                                         {calculateNights(
-                                            booking.startDate,
-                                            booking.endDate
+                                            booking.checkInDate,
+                                            booking.checkOutDate
                                         )}{" "}
                                         nights
                                     </span>
@@ -1025,8 +1024,8 @@ const BookingDetailPage = () => {
                                         {formatPrice(
                                             booking.property.price *
                                                 calculateNights(
-                                                    booking.startDate,
-                                                    booking.endDate
+                                                    booking.checkInDate,
+                                                    booking.checkOutDate
                                                 )
                                         )}
                                     </span>
@@ -1115,7 +1114,7 @@ const BookingDetailPage = () => {
 
                                 {/* Contact host button */}
                                 <Link
-                                    to={`/messages?hostId=${booking.property.host._id}`}
+                                    to={`/messages?hostId=${booking.host._id}`}
                                     className="w-full flex justify-center items-center px-4 py-3 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-colors font-medium"
                                 >
                                     <FaEnvelope className="mr-2" />

@@ -38,6 +38,8 @@ const HostBookingsPage = () => {
         queryFn: () => bookingService.getHostBookings(filters),
     })
 
+    console.log("Booking data:", data)
+
     // Update booking status mutation
     const updateBookingStatusMutation = useMutation({
         mutationFn: ({ id, status, reason }) =>
@@ -361,16 +363,16 @@ const HostBookingsPage = () => {
                                                     <img
                                                         className="h-10 w-10 rounded-full"
                                                         src={
-                                                            booking.user
-                                                                .avatar ||
+                                                            booking.guest
+                                                                .profilePicture ||
                                                             "https://via.placeholder.com/40x40?text=Guest"
                                                         }
-                                                        alt={booking.user.name}
+                                                        alt={booking.guest.name}
                                                     />
                                                 </div>
                                                 <div className="ml-4">
                                                     <div className="text-sm font-medium text-gray-900">
-                                                        {booking.user.name}
+                                                        {booking.guest.name}
                                                     </div>
                                                     <div className="text-sm text-gray-500">
                                                         {booking.guests} guest
@@ -391,15 +393,20 @@ const HostBookingsPage = () => {
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <div className="text-sm text-gray-900">
-                                                {formatDate(booking.startDate)}
+                                                {formatDate(
+                                                    booking.checkInDate
+                                                )}
                                             </div>
                                             <div className="text-sm text-gray-500">
-                                                to {formatDate(booking.endDate)}
+                                                to{" "}
+                                                {formatDate(
+                                                    booking.checkOutDate
+                                                )}
                                             </div>
                                             <div className="text-xs text-gray-500">
                                                 {calculateNights(
-                                                    booking.startDate,
-                                                    booking.endDate
+                                                    booking.checkInDate,
+                                                    booking.checkOutDate
                                                 )}{" "}
                                                 nights
                                             </div>
@@ -454,7 +461,7 @@ const HostBookingsPage = () => {
                                                     </button>
                                                 )}
                                                 <Link
-                                                    to={`/messages?userId=${booking.user._id}`}
+                                                    to={`/messages?userId=${booking.guest._id}`}
                                                     className="text-primary-600 hover:text-primary-900"
                                                 >
                                                     Message

@@ -33,6 +33,10 @@ export const bookingValidators = {
         specialRequests: Joi.string().allow("").max(500).messages({
             "string.max": "Special requests cannot exceed 500 characters",
         }),
+        totalPrice: Joi.number().positive().optional().messages({
+            "number.base": "Total price must be a number",
+            "number.positive": "Total price must be a positive number",
+        }),
     }),
 
     /**

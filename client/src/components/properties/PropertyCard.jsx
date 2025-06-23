@@ -8,11 +8,16 @@ import {
     FaUsers,
     FaAngleRight,
     FaCheck,
+    FaClock,
+    FaTimesCircle,
+    FaCheckCircle,
+    FaExclamationTriangle,
 } from "react-icons/fa"
 import { MdVerified, MdLocationOn } from "react-icons/md"
 import { useAuth } from "../../context/AuthContext"
 import { Card, Badge } from "../ui"
 import { formatPrice } from "../../utils/currency"
+import AvailabilityIndicator from "../property/AvailabilityIndicator"
 
 /**
  * Enhanced Property card component with modern styling and animations
@@ -156,12 +161,22 @@ const PropertyCard = ({ property, onToggleFavorite, viewMode = "grid" }) => {
                         </div>
 
                         {/* Location */}
-                        <div className="flex items-center text-secondary-600 mb-4">
+                        <div className="flex items-center text-secondary-600 mb-3">
                             <MdLocationOn className="mr-2 text-primary-500 flex-shrink-0" />
                             <span className="text-sm line-clamp-1">
                                 {property.address?.city},{" "}
                                 {property.address?.country}
                             </span>
+                        </div>
+
+                        {/* Availability Status */}
+                        <div className="mb-4">
+                            <AvailabilityIndicator
+                                property={property}
+                                variant="badge"
+                                showActions={false}
+                                className="shadow-sm"
+                            />
                         </div>
 
                         {/* Amenities Preview */}
@@ -302,13 +317,20 @@ const PropertyCard = ({ property, onToggleFavorite, viewMode = "grid" }) => {
                                 </div>
 
                                 {/* Location */}
-                                <div className="flex items-center text-secondary-600 mt-1">
+                                <div className="flex items-center text-secondary-600 mt-1 mb-2">
                                     <MdLocationOn className="mr-1.5 text-primary-500 flex-shrink-0" />
                                     <span className="text-sm line-clamp-1">
                                         {property.address?.city},{" "}
                                         {property.address?.country}
                                     </span>
                                 </div>
+
+                                {/* Availability Status */}
+                                <AvailabilityIndicator
+                                    property={property}
+                                    variant="compact"
+                                    showActions={false}
+                                />
                             </div>
 
                             {/* Price */}

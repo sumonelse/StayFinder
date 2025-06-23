@@ -53,6 +53,10 @@ import {
     FaRegClock,
     FaRegSmile,
     FaRegCommentDots,
+    FaExclamationTriangle,
+    FaClock,
+    FaTimesCircle,
+    FaCheckCircle,
 } from "react-icons/fa"
 import { propertyService, reviewService } from "../../services/api"
 import { useAuth } from "../../context/AuthContext"
@@ -60,6 +64,7 @@ import ImageGallery from "../../components/property/ImageGallery"
 import ShareModal from "../../components/property/ShareModal"
 import AvailabilityCalendar from "../../components/property/AvailabilityCalendar"
 import PropertyRules from "../../components/property/PropertyRules"
+import PropertyStatus from "../../components/property/PropertyStatus"
 import { Button, Badge, DatePicker } from "../../components/ui"
 import { formatPrice } from "../../utils/currency"
 import {
@@ -204,6 +209,11 @@ const PropertyDetailPage = () => {
     // Scroll to booking section
     const scrollToBooking = () => {
         bookingSectionRef.current?.scrollIntoView({ behavior: "smooth" })
+    }
+
+    // Check if property can be booked (simple version for backward compatibility)
+    const canBookProperty = () => {
+        return property && property.isApproved && property.isAvailable
     }
 
     // Check if property is in user's favorites
@@ -628,24 +638,55 @@ const PropertyDetailPage = () => {
 
                 {/* Quick Book Button - Mobile Only */}
                 <div className="md:hidden my-4">
-                    <Button
-                        variant="primary"
-                        fullWidth
-                        size="lg"
-                        onClick={scrollToBooking}
-                        className="sticky top-2 z-10 shadow-lg"
-                    >
-                        <div className="flex justify-between items-center w-full">
-                            <span className="font-bold">
-                                {formatPrice(property.price)}
-                                <span className="font-normal text-sm">
-                                    {" "}
-                                    / night
+                    {canBookProperty() ? (
+                        <Button
+                            variant="primary"
+                            fullWidth
+                            size="lg"
+                            onClick={scrollToBooking}
+                            className="sticky top-2 z-10 shadow-lg"
+                        >
+                            <div className="flex justify-between items-center w-full">
+                                <span className="font-bold">
+                                    {formatPrice(property.price)}
+                                    <span className="font-normal text-sm">
+                                        {" "}
+                                        / night
+                                    </span>
                                 </span>
-                            </span>
-                            <span>Book Now</span>
+                                <span className="flex items-center">
+                                    <FaCheckCircle className="mr-1" size={16} />
+                                    Book Now
+                                </span>
+                            </div>
+                        </Button>
+                    ) : (
+                        <div
+                            className={`p-4 rounded-lg text-center border-2 ${
+                                !property.isApproved
+                                    ? "bg-yellow-50 text-yellow-800 border-yellow-200"
+                                    : "bg-red-50 text-red-800 border-red-200"
+                            }`}
+                        >
+                            <div className="flex items-center justify-center mb-2">
+                                {!property.isApproved ? (
+                                    <FaClock className="mr-2" size={18} />
+                                ) : (
+                                    <FaTimesCircle className="mr-2" size={18} />
+                                )}
+                                <span className="font-semibold">
+                                    {!property.isApproved
+                                        ? "Under Review"
+                                        : "Not Available"}
+                                </span>
+                            </div>
+                            <p className="text-sm">
+                                {!property.isApproved
+                                    ? "This property is being reviewed and will be available soon."
+                                    : "This property is currently unavailable for booking."}
+                            </p>
                         </div>
-                    </Button>
+                    )}
                 </div>
 
                 {/* Property details and booking */}
@@ -728,6 +769,12 @@ const PropertyDetailPage = () => {
                                     </Button>
                                 </div>
                             </div>
+
+                            {/* Property Status Banner */}
+                            <PropertyStatus
+                                property={property}
+                                showBanner={true}
+                            />
 
                             {/* Property highlights */}
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
@@ -1693,22 +1740,75 @@ const PropertyDetailPage = () => {
                                         </div>
                                     </div>
 
-                                    {selectedDates.startDate &&
-                                    selectedDates.endDate ? (
-                                        <Link
-                                            to={`/properties/${id}/book?checkIn=${selectedDates.startDate}&checkOut=${selectedDates.endDate}&guests=${guestCount}`}
-                                            className="block w-full bg-primary-600 hover:bg-primary-700 text-white text-center py-3 text-lg font-medium mb-4 rounded-lg shadow-md hover:shadow-lg transition-all"
-                                        >
-                                            Book now
-                                        </Link>
-                                    ) : (
-                                        <button
-                                            disabled
-                                            className="w-full bg-gray-300 text-gray-500 text-center py-3 text-lg font-medium mb-4 rounded-lg cursor-not-allowed"
-                                        >
-                                            Select dates to book
-                                        </button>
-                                    )}
+                                    {(() => {
+                                        // Check if property can be booked
+                                        if (!canBookProperty()) {
+                                            return (
+                                                <div className="mb-4">
+                                                    <button
+                                                        disabled
+                                                        className="w-full bg-gray-400 text-white text-center py-3 text-lg font-medium rounded-lg cursor-not-allowed mb-2 opacity-75"
+                                                    >
+                                                        <div className="flex items-center justify-center">
+                                                            {!property.isApproved ? (
+                                                                <>
+                                                                    <FaClock className="mr-2" />
+                                                                    Property
+                                                                    Under Review
+                                                                </>
+                                                            ) : (
+                                                                <>
+                                                                    <FaTimesCircle className="mr-2" />
+                                                                    Property
+                                                                    Unavailable
+                                                                </>
+                                                            )}
+                                                        </div>
+                                                    </button>
+                                                    <div
+                                                        className={`text-center text-sm p-3 rounded-lg ${
+                                                            !property.isApproved
+                                                                ? "bg-yellow-50 text-yellow-700 border border-yellow-200"
+                                                                : "bg-red-50 text-red-700 border border-red-200"
+                                                        }`}
+                                                    >
+                                                        {!property.isApproved
+                                                            ? "This property is being reviewed by our team. You'll be able to book once it's approved."
+                                                            : "This property is currently not available for booking. Contact the host for more information."}
+                                                    </div>
+                                                </div>
+                                            )
+                                        }
+
+                                        if (
+                                            selectedDates.startDate &&
+                                            selectedDates.endDate
+                                        ) {
+                                            return (
+                                                <Link
+                                                    to={`/properties/${id}/book?checkIn=${selectedDates.startDate}&checkOut=${selectedDates.endDate}&guests=${guestCount}`}
+                                                    className="block w-full bg-primary-600 hover:bg-primary-700 text-white text-center py-3 text-lg font-medium mb-4 rounded-lg shadow-md hover:shadow-lg transition-all focus:ring-4 focus:ring-primary-200"
+                                                >
+                                                    <div className="flex items-center justify-center">
+                                                        <FaCheckCircle className="mr-2" />
+                                                        Book now
+                                                    </div>
+                                                </Link>
+                                            )
+                                        }
+
+                                        return (
+                                            <button
+                                                disabled
+                                                className="w-full bg-gray-300 text-gray-500 text-center py-3 text-lg font-medium mb-4 rounded-lg cursor-not-allowed"
+                                            >
+                                                <div className="flex items-center justify-center">
+                                                    <FaCalendarAlt className="mr-2" />
+                                                    Select dates to book
+                                                </div>
+                                            </button>
+                                        )
+                                    })()}
 
                                     <div className="text-center text-secondary-600 text-sm mb-5 bg-secondary-50 py-2 rounded-lg">
                                         You won't be charged yet

@@ -250,14 +250,19 @@ const BookingListPage = () => {
                                         <div className="flex items-center mr-6 mb-2 md:mb-0">
                                             <FaCalendarAlt className="mr-2 text-gray-500" />
                                             <span>
-                                                {formatDate(booking.startDate)}{" "}
-                                                - {formatDate(booking.endDate)}
+                                                {formatDate(
+                                                    booking.checkInDate
+                                                )}{" "}
+                                                -{" "}
+                                                {formatDate(
+                                                    booking.checkOutDate
+                                                )}
                                             </span>
                                         </div>
                                         <div>
                                             <span className="font-medium">
-                                                {booking.guests} guest
-                                                {booking.guests !== 1
+                                                {booking.numberOfGuests} guest
+                                                {booking.numberOfGuests !== 1
                                                     ? "s"
                                                     : ""}
                                             </span>
