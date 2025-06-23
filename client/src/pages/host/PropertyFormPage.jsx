@@ -30,6 +30,19 @@ const PropertyFormPage = () => {
 
     console.log("PropertyFormPage rendered, isEditMode:", isEditMode, "id:", id)
 
+    // Sample sectioned description for demonstration
+    const sampleSectionedDescription = `## The Space
+This beautiful property features high ceilings, modern furnishings, and plenty of natural light. The open floor plan creates a spacious feel, perfect for relaxing after a day of exploring.
+
+## Guest Access
+Guests have access to the entire property, including the fully equipped kitchen, private bathroom, and comfortable living area. High-speed WiFi is available throughout.
+
+## The Neighborhood
+Located in a quiet and safe area, yet just minutes away from popular attractions, restaurants, and shopping. Public transportation is easily accessible.
+
+## Getting Around
+The property is conveniently located near public transportation. There's also street parking available if you're traveling by car.`
+
     // Form state
     const [propertyData, setPropertyData] = useState({
         title: "",
@@ -875,18 +888,63 @@ const PropertyFormPage = () => {
                                 >
                                     Description*
                                 </label>
+                                <div className="mb-2">
+                                    <div className="bg-primary-50 border border-primary-100 rounded-lg p-3 mb-3">
+                                        <h4 className="text-sm font-medium text-primary-700 mb-1">
+                                            Pro Tip: Use Section Headers
+                                        </h4>
+                                        <p className="text-xs text-primary-600">
+                                            Make your description more organized
+                                            by using section headers. Use{" "}
+                                            <span className="font-mono bg-white px-1 rounded">
+                                                ## Section Title
+                                            </span>{" "}
+                                            to create headers. Example:
+                                        </p>
+                                        <div className="mt-2 text-xs bg-white p-2 rounded border border-primary-100 font-mono text-secondary-700">
+                                            ## The Space
+                                            <br />
+                                            This cozy apartment features...
+                                            <br />
+                                            <br />
+                                            ## Guest Access
+                                            <br />
+                                            Guests will have access to...
+                                            <br />
+                                            <br />
+                                            ## The Neighborhood
+                                            <br />
+                                            Located in a quiet area...
+                                        </div>
+                                        <div className="mt-2 flex justify-end">
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    setPropertyData({
+                                                        ...propertyData,
+                                                        description:
+                                                            sampleSectionedDescription,
+                                                    })
+                                                }}
+                                                className="text-xs bg-primary-600 text-white px-2 py-1 rounded hover:bg-primary-700 transition-colors"
+                                            >
+                                                Try Sample Format
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                                 <textarea
                                     id="description"
                                     name="description"
-                                    rows="6"
+                                    rows="8"
                                     value={propertyData.description}
                                     onChange={handleInputChange}
                                     className={`w-full px-3 py-2 border ${
                                         errors.description
                                             ? "border-red-500"
                                             : "border-gray-300"
-                                    } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
-                                    placeholder="Describe your property in detail..."
+                                    } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 font-mono text-sm`}
+                                    placeholder="## The Space&#10;Describe your property in detail...&#10;&#10;## Guest Access&#10;What can guests use?&#10;&#10;## The Neighborhood&#10;What's special about the area?"
                                 ></textarea>
                                 {errors.description && (
                                     <p className="mt-1 text-sm text-red-600">
@@ -895,7 +953,8 @@ const PropertyFormPage = () => {
                                 )}
                                 <p className="mt-1 text-sm text-gray-500">
                                     Minimum 50 characters. Provide a detailed
-                                    description of your property.
+                                    description of your property using sections
+                                    for better organization.
                                 </p>
                             </div>
 

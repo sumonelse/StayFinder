@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react"
 import { useParams, Link, useNavigate } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
+import PropertyDescription from "../../components/property/PropertyDescription"
 import {
     FaStar,
     FaMapMarkerAlt,
@@ -794,40 +795,54 @@ const PropertyDetailPage = () => {
                                 </div>
                             </div>
 
-                            {/* Property description */}
-                            <div className="bg-white p-6 rounded-xl border border-secondary-100 shadow-sm mb-8 hover:shadow-md transition-shadow">
+                            {/* Property description with section headers */}
+                            <div className="bg-white p-6 rounded-xl border border-secondary-100 shadow-sm mb-8 hover:shadow-md transition-shadow relative overflow-hidden group">
+                                {/* Subtle background pattern */}
+                                <div className="absolute top-0 right-0 w-32 h-32 opacity-5 pointer-events-none transition-opacity duration-300 group-hover:opacity-10">
+                                    <svg
+                                        viewBox="0 0 100 100"
+                                        className="w-full h-full text-primary-500"
+                                    >
+                                        <pattern
+                                            id="pattern-circles"
+                                            x="0"
+                                            y="0"
+                                            width="20"
+                                            height="20"
+                                            patternUnits="userSpaceOnUse"
+                                            patternContentUnits="userSpaceOnUse"
+                                        >
+                                            <circle
+                                                id="pattern-circle"
+                                                cx="10"
+                                                cy="10"
+                                                r="2"
+                                                fill="currentColor"
+                                            ></circle>
+                                        </pattern>
+                                        <rect
+                                            x="0"
+                                            y="0"
+                                            width="100%"
+                                            height="100%"
+                                            fill="url(#pattern-circles)"
+                                        ></rect>
+                                    </svg>
+                                </div>
+
                                 <h2 className="text-2xl font-semibold mb-4 text-secondary-900 flex items-center">
                                     <FaHome className="mr-3 text-primary-500" />
                                     About this place
                                 </h2>
-                                <div className="text-secondary-700 space-y-4 leading-relaxed">
-                                    <p>
-                                        {property.description &&
-                                        property.description.length > 300
-                                            ? `${property.description.substring(
-                                                  0,
-                                                  300
-                                              )}...`
-                                            : property.description}
-                                    </p>
-                                    {property.description &&
-                                        property.description.length > 300 && (
-                                            <button
-                                                onClick={() =>
-                                                    setShowDescriptionModal(
-                                                        true
-                                                    )
-                                                }
-                                                className="mt-2 text-primary-600 hover:text-primary-800 font-medium flex items-center"
-                                            >
-                                                Read more
-                                                <FaChevronRight
-                                                    className="ml-1"
-                                                    size={12}
-                                                />
-                                            </button>
-                                        )}
-                                </div>
+
+                                {/* Use the new PropertyDescription component */}
+                                <PropertyDescription
+                                    description={property.description}
+                                    onReadMore={() =>
+                                        setShowDescriptionModal(true)
+                                    }
+                                    maxLength={400}
+                                />
                             </div>
                         </div>
 
