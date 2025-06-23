@@ -5,12 +5,12 @@ const router = express.Router()
 
 /**
  * @route   GET /api/geocode/search
- * @desc    Proxy for Nominatim geocoding search
+ * @desc    Proxy for Nominatim geocoding search and reverse geocoding
  * @access  Public
  */
 router.get("/search", async (req, res) => {
     try {
-        const { q } = req.query
+        const { q, reverse } = req.query
 
         if (!q) {
             return res.status(400).json({
@@ -19,7 +19,44 @@ router.get("/search", async (req, res) => {
             })
         }
 
-        // Add a user agent as required by Nominatim's usage policy
+        // Check if this is a reverse geocoding request (coordinates to address)
+        if (reverse === "true") {
+            // Parse coordinates from query
+            let lat, lon
+
+            // Check if q contains coordinates in format "lat,lon"
+            if (q.includes(",")) {
+                ;[lat, lon] = q
+                    .split(",")
+                    .map((coord) => parseFloat(coord.trim()))
+            } else {
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid coordinates format for reverse geocoding",
+                })
+            }
+
+            // Perform reverse geocoding
+            const response = await axios.get(
+                `https://nominatim.openstreetmap.org/reverse`,
+                {
+                    params: {
+                        format: "json",
+                        lat,
+                        lon,
+                        zoom: 18,
+                        addressdetails: 1,
+                    },
+                    headers: {
+                        "User-Agent": "StayFinder_App/1.0",
+                    },
+                }
+            )
+
+            return res.json(response.data)
+        }
+
+        // Regular forward geocoding (address to coordinates)
         const response = await axios.get(
             `https://nominatim.openstreetmap.org/search`,
             {

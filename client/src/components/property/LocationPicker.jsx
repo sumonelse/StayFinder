@@ -20,6 +20,8 @@ const LocationPicker = ({
     const [selectedLocation, setSelectedLocation] = useState(initialLocation)
     const [geocodeResults, setGeocodeResults] = useState([])
     const [isSearching, setIsSearching] = useState(false)
+    const [isGettingCurrentLocation, setIsGettingCurrentLocation] =
+        useState(false)
 
     // Initialize map when component mounts
     useEffect(() => {
@@ -108,6 +110,61 @@ const LocationPicker = ({
         markerRef.current.setLatLng([lat, lng])
         mapInstanceRef.current.setView([lat, lng], 13)
     }, [initialLocation])
+
+    // Get current location
+    const getCurrentLocation = () => {
+        if (!navigator.geolocation) {
+            alert("Geolocation is not supported by your browser")
+            return
+        }
+
+        setIsGettingCurrentLocation(true)
+
+        navigator.geolocation.getCurrentPosition(
+            async (position) => {
+                const { latitude, longitude } = position.coords
+
+                // Update map and marker
+                if (markerRef.current && mapInstanceRef.current) {
+                    markerRef.current.setLatLng([latitude, longitude])
+                    mapInstanceRef.current.setView([latitude, longitude], 13)
+                }
+
+                // Set the new coordinates
+                const newCoordinates = [longitude, latitude]
+                setSelectedLocation({ coordinates: newCoordinates })
+
+                // Notify parent component
+                if (onLocationChange) {
+                    onLocationChange({ coordinates: newCoordinates })
+                }
+
+                // Try to get address from coordinates (reverse geocoding)
+                try {
+                    const data = await api.get(`/geocode/search`, {
+                        params: {
+                            q: `${latitude},${longitude}`,
+                            reverse: true,
+                        },
+                    })
+
+                    if (data && data.display_name) {
+                        setSearchQuery(data.display_name)
+                    }
+                } catch (error) {
+                    console.error("Reverse geocoding error:", error)
+                }
+
+                setIsGettingCurrentLocation(false)
+            },
+            (error) => {
+                console.error("Error getting current location:", error)
+                alert(`Error getting your location: ${error.message}`)
+                setIsGettingCurrentLocation(false)
+            },
+            { enableHighAccuracy: true }
+        )
+    }
 
     // Handle search
     const handleSearch = async (e) => {
@@ -253,6 +310,19 @@ const LocationPicker = ({
                         {isSearching ? "Searching..." : "Search"}
                     </button>
                 </div>
+
+                {/* Current location button */}
+                <button
+                    type="button"
+                    onClick={getCurrentLocation}
+                    className="mt-2 flex items-center justify-center px-4 py-2 border border-primary-300 bg-primary-50 rounded-md text-sm text-primary-700 hover:bg-primary-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors w-full"
+                    disabled={isGettingCurrentLocation}
+                >
+                    <FaMapMarkerAlt className="mr-2" />
+                    {isGettingCurrentLocation
+                        ? "Getting your location..."
+                        : "Use my current location as property location"}
+                </button>
 
                 {/* Search results */}
                 {geocodeResults.length > 0 && (
