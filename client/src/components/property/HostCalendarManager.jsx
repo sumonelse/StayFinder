@@ -1,14 +1,7 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import PropTypes from "prop-types"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import {
-    FaCalendarAlt,
-    FaSpinner,
-    FaCheck,
-    FaTimes,
-    FaExclamationTriangle,
-    FaInfo,
-} from "react-icons/fa"
+import { FaSpinner, FaInfo } from "react-icons/fa"
 import { propertyService } from "../../services/api"
 
 /**
@@ -43,8 +36,9 @@ const HostCalendarManager = ({ propertyId }) => {
 
     // Block dates mutation
     const blockDatesMutation = useMutation({
-        mutationFn: ({ dates, reason, note }) =>
-            propertyService.blockDates(propertyId, dates, reason, note),
+        mutationFn: ({ dates, reason, note }) => {
+            return propertyService.blockDates(propertyId, dates, reason, note)
+        },
         onSuccess: () => {
             queryClient.invalidateQueries(["blockedDates", propertyId])
             queryClient.invalidateQueries(["availability", propertyId])
@@ -52,15 +46,23 @@ const HostCalendarManager = ({ propertyId }) => {
             setShowBlockModal(false)
             setBlockNote("")
         },
+        onError: (error) => {
+            console.error("Block mutation error:", error)
+        },
     })
 
     // Unblock dates mutation
     const unblockDatesMutation = useMutation({
-        mutationFn: (dates) => propertyService.unblockDates(propertyId, dates),
+        mutationFn: (dates) => {
+            return propertyService.unblockDates(propertyId, dates)
+        },
         onSuccess: () => {
             queryClient.invalidateQueries(["blockedDates", propertyId])
             queryClient.invalidateQueries(["availability", propertyId])
             setSelectedDates([])
+        },
+        onError: (error) => {
+            console.error("Unblock mutation error:", error)
         },
     })
 
@@ -132,7 +134,9 @@ const HostCalendarManager = ({ propertyId }) => {
 
     // Handle block/unblock action
     const handleAction = () => {
-        if (selectedDates.length === 0) return
+        if (selectedDates.length === 0) {
+            return
+        }
 
         if (blockingMode) {
             setShowBlockModal(true)

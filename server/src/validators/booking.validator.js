@@ -49,9 +49,9 @@ export const bookingValidators = {
             .messages({
                 "string.empty": "Status is required",
                 "any.only": "Status must be either 'confirmed' or 'cancelled'",
-                "any.required": "Status is required",
+                "any.re quired": "Status is required",
             }),
-        reason: Joi.string()
+        cancelReason: Joi.string()
             .allow("")
             .max(500)
             .when("status", {
@@ -115,7 +115,6 @@ export const validateBooking = (schema, property = "body") => {
             message: detail.message,
         }))
 
-        console.log("Validation errors:", errors)
         return res.status(400).json({
             success: false,
             message: "Validation failed",

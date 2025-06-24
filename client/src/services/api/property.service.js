@@ -154,15 +154,20 @@ const propertyService = {
      * @returns {Promise<Object>} Blocked dates response
      */
     async blockDates(propertyId, dates, reason = "unavailable", note = "") {
-        const response = await api.post(
-            `/properties/${propertyId}/blocked-dates`,
-            {
-                dates,
-                reason,
-                note,
-            }
-        )
-        return response.data
+        try {
+            const response = await api.post(
+                `/properties/${propertyId}/blocked-dates`,
+                {
+                    dates,
+                    reason,
+                    note,
+                }
+            )
+            return response
+        } catch (error) {
+            console.error("Error blocking dates:", error)
+            throw error
+        }
     },
 
     /**
@@ -172,13 +177,18 @@ const propertyService = {
      * @returns {Promise<Object>} Unblock response
      */
     async unblockDates(propertyId, dates) {
-        const response = await api.delete(
-            `/properties/${propertyId}/blocked-dates`,
-            {
-                data: { dates },
-            }
-        )
-        return response.data
+        try {
+            // Use a POST request for unblocking dates
+            // This is more reliable than DELETE with a body
+            const response = await api.post(
+                `/properties/${propertyId}/blocked-dates/unblock`,
+                { dates }
+            )
+            return response
+        } catch (error) {
+            console.error("Error unblocking dates:", error)
+            throw error
+        }
     },
 
     /**
@@ -189,17 +199,22 @@ const propertyService = {
      * @returns {Promise<Object>} Blocked dates
      */
     async getBlockedDates(propertyId, year, month) {
-        const params = {}
-        if (year) params.year = year
-        if (month) params.month = month
+        try {
+            const params = {}
+            if (year) params.year = year
+            if (month) params.month = month
 
-        const response = await api.get(
-            `/properties/${propertyId}/blocked-dates`,
-            {
-                params,
-            }
-        )
-        return response.data.blockedDates
+            const response = await api.get(
+                `/properties/${propertyId}/blocked-dates`,
+                {
+                    params,
+                }
+            )
+            return response.data.blockedDates
+        } catch (error) {
+            console.error("Error getting blocked dates:", error)
+            throw error
+        }
     },
 }
 

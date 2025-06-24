@@ -450,7 +450,7 @@ class BookingService {
      * @returns {Object} Updated booking
      */
     async updateBookingStatus(bookingId, updateData, userId, userRole) {
-        const { status, reason } = updateData
+        const { status, cancelReason: reason } = updateData
 
         if (!["confirmed", "cancelled", "completed"].includes(status)) {
             throw new Error(

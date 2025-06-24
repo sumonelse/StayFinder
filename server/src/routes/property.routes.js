@@ -43,8 +43,16 @@ router.post(
     blockedDateController.blockDates
 )
 
+// Keep the DELETE route for compatibility
 router.delete(
     "/:propertyId/blocked-dates",
+    authenticate,
+    blockedDateController.unblockDates
+)
+
+// Add a POST route for unblocking dates
+router.post(
+    "/:propertyId/blocked-dates/unblock",
     authenticate,
     blockedDateController.unblockDates
 )

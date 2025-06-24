@@ -37,8 +37,11 @@ class BlockedDateService {
         today.setHours(0, 0, 0, 0)
 
         const validDates = dates.map((dateStr) => {
-            const date = new Date(dateStr)
-            date.setHours(0, 0, 0, 0)
+            // Parse the date in UTC to avoid timezone issues
+            const [year, month, day] = dateStr
+                .split("-")
+                .map((num) => parseInt(num, 10))
+            const date = new Date(Date.UTC(year, month - 1, day, 0, 0, 0))
 
             if (date < today) {
                 throw new Error("Cannot block dates in the past")
@@ -92,20 +95,40 @@ class BlockedDateService {
             )
         }
 
-        // Convert dates to Date objects
+        // Convert dates to Date objects with timezone handling
         const datesToUnblock = dates.map((dateStr) => {
-            const date = new Date(dateStr)
-            date.setHours(0, 0, 0, 0)
-            return date
+            // Parse the date in UTC to avoid timezone issues
+            const [year, month, day] = dateStr
+                .split("-")
+                .map((num) => parseInt(num, 10))
+            return new Date(Date.UTC(year, month - 1, day, 0, 0, 0))
         })
 
-        // Remove blocked dates
-        const result = await BlockedDate.deleteMany({
-            property: propertyId,
-            date: { $in: datesToUnblock },
-        })
+        // Find and delete each date individually by matching year, month, and day
+        // This approach is more reliable with timezone handling
+        let totalDeleted = 0
 
-        return result.deletedCount
+        for (const dateToUnblock of datesToUnblock) {
+            // Create date range for the entire day in UTC
+            const startOfDay = new Date(dateToUnblock)
+            startOfDay.setUTCHours(0, 0, 0, 0)
+
+            const endOfDay = new Date(dateToUnblock)
+            endOfDay.setUTCHours(23, 59, 59, 999)
+
+            // Find and delete blocked dates for this day
+            const result = await BlockedDate.deleteMany({
+                property: propertyId,
+                date: {
+                    $gte: startOfDay,
+                    $lte: endOfDay,
+                },
+            })
+
+            totalDeleted += result.deletedCount
+        }
+
+        return totalDeleted
     }
 
     /**
