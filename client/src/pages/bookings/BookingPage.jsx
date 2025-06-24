@@ -23,6 +23,7 @@ import {
 import { propertyService, bookingService } from "../../services/api"
 import { formatPrice } from "../../utils/currency"
 import { calculateBookingPrice } from "../../utils/bookingCalculator"
+import { formatDate } from "../../utils/dateUtils"
 import { useAuth } from "../../context/AuthContext"
 import PropertyRules from "../../components/property/PropertyRules"
 
@@ -587,11 +588,16 @@ const BookingPage = () => {
                                             </h4>
                                             <p className="text-secondary-700">
                                                 Free cancellation before{" "}
-                                                {new Date(
-                                                    new Date().setDate(
-                                                        new Date().getDate() + 2
-                                                    )
-                                                ).toLocaleDateString()}
+                                                {formatDate(
+                                                    (() => {
+                                                        const date = new Date()
+                                                        date.setDate(
+                                                            date.getDate() + 2
+                                                        )
+                                                        return date
+                                                    })(),
+                                                    { format: "short" }
+                                                )}
                                                 . Review the host's full
                                                 cancellation policy which
                                                 applies even if you cancel for
@@ -714,13 +720,17 @@ const BookingPage = () => {
                                                 Check-in
                                             </p>
                                             <p className="font-medium text-secondary-900">
-                                                {new Date(
-                                                    bookingData.checkInDate
-                                                ).toLocaleDateString("en-US", {
-                                                    weekday: "short",
-                                                    month: "short",
-                                                    day: "numeric",
-                                                })}
+                                                {formatDate(
+                                                    bookingData.checkInDate,
+                                                    {
+                                                        format: "custom",
+                                                        options: {
+                                                            weekday: "short",
+                                                            month: "short",
+                                                            day: "numeric",
+                                                        },
+                                                    }
+                                                )}
                                             </p>
                                         </div>
                                         <div>
@@ -728,13 +738,20 @@ const BookingPage = () => {
                                                 Check-out
                                             </p>
                                             <p className="font-medium text-secondary-900">
-                                                {new Date(
-                                                    bookingData.checkOutDate
-                                                ).toLocaleDateString("en-US", {
-                                                    weekday: "short",
-                                                    month: "short",
-                                                    day: "numeric",
-                                                })}
+                                                {(() => {
+                                                    const date = new Date(
+                                                        bookingData.checkOutDate
+                                                    )
+                                                    date.setHours(12, 0, 0, 0)
+                                                    return date.toLocaleDateString(
+                                                        "en-US",
+                                                        {
+                                                            weekday: "short",
+                                                            month: "short",
+                                                            day: "numeric",
+                                                        }
+                                                    )
+                                                })()}
                                             </p>
                                         </div>
                                         <div className="col-span-2">

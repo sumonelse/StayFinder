@@ -383,17 +383,27 @@ const BookingDetailPage = () => {
                                                     Check-in
                                                 </p>
                                                 <p className="font-medium text-secondary-900">
-                                                    {new Date(
-                                                        booking.checkInDate
-                                                    ).toLocaleDateString(
-                                                        "en-US",
-                                                        {
-                                                            weekday: "short",
-                                                            month: "short",
-                                                            day: "numeric",
-                                                            year: "numeric",
-                                                        }
-                                                    )}
+                                                    {(() => {
+                                                        const date = new Date(
+                                                            booking.checkInDate
+                                                        )
+                                                        date.setHours(
+                                                            12,
+                                                            0,
+                                                            0,
+                                                            0
+                                                        )
+                                                        return date.toLocaleDateString(
+                                                            "en-US",
+                                                            {
+                                                                weekday:
+                                                                    "short",
+                                                                month: "short",
+                                                                day: "numeric",
+                                                                year: "numeric",
+                                                            }
+                                                        )
+                                                    })()}
                                                 </p>
                                             </div>
                                         </div>
@@ -412,17 +422,27 @@ const BookingDetailPage = () => {
                                                     Check-out
                                                 </p>
                                                 <p className="font-medium text-secondary-900">
-                                                    {new Date(
-                                                        booking.checkOutDate
-                                                    ).toLocaleDateString(
-                                                        "en-US",
-                                                        {
-                                                            weekday: "short",
-                                                            month: "short",
-                                                            day: "numeric",
-                                                            year: "numeric",
-                                                        }
-                                                    )}
+                                                    {(() => {
+                                                        const date = new Date(
+                                                            booking.checkOutDate
+                                                        )
+                                                        date.setHours(
+                                                            12,
+                                                            0,
+                                                            0,
+                                                            0
+                                                        )
+                                                        return date.toLocaleDateString(
+                                                            "en-US",
+                                                            {
+                                                                weekday:
+                                                                    "short",
+                                                                month: "short",
+                                                                day: "numeric",
+                                                                year: "numeric",
+                                                            }
+                                                        )
+                                                    })()}
                                                 </p>
                                             </div>
                                         </div>
@@ -483,13 +503,20 @@ const BookingDetailPage = () => {
                                             Booked on
                                         </p>
                                         <p className="text-sm text-secondary-900">
-                                            {new Date(
-                                                booking.createdAt
-                                            ).toLocaleDateString("en-US", {
-                                                month: "long",
-                                                day: "numeric",
-                                                year: "numeric",
-                                            })}
+                                            {(() => {
+                                                const date = new Date(
+                                                    booking.createdAt
+                                                )
+                                                date.setHours(12, 0, 0, 0)
+                                                return date.toLocaleDateString(
+                                                    "en-US",
+                                                    {
+                                                        month: "long",
+                                                        day: "numeric",
+                                                        year: "numeric",
+                                                    }
+                                                )
+                                            })()}
                                         </p>
                                     </div>
                                 </div>

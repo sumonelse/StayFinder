@@ -1,6 +1,7 @@
 /**
  * Utility functions for calculating booking prices
  */
+import { getDaysBetweenDates } from "./dateUtils"
 
 /**
  * Calculate the number of nights between two dates
@@ -11,14 +12,13 @@
 export const calculateNights = (checkInDate, checkOutDate) => {
     if (!checkInDate || !checkOutDate) return 0
 
-    const start = new Date(checkInDate)
-    const end = new Date(checkOutDate)
+    // Use the dateUtils function which is already properly implemented
+    const nights = getDaysBetweenDates(checkInDate, checkOutDate)
 
-    // Calculate the difference in milliseconds
-    const diffTime = Math.abs(end - start)
+    // Log for debugging
+    console.log("calculateNights:", checkInDate, checkOutDate, nights)
 
-    // Convert to days and round up
-    return Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+    return nights
 }
 
 /**

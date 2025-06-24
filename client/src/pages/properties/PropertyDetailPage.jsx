@@ -83,6 +83,7 @@ import {
     calculateBookingPrice,
     calculateNights,
 } from "../../utils/bookingCalculator"
+import { formatDate as formatDateUtil } from "../../utils/dateUtils"
 
 /**
  * Enhanced Property detail page component
@@ -295,10 +296,8 @@ const PropertyDetailPage = () => {
 
     // Format date
     const formatDate = (dateString) => {
-        return new Date(dateString).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
+        return formatDateUtil(dateString, {
+            format: "medium",
         })
     }
 

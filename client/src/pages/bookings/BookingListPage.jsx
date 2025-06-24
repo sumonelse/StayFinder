@@ -32,7 +32,11 @@ const BookingListPage = () => {
 
     // Format date
     const formatDate = (dateString) => {
-        return new Date(dateString).toLocaleDateString("en-US", {
+        // Create a new date object and set time to noon to avoid timezone issues
+        const date = new Date(dateString)
+        date.setHours(12, 0, 0, 0)
+
+        return date.toLocaleDateString("en-US", {
             year: "numeric",
             month: "short",
             day: "numeric",

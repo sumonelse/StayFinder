@@ -9,6 +9,10 @@ import {
 } from "react-icons/fa"
 import { bookingService } from "../../services/api"
 import { calculateNights } from "../../utils/bookingCalculator"
+import {
+    formatDate as formatDateUtil,
+    getDaysBetweenDates,
+} from "../../utils/dateUtils"
 
 /**
  * Calendar component for displaying property availability
@@ -53,11 +57,16 @@ const AvailabilityCalendar = ({
 
         // Add days of the month
         for (let day = 1; day <= daysInMonth; day++) {
-            const date = new Date(year, month, day)
+            // Create date at noon to avoid timezone issues
+            const date = new Date(year, month, day, 12, 0, 0, 0)
+
+            // Format date as YYYY-MM-DD
+            const dateString = date.toISOString().split("T")[0]
+
             days.push({
                 day,
                 date,
-                dateString: date.toISOString().split("T")[0],
+                dateString,
                 isToday: isToday(date),
                 isPast: isPastDate(date),
                 isBooked: isDateBooked(date),
@@ -125,9 +134,18 @@ const AvailabilityCalendar = ({
         }
 
         if (selectedDates.startDate && selectedDates.endDate) {
+            // Create new Date objects and set time to noon to avoid timezone issues
             const start = new Date(selectedDates.startDate)
+            start.setHours(12, 0, 0, 0)
+
             const end = new Date(selectedDates.endDate)
-            return date >= start && date <= end
+            end.setHours(12, 0, 0, 0)
+
+            // Create a copy of the date and set time to noon
+            const dateToCheck = new Date(date)
+            dateToCheck.setHours(12, 0, 0, 0)
+
+            return dateToCheck >= start && dateToCheck <= end
         }
 
         return false
@@ -139,8 +157,16 @@ const AvailabilityCalendar = ({
             return false
         }
 
+        // Create new Date objects and set time to noon to avoid timezone issues
         const start = new Date(selectedDates.startDate)
+        start.setHours(12, 0, 0, 0)
+
         const hovered = new Date(hoveredDate)
+        hovered.setHours(12, 0, 0, 0)
+
+        // Create a copy of the date and set time to noon
+        const dateToCheck = new Date(date)
+        dateToCheck.setHours(12, 0, 0, 0)
 
         // Don't show hover effect if the date is not selectable
         if (!isDateSelectable(date)) {
@@ -154,7 +180,7 @@ const AvailabilityCalendar = ({
         // If there are booked dates in the range, don't show hover effect beyond the first booked date
         for (
             let day = new Date(start);
-            day <= date;
+            day <= dateToCheck;
             day.setDate(day.getDate() + 1)
         ) {
             const currentDateString = day.toISOString().split("T")[0]
@@ -168,7 +194,7 @@ const AvailabilityCalendar = ({
             }
         }
 
-        return date > start && date <= hovered
+        return dateToCheck > start && dateToCheck <= hovered
     }
 
     // Helper function to check if a date is selectable
@@ -178,8 +204,12 @@ const AvailabilityCalendar = ({
 
     // Check if there are any booked dates in a range
     const hasBookedDatesInRange = (startDate, endDate) => {
+        // Create new Date objects and set time to noon to avoid timezone issues
         const start = new Date(startDate)
+        start.setHours(12, 0, 0, 0)
+
         const end = new Date(endDate)
+        end.setHours(12, 0, 0, 0)
 
         // Check each date in the range
         for (
@@ -207,11 +237,16 @@ const AvailabilityCalendar = ({
 
         const dateString = dateInfo.dateString
 
+        // Log the date being clicked for debugging
+        console.log("Date clicked:", dateString)
+
         if (
             !selectedDates.startDate ||
             (selectedDates.startDate && selectedDates.endDate)
         ) {
             // Start a new selection
+            console.log("Starting new selection with date:", dateString)
+
             setSelectedDates({
                 startDate: dateString,
                 endDate: null,
@@ -227,6 +262,12 @@ const AvailabilityCalendar = ({
             // Complete the selection
             if (dateString < selectedDates.startDate) {
                 // If clicked date is before start date, swap them
+                console.log(
+                    "Swapping dates:",
+                    dateString,
+                    selectedDates.startDate
+                )
+
                 setSelectedDates({
                     startDate: dateString,
                     endDate: selectedDates.startDate,
@@ -278,6 +319,19 @@ const AvailabilityCalendar = ({
 
                     return
                 }
+
+                console.log(
+                    "Completing selection:",
+                    selectedDates.startDate,
+                    dateString
+                )
+
+                // Calculate nights for debugging
+                const nights = getDaysBetweenDates(
+                    selectedDates.startDate,
+                    dateString
+                )
+                console.log("Nights calculated:", nights)
 
                 setSelectedDates({
                     startDate: selectedDates.startDate,
@@ -392,11 +446,14 @@ const AvailabilityCalendar = ({
 
     // Format date for display
     const formatDate = (dateString) => {
-        const date = new Date(dateString)
-        return date.toLocaleDateString("en-US", {
-            weekday: "short",
-            month: "short",
-            day: "numeric",
+        // Use the utility function with custom options
+        return formatDateUtil(dateString, {
+            format: "custom",
+            options: {
+                weekday: "short",
+                month: "short",
+                day: "numeric",
+            },
         })
     }
 
@@ -639,11 +696,16 @@ const AvailabilityCalendar = ({
                                 <span className="font-medium">Your stay</span>
                             </div>
                             <div className="text-primary-700 font-medium">
-                                {calculateNights(
-                                    selectedDates.startDate,
-                                    selectedDates.endDate
-                                )}{" "}
-                                nights
+                                {(() => {
+                                    // Calculate nights directly here to ensure accuracy
+                                    const nights = getDaysBetweenDates(
+                                        selectedDates.startDate,
+                                        selectedDates.endDate
+                                    )
+                                    return `${nights} night${
+                                        nights !== 1 ? "s" : ""
+                                    }`
+                                })()}
                             </div>
                         </div>
                         <div className="grid grid-cols-2 gap-2 text-sm">
