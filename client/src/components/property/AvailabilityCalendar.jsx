@@ -1,14 +1,7 @@
 import { useState, useEffect } from "react"
 import PropTypes from "prop-types"
-import {
-    FaCalendarAlt,
-    FaSpinner,
-    FaExclamationCircle,
-    FaCheckCircle,
-    FaInfoCircle,
-} from "react-icons/fa"
+import { FaCalendarAlt, FaSpinner, FaExclamationCircle } from "react-icons/fa"
 import { bookingService } from "../../services/api"
-import { calculateNights } from "../../utils/bookingCalculator"
 import {
     formatDate as formatDateUtil,
     getDaysBetweenDates,
@@ -237,16 +230,10 @@ const AvailabilityCalendar = ({
 
         const dateString = dateInfo.dateString
 
-        // Log the date being clicked for debugging
-        console.log("Date clicked:", dateString)
-
         if (
             !selectedDates.startDate ||
             (selectedDates.startDate && selectedDates.endDate)
         ) {
-            // Start a new selection
-            console.log("Starting new selection with date:", dateString)
-
             setSelectedDates({
                 startDate: dateString,
                 endDate: null,
@@ -261,13 +248,6 @@ const AvailabilityCalendar = ({
         } else {
             // Complete the selection
             if (dateString < selectedDates.startDate) {
-                // If clicked date is before start date, swap them
-                console.log(
-                    "Swapping dates:",
-                    dateString,
-                    selectedDates.startDate
-                )
-
                 setSelectedDates({
                     startDate: dateString,
                     endDate: selectedDates.startDate,
@@ -320,18 +300,11 @@ const AvailabilityCalendar = ({
                     return
                 }
 
-                console.log(
-                    "Completing selection:",
-                    selectedDates.startDate,
-                    dateString
-                )
-
                 // Calculate nights for debugging
                 const nights = getDaysBetweenDates(
                     selectedDates.startDate,
                     dateString
                 )
-                console.log("Nights calculated:", nights)
 
                 setSelectedDates({
                     startDate: selectedDates.startDate,
@@ -470,17 +443,15 @@ const AvailabilityCalendar = ({
 
         // Today styling
         if (dayInfo.isToday) {
-            classes.push("font-bold")
+            classes.push("font-bold border border-blue-400")
         }
 
-        // Availability styling
-        if (dayInfo.isBooked) {
-            classes.push("bg-red-100 text-red-600 cursor-not-allowed")
-        } else if (dayInfo.isBlocked) {
-            classes.push("bg-orange-100 text-orange-600 cursor-not-allowed")
-        } else if (dayInfo.isCheckoutOnly) {
-            classes.push("bg-yellow-50 text-yellow-600")
+        // Availability styling - improved with light background for better UX
+        if (dayInfo.isBooked || dayInfo.isBlocked) {
+            classes.push("line-through text-gray-200 cursor-not-allowed")
         }
+        // The "checkout only" feature means that the previous day is booked,
+        // but this day can be selected as a checkout date
 
         // Selection styling
         if (dayInfo.isSelected) {
@@ -515,15 +486,10 @@ const AvailabilityCalendar = ({
 
     // Get tooltip text for date
     const getDateTooltip = (dayInfo) => {
-        if (dayInfo.isPast) return "Past date"
-        if (dayInfo.isBooked) return "Already booked"
-        if (dayInfo.isBlocked) {
-            const blockInfo = blockedDatesData[dayInfo.dateString]
-            return `Blocked by host${
-                blockInfo?.reason ? ` (${blockInfo.reason})` : ""
-            }`
-        }
-        if (dayInfo.isCheckoutOnly) return "Check-out only"
+        if (dayInfo.isPast) return "Past date - not available"
+        if (dayInfo.isBooked) return "Already booked - not available"
+        if (dayInfo.isBlocked) return "Not available"
+        if (dayInfo.isCheckoutOnly) return "Available for check-out only"
         if (dayInfo.isToday) return "Today"
         return "Available"
     }
@@ -659,24 +625,11 @@ const AvailabilityCalendar = ({
                         ${getDateClassName(dayInfo)}
                       `}
                                             title={getDateTooltip(dayInfo)}
+                                            aria-label={`${
+                                                dayInfo.day
+                                            } ${getDateTooltip(dayInfo)}`}
                                         >
                                             {dayInfo.day}
-
-                                            {/* Improved visual indicators */}
-                                            {dayInfo.isBooked && (
-                                                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-red-500"></div>
-                                            )}
-                                            {dayInfo.isBlocked && (
-                                                <div className="absolute top-0 left-0 right-0 h-0.5 bg-orange-500"></div>
-                                            )}
-                                            {dayInfo.isCheckoutOnly &&
-                                                !dayInfo.isSelected &&
-                                                !dayInfo.isHovered && (
-                                                    <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-yellow-500"></div>
-                                                )}
-                                            {dayInfo.isToday && (
-                                                <div className="absolute top-0 left-0 w-2 h-2 bg-blue-500 rounded-full"></div>
-                                            )}
                                         </div>
                                     )}
                                 </div>
@@ -729,45 +682,6 @@ const AvailabilityCalendar = ({
                     </div>
                 </div>
             )}
-
-            {/* Legend */}
-            <div className="border-t border-gray-200 pt-3 mt-2">
-                <div className="text-xs text-gray-500 mb-2 font-medium">
-                    Legend:
-                </div>
-                <div className="grid grid-cols-2 gap-2 text-xs">
-                    <div className="flex items-center">
-                        <div className="w-4 h-4 bg-primary-500 rounded-sm mr-2"></div>
-                        <span>Selected</span>
-                    </div>
-                    <div className="flex items-center">
-                        <div className="w-4 h-4 bg-gray-100 rounded-sm mr-2"></div>
-                        <span>Available</span>
-                    </div>
-                    <div className="flex items-center">
-                        <div className="w-4 h-4 bg-red-100 rounded-sm mr-2 relative">
-                            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-red-500 rounded-full"></div>
-                        </div>
-                        <span>Booked</span>
-                    </div>
-                    <div className="flex items-center">
-                        <div className="w-4 h-4 bg-orange-100 rounded-sm mr-2 relative">
-                            <div className="absolute top-0 right-0 w-2 h-2 bg-orange-500 rounded-full"></div>
-                        </div>
-                        <span>Blocked by host</span>
-                    </div>
-                    <div className="flex items-center">
-                        <div className="w-4 h-4 bg-yellow-50 rounded-sm mr-2"></div>
-                        <span>Checkout only</span>
-                    </div>
-                    <div className="flex items-center">
-                        <div className="w-4 h-4 border-2 border-blue-400 rounded-sm mr-2 relative">
-                            <div className="absolute top-0 left-0 w-2 h-2 bg-blue-500 rounded-full"></div>
-                        </div>
-                        <span>Today</span>
-                    </div>
-                </div>
-            </div>
         </div>
     )
 }

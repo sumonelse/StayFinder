@@ -1652,7 +1652,7 @@ const PropertyDetailPage = () => {
                         <div className="sticky top-24">
                             <div className="bg-white rounded-xl shadow-lg border border-primary-100 overflow-hidden hover:shadow-xl transition-all">
                                 <div className="p-6">
-                                    <div className="flex items-baseline justify-between mb-5">
+                                    <div className="flex items-baseline justify-between mb-1">
                                         <div>
                                             <span className="text-3xl font-bold text-secondary-900 group-hover:text-primary-600 transition-colors">
                                                 {formatPrice(property.price)}
@@ -1691,10 +1691,6 @@ const PropertyDetailPage = () => {
                                     <div className="mb-5">
                                         {/* Date selection with visual calendar */}
                                         <div className="mb-4">
-                                            <label className="block text-xs text-secondary-500 mb-2 font-medium">
-                                                SELECT DATES
-                                            </label>
-
                                             <AvailabilityCalendar
                                                 propertyId={id}
                                                 initialStartDate={
@@ -1964,98 +1960,9 @@ const PropertyDetailPage = () => {
                                             />
                                         </>
                                     ) : (
-                                        <div className="text-center text-secondary-600 py-3">
-                                            Select dates to see prices
-                                        </div>
+                                        ""
                                     )}
                                 </div>
-                            </div>
-
-                            <div className="mt-4 bg-white rounded-xl shadow-sm border border-secondary-100 p-4 hover:shadow-md transition-shadow">
-                                <div className="flex items-center text-secondary-700">
-                                    <div className="bg-green-50 p-2 rounded-full mr-3 text-green-600">
-                                        <FaShieldAlt className="flex-shrink-0" />
-                                    </div>
-                                    <span className="text-sm">
-                                        To protect your payment, never transfer
-                                        money or communicate outside of the
-                                        StayFinder website or app.
-                                    </span>
-                                </div>
-                            </div>
-
-                            {/* Quick rules summary */}
-                            <div className="mt-4 bg-white rounded-xl shadow-sm border border-secondary-100 p-4 hover:shadow-md transition-shadow">
-                                <h3 className="font-medium text-secondary-900 mb-3 flex items-center">
-                                    <FaClipboardList className="mr-2 text-primary-500" />
-                                    Key things to know
-                                </h3>
-                                <div className="space-y-2 text-sm text-secondary-700">
-                                    <div className="flex items-start">
-                                        <FaRegClock className="mt-0.5 mr-2 text-primary-500 flex-shrink-0" />
-                                        <div>
-                                            <span className="font-medium">
-                                                Check-in:
-                                            </span>{" "}
-                                            {property.rules?.checkIn ||
-                                                "3:00 PM"}
-                                        </div>
-                                    </div>
-                                    <div className="flex items-start">
-                                        <FaRegClock className="mt-0.5 mr-2 text-primary-500 flex-shrink-0" />
-                                        <div>
-                                            <span className="font-medium">
-                                                Check-out:
-                                            </span>{" "}
-                                            {property.rules?.checkOut ||
-                                                "11:00 AM"}
-                                        </div>
-                                    </div>
-                                    <div className="flex items-start">
-                                        <FaRegSmile className="mt-0.5 mr-2 text-primary-500 flex-shrink-0" />
-                                        <div>
-                                            <span className="font-medium">
-                                                Pets:
-                                            </span>{" "}
-                                            {property.rules?.pets
-                                                ? "Allowed"
-                                                : "Not allowed"}
-                                        </div>
-                                    </div>
-                                    <div className="flex items-start">
-                                        <FaRegCommentDots className="mt-0.5 mr-2 text-primary-500 flex-shrink-0" />
-                                        <div>
-                                            <span className="font-medium">
-                                                Parties:
-                                            </span>{" "}
-                                            {property.rules?.parties
-                                                ? "Allowed"
-                                                : "Not allowed"}
-                                        </div>
-                                    </div>
-                                </div>
-                                <button
-                                    onClick={() => scrollToSection("rules")}
-                                    className="mt-3 text-primary-600 hover:text-primary-800 text-sm font-medium flex items-center"
-                                >
-                                    View all rules
-                                    <FaChevronRight
-                                        className="ml-1"
-                                        size={12}
-                                    />
-                                </button>
-                            </div>
-
-                            {/* Contact Host Button */}
-                            <div className="mt-4">
-                                <Button
-                                    variant="outline"
-                                    fullWidth
-                                    leftIcon={<FaEnvelope />}
-                                    className="hover:bg-primary-50 hover:border-primary-200 transition-colors"
-                                >
-                                    Contact Host
-                                </Button>
                             </div>
                         </div>
                     </div>
