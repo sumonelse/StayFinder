@@ -70,7 +70,7 @@ class ReviewService {
         try {
             const property = await Property.findById(propertyId)
             const host = await User.findById(property.host)
-            const reviewer = await User.findById(reviewerId)
+            const reviewer = await User.findById(userId)
 
             await notificationService.sendReviewNotification(
                 review,
