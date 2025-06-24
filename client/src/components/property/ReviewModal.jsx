@@ -1,4 +1,4 @@
-import { useState } from "react"
+import React, { useState, useEffect } from "react"
 import PropTypes from "prop-types"
 import { FaStar } from "react-icons/fa"
 import { Modal } from "../ui"
@@ -28,7 +28,7 @@ const ReviewModal = ({
     const [errors, setErrors] = useState({})
 
     // Reset form when modal is opened
-    React.useEffect(() => {
+    useEffect(() => {
         if (isOpen) {
             setRating(0)
             setHoverRating(0)

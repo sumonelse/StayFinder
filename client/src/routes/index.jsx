@@ -13,9 +13,11 @@ import ForgotPasswordPage from "../pages/auth/ForgotPasswordPage"
 import ResetPasswordPage from "../pages/auth/ResetPasswordPage"
 import PropertyListPage from "../pages/properties/PropertyListPage"
 import PropertyDetailPage from "../pages/properties/PropertyDetailPage"
+import PropertyReviewsPage from "../pages/properties/PropertyReviewsPage"
 import BookingPage from "../pages/bookings/BookingPage"
 import BookingListPage from "../pages/bookings/BookingListPage"
 import BookingDetailPage from "../pages/bookings/BookingDetailPage"
+import AddReviewPage from "../pages/reviews/AddReviewPage"
 import ProfilePage from "../pages/profile/ProfilePage"
 import FavoritesPage from "../pages/profile/FavoritesPage"
 import HostDashboardPage from "../pages/host/HostDashboardPage"
@@ -63,6 +65,18 @@ const router = createBrowserRouter([
             {
                 path: "properties/:id",
                 element: <PropertyDetailPage />,
+            },
+            {
+                path: "properties/:id/reviews",
+                element: <PropertyReviewsPage />,
+            },
+            {
+                path: "reviews/add",
+                element: (
+                    <ProtectedRoute>
+                        <AddReviewPage />
+                    </ProtectedRoute>
+                ),
             },
             {
                 path: "properties/:id/book",
