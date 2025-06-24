@@ -319,7 +319,7 @@ const PropertyCard = ({ property, onToggleFavorite, viewMode = "grid" }) => {
                                 </div>
 
                                 {/* Location - Enhanced with better styling */}
-                                <div className="flex items-center text-secondary-600 mt-1 mb-2 bg-gray-50 px-2 py-1 rounded-lg inline-block">
+                                <div className="flex items-center text-secondary-600 mt-1 mb-2 bg-gray-50 px-2 py-1 rounded-lg">
                                     <MdLocationOn className="mr-1.5 text-primary-500 flex-shrink-0" />
                                     <span className="text-sm line-clamp-1 font-medium">
                                         {property.address?.city},{" "}

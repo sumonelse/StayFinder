@@ -617,7 +617,7 @@ const Header = () => {
                 <div
                     id="mobile-menu"
                     ref={mobileMenuRef}
-                    className={`fixed top-0 right-0 h-screen w-4/5 max-w-sm bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out ${
+                    className={`fixed top-0 right-0 h-screen max-w-sm bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out ${
                         isMenuOpen
                             ? "translate-x-0 mobile-menu-animation w-full"
                             : "translate-x-full w-0"
