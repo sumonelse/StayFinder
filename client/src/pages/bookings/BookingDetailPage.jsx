@@ -803,7 +803,7 @@ const BookingDetailPage = () => {
                                 <p className="text-sm text-secondary-600">
                                     Review the host's full cancellation policy
                                     which applies even if you cancel for illness
-                                    or disruptions caused by COVID-19.
+                                    or other unforeseen circumstances.
                                 </p>
                             </div>
                         </div>

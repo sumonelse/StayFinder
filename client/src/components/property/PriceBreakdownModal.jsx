@@ -48,7 +48,7 @@ const PriceBreakdownModal = ({ isOpen, onClose, bookingPrice }) => {
                             <FaInfoCircle
                                 className="ml-1 text-secondary-400 cursor-help"
                                 size={12}
-                                title="One-time fee charged by host to cover the cost of cleaning their space"
+                                title="One-time fee charged by host to cover the cost of preparing their space"
                             />
                         </span>
                         <span>{formatPrice(bookingPrice.cleaningFee)}</span>

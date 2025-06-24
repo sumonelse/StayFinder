@@ -38,7 +38,7 @@ const PropertyStatus = ({
                 message:
                     "This property is currently being reviewed by our team and is not available for booking yet.",
                 detailedMessage:
-                    "Our team reviews all properties to ensure they meet our quality and safety standards. This usually takes 1-3 business days.",
+                    "Our team reviews all properties to ensure they meet our quality standards. This usually takes 1-3 business days.",
                 icon: FaClock,
                 color: "yellow",
                 bgColor: "bg-yellow-50",

@@ -1598,26 +1598,11 @@ const PropertyDetailPage = () => {
                                     <h3 className="font-semibold text-lg mb-3 text-secondary-900">
                                         Flexible
                                     </h3>
-                                    <p className="text-secondary-700 mb-4 leading-relaxed">
+                                    <p className="text-secondary-700 leading-relaxed">
                                         Free cancellation for 48 hours. After
                                         that, cancel before check-in and get a
                                         50% refund, minus the service fee.
                                     </p>
-                                    <div className="flex items-start text-secondary-700 bg-white p-3 rounded-lg border border-secondary-100">
-                                        <FaInfoCircle className="text-primary-500 mr-2 mt-1 flex-shrink-0" />
-                                        <div>
-                                            <p className="font-medium mb-1">
-                                                Important note
-                                            </p>
-                                            <p className="text-sm">
-                                                Review the host's full
-                                                cancellation policy which
-                                                applies even if you cancel for
-                                                illness or disruptions caused by
-                                                COVID-19.
-                                            </p>
-                                        </div>
-                                    </div>
                                 </div>
 
                                 <div className="flex justify-between items-center">

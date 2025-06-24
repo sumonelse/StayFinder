@@ -43,7 +43,7 @@ const AvailabilityIndicator = ({
                 label: "Under Review",
                 description: "This property is being reviewed by our team",
                 detailedDescription:
-                    "Our quality assurance team reviews all properties to ensure they meet our standards for safety, cleanliness, and accuracy. This process typically takes 1-3 business days.",
+                    "Our quality assurance team reviews all properties to ensure they meet our standards. This process typically takes 1-3 business days.",
                 color: "yellow",
                 icon: FaClock,
                 canBook: false,
