@@ -26,6 +26,7 @@ import { calculateBookingPrice } from "../../utils/bookingCalculator"
 import { formatDate } from "../../utils/dateUtils"
 import { useAuth } from "../../context/AuthContext"
 import PropertyRules from "../../components/property/PropertyRules"
+import AvailabilityCalendar from "../../components/property/AvailabilityCalendar"
 
 /**
  * Enhanced Booking page component
@@ -151,6 +152,24 @@ const BookingPage = () => {
         }
     }
 
+    // Handle date selection from calendar
+    const handleDateSelect = (dates) => {
+        setBookingData((prev) => ({
+            ...prev,
+            checkInDate: dates.startDate || prev.checkInDate,
+            checkOutDate: dates.endDate || prev.checkOutDate,
+        }))
+
+        // Clear related errors
+        if (errors.checkInDate || errors.checkOutDate) {
+            setErrors((prev) => ({
+                ...prev,
+                checkInDate: undefined,
+                checkOutDate: undefined,
+            }))
+        }
+    }
+
     // Validate form
     const validateForm = () => {
         const newErrors = {}
@@ -172,7 +191,16 @@ const BookingPage = () => {
                     "Check-out date must be after check-in date"
             }
 
-            if (start < new Date().setHours(0, 0, 0, 0)) {
+            // Create a new Date object for today and set hours to beginning of day
+            const today = new Date()
+            today.setHours(0, 0, 0, 0)
+
+            // Create a copy of the start date and set time to noon to avoid timezone issues
+            const checkInDate = new Date(start)
+            checkInDate.setHours(12, 0, 0, 0)
+
+            // Compare the dates properly
+            if (checkInDate < today) {
                 newErrors.checkInDate = "Check-in date cannot be in the past"
             }
         }
@@ -345,33 +373,23 @@ const BookingPage = () => {
                                     <FaCalendarAlt className="text-primary-500 mr-2" />
                                     Select dates
                                 </h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="bg-white rounded-lg shadow-sm border border-secondary-200 p-4">
+                                    <AvailabilityCalendar
+                                        propertyId={id}
+                                        onDateSelect={handleDateSelect}
+                                        initialStartDate={
+                                            bookingData.checkInDate
+                                        }
+                                        initialEndDate={
+                                            bookingData.checkOutDate
+                                        }
+                                    />
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                                     <div>
-                                        <label
-                                            htmlFor="checkInDate"
-                                            className="form-label"
-                                        >
-                                            Check-in
-                                        </label>
-                                        <div className="relative">
-                                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                <FaCalendarAlt className="text-secondary-400" />
-                                            </div>
-                                            <input
-                                                type="date"
-                                                id="checkInDate"
-                                                name="checkInDate"
-                                                value={bookingData.checkInDate}
-                                                onChange={handleInputChange}
-                                                className={`input-field pl-10 ${
-                                                    errors.checkInDate
-                                                        ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                                                        : ""
-                                                }`}
-                                            />
-                                        </div>
                                         {errors.checkInDate && (
-                                            <p className="mt-2 text-sm text-red-600 flex items-center">
+                                            <p className="text-sm text-red-600 flex items-center">
                                                 <FaExclamationCircle
                                                     className="mr-1"
                                                     size={12}
@@ -381,31 +399,8 @@ const BookingPage = () => {
                                         )}
                                     </div>
                                     <div>
-                                        <label
-                                            htmlFor="checkOutDate"
-                                            className="form-label"
-                                        >
-                                            Check-out
-                                        </label>
-                                        <div className="relative">
-                                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                <FaCalendarAlt className="text-secondary-400" />
-                                            </div>
-                                            <input
-                                                type="date"
-                                                id="checkOutDate"
-                                                name="checkOutDate"
-                                                value={bookingData.checkOutDate}
-                                                onChange={handleInputChange}
-                                                className={`input-field pl-10 ${
-                                                    errors.checkOutDate
-                                                        ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                                                        : ""
-                                                }`}
-                                            />
-                                        </div>
                                         {errors.checkOutDate && (
-                                            <p className="mt-2 text-sm text-red-600 flex items-center">
+                                            <p className="text-sm text-red-600 flex items-center">
                                                 <FaExclamationCircle
                                                     className="mr-1"
                                                     size={12}

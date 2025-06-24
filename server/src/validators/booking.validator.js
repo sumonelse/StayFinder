@@ -12,11 +12,28 @@ export const bookingValidators = {
             "string.empty": "Property ID is required",
             "any.required": "Property ID is required",
         }),
-        checkInDate: Joi.date().required().greater("now").messages({
-            "date.base": "Check-in date must be a valid date",
-            "date.greater": "Check-in date cannot be in the past",
-            "any.required": "Check-in date is required",
-        }),
+        checkInDate: Joi.date()
+            .required()
+            .custom((value, helpers) => {
+                // Create today's date with time set to beginning of day
+                const today = new Date()
+                today.setHours(0, 0, 0, 0)
+
+                // Create a date from the value with time set to noon to avoid timezone issues
+                const checkInDate = new Date(value)
+                checkInDate.setHours(12, 0, 0, 0)
+
+                // Compare dates properly
+                if (checkInDate < today) {
+                    return helpers.error("date.greater")
+                }
+                return value
+            })
+            .messages({
+                "date.base": "Check-in date must be a valid date",
+                "date.greater": "Check-in date cannot be in the past",
+                "any.required": "Check-in date is required",
+            }),
         checkOutDate: Joi.date()
             .required()
             .greater(Joi.ref("checkInDate"))
