@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import { Modal } from "../ui"
-import { FaHome, FaQuoteLeft } from "react-icons/fa"
+import { FaQuoteLeft } from "react-icons/fa"
 import { useEffect, useState } from "react"
 import {
     parseDescriptionSections,
@@ -9,7 +9,7 @@ import {
 
 /**
  * Enhanced modal component for displaying the full property description
- * with improved visual styling, animations, and section headers
+ * with improved visual styling
  */
 const DescriptionModal = ({ isOpen, onClose, description, title }) => {
     const [animateIn, setAnimateIn] = useState(false)
@@ -34,8 +34,6 @@ const DescriptionModal = ({ isOpen, onClose, description, title }) => {
     }, [description])
 
     if (!description) return null
-
-    // We're now using the shared getSectionIcon function from descriptionParser.js
 
     return (
         <Modal
@@ -93,81 +91,65 @@ const DescriptionModal = ({ isOpen, onClose, description, title }) => {
                                 : "opacity-0 translate-y-4"
                         }`}
                     >
-                        <h3 className="text-2xl font-semibold text-secondary-900 mb-2 flex items-center">
-                            <FaHome className="mr-3 text-primary-500" />
+                        <h3 className="text-2xl font-semibold text-secondary-900 mb-2">
                             {title}
                         </h3>
-                        <div className="w-16 h-1 bg-primary-500 rounded-full mb-4"></div>
+                        <div className="w-16 h-1 bg-primary-500 rounded-full mb-6"></div>
                     </div>
                 )}
 
-                {/* Description sections */}
-                <div className="relative">
-                    {sections.length === 1 && !sections[0].title ? (
-                        // Single section without title - show with quote styling
-                        <div className="relative">
-                            <FaQuoteLeft
-                                className="text-primary-200 absolute -top-4 -left-2 opacity-50"
-                                size={30}
-                            />
+                {/* Description Section */}
+                <div
+                    className={`transition-all duration-700 delay-150 ${
+                        animateIn
+                            ? "opacity-100 translate-y-0"
+                            : "opacity-0 translate-y-4"
+                    }`}
+                >
+                    <h4 className="text-lg font-medium text-secondary-900 mb-4">
+                        About this space
+                    </h4>
 
-                            <div
-                                className={`relative z-10 text-secondary-700 leading-relaxed whitespace-pre-line px-4 py-2 transition-all duration-700 delay-200 text-lg ${
-                                    animateIn
-                                        ? "opacity-100 translate-y-0"
-                                        : "opacity-0 translate-y-4"
-                                }`}
-                            >
-                                <p className="first-letter:text-2xl first-letter:font-medium first-letter:text-primary-600">
-                                    {sections[0].content}
-                                </p>
+                    <div className="relative">
+                        {sections.length === 1 && !sections[0].title ? (
+                            // Single section without title - show with quote styling
+                            <div className="relative">
+                                <FaQuoteLeft
+                                    className="text-primary-200 absolute -top-4 -left-2 opacity-50"
+                                    size={24}
+                                />
+                                <div className="relative z-10 text-secondary-700 leading-relaxed whitespace-pre-line text-base">
+                                    <p className="first-letter:text-xl first-letter:font-medium first-letter:text-primary-600">
+                                        {sections[0].content}
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                    ) : (
-                        // Multiple sections with headers
-                        <div className="space-y-8">
-                            {sections.map((section, index) => {
-                                const Icon = getSectionIcon(section.title)
-                                const delay = 200 + index * 100
-
-                                return (
-                                    <div
-                                        key={index}
-                                        className={`transition-all duration-700 ${
-                                            animateIn
-                                                ? "opacity-100 translate-y-0"
-                                                : "opacity-0 translate-y-4"
-                                        }`}
-                                        style={{
-                                            transitionDelay: `${delay}ms`,
-                                        }}
-                                    >
+                        ) : (
+                            // Multiple sections with simple headers
+                            <div className="space-y-6">
+                                {sections.map((section, index) => (
+                                    <div key={index}>
                                         {section.title ? (
                                             // Section with header
-                                            <div className="mb-3">
-                                                <div className="flex items-center mb-2">
-                                                    <div className="bg-primary-50 p-2 rounded-full mr-3 text-primary-600">
-                                                        <Icon size={16} />
-                                                    </div>
-                                                    <h4 className="text-xl font-medium text-secondary-800">
-                                                        {section.title}
-                                                    </h4>
-                                                </div>
-                                                <div className="pl-10 text-secondary-700 leading-relaxed whitespace-pre-line">
+                                            <div>
+                                                <h5 className="text-base font-medium text-secondary-800 mb-2">
+                                                    {section.title}
+                                                </h5>
+                                                <div className="text-secondary-700 leading-relaxed whitespace-pre-line text-base">
                                                     {section.content}
                                                 </div>
                                             </div>
                                         ) : (
                                             // Section without header
-                                            <div className="text-secondary-700 leading-relaxed whitespace-pre-line">
+                                            <div className="text-secondary-700 leading-relaxed whitespace-pre-line text-base">
                                                 {section.content}
                                             </div>
                                         )}
                                     </div>
-                                )
-                            })}
-                        </div>
-                    )}
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>
 
                 {/* Subtle footer */}

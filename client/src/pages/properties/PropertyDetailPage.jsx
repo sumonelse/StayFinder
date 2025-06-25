@@ -368,10 +368,6 @@ const PropertyDetailPage = () => {
                             images={property?.images || []}
                             alt={property?.title || "Property"}
                         />
-                        <button className="absolute bottom-4 right-4 bg-white text-gray-700 px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50 transition-all flex items-center text-sm font-medium shadow-sm hover:shadow-md transform hover:scale-105">
-                            <FaCamera className="mr-2" size={14} />
-                            Show all photos
-                        </button>
                     </div>
                 </div>
 
@@ -572,30 +568,31 @@ const PropertyDetailPage = () => {
                             <h2 className="text-xl font-semibold text-gray-900 mb-6">
                                 What this place offers
                             </h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                                 {property.amenities
-                                    ?.slice(0, 10)
+                                    ?.slice(0, 8)
                                     .map((amenity, index) => (
                                         <div
                                             key={index}
-                                            className="flex items-center space-x-4 py-2"
+                                            className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                                         >
-                                            <div className="text-gray-700">
+                                            <div className="text-gray-700 flex-shrink-0">
                                                 {getAmenityIcon(amenity)}
                                             </div>
-                                            <span className="text-gray-900">
+                                            <span className="text-gray-900 text-sm font-medium truncate">
                                                 {amenity}
                                             </span>
                                         </div>
                                     ))}
                             </div>
-                            {property.amenities?.length > 10 && (
+                            {property.amenities?.length > 0 && (
                                 <button
                                     onClick={() => setShowAmenitiesModal(true)}
                                     className="mt-6 px-6 py-3 border border-gray-900 text-gray-900 rounded-lg hover:bg-gray-50 transition-colors font-medium"
                                 >
-                                    Show all {property.amenities.length}{" "}
-                                    amenities
+                                    {property.amenities.length > 8
+                                        ? `Show all ${property.amenities.length} amenities`
+                                        : `Show ${property.amenities.length} amenities`}
                                 </button>
                             )}
                         </div>
@@ -879,13 +876,13 @@ const PropertyDetailPage = () => {
                         <div className="sticky top-24">
                             <div className="bg-white border border-gray-300 rounded-xl shadow-xl p-6 hover:shadow-2xl transition-shadow duration-300">
                                 {/* Price and Rating */}
-                                <div className="flex items-center justify-between mb-6">
+                                <div className="flex items-center justify-between mb-2">
                                     <div className="flex items-baseline">
                                         <span className="text-2xl font-semibold text-gray-900">
                                             {formatPrice(property.price)}
                                         </span>
                                         <span className="text-gray-600 ml-1 text-base">
-                                            night
+                                            / night
                                         </span>
                                     </div>
                                     {property.avgRating > 0 && (
@@ -1015,56 +1012,46 @@ const PropertyDetailPage = () => {
                                         You won't be charged yet
                                     </p>
 
-                                    {/* Price Breakdown */}
+                                    {/* Price Summary */}
                                     {selectedDates.startDate &&
                                         selectedDates.endDate &&
                                         bookingPriceDetails && (
-                                            <div className="pt-4 border-t border-gray-200 space-y-2">
-                                                <div className="flex justify-between text-sm">
-                                                    <span className="text-gray-600">
-                                                        {formatPrice(
-                                                            property.price
-                                                        )}{" "}
-                                                        x{" "}
-                                                        {calculateNights(
-                                                            selectedDates.startDate,
-                                                            selectedDates.endDate
-                                                        )}{" "}
-                                                        nights
-                                                    </span>
-                                                    <span className="text-gray-900">
-                                                        {formatPrice(
-                                                            bookingPriceDetails.subtotal
-                                                        )}
-                                                    </span>
-                                                </div>
-                                                <div className="flex justify-between text-sm">
-                                                    <span className="text-gray-600">
-                                                        Service fee
-                                                    </span>
-                                                    <span className="text-gray-900">
-                                                        {formatPrice(
-                                                            bookingPriceDetails.serviceFee
-                                                        )}
-                                                    </span>
-                                                </div>
-                                                <div className="flex justify-between text-sm">
-                                                    <span className="text-gray-600">
-                                                        Taxes
-                                                    </span>
-                                                    <span className="text-gray-900">
-                                                        {formatPrice(
-                                                            bookingPriceDetails.taxes
-                                                        )}
-                                                    </span>
-                                                </div>
-                                                <div className="flex justify-between font-medium text-base pt-2 border-t border-gray-200">
-                                                    <span>Total</span>
-                                                    <span>
-                                                        {formatPrice(
-                                                            bookingPriceDetails.total
-                                                        )}
-                                                    </span>
+                                            <div className="pt-4 border-t border-gray-200">
+                                                <div className="flex justify-between items-center">
+                                                    <div>
+                                                        <span className="font-medium text-base text-gray-900">
+                                                            Total
+                                                        </span>
+                                                        <p className="text-sm text-gray-600">
+                                                            {calculateNights(
+                                                                selectedDates.startDate,
+                                                                selectedDates.endDate
+                                                            )}{" "}
+                                                            {calculateNights(
+                                                                selectedDates.startDate,
+                                                                selectedDates.endDate
+                                                            ) === 1
+                                                                ? "night"
+                                                                : "nights"}
+                                                        </p>
+                                                    </div>
+                                                    <div className="text-right">
+                                                        <span className="font-semibold text-lg text-gray-900">
+                                                            {formatPrice(
+                                                                bookingPriceDetails.total
+                                                            )}
+                                                        </span>
+                                                        <button
+                                                            onClick={() =>
+                                                                setShowPriceBreakdownModal(
+                                                                    true
+                                                                )
+                                                            }
+                                                            className="block text-sm text-primary-600 hover:text-primary-700 underline mt-1"
+                                                        >
+                                                            See breakdown
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         )}
