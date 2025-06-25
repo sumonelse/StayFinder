@@ -338,523 +338,559 @@ const BookingPage = () => {
     }
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            {/* Back button and title */}
-            <div className="mb-8 animate-fadeIn">
-                <button
-                    onClick={() => navigate(`/properties/${id}`)}
-                    className="flex items-center text-primary-600 hover:text-primary-800 mb-3 transition-colors"
-                >
-                    <FaArrowLeft className="mr-2" />
-                    <span className="font-medium">Back to property</span>
-                </button>
-                <h1 className="text-3xl md:text-4xl font-bold text-secondary-900">
-                    Complete your booking
-                </h1>
-                <p className="text-secondary-600 mt-2">
-                    You're just a few steps away from your stay at{" "}
-                    {property.title}
-                </p>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Left column - Booking form */}
-                <div className="lg:col-span-2">
-                    <div className="bg-white rounded-xl shadow-md p-6 mb-6 border border-secondary-100 animate-fadeIn animation-delay-100">
-                        <h2 className="text-2xl font-semibold mb-6 text-secondary-900 flex items-center">
-                            <FaRegStar className="text-primary-500 mr-3" />
-                            Your trip details
-                        </h2>
-
-                        <form onSubmit={handleSubmit}>
-                            {/* Dates */}
-                            <div className="mb-8">
-                                <h3 className="text-lg font-medium mb-3 text-secondary-900 flex items-center">
-                                    <FaCalendarAlt className="text-primary-500 mr-2" />
-                                    Select dates
-                                </h3>
-                                <div className="bg-white rounded-lg shadow-sm border border-secondary-200 p-4">
-                                    <AvailabilityCalendar
-                                        propertyId={id}
-                                        onDateSelect={handleDateSelect}
-                                        initialStartDate={
-                                            bookingData.checkInDate
-                                        }
-                                        initialEndDate={
-                                            bookingData.checkOutDate
-                                        }
-                                    />
-                                </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                                    <div>
-                                        {errors.checkInDate && (
-                                            <p className="text-sm text-red-600 flex items-center">
-                                                <FaExclamationCircle
-                                                    className="mr-1"
-                                                    size={12}
-                                                />
-                                                {errors.checkInDate}
-                                            </p>
-                                        )}
-                                    </div>
-                                    <div>
-                                        {errors.checkOutDate && (
-                                            <p className="text-sm text-red-600 flex items-center">
-                                                <FaExclamationCircle
-                                                    className="mr-1"
-                                                    size={12}
-                                                />
-                                                {errors.checkOutDate}
-                                            </p>
-                                        )}
-                                    </div>
-                                </div>
-
-                                {/* Availability message */}
-                                {bookingData.checkInDate &&
-                                    bookingData.checkOutDate && (
-                                        <div className="mt-3">
-                                            {availabilityLoading ? (
-                                                <p className="text-secondary-600 flex items-center">
-                                                    <FaSpinner className="animate-spin mr-2" />
-                                                    Checking availability...
-                                                </p>
-                                            ) : availabilityData?.available ? (
-                                                <p className="text-green-600 flex items-center bg-green-50 p-2 rounded-lg border border-green-100">
-                                                    <FaCheckCircle className="mr-2" />
-                                                    <span className="font-medium">
-                                                        Available for your dates
-                                                    </span>
-                                                </p>
-                                            ) : (
-                                                <p className="text-red-600 flex items-center bg-red-50 p-2 rounded-lg border border-red-100">
-                                                    <FaExclamationCircle className="mr-2" />
-                                                    <span className="font-medium">
-                                                        Sorry, not available for
-                                                        these dates
-                                                    </span>
-                                                </p>
-                                            )}
-                                        </div>
-                                    )}
-                            </div>
-
-                            {/* Guests */}
-                            <div className="mb-8">
-                                <h3 className="text-lg font-medium mb-3 text-secondary-900 flex items-center">
-                                    <FaUsers className="text-primary-500 mr-2" />
-                                    Number of guests
-                                </h3>
-                                <div className="relative">
-                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <FaUsers className="text-secondary-400" />
-                                    </div>
-                                    <select
-                                        id="numberOfGuests"
-                                        name="numberOfGuests"
-                                        value={bookingData.numberOfGuests}
-                                        onChange={handleInputChange}
-                                        className={`input-field pl-10 appearance-none ${
-                                            errors.numberOfGuests
-                                                ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                                                : ""
-                                        }`}
-                                    >
-                                        {[...Array(property.maxGuests)].map(
-                                            (_, i) => (
-                                                <option
-                                                    key={i + 1}
-                                                    value={i + 1}
-                                                >
-                                                    {i + 1} guest
-                                                    {i !== 0 ? "s" : ""}
-                                                </option>
-                                            )
-                                        )}
-                                    </select>
-                                </div>
-                                {errors.numberOfGuests && (
-                                    <p className="mt-2 text-sm text-red-600 flex items-center">
-                                        <FaExclamationCircle
-                                            className="mr-1"
-                                            size={12}
-                                        />
-                                        {errors.numberOfGuests}
-                                    </p>
-                                )}
-
-                                <div className="mt-3 bg-secondary-50 p-3 rounded-lg border border-secondary-100 text-secondary-700 text-sm flex items-start">
-                                    <FaInfoCircle className="text-primary-500 mr-2 mt-0.5" />
-                                    <span>
-                                        This property can accommodate up to{" "}
-                                        {property.maxGuests} guests. Additional
-                                        guests may not be allowed.
-                                    </span>
-                                </div>
-                            </div>
-
-                            {/* House Rules */}
-                            <div className="mb-8">
-                                <h3 className="text-lg font-medium mb-3 text-secondary-900 flex items-center">
-                                    <FaClipboardList className="text-primary-500 mr-2" />
-                                    House Rules
-                                </h3>
-                                <div className="bg-secondary-50 p-4 rounded-lg border border-secondary-100">
-                                    <PropertyRules
-                                        rules={property?.rules || {}}
-                                        showAll={true}
-                                        className="text-sm"
-                                    />
-
-                                    <div className="mt-4 pt-3 border-t border-secondary-200 text-secondary-600 text-sm flex items-center">
-                                        <FaInfoCircle className="text-primary-500 mr-2 flex-shrink-0" />
-                                        <span>
-                                            By proceeding with this booking, you
-                                            agree to follow the house rules set
-                                            by the host.
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Special requests */}
-                            <div className="mb-8">
-                                <h3 className="text-lg font-medium mb-3 text-secondary-900 flex items-center">
-                                    <FaRegCommentDots className="text-primary-500 mr-2" />
-                                    Special requests
-                                </h3>
-                                <textarea
-                                    id="specialRequests"
-                                    name="specialRequests"
-                                    value={bookingData.specialRequests}
-                                    onChange={handleInputChange}
-                                    rows="4"
-                                    placeholder="Let the host know if you have any special requirements or questions"
-                                    className="input-field"
-                                ></textarea>
-
-                                <div className="mt-3 text-secondary-600 text-sm flex items-center">
-                                    <FaRegSmile className="text-primary-500 mr-2" />
-                                    <span>
-                                        Special requests are subject to host
-                                        approval and availability.
-                                    </span>
-                                </div>
-                            </div>
-
-                            {/* Payment info */}
-                            <div className="mb-8">
-                                <h3 className="text-lg font-medium mb-3 text-secondary-900 flex items-center">
-                                    <FaCreditCard className="text-primary-500 mr-2" />
-                                    Payment information
-                                </h3>
-                                <div className="bg-secondary-50 p-5 rounded-xl border border-secondary-100">
-                                    <div className="flex items-start mb-4">
-                                        <div className="bg-primary-100 p-2 rounded-full mr-3">
-                                            <FaShieldAlt
-                                                className="text-primary-600"
-                                                size={18}
-                                            />
-                                        </div>
-                                        <div>
-                                            <h4 className="font-medium text-secondary-900 mb-1">
-                                                Secure booking process
-                                            </h4>
-                                            <p className="text-secondary-700">
-                                                You won't be charged yet. We'll
-                                                secure your booking, and payment
-                                                will be collected by the host
-                                                after confirmation.
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex items-start">
-                                        <div className="bg-primary-100 p-2 rounded-full mr-3">
-                                            <FaRegClock
-                                                className="text-primary-600"
-                                                size={18}
-                                            />
-                                        </div>
-                                        <div>
-                                            <h4 className="font-medium text-secondary-900 mb-1">
-                                                Flexible cancellation
-                                            </h4>
-                                            <p className="text-secondary-700">
-                                                Free cancellation before{" "}
-                                                {formatDate(
-                                                    (() => {
-                                                        const date = new Date()
-                                                        date.setDate(
-                                                            date.getDate() + 2
-                                                        )
-                                                        return date
-                                                    })(),
-                                                    { format: "short" }
-                                                )}
-                                                . Review the host's full
-                                                cancellation policy which
-                                                applies even if you cancel for
-                                                illness or disruptions caused by
-                                                COVID-19.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Submit error */}
-                            {errors.submit && (
-                                <div className="mb-6">
-                                    <div className="bg-red-50 text-red-700 p-4 rounded-xl border border-red-100 flex items-center">
-                                        <FaExclamationCircle className="text-red-500 mr-3 flex-shrink-0" />
-                                        <p>{errors.submit}</p>
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Submit button */}
-                            <div className="flex justify-end">
-                                <button
-                                    type="submit"
-                                    disabled={
-                                        isSubmitting ||
-                                        (bookingData.checkInDate &&
-                                            bookingData.checkOutDate &&
-                                            availabilityData &&
-                                            !availabilityData.available)
-                                    }
-                                    className="btn btn-primary py-3 px-8 text-lg flex items-center"
-                                >
-                                    {isSubmitting ? (
-                                        <>
-                                            <FaSpinner className="animate-spin mr-2" />
-                                            Processing...
-                                        </>
-                                    ) : (
-                                        "Confirm and book"
-                                    )}
-                                </button>
-                            </div>
-                        </form>
+        <div className="min-h-screen bg-gray-50">
+            <div className="container mx-auto px-4 py-6 md:py-8">
+                {/* Back button and title */}
+                <div className="mb-6 md:mb-8 animate-fadeIn">
+                    <button
+                        onClick={() => navigate(`/properties/${id}`)}
+                        className="flex items-center text-gray-600 hover:text-black mb-4 transition-colors group"
+                    >
+                        <FaArrowLeft className="mr-2 group-hover:-translate-x-1 transition-transform" />
+                        <span className="font-medium">Back to property</span>
+                    </button>
+                    <div className="space-y-2">
+                        <h1 className="text-2xl md:text-3xl font-semibold text-black">
+                            Request to book
+                        </h1>
+                        <p className="text-gray-600 text-sm md:text-base">
+                            Your trip to {property.title}
+                        </p>
                     </div>
                 </div>
 
-                {/* Right column - Booking summary */}
-                <div className="lg:col-span-1">
-                    <div className="sticky top-8 animate-fadeIn animation-delay-200">
-                        <div className="bg-white rounded-xl shadow-md p-6 border border-secondary-200 mb-6">
-                            <h2 className="text-xl font-semibold mb-5 text-secondary-900">
-                                Booking summary
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+                    {/* Left column - Booking form */}
+                    <div className="lg:col-span-2">
+                        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-8 mb-6 animate-fadeIn animation-delay-100">
+                            <h2 className="text-xl font-semibold mb-8 text-black">
+                                Your trip
                             </h2>
 
-                            {/* Property info */}
-                            <div className="flex mb-6">
-                                <div className="w-24 h-24 rounded-lg overflow-hidden mr-4 border border-secondary-100 shadow-sm">
-                                    <img
-                                        src={
-                                            property.images[0]
-                                                ? typeof property.images[0] ===
-                                                  "object"
-                                                    ? property.images[0].url
-                                                    : property.images[0]
-                                                : "https://via.placeholder.com/100x100?text=No+Image"
-                                        }
-                                        alt={property.title}
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
-                                <div>
-                                    <h3 className="font-medium text-secondary-900 line-clamp-1 mb-1">
-                                        {property.title}
-                                    </h3>
-                                    <p className="text-sm text-secondary-600 mb-1 flex items-center">
-                                        <FaMapMarkerAlt
-                                            className="text-primary-500 mr-1"
-                                            size={12}
+                            <form onSubmit={handleSubmit}>
+                                {/* Dates */}
+                                <div className="mb-10">
+                                    <div className="flex items-center mb-6">
+                                        <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center mr-3">
+                                            <FaCalendarAlt className="text-white text-sm" />
+                                        </div>
+                                        <h3 className="text-lg font-medium text-black">
+                                            Dates
+                                        </h3>
+                                    </div>
+                                    <div className="bg-gray-50 rounded-xl border border-gray-200 p-4 md:p-6">
+                                        <AvailabilityCalendar
+                                            propertyId={id}
+                                            onDateSelect={handleDateSelect}
+                                            initialStartDate={
+                                                bookingData.checkInDate
+                                            }
+                                            initialEndDate={
+                                                bookingData.checkOutDate
+                                            }
                                         />
-                                        {property.address.city},{" "}
-                                        {property.address.country}
-                                    </p>
-                                    <div className="flex text-sm text-secondary-600 space-x-3">
-                                        <span className="flex items-center">
-                                            <FaBed
-                                                className="text-primary-500 mr-1"
-                                                size={12}
-                                            />
-                                            {property.bedrooms}{" "}
-                                            {property.bedrooms !== 1
-                                                ? "bedrooms"
-                                                : "bedroom"}
-                                        </span>
-                                        <span className="flex items-center">
-                                            <FaBath
-                                                className="text-primary-500 mr-1"
-                                                size={12}
-                                            />
-                                            {property.bathrooms}{" "}
-                                            {property.bathrooms !== 1
-                                                ? "baths"
-                                                : "bath"}
-                                        </span>
                                     </div>
-                                </div>
-                            </div>
 
-                            {/* Trip details */}
-                            {bookingData.checkInDate &&
-                            bookingData.checkOutDate ? (
-                                <div className="bg-secondary-50 p-4 rounded-lg border border-secondary-100 mb-6">
-                                    <h3 className="font-medium text-secondary-900 mb-2">
-                                        Trip details
-                                    </h3>
-                                    <div className="grid grid-cols-2 gap-3 text-sm">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                                         <div>
-                                            <p className="text-secondary-600">
-                                                Check-in
-                                            </p>
-                                            <p className="font-medium text-secondary-900">
-                                                {formatDate(
-                                                    bookingData.checkInDate,
-                                                    {
-                                                        format: "custom",
-                                                        options: {
-                                                            weekday: "short",
-                                                            month: "short",
-                                                            day: "numeric",
-                                                        },
-                                                    }
+                                            {errors.checkInDate && (
+                                                <p className="text-sm text-red-600 flex items-center">
+                                                    <FaExclamationCircle
+                                                        className="mr-1"
+                                                        size={12}
+                                                    />
+                                                    {errors.checkInDate}
+                                                </p>
+                                            )}
+                                        </div>
+                                        <div>
+                                            {errors.checkOutDate && (
+                                                <p className="text-sm text-red-600 flex items-center">
+                                                    <FaExclamationCircle
+                                                        className="mr-1"
+                                                        size={12}
+                                                    />
+                                                    {errors.checkOutDate}
+                                                </p>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {/* Availability message */}
+                                    {bookingData.checkInDate &&
+                                        bookingData.checkOutDate && (
+                                            <div className="mt-4">
+                                                {availabilityLoading ? (
+                                                    <div className="flex items-center text-gray-600 bg-gray-50 p-3 rounded-lg">
+                                                        <FaSpinner className="animate-spin mr-2 text-gray-400" />
+                                                        <span className="text-sm">
+                                                            Checking
+                                                            availability...
+                                                        </span>
+                                                    </div>
+                                                ) : availabilityData?.available ? (
+                                                    <div className="flex items-center text-green-700 bg-green-50 p-3 rounded-lg border border-green-200">
+                                                        <FaCheckCircle className="mr-2 text-green-600" />
+                                                        <span className="font-medium text-sm">
+                                                            Available for your
+                                                            dates
+                                                        </span>
+                                                    </div>
+                                                ) : (
+                                                    <div className="flex items-center text-red-700 bg-red-50 p-3 rounded-lg border border-red-200">
+                                                        <FaExclamationCircle className="mr-2 text-red-600" />
+                                                        <span className="font-medium text-sm">
+                                                            Sorry, not available
+                                                            for these dates
+                                                        </span>
+                                                    </div>
                                                 )}
-                                            </p>
-                                        </div>
-                                        <div>
-                                            <p className="text-secondary-600">
-                                                Check-out
-                                            </p>
-                                            <p className="font-medium text-secondary-900">
-                                                {(() => {
-                                                    const date = new Date(
-                                                        bookingData.checkOutDate
-                                                    )
-                                                    date.setHours(12, 0, 0, 0)
-                                                    return date.toLocaleDateString(
-                                                        "en-US",
-                                                        {
-                                                            weekday: "short",
-                                                            month: "short",
-                                                            day: "numeric",
-                                                        }
-                                                    )
-                                                })()}
-                                            </p>
-                                        </div>
-                                        <div className="col-span-2">
-                                            <p className="text-secondary-600">
-                                                Guests
-                                            </p>
-                                            <p className="font-medium text-secondary-900">
-                                                {bookingData.numberOfGuests}{" "}
-                                                {bookingData.numberOfGuests ===
-                                                1
-                                                    ? "guest"
-                                                    : "guests"}
-                                            </p>
-                                        </div>
-                                    </div>
+                                            </div>
+                                        )}
                                 </div>
-                            ) : (
-                                <div className="bg-primary-50 p-4 rounded-lg border border-primary-100 mb-6 text-sm text-secondary-700">
-                                    <p className="flex items-center">
-                                        <FaInfoCircle className="text-primary-500 mr-2" />
-                                        Select your dates to see the total price
-                                    </p>
-                                </div>
-                            )}
 
-                            {/* Price details */}
-                            <div className="border-t border-secondary-200 pt-4 mb-4">
-                                <h3 className="font-medium mb-3 text-secondary-900">
-                                    Price details
-                                </h3>
-                                <div className="space-y-3">
-                                    <div className="flex justify-between">
-                                        <span className="text-secondary-700">
-                                            {formatPrice(property.price)} x{" "}
-                                            {bookingDetails.nights || "0"}{" "}
-                                            nights
-                                        </span>
-                                        <span className="text-secondary-900">
-                                            {formatPrice(
-                                                bookingDetails.subtotal
-                                            )}
-                                        </span>
+                                {/* Guests */}
+                                <div className="mb-10">
+                                    <div className="flex items-center mb-6">
+                                        <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center mr-3">
+                                            <FaUsers className="text-white text-sm" />
+                                        </div>
+                                        <h3 className="text-lg font-medium text-black">
+                                            Guests
+                                        </h3>
                                     </div>
-                                    <div className="flex justify-between">
-                                        <span className="text-secondary-700 flex items-center">
-                                            Cleaning fee
-                                            <FaInfoCircle
-                                                className="text-secondary-400 ml-1 cursor-help"
-                                                size={12}
-                                                title="One-time fee charged by host for cleaning their space"
-                                            />
-                                        </span>
-                                        <span className="text-secondary-900">
-                                            {formatPrice(
-                                                bookingDetails.cleaningFee
+                                    <div className="space-y-4">
+                                        <select
+                                            id="numberOfGuests"
+                                            name="numberOfGuests"
+                                            value={bookingData.numberOfGuests}
+                                            onChange={handleInputChange}
+                                            className={`w-full px-4 py-3 border rounded-xl text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all ${
+                                                errors.numberOfGuests
+                                                    ? "border-red-300 focus:ring-red-500"
+                                                    : "border-gray-300 hover:border-gray-400"
+                                            }`}
+                                        >
+                                            {[...Array(property.maxGuests)].map(
+                                                (_, i) => (
+                                                    <option
+                                                        key={i + 1}
+                                                        value={i + 1}
+                                                    >
+                                                        {i + 1} guest
+                                                        {i !== 0 ? "s" : ""}
+                                                    </option>
+                                                )
                                             )}
-                                        </span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <span className="text-secondary-700 flex items-center">
-                                            Service fee
-                                            <FaInfoCircle
-                                                className="text-secondary-400 ml-1 cursor-help"
-                                                size={12}
-                                                title="Fee that helps support our platform and services"
-                                            />
-                                        </span>
-                                        <span className="text-secondary-900">
-                                            {formatPrice(
-                                                bookingDetails.serviceFee
-                                            )}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
+                                        </select>
+                                        {errors.numberOfGuests && (
+                                            <p className="text-sm text-red-600 flex items-center">
+                                                <FaExclamationCircle
+                                                    className="mr-2"
+                                                    size={12}
+                                                />
+                                                {errors.numberOfGuests}
+                                            </p>
+                                        )}
 
-                            {/* Total */}
-                            <div className="border-t border-secondary-200 pt-4">
-                                <div className="flex justify-between font-bold text-lg">
-                                    <span className="text-secondary-900">
-                                        Total
-                                    </span>
-                                    <span className="text-secondary-900">
-                                        {formatPrice(bookingDetails.total)}
-                                    </span>
+                                        <div className="bg-gray-50 p-4 rounded-xl text-gray-600 text-sm">
+                                            <p className="flex items-start">
+                                                <FaInfoCircle className="text-gray-400 mr-2 mt-0.5 flex-shrink-0" />
+                                                <span>
+                                                    This property can
+                                                    accommodate up to{" "}
+                                                    {property.maxGuests} guests.
+                                                    Additional guests may not be
+                                                    allowed.
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <p className="text-secondary-600 text-sm mt-1 text-right">
-                                    {property.pricePeriod === "nightly"
-                                        ? "for your stay"
-                                        : "for the first month"}
-                                </p>
-                            </div>
+
+                                {/* House Rules */}
+                                <div className="mb-10">
+                                    <div className="flex items-center mb-6">
+                                        <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center mr-3">
+                                            <FaClipboardList className="text-white text-sm" />
+                                        </div>
+                                        <h3 className="text-lg font-medium text-black">
+                                            House rules
+                                        </h3>
+                                    </div>
+                                    <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                                        <PropertyRules
+                                            rules={property?.rules || {}}
+                                            showAll={true}
+                                            className="text-sm"
+                                        />
+
+                                        <div className="mt-6 pt-4 border-t border-gray-200 text-gray-600 text-sm">
+                                            <p className="flex items-start">
+                                                <FaInfoCircle className="text-gray-400 mr-2 mt-0.5 flex-shrink-0" />
+                                                <span>
+                                                    By proceeding with this
+                                                    booking, you agree to follow
+                                                    the house rules set by the
+                                                    host.
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Special requests */}
+                                <div className="mb-10">
+                                    <div className="flex items-center mb-6">
+                                        <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center mr-3">
+                                            <FaRegCommentDots className="text-white text-sm" />
+                                        </div>
+                                        <h3 className="text-lg font-medium text-black">
+                                            Add a message for your host
+                                        </h3>
+                                    </div>
+                                    <div className="space-y-4">
+                                        <textarea
+                                            id="specialRequests"
+                                            name="specialRequests"
+                                            value={bookingData.specialRequests}
+                                            onChange={handleInputChange}
+                                            rows="4"
+                                            placeholder="Let the host know why you're traveling, who's coming with you, or anything else they should know."
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all resize-none hover:border-gray-400"
+                                        ></textarea>
+
+                                        <div className="text-gray-500 text-sm">
+                                            <p className="flex items-start">
+                                                <FaRegSmile className="text-gray-400 mr-2 mt-0.5 flex-shrink-0" />
+                                                <span>
+                                                    Tell your host about your
+                                                    trip to help them prepare
+                                                    for your stay.
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Payment info */}
+                                <div className="mb-10">
+                                    <div className="flex items-center mb-6">
+                                        <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center mr-3">
+                                            <FaShieldAlt className="text-white text-sm" />
+                                        </div>
+                                        <h3 className="text-lg font-medium text-black">
+                                            Booking protection
+                                        </h3>
+                                    </div>
+                                    <div className="bg-gray-50 p-6 rounded-xl border border-gray-200 space-y-6">
+                                        <div className="flex items-start">
+                                            <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                                <FaShieldAlt
+                                                    className="text-green-600"
+                                                    size={16}
+                                                />
+                                            </div>
+                                            <div>
+                                                <h4 className="font-medium text-black mb-2">
+                                                    You won't be charged yet
+                                                </h4>
+                                                <p className="text-gray-600 text-sm leading-relaxed">
+                                                    We'll secure your booking,
+                                                    and payment will be
+                                                    collected by the host after
+                                                    confirmation.
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-start">
+                                            <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                                <FaRegClock
+                                                    className="text-blue-600"
+                                                    size={16}
+                                                />
+                                            </div>
+                                            <div>
+                                                <h4 className="font-medium text-black mb-2">
+                                                    Free cancellation
+                                                </h4>
+                                                <p className="text-gray-600 text-sm leading-relaxed">
+                                                    Cancel for free before{" "}
+                                                    {formatDate(
+                                                        (() => {
+                                                            const date =
+                                                                new Date()
+                                                            date.setDate(
+                                                                date.getDate() +
+                                                                    2
+                                                            )
+                                                            return date
+                                                        })(),
+                                                        { format: "short" }
+                                                    )}
+                                                    . Review the host's full
+                                                    cancellation policy.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Submit error */}
+                                {errors.submit && (
+                                    <div className="mb-6">
+                                        <div className="bg-red-50 text-red-700 p-4 rounded-xl border border-red-200 flex items-center">
+                                            <FaExclamationCircle className="text-red-500 mr-3 flex-shrink-0" />
+                                            <p className="text-sm">
+                                                {errors.submit}
+                                            </p>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Submit button */}
+                                <div className="pt-6 border-t border-gray-200">
+                                    <button
+                                        type="submit"
+                                        disabled={
+                                            isSubmitting ||
+                                            (bookingData.checkInDate &&
+                                                bookingData.checkOutDate &&
+                                                availabilityData &&
+                                                !availabilityData.available)
+                                        }
+                                        className="w-full bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
+                                    >
+                                        {isSubmitting ? (
+                                            <>
+                                                <FaSpinner className="animate-spin mr-2" />
+                                                Processing...
+                                            </>
+                                        ) : (
+                                            "Request to book"
+                                        )}
+                                    </button>
+                                </div>
+                            </form>
                         </div>
+                    </div>
 
-                        {/* Safety notice */}
-                        <div className="bg-secondary-50 p-4 rounded-xl border border-secondary-200">
-                            <div className="flex items-start">
-                                <div className="text-primary-500 mr-3 mt-1">
-                                    <FaShieldAlt size={20} />
+                    {/* Right column - Booking summary */}
+                    <div className="lg:col-span-1">
+                        <div className="sticky top-8 animate-fadeIn animation-delay-200">
+                            <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 mb-6">
+                                {/* Property info */}
+                                <div className="flex mb-6 pb-6 border-b border-gray-100">
+                                    <div className="w-20 h-20 rounded-xl overflow-hidden mr-4 flex-shrink-0">
+                                        <img
+                                            src={
+                                                property.images[0]
+                                                    ? typeof property
+                                                          .images[0] ===
+                                                      "object"
+                                                        ? property.images[0].url
+                                                        : property.images[0]
+                                                    : "https://via.placeholder.com/100x100?text=No+Image"
+                                            }
+                                            alt={property.title}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                        <h3 className="font-medium text-black text-sm mb-1 truncate">
+                                            {property.title}
+                                        </h3>
+                                        <p className="text-xs text-gray-500 mb-2 flex items-center">
+                                            <FaMapMarkerAlt
+                                                className="text-gray-400 mr-1"
+                                                size={10}
+                                            />
+                                            {property.address.city},{" "}
+                                            {property.address.country}
+                                        </p>
+                                        <div className="flex text-xs text-gray-500 space-x-3">
+                                            <span className="flex items-center">
+                                                <FaBed
+                                                    className="text-gray-400 mr-1"
+                                                    size={10}
+                                                />
+                                                {property.bedrooms} bed
+                                                {property.bedrooms !== 1
+                                                    ? "s"
+                                                    : ""}
+                                            </span>
+                                            <span className="flex items-center">
+                                                <FaBath
+                                                    className="text-gray-400 mr-1"
+                                                    size={10}
+                                                />
+                                                {property.bathrooms} bath
+                                                {property.bathrooms !== 1
+                                                    ? "s"
+                                                    : ""}
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h4 className="font-medium text-secondary-900 mb-1">
-                                        Safe booking guarantee
-                                    </h4>
-                                    <p className="text-sm text-secondary-700">
-                                        Book with confidence. Your payment is
-                                        protected by our secure payment system.
-                                    </p>
+
+                                {/* Trip details */}
+                                {bookingData.checkInDate &&
+                                bookingData.checkOutDate ? (
+                                    <div className="mb-6">
+                                        <div className="space-y-4">
+                                            <div className="flex justify-between items-center py-3 border-b border-gray-100">
+                                                <div>
+                                                    <p className="text-xs text-gray-500 uppercase tracking-wide">
+                                                        Check-in
+                                                    </p>
+                                                    <p className="font-medium text-black text-sm">
+                                                        {formatDate(
+                                                            bookingData.checkInDate,
+                                                            {
+                                                                format: "custom",
+                                                                options: {
+                                                                    weekday:
+                                                                        "short",
+                                                                    month: "short",
+                                                                    day: "numeric",
+                                                                },
+                                                            }
+                                                        )}
+                                                    </p>
+                                                </div>
+                                                <div className="text-right">
+                                                    <p className="text-xs text-gray-500 uppercase tracking-wide">
+                                                        Check-out
+                                                    </p>
+                                                    <p className="font-medium text-black text-sm">
+                                                        {(() => {
+                                                            const date =
+                                                                new Date(
+                                                                    bookingData.checkOutDate
+                                                                )
+                                                            date.setHours(
+                                                                12,
+                                                                0,
+                                                                0,
+                                                                0
+                                                            )
+                                                            return date.toLocaleDateString(
+                                                                "en-US",
+                                                                {
+                                                                    weekday:
+                                                                        "short",
+                                                                    month: "short",
+                                                                    day: "numeric",
+                                                                }
+                                                            )
+                                                        })()}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div className="py-3">
+                                                <p className="text-xs text-gray-500 uppercase tracking-wide">
+                                                    Guests
+                                                </p>
+                                                <p className="font-medium text-black text-sm">
+                                                    {bookingData.numberOfGuests}{" "}
+                                                    {bookingData.numberOfGuests ===
+                                                    1
+                                                        ? "guest"
+                                                        : "guests"}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="bg-gray-50 p-4 rounded-xl mb-6 text-sm text-gray-600">
+                                        <p className="flex items-center">
+                                            <FaInfoCircle className="text-gray-400 mr-2" />
+                                            Select your dates to see the total
+                                            price
+                                        </p>
+                                    </div>
+                                )}
+
+                                {/* Price details */}
+                                <div className="border-t border-gray-200 pt-6">
+                                    <div className="space-y-4 mb-6">
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-gray-600 text-sm underline">
+                                                {formatPrice(property.price)} x{" "}
+                                                {bookingDetails.nights || "0"}{" "}
+                                                nights
+                                            </span>
+                                            <span className="text-black text-sm">
+                                                {formatPrice(
+                                                    bookingDetails.subtotal
+                                                )}
+                                            </span>
+                                        </div>
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-gray-600 text-sm underline flex items-center">
+                                                Cleaning fee
+                                                <FaInfoCircle
+                                                    className="text-gray-400 ml-1 cursor-help"
+                                                    size={12}
+                                                    title="One-time fee charged by host for cleaning their space"
+                                                />
+                                            </span>
+                                            <span className="text-black text-sm">
+                                                {formatPrice(
+                                                    bookingDetails.cleaningFee
+                                                )}
+                                            </span>
+                                        </div>
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-gray-600 text-sm underline flex items-center">
+                                                Service fee
+                                                <FaInfoCircle
+                                                    className="text-gray-400 ml-1 cursor-help"
+                                                    size={12}
+                                                    title="Fee that helps support our platform and services"
+                                                />
+                                            </span>
+                                            <span className="text-black text-sm">
+                                                {formatPrice(
+                                                    bookingDetails.serviceFee
+                                                )}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    {/* Total */}
+                                    <div className="border-t border-gray-200 pt-4">
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-black font-semibold">
+                                                Total (INR)
+                                            </span>
+                                            <span className="text-black font-semibold text-lg">
+                                                {formatPrice(
+                                                    bookingDetails.total
+                                                )}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Safety notice */}
+                            <div className="bg-secondary-50 p-4 rounded-xl border border-secondary-200">
+                                <div className="flex items-start">
+                                    <div className="text-primary-500 mr-3 mt-1">
+                                        <FaShieldAlt size={20} />
+                                    </div>
+                                    <div>
+                                        <h4 className="font-medium text-secondary-900 mb-1">
+                                            Safe booking guarantee
+                                        </h4>
+                                        <p className="text-sm text-secondary-700">
+                                            Book with confidence. Your payment
+                                            is protected by our secure payment
+                                            system.
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
