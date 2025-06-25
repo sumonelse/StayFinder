@@ -73,7 +73,7 @@ const AmenitiesModal = ({ isOpen, onClose, amenities }) => {
                         key={index}
                         className="flex items-center p-3 bg-secondary-50 rounded-lg hover:bg-secondary-100 transition-colors"
                     >
-                        <div className="bg-white p-2 rounded-full mr-3 text-primary-600">
+                        <div className="bg-white p-2 rounded-full mr-3 text-secondary-700">
                             <amenity.icon />
                         </div>
                         <span>{amenity.name}</span>
