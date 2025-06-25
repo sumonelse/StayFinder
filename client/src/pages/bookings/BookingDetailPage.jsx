@@ -264,15 +264,6 @@ const BookingDetailPage = () => {
                 {/* Back button and title */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 md:mb-8 animate-fadeIn">
                     <div>
-                        <button
-                            onClick={() => navigate("/bookings")}
-                            className="flex items-center text-secondary-600 hover:text-black mb-4 transition-colors group"
-                        >
-                            <FaArrowLeft className="mr-2 group-hover:-translate-x-1 transition-transform" />
-                            <span className="font-medium">
-                                Back to bookings
-                            </span>
-                        </button>
                         <h1 className="text-2xl md:text-3xl font-semibold text-black">
                             Your reservation
                         </h1>
@@ -1121,7 +1112,7 @@ const BookingDetailPage = () => {
 
                     {/* Right column - Booking summary and actions */}
                     <div className="lg:col-span-1">
-                        <div className="sticky top-8 space-y-6">
+                        <div className="sticky top-16 space-y-2">
                             {/* Price summary */}
                             <div className="bg-white rounded-xl shadow-md p-6 border border-secondary-200 animate-fadeIn animation-delay-200">
                                 <h2 className="text-xl font-semibold mb-5 text-secondary-900 flex items-center">
