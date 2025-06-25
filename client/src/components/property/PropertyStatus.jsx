@@ -129,7 +129,7 @@ const PropertyStatus = ({
                         ? "bg-yellow-100 text-yellow-800"
                         : statusInfo.color === "red"
                         ? "bg-red-100 text-red-800"
-                        : "bg-gray-100 text-gray-800"
+                        : "bg-secondary-100 text-secondary-800"
                 }`}
             >
                 <statusInfo.icon className="mr-1" size={10} />
@@ -216,7 +216,7 @@ const PropertyStatus = ({
                                         </button>
                                     )}
 
-                                    <button className="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors text-sm font-medium">
+                                    <button className="inline-flex items-center px-4 py-2 bg-white border border-secondary-300 rounded-lg text-secondary-700 hover:bg-secondary-50 transition-colors text-sm font-medium">
                                         <FaEye className="mr-2" size={14} />
                                         View similar properties
                                     </button>
@@ -256,17 +256,17 @@ const PropertyStatus = ({
                 {showNotifyModal && (
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
                         <div className="bg-white rounded-xl p-6 w-full max-w-md">
-                            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                            <h3 className="text-lg font-semibold text-secondary-900 mb-4">
                                 Get Notified When Available
                             </h3>
 
-                            <p className="text-gray-600 text-sm mb-4">
+                            <p className="text-secondary-600 text-sm mb-4">
                                 We'll send you an email as soon as this property
                                 is approved and available for booking.
                             </p>
 
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <label className="block text-sm font-medium text-secondary-700 mb-2">
                                     Email Address
                                 </label>
                                 <input
@@ -274,14 +274,14 @@ const PropertyStatus = ({
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder="Enter your email"
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
+                                    className="w-full px-3 py-2 border border-secondary-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
                                 />
                             </div>
 
                             <div className="flex items-center justify-end space-x-3">
                                 <button
                                     onClick={() => setShowNotifyModal(false)}
-                                    className="px-4 py-2 text-gray-600 hover:text-gray-800"
+                                    className="px-4 py-2 text-secondary-600 hover:text-secondary-800"
                                 >
                                     Cancel
                                 </button>

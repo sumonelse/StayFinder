@@ -65,7 +65,7 @@ const Alert = ({
                 {dismissible && onDismiss && (
                     <button
                         type="button"
-                        className="ml-auto -mx-1.5 -my-1.5 rounded-lg p-1.5 inline-flex items-center justify-center h-8 w-8 hover:bg-opacity-20 hover:bg-gray-500 focus:outline-none"
+                        className="ml-auto -mx-1.5 -my-1.5 rounded-lg p-1.5 inline-flex items-center justify-center h-8 w-8 hover:bg-opacity-20 hover:bg-secondary-500 focus:outline-none"
                         onClick={onDismiss}
                         aria-label="Close"
                     >

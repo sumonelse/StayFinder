@@ -620,14 +620,14 @@ The property is conveniently located near public transportation. There's also st
         return (
             <div className="container mx-auto px-4 py-8">
                 <div className="flex items-center justify-center mb-4">
-                    <FaSpinner className="animate-spin text-primary-600 mr-2 text-xl" />
+                    <FaSpinner className="animate-spin text-secondary-600 mr-2 text-xl" />
                     <h2 className="text-xl font-semibold">
                         Loading property data...
                     </h2>
                 </div>
                 <div className="animate-pulse">
-                    <div className="h-8 bg-gray-200 rounded w-1/3 mb-6"></div>
-                    <div className="h-96 bg-gray-200 rounded mb-6"></div>
+                    <div className="h-8 bg-secondary-200 rounded w-1/3 mb-6"></div>
+                    <div className="h-96 bg-secondary-200 rounded mb-6"></div>
                 </div>
             </div>
         )
@@ -674,12 +674,12 @@ The property is conveniently located near public transportation. There's also st
             <div className="mb-6">
                 <button
                     onClick={() => navigate("/host/properties")}
-                    className="flex items-center text-primary-600 hover:text-primary-800 mb-2"
+                    className="flex items-center text-secondary-600 hover:text-primary-800 mb-2"
                 >
                     <FaArrowLeft className="mr-2" />
                     <span>Back to properties</span>
                 </button>
-                <h1 className="text-3xl font-bold text-gray-800">
+                <h1 className="text-3xl font-bold text-secondary-800">
                     {isEditMode ? "Edit Property" : "Add New Property"}
                 </h1>
             </div>
@@ -697,22 +697,22 @@ The property is conveniently located near public transportation. There's also st
                     <div
                         className={`flex items-center ${
                             currentStep >= 1
-                                ? "text-primary-600"
-                                : "text-gray-400"
+                                ? "text-secondary-600"
+                                : "text-secondary-400"
                         }`}
                     >
                         <div
                             className={`flex items-center justify-center w-8 h-8 rounded-full ${
                                 currentStep >= 1
                                     ? "bg-primary-100"
-                                    : "bg-gray-100"
+                                    : "bg-secondary-100"
                             } mr-2`}
                         >
                             <FaHome />
                         </div>
                         <span className="hidden md:inline">Basic Info</span>
                     </div>
-                    <div className="flex-1 h-1 mx-2 bg-gray-200">
+                    <div className="flex-1 h-1 mx-2 bg-secondary-200">
                         <div
                             className="h-1 bg-primary-600"
                             style={{
@@ -723,22 +723,22 @@ The property is conveniently located near public transportation. There's also st
                     <div
                         className={`flex items-center ${
                             currentStep >= 2
-                                ? "text-primary-600"
-                                : "text-gray-400"
+                                ? "text-secondary-600"
+                                : "text-secondary-400"
                         }`}
                     >
                         <div
                             className={`flex items-center justify-center w-8 h-8 rounded-full ${
                                 currentStep >= 2
                                     ? "bg-primary-100"
-                                    : "bg-gray-100"
+                                    : "bg-secondary-100"
                             } mr-2`}
                         >
                             <FaMapMarkerAlt />
                         </div>
                         <span className="hidden md:inline">Location</span>
                     </div>
-                    <div className="flex-1 h-1 mx-2 bg-gray-200">
+                    <div className="flex-1 h-1 mx-2 bg-secondary-200">
                         <div
                             className="h-1 bg-primary-600"
                             style={{
@@ -749,22 +749,22 @@ The property is conveniently located near public transportation. There's also st
                     <div
                         className={`flex items-center ${
                             currentStep >= 3
-                                ? "text-primary-600"
-                                : "text-gray-400"
+                                ? "text-secondary-600"
+                                : "text-secondary-400"
                         }`}
                     >
                         <div
                             className={`flex items-center justify-center w-8 h-8 rounded-full ${
                                 currentStep >= 3
                                     ? "bg-primary-100"
-                                    : "bg-gray-100"
+                                    : "bg-secondary-100"
                             } mr-2`}
                         >
                             <FaRupeeSign />
                         </div>
                         <span className="hidden md:inline">Details</span>
                     </div>
-                    <div className="flex-1 h-1 mx-2 bg-gray-200">
+                    <div className="flex-1 h-1 mx-2 bg-secondary-200">
                         <div
                             className="h-1 bg-primary-600"
                             style={{
@@ -775,22 +775,22 @@ The property is conveniently located near public transportation. There's also st
                     <div
                         className={`flex items-center ${
                             currentStep >= 4
-                                ? "text-primary-600"
-                                : "text-gray-400"
+                                ? "text-secondary-600"
+                                : "text-secondary-400"
                         }`}
                     >
                         <div
                             className={`flex items-center justify-center w-8 h-8 rounded-full ${
                                 currentStep >= 4
                                     ? "bg-primary-100"
-                                    : "bg-gray-100"
+                                    : "bg-secondary-100"
                             } mr-2`}
                         >
                             <FaImage />
                         </div>
                         <span className="hidden md:inline">Photos</span>
                     </div>
-                    <div className="flex-1 h-1 mx-2 bg-gray-200">
+                    <div className="flex-1 h-1 mx-2 bg-secondary-200">
                         <div
                             className="h-1 bg-primary-600"
                             style={{
@@ -801,22 +801,22 @@ The property is conveniently located near public transportation. There's also st
                     <div
                         className={`flex items-center ${
                             currentStep >= 5
-                                ? "text-primary-600"
-                                : "text-gray-400"
+                                ? "text-secondary-600"
+                                : "text-secondary-400"
                         }`}
                     >
                         <div
                             className={`flex items-center justify-center w-8 h-8 rounded-full ${
                                 currentStep >= 5
                                     ? "bg-primary-100"
-                                    : "bg-gray-100"
+                                    : "bg-secondary-100"
                             } mr-2`}
                         >
                             <FaList />
                         </div>
                         <span className="hidden md:inline">Amenities</span>
                     </div>
-                    <div className="flex-1 h-1 mx-2 bg-gray-200">
+                    <div className="flex-1 h-1 mx-2 bg-secondary-200">
                         <div
                             className="h-1 bg-primary-600"
                             style={{
@@ -827,15 +827,15 @@ The property is conveniently located near public transportation. There's also st
                     <div
                         className={`flex items-center ${
                             currentStep >= 6
-                                ? "text-primary-600"
-                                : "text-gray-400"
+                                ? "text-secondary-600"
+                                : "text-secondary-400"
                         }`}
                     >
                         <div
                             className={`flex items-center justify-center w-8 h-8 rounded-full ${
                                 currentStep >= 6
                                     ? "bg-primary-100"
-                                    : "bg-gray-100"
+                                    : "bg-secondary-100"
                             } mr-2`}
                         >
                             <FaClipboardList />
@@ -857,7 +857,7 @@ The property is conveniently located near public transportation. There's also st
                             <div className="mb-4">
                                 <label
                                     htmlFor="title"
-                                    className="block text-sm font-medium text-gray-700 mb-1"
+                                    className="block text-sm font-medium text-secondary-700 mb-1"
                                 >
                                     Property Title*
                                 </label>
@@ -870,7 +870,7 @@ The property is conveniently located near public transportation. There's also st
                                     className={`w-full px-3 py-2 border ${
                                         errors.title
                                             ? "border-red-500"
-                                            : "border-gray-300"
+                                            : "border-secondary-300"
                                     } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                     placeholder="e.g., Cozy Apartment in Downtown"
                                 />
@@ -884,16 +884,16 @@ The property is conveniently located near public transportation. There's also st
                             <div className="mb-4">
                                 <label
                                     htmlFor="description"
-                                    className="block text-sm font-medium text-gray-700 mb-1"
+                                    className="block text-sm font-medium text-secondary-700 mb-1"
                                 >
                                     Description*
                                 </label>
                                 <div className="mb-2">
-                                    <div className="bg-primary-50 border border-primary-100 rounded-lg p-3 mb-3">
-                                        <h4 className="text-sm font-medium text-primary-700 mb-1">
+                                    <div className="bg-secondary-50 border border-secondary-200 rounded-lg p-3 mb-3">
+                                        <h4 className="text-sm font-medium text-secondary-700 mb-1">
                                             Pro Tip: Use Section Headers
                                         </h4>
-                                        <p className="text-xs text-primary-600">
+                                        <p className="text-xs text-secondary-600">
                                             Make your description more organized
                                             by using section headers. Use{" "}
                                             <span className="font-mono bg-white px-1 rounded">
@@ -942,7 +942,7 @@ The property is conveniently located near public transportation. There's also st
                                     className={`w-full px-3 py-2 border ${
                                         errors.description
                                             ? "border-red-500"
-                                            : "border-gray-300"
+                                            : "border-secondary-300"
                                     } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 font-mono text-sm`}
                                     placeholder="## The Space&#10;Describe your property in detail...&#10;&#10;## Guest Access&#10;What can guests use?&#10;&#10;## The Neighborhood&#10;What's special about the area?"
                                 ></textarea>
@@ -951,7 +951,7 @@ The property is conveniently located near public transportation. There's also st
                                         {errors.description}
                                     </p>
                                 )}
-                                <p className="mt-1 text-sm text-gray-500">
+                                <p className="mt-1 text-sm text-secondary-500">
                                     Minimum 50 characters. Provide a detailed
                                     description of your property using sections
                                     for better organization.
@@ -961,7 +961,7 @@ The property is conveniently located near public transportation. There's also st
                             <div className="mb-4">
                                 <label
                                     htmlFor="type"
-                                    className="block text-sm font-medium text-gray-700 mb-1"
+                                    className="block text-sm font-medium text-secondary-700 mb-1"
                                 >
                                     Property Type*
                                 </label>
@@ -973,7 +973,7 @@ The property is conveniently located near public transportation. There's also st
                                     className={`w-full px-3 py-2 border ${
                                         errors.type
                                             ? "border-red-500"
-                                            : "border-gray-300"
+                                            : "border-secondary-300"
                                     } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                 >
                                     <option value="apartment">Apartment</option>
@@ -1003,7 +1003,7 @@ The property is conveniently located near public transportation. There's also st
                             <div className="mb-4">
                                 <label
                                     htmlFor="address.street"
-                                    className="block text-sm font-medium text-gray-700 mb-1"
+                                    className="block text-sm font-medium text-secondary-700 mb-1"
                                 >
                                     Street Address*
                                 </label>
@@ -1016,7 +1016,7 @@ The property is conveniently located near public transportation. There's also st
                                     className={`w-full px-3 py-2 border ${
                                         errors["address.street"]
                                             ? "border-red-500"
-                                            : "border-gray-300"
+                                            : "border-secondary-300"
                                     } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                     placeholder="e.g., 123 Main St"
                                 />
@@ -1031,7 +1031,7 @@ The property is conveniently located near public transportation. There's also st
                                 <div>
                                     <label
                                         htmlFor="address.city"
-                                        className="block text-sm font-medium text-gray-700 mb-1"
+                                        className="block text-sm font-medium text-secondary-700 mb-1"
                                     >
                                         City*
                                     </label>
@@ -1044,7 +1044,7 @@ The property is conveniently located near public transportation. There's also st
                                         className={`w-full px-3 py-2 border ${
                                             errors["address.city"]
                                                 ? "border-red-500"
-                                                : "border-gray-300"
+                                                : "border-secondary-300"
                                         } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                         placeholder="e.g., New York"
                                     />
@@ -1058,7 +1058,7 @@ The property is conveniently located near public transportation. There's also st
                                 <div>
                                     <label
                                         htmlFor="address.state"
-                                        className="block text-sm font-medium text-gray-700 mb-1"
+                                        className="block text-sm font-medium text-secondary-700 mb-1"
                                     >
                                         State/Province
                                     </label>
@@ -1068,7 +1068,7 @@ The property is conveniently located near public transportation. There's also st
                                         name="address.state"
                                         value={propertyData.address.state}
                                         onChange={handleInputChange}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                        className="w-full px-3 py-2 border border-secondary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                                         placeholder="e.g., NY"
                                     />
                                 </div>
@@ -1078,7 +1078,7 @@ The property is conveniently located near public transportation. There's also st
                                 <div>
                                     <label
                                         htmlFor="address.zipCode"
-                                        className="block text-sm font-medium text-gray-700 mb-1"
+                                        className="block text-sm font-medium text-secondary-700 mb-1"
                                     >
                                         Zip/Postal Code
                                     </label>
@@ -1088,7 +1088,7 @@ The property is conveniently located near public transportation. There's also st
                                         name="address.zipCode"
                                         value={propertyData.address.zipCode}
                                         onChange={handleInputChange}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                        className="w-full px-3 py-2 border border-secondary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                                         placeholder="e.g., 10001"
                                     />
                                 </div>
@@ -1096,7 +1096,7 @@ The property is conveniently located near public transportation. There's also st
                                 <div>
                                     <label
                                         htmlFor="address.country"
-                                        className="block text-sm font-medium text-gray-700 mb-1"
+                                        className="block text-sm font-medium text-secondary-700 mb-1"
                                     >
                                         Country*
                                     </label>
@@ -1109,7 +1109,7 @@ The property is conveniently located near public transportation. There's also st
                                         className={`w-full px-3 py-2 border ${
                                             errors["address.country"]
                                                 ? "border-red-500"
-                                                : "border-gray-300"
+                                                : "border-secondary-300"
                                         } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                         placeholder="e.g., United States"
                                     />
@@ -1122,10 +1122,10 @@ The property is conveniently located near public transportation. There's also st
                             </div>
 
                             <div className="mt-6">
-                                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                                <h3 className="text-lg font-medium text-secondary-900 mb-2">
                                     Pin Location on Map*
                                 </h3>
-                                <p className="text-sm text-gray-600 mb-4">
+                                <p className="text-sm text-secondary-600 mb-4">
                                     Drag the marker or click on the map to set
                                     the exact location of your property. You can
                                     also search for an address to find the
@@ -1158,13 +1158,13 @@ The property is conveniently located near public transportation. There's also st
                                 <div>
                                     <label
                                         htmlFor="price"
-                                        className="block text-sm font-medium text-gray-700 mb-1"
+                                        className="block text-sm font-medium text-secondary-700 mb-1"
                                     >
                                         Price*
                                     </label>
                                     <div className="relative">
                                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <FaRupeeSign className="text-gray-400" />
+                                            <FaRupeeSign className="text-secondary-400" />
                                         </div>
                                         <input
                                             type="number"
@@ -1177,7 +1177,7 @@ The property is conveniently located near public transportation. There's also st
                                             className={`w-full pl-8 pr-3 py-2 border ${
                                                 errors.price
                                                     ? "border-red-500"
-                                                    : "border-gray-300"
+                                                    : "border-secondary-300"
                                             } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                             placeholder="e.g., 100"
                                         />
@@ -1192,7 +1192,7 @@ The property is conveniently located near public transportation. There's also st
                                 <div>
                                     <label
                                         htmlFor="pricePeriod"
-                                        className="block text-sm font-medium text-gray-700 mb-1"
+                                        className="block text-sm font-medium text-secondary-700 mb-1"
                                     >
                                         Price Period
                                     </label>
@@ -1201,7 +1201,7 @@ The property is conveniently located near public transportation. There's also st
                                         name="pricePeriod"
                                         value={propertyData.pricePeriod}
                                         onChange={handleInputChange}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                        className="w-full px-3 py-2 border border-secondary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                                     >
                                         <option value="nightly">
                                             Per Night
@@ -1218,13 +1218,13 @@ The property is conveniently located near public transportation. There's also st
                                 <div>
                                     <label
                                         htmlFor="cleaningFee"
-                                        className="block text-sm font-medium text-gray-700 mb-1"
+                                        className="block text-sm font-medium text-secondary-700 mb-1"
                                     >
                                         Cleaning Fee
                                     </label>
                                     <div className="relative">
                                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <FaRupeeSign className="text-gray-400" />
+                                            <FaRupeeSign className="text-secondary-400" />
                                         </div>
                                         <input
                                             type="number"
@@ -1237,7 +1237,7 @@ The property is conveniently located near public transportation. There's also st
                                             className={`w-full pl-8 pr-3 py-2 border ${
                                                 errors.cleaningFee
                                                     ? "border-red-500"
-                                                    : "border-gray-300"
+                                                    : "border-secondary-300"
                                             } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                             placeholder="e.g., 50"
                                         />
@@ -1252,13 +1252,13 @@ The property is conveniently located near public transportation. There's also st
                                 <div>
                                     <label
                                         htmlFor="serviceFee"
-                                        className="block text-sm font-medium text-gray-700 mb-1"
+                                        className="block text-sm font-medium text-secondary-700 mb-1"
                                     >
                                         Service Fee
                                     </label>
                                     <div className="relative">
                                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <FaRupeeSign className="text-gray-400" />
+                                            <FaRupeeSign className="text-secondary-400" />
                                         </div>
                                         <input
                                             type="number"
@@ -1271,7 +1271,7 @@ The property is conveniently located near public transportation. There's also st
                                             className={`w-full pl-8 pr-3 py-2 border ${
                                                 errors.serviceFee
                                                     ? "border-red-500"
-                                                    : "border-gray-300"
+                                                    : "border-secondary-300"
                                             } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                             placeholder="e.g., 30"
                                         />
@@ -1288,7 +1288,7 @@ The property is conveniently located near public transportation. There's also st
                                 <div>
                                     <label
                                         htmlFor="bedrooms"
-                                        className="block text-sm font-medium text-gray-700 mb-1"
+                                        className="block text-sm font-medium text-secondary-700 mb-1"
                                     >
                                         Bedrooms*
                                     </label>
@@ -1302,7 +1302,7 @@ The property is conveniently located near public transportation. There's also st
                                         className={`w-full px-3 py-2 border ${
                                             errors.bedrooms
                                                 ? "border-red-500"
-                                                : "border-gray-300"
+                                                : "border-secondary-300"
                                         } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                     />
                                     {errors.bedrooms && (
@@ -1315,7 +1315,7 @@ The property is conveniently located near public transportation. There's also st
                                 <div>
                                     <label
                                         htmlFor="bathrooms"
-                                        className="block text-sm font-medium text-gray-700 mb-1"
+                                        className="block text-sm font-medium text-secondary-700 mb-1"
                                     >
                                         Bathrooms*
                                     </label>
@@ -1330,7 +1330,7 @@ The property is conveniently located near public transportation. There's also st
                                         className={`w-full px-3 py-2 border ${
                                             errors.bathrooms
                                                 ? "border-red-500"
-                                                : "border-gray-300"
+                                                : "border-secondary-300"
                                         } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                     />
                                     {errors.bathrooms && (
@@ -1343,7 +1343,7 @@ The property is conveniently located near public transportation. There's also st
                                 <div>
                                     <label
                                         htmlFor="maxGuests"
-                                        className="block text-sm font-medium text-gray-700 mb-1"
+                                        className="block text-sm font-medium text-secondary-700 mb-1"
                                     >
                                         Max Guests*
                                     </label>
@@ -1357,7 +1357,7 @@ The property is conveniently located near public transportation. There's also st
                                         className={`w-full px-3 py-2 border ${
                                             errors.maxGuests
                                                 ? "border-red-500"
-                                                : "border-gray-300"
+                                                : "border-secondary-300"
                                         } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                     />
                                     {errors.maxGuests && (
@@ -1381,11 +1381,11 @@ The property is conveniently located near public transportation. There's also st
                                                 isAvailable: e.target.checked,
                                             }))
                                         }
-                                        className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                                        className="h-4 w-4 text-secondary-600 focus:ring-primary-500 border-secondary-300 rounded"
                                     />
                                     <label
                                         htmlFor="isAvailable"
-                                        className="ml-2 block text-sm text-gray-700"
+                                        className="ml-2 block text-sm text-secondary-700"
                                     >
                                         Property is available for booking
                                     </label>
@@ -1455,7 +1455,7 @@ The property is conveniently located near public transportation. There's also st
                                 Amenities
                             </h2>
 
-                            <p className="text-gray-600 mb-4">
+                            <p className="text-secondary-600 mb-4">
                                 Select the amenities that your property offers
                                 to guests.
                             </p>
@@ -1475,11 +1475,11 @@ The property is conveniently located near public transportation. There's also st
                                             onChange={() =>
                                                 handleAmenityChange(amenity.id)
                                             }
-                                            className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                                            className="h-4 w-4 text-secondary-600 focus:ring-primary-500 border-secondary-300 rounded"
                                         />
                                         <label
                                             htmlFor={`amenity-${amenity.id}`}
-                                            className="ml-2 block text-sm text-gray-700"
+                                            className="ml-2 block text-sm text-secondary-700"
                                         >
                                             {amenity.label}
                                         </label>
@@ -1491,7 +1491,7 @@ The property is conveniently located near public transportation. There's also st
                                 <button
                                     type="button"
                                     onClick={handlePrevStep}
-                                    className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                                    className="px-4 py-2 border border-secondary-300 rounded-md text-secondary-700 hover:bg-secondary-50"
                                 >
                                     Back
                                 </button>
@@ -1513,7 +1513,7 @@ The property is conveniently located near public transportation. There's also st
                                 House Rules
                             </h2>
 
-                            <p className="text-gray-600 mb-4">
+                            <p className="text-secondary-600 mb-4">
                                 Set the rules for your property to help guests
                                 understand what is allowed.
                             </p>
@@ -1522,7 +1522,7 @@ The property is conveniently located near public transportation. There's also st
                                 {/* Check-in and Check-out times */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        <label className="block text-sm font-medium text-secondary-700 mb-1">
                                             Check-in time
                                         </label>
                                         <input
@@ -1538,7 +1538,7 @@ The property is conveniently located near public transportation. There's also st
                                             className={`w-full px-3 py-2 border ${
                                                 errors.checkIn
                                                     ? "border-red-500"
-                                                    : "border-gray-300"
+                                                    : "border-secondary-300"
                                             } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                         />
                                         {errors.checkIn && (
@@ -1549,7 +1549,7 @@ The property is conveniently located near public transportation. There's also st
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        <label className="block text-sm font-medium text-secondary-700 mb-1">
                                             Check-out time
                                         </label>
                                         <input
@@ -1565,7 +1565,7 @@ The property is conveniently located near public transportation. There's also st
                                             className={`w-full px-3 py-2 border ${
                                                 errors.checkOut
                                                     ? "border-red-500"
-                                                    : "border-gray-300"
+                                                    : "border-secondary-300"
                                             } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                         />
                                         {errors.checkOut && (
@@ -1578,7 +1578,7 @@ The property is conveniently located near public transportation. There's also st
 
                                 {/* Quiet hours */}
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    <label className="block text-sm font-medium text-secondary-700 mb-1">
                                         Quiet hours
                                     </label>
                                     <input
@@ -1591,13 +1591,13 @@ The property is conveniently located near public transportation. There's also st
                                             )
                                         }
                                         placeholder="e.g. 10:00 PM - 7:00 AM"
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                        className="w-full px-3 py-2 border border-secondary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                                     />
                                 </div>
 
                                 {/* Boolean rules */}
                                 <div className="space-y-3">
-                                    <h3 className="text-md font-medium text-gray-800">
+                                    <h3 className="text-md font-medium text-secondary-800">
                                         What's allowed?
                                     </h3>
 
@@ -1609,11 +1609,11 @@ The property is conveniently located near public transportation. There's also st
                                             onChange={() =>
                                                 handleRuleChange("smoking")
                                             }
-                                            className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                                            className="h-4 w-4 text-secondary-600 focus:ring-primary-500 border-secondary-300 rounded"
                                         />
                                         <label
                                             htmlFor="smoking"
-                                            className="ml-2 block text-sm text-gray-700"
+                                            className="ml-2 block text-sm text-secondary-700"
                                         >
                                             Smoking allowed
                                         </label>
@@ -1627,11 +1627,11 @@ The property is conveniently located near public transportation. There's also st
                                             onChange={() =>
                                                 handleRuleChange("pets")
                                             }
-                                            className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                                            className="h-4 w-4 text-secondary-600 focus:ring-primary-500 border-secondary-300 rounded"
                                         />
                                         <label
                                             htmlFor="pets"
-                                            className="ml-2 block text-sm text-gray-700"
+                                            className="ml-2 block text-sm text-secondary-700"
                                         >
                                             Pets allowed
                                         </label>
@@ -1645,11 +1645,11 @@ The property is conveniently located near public transportation. There's also st
                                             onChange={() =>
                                                 handleRuleChange("parties")
                                             }
-                                            className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                                            className="h-4 w-4 text-secondary-600 focus:ring-primary-500 border-secondary-300 rounded"
                                         />
                                         <label
                                             htmlFor="parties"
-                                            className="ml-2 block text-sm text-gray-700"
+                                            className="ml-2 block text-sm text-secondary-700"
                                         >
                                             Parties allowed
                                         </label>
@@ -1663,11 +1663,11 @@ The property is conveniently located near public transportation. There's also st
                                             onChange={() =>
                                                 handleRuleChange("events")
                                             }
-                                            className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                                            className="h-4 w-4 text-secondary-600 focus:ring-primary-500 border-secondary-300 rounded"
                                         />
                                         <label
                                             htmlFor="events"
-                                            className="ml-2 block text-sm text-gray-700"
+                                            className="ml-2 block text-sm text-secondary-700"
                                         >
                                             Events allowed
                                         </label>
@@ -1677,13 +1677,13 @@ The property is conveniently located near public transportation. There's also st
                                 {/* Additional rules */}
                                 <div>
                                     <div className="flex justify-between items-center mb-2">
-                                        <h3 className="text-md font-medium text-gray-800">
+                                        <h3 className="text-md font-medium text-secondary-800">
                                             Additional rules
                                         </h3>
                                         <button
                                             type="button"
                                             onClick={handleAddAdditionalRule}
-                                            className="text-primary-600 hover:text-primary-800 text-sm font-medium"
+                                            className="text-secondary-600 hover:text-primary-800 text-sm font-medium"
                                         >
                                             + Add rule
                                         </button>
@@ -1691,7 +1691,7 @@ The property is conveniently located near public transportation. There's also st
 
                                     {propertyData.rules.additionalRules
                                         .length === 0 ? (
-                                        <p className="text-gray-500 text-sm italic">
+                                        <p className="text-secondary-500 text-sm italic">
                                             No additional rules added yet.
                                         </p>
                                     ) : (
@@ -1700,7 +1700,7 @@ The property is conveniently located near public transportation. There's also st
                                                 (rule, index) => (
                                                     <div
                                                         key={index}
-                                                        className="border border-gray-200 rounded-md p-3"
+                                                        className="border border-secondary-200 rounded-md p-3"
                                                     >
                                                         <div className="flex justify-between mb-2">
                                                             <input
@@ -1717,7 +1717,7 @@ The property is conveniently located near public transportation. There's also st
                                                                     )
                                                                 }
                                                                 placeholder="Rule title"
-                                                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 mr-2"
+                                                                className="w-full px-3 py-2 border border-secondary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 mr-2"
                                                             />
                                                             <button
                                                                 type="button"
@@ -1744,7 +1744,7 @@ The property is conveniently located near public transportation. There's also st
                                                                 )
                                                             }
                                                             placeholder="Rule description"
-                                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                                            className="w-full px-3 py-2 border border-secondary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                                                             rows={2}
                                                         />
                                                     </div>
@@ -1755,8 +1755,8 @@ The property is conveniently located near public transportation. There's also st
                                 </div>
                             </div>
 
-                            <div className="border-t border-gray-200 pt-6 mt-6">
-                                <p className="text-gray-600 mb-4">
+                            <div className="border-t border-secondary-200 pt-6 mt-6">
+                                <p className="text-secondary-600 mb-4">
                                     Review your property details before
                                     submitting. You can go back to previous
                                     steps to make changes.
@@ -1766,7 +1766,7 @@ The property is conveniently located near public transportation. There's also st
                                     <button
                                         type="button"
                                         onClick={handlePrevStep}
-                                        className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                                        className="px-4 py-2 border border-secondary-300 rounded-md text-secondary-700 hover:bg-secondary-50"
                                     >
                                         Back
                                     </button>
@@ -1810,7 +1810,7 @@ The property is conveniently located near public transportation. There's also st
                                 type="button"
                                 onClick={handlePrevStep}
                                 disabled={currentStep === 1}
-                                className={`px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 ${
+                                className={`px-4 py-2 border border-secondary-300 rounded-md text-secondary-700 hover:bg-secondary-50 ${
                                     currentStep === 1 ? "invisible" : ""
                                 }`}
                             >

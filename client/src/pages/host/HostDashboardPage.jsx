@@ -133,7 +133,9 @@ const HostDashboardPage = () => {
                             <FaHome className="text-xl" />
                         </div>
                         <div>
-                            <p className="text-gray-500 text-sm">Properties</p>
+                            <p className="text-secondary-500 text-sm">
+                                Properties
+                            </p>
                             <p className="text-2xl font-bold">
                                 {stats.totalProperties}
                             </p>
@@ -147,7 +149,7 @@ const HostDashboardPage = () => {
                             <FaCalendarAlt className="text-xl" />
                         </div>
                         <div>
-                            <p className="text-gray-500 text-sm">
+                            <p className="text-secondary-500 text-sm">
                                 Active Bookings
                             </p>
                             <p className="text-2xl font-bold">
@@ -163,7 +165,7 @@ const HostDashboardPage = () => {
                             <FaChartLine className="text-xl" />
                         </div>
                         <div>
-                            <p className="text-gray-500 text-sm">
+                            <p className="text-secondary-500 text-sm">
                                 Occupancy Rate
                             </p>
                             <p className="text-2xl font-bold">
@@ -179,7 +181,7 @@ const HostDashboardPage = () => {
                             <FaMoneyBillWave className="text-xl" />
                         </div>
                         <div>
-                            <p className="text-gray-500 text-sm">
+                            <p className="text-secondary-500 text-sm">
                                 Total Earnings
                             </p>
                             <p className="text-2xl font-bold">
@@ -205,54 +207,54 @@ const HostDashboardPage = () => {
                 {bookingsData?.bookings?.length === 0 ? (
                     <div className="text-center py-8">
                         <div className="flex justify-center mb-4">
-                            <FaCalendarAlt className="text-gray-400 text-4xl" />
+                            <FaCalendarAlt className="text-secondary-400 text-4xl" />
                         </div>
                         <h3 className="text-lg font-medium mb-2">
                             No bookings yet
                         </h3>
-                        <p className="text-gray-600">
+                        <p className="text-secondary-600">
                             When guests book your properties, they'll appear
                             here.
                         </p>
                     </div>
                 ) : (
                     <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-gray-50">
+                        <table className="min-w-full divide-y divide-secondary-200">
+                            <thead className="bg-secondary-50">
                                 <tr>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider"
                                     >
                                         Guest
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider"
                                     >
                                         Property
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider"
                                     >
                                         Dates
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider"
                                     >
                                         Status
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider"
                                     >
                                         Amount
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
+                            <tbody className="bg-white divide-y divide-secondary-200">
                                 {bookingsData?.bookings?.map((booking) => (
                                     <tr key={booking._id}>
                                         <td className="px-6 py-4 whitespace-nowrap">
@@ -273,11 +275,11 @@ const HostDashboardPage = () => {
                                                     />
                                                 </div>
                                                 <div className="ml-4">
-                                                    <div className="text-sm font-medium text-gray-900">
+                                                    <div className="text-sm font-medium text-secondary-900">
                                                         {booking.guest?.name ||
                                                             "Guest"}
                                                     </div>
-                                                    <div className="text-sm text-gray-500">
+                                                    <div className="text-sm text-secondary-500">
                                                         {booking.numberOfGuests}{" "}
                                                         guest
                                                         {booking.numberOfGuests !==
@@ -289,20 +291,20 @@ const HostDashboardPage = () => {
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-sm text-gray-900">
+                                            <div className="text-sm text-secondary-900">
                                                 {booking.property.title}
                                             </div>
-                                            <div className="text-sm text-gray-500">
+                                            <div className="text-sm text-secondary-500">
                                                 {booking.property.address.city}
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-sm text-gray-900">
+                                            <div className="text-sm text-secondary-900">
                                                 {formatDate(
                                                     booking.checkInDate
                                                 )}
                                             </div>
-                                            <div className="text-sm text-gray-500">
+                                            <div className="text-sm text-secondary-500">
                                                 to{" "}
                                                 {formatDate(
                                                     booking.checkOutDate
@@ -330,7 +332,7 @@ const HostDashboardPage = () => {
                                                     booking.status.slice(1)}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-secondary-500">
                                             {formatPrice(booking.totalPrice)}
                                         </td>
                                     </tr>
@@ -356,12 +358,12 @@ const HostDashboardPage = () => {
                 {propertiesData?.properties?.length === 0 ? (
                     <div className="text-center py-8">
                         <div className="flex justify-center mb-4">
-                            <FaHome className="text-gray-400 text-4xl" />
+                            <FaHome className="text-secondary-400 text-4xl" />
                         </div>
                         <h3 className="text-lg font-medium mb-2">
                             No properties yet
                         </h3>
-                        <p className="text-gray-600 mb-6">
+                        <p className="text-secondary-600 mb-6">
                             Start by adding your first property.
                         </p>
                         <Link
@@ -377,7 +379,7 @@ const HostDashboardPage = () => {
                         {propertiesData?.properties?.map((property) => (
                             <div
                                 key={property._id}
-                                className="border border-gray-200 rounded-lg overflow-hidden"
+                                className="border border-secondary-200 rounded-lg overflow-hidden"
                             >
                                 <div className="h-40 overflow-hidden">
                                     <img
@@ -393,7 +395,7 @@ const HostDashboardPage = () => {
                                     <h3 className="font-medium text-lg mb-1">
                                         {property.title}
                                     </h3>
-                                    <p className="text-gray-600 text-sm mb-2">
+                                    <p className="text-secondary-600 text-sm mb-2">
                                         {property.address.city},{" "}
                                         {property.address.country}
                                     </p>
@@ -409,7 +411,7 @@ const HostDashboardPage = () => {
                                             </span>
                                         </div>
                                         <div className="flex items-center">
-                                            <FaUsers className="text-gray-500 mr-1" />
+                                            <FaUsers className="text-secondary-500 mr-1" />
                                             <span className="text-sm">
                                                 {property.maxGuests} guests
                                             </span>

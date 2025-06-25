@@ -106,7 +106,7 @@ const Modal = ({
                 className={`${getModalWidth()} w-full bg-white rounded-2xl shadow-xl transform transition-all duration-300 ease-in-out animate-scaleIn my-8 max-h-[90vh] flex flex-col`}
             >
                 {title && (
-                    <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+                    <div className="flex items-center justify-between px-6 py-4 border-b border-secondary-200">
                         <h3
                             id="modal-title"
                             className="text-lg font-semibold text-black"
@@ -116,7 +116,7 @@ const Modal = ({
                         {showCloseButton && (
                             <button
                                 type="button"
-                                className="text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-black rounded-full p-2 hover:bg-gray-100 transition-colors"
+                                className="text-secondary-400 hover:text-secondary-600 focus:outline-none focus:ring-2 focus:ring-black rounded-full p-2 hover:bg-secondary-100 transition-colors"
                                 onClick={onClose}
                                 aria-label="Close modal"
                             >
@@ -133,7 +133,7 @@ const Modal = ({
                     {!title && showCloseButton && (
                         <button
                             type="button"
-                            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-black rounded-full p-2 hover:bg-gray-100 transition-colors z-10"
+                            className="absolute top-4 right-4 text-secondary-400 hover:text-secondary-600 focus:outline-none focus:ring-2 focus:ring-black rounded-full p-2 hover:bg-secondary-100 transition-colors z-10"
                             onClick={onClose}
                             aria-label="Close modal"
                         >

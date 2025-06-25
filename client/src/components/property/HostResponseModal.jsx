@@ -62,9 +62,9 @@ const HostResponseModal = ({ isOpen, onClose, reviewId, onSubmit }) => {
         >
             <form onSubmit={handleSubmit}>
                 <div className="space-y-6">
-                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 text-gray-800">
+                    <div className="bg-secondary-50 p-4 rounded-lg border border-secondary-200 text-secondary-800">
                         <div className="flex items-center mb-2">
-                            <FaReply className="text-gray-600 mr-2" />
+                            <FaReply className="text-secondary-600 mr-2" />
                             <span className="font-medium">Host Response</span>
                         </div>
                         <p className="text-sm">
@@ -87,7 +87,7 @@ const HostResponseModal = ({ isOpen, onClose, reviewId, onSubmit }) => {
                             value={response}
                             onChange={(e) => setResponse(e.target.value)}
                             rows={5}
-                            className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                            className="w-full rounded-lg border border-secondary-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:border-transparent"
                             placeholder="Thank you for your feedback..."
                         />
                         <div className="flex justify-between mt-2">

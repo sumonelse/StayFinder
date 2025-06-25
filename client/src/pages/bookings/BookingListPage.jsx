@@ -95,7 +95,7 @@ const BookingListPage = () => {
                 )
             default:
                 return (
-                    <span className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 border border-gray-200">
+                    <span className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-secondary-100 text-secondary-800 border border-secondary-200">
                         {status}
                     </span>
                 )
@@ -105,7 +105,7 @@ const BookingListPage = () => {
     // Loading state
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-gray-50">
+            <div className="min-h-screen bg-secondary-50">
                 <div className="container mx-auto px-4 py-6 md:py-8">
                     <h1 className="text-2xl md:text-3xl font-semibold text-black mb-8">
                         Your trips
@@ -114,15 +114,15 @@ const BookingListPage = () => {
                         {[...Array(3)].map((_, index) => (
                             <div
                                 key={index}
-                                className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden"
+                                className="bg-white rounded-2xl shadow-sm border border-secondary-200 overflow-hidden"
                             >
                                 <div className="md:flex">
-                                    <div className="md:w-1/3 h-48 md:h-40 bg-gray-200"></div>
+                                    <div className="md:w-1/3 h-48 md:h-40 bg-secondary-200"></div>
                                     <div className="p-6 md:w-2/3">
-                                        <div className="h-5 bg-gray-200 rounded w-3/4 mb-3"></div>
-                                        <div className="h-4 bg-gray-200 rounded w-1/2 mb-3"></div>
-                                        <div className="h-4 bg-gray-200 rounded w-2/3 mb-3"></div>
-                                        <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+                                        <div className="h-5 bg-secondary-200 rounded w-3/4 mb-3"></div>
+                                        <div className="h-4 bg-secondary-200 rounded w-1/2 mb-3"></div>
+                                        <div className="h-4 bg-secondary-200 rounded w-2/3 mb-3"></div>
+                                        <div className="h-4 bg-secondary-200 rounded w-1/3"></div>
                                     </div>
                                 </div>
                             </div>
@@ -136,7 +136,7 @@ const BookingListPage = () => {
     // Error state
     if (isError) {
         return (
-            <div className="min-h-screen bg-gray-50">
+            <div className="min-h-screen bg-secondary-50">
                 <div className="container mx-auto px-4 py-6 md:py-8">
                     <h1 className="text-2xl md:text-3xl font-semibold text-black mb-8">
                         Your trips
@@ -166,14 +166,14 @@ const BookingListPage = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-secondary-50">
             <div className="container mx-auto px-4 py-6 md:py-8">
                 <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 md:mb-8">
                     <div>
                         <h1 className="text-2xl md:text-3xl font-semibold text-black">
                             Your trips
                         </h1>
-                        <p className="text-gray-600 mt-1 text-sm md:text-base">
+                        <p className="text-secondary-600 mt-1 text-sm md:text-base">
                             Manage your bookings and reservations
                         </p>
                     </div>
@@ -181,20 +181,20 @@ const BookingListPage = () => {
                     <div className="mt-4 md:mt-0">
                         <button
                             onClick={() => setIsFilterOpen(!isFilterOpen)}
-                            className="flex items-center bg-white px-4 py-2.5 rounded-xl border border-gray-300 hover:border-gray-400 hover:shadow-sm transition-all text-sm font-medium"
+                            className="flex items-center bg-white px-4 py-2.5 rounded-xl border border-secondary-300 hover:border-secondary-400 hover:shadow-sm transition-all text-sm font-medium"
                         >
                             <FaFilter
-                                className="mr-2 text-gray-500"
+                                className="mr-2 text-secondary-500"
                                 size={14}
                             />
-                            <span className="text-gray-700">Filter</span>
+                            <span className="text-secondary-700">Filter</span>
                         </button>
                     </div>
                 </div>
 
                 {/* Filters */}
                 {isFilterOpen && (
-                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 mb-6">
+                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-secondary-200 mb-6">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div>
                                 <label
@@ -208,7 +208,7 @@ const BookingListPage = () => {
                                     name="status"
                                     value={filters.status}
                                     onChange={handleFilterChange}
-                                    className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all text-sm"
+                                    className="w-full p-3 border border-secondary-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all text-sm"
                                 >
                                     <option value="">All bookings</option>
                                     <option value="pending">Pending</option>
@@ -223,23 +223,23 @@ const BookingListPage = () => {
 
                 {/* No bookings message */}
                 {data?.bookings?.length === 0 && (
-                    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-12 text-center">
-                        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <div className="bg-white rounded-2xl shadow-sm border border-secondary-200 p-12 text-center">
+                        <div className="w-16 h-16 bg-secondary-100 rounded-full flex items-center justify-center mx-auto mb-6">
                             <FaCalendarAlt
-                                className="text-gray-400"
+                                className="text-secondary-400"
                                 size={24}
                             />
                         </div>
                         <h2 className="text-xl font-semibold text-black mb-3">
                             No trips yet
                         </h2>
-                        <p className="text-gray-600 mb-8 max-w-md mx-auto">
+                        <p className="text-secondary-600 mb-8 max-w-md mx-auto">
                             Time to dust off your bags and start planning your
                             next adventure
                         </p>
                         <Link
                             to="/properties"
-                            className="inline-block bg-black text-white px-8 py-3 rounded-xl font-medium hover:bg-gray-800 transition-colors"
+                            className="inline-block bg-black text-white px-8 py-3 rounded-xl font-medium hover:bg-secondary-800 transition-colors"
                         >
                             Start searching
                         </Link>
@@ -253,7 +253,7 @@ const BookingListPage = () => {
                             <Link
                                 key={booking._id}
                                 to={`/bookings/${booking._id}`}
-                                className="block bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md hover:border-gray-300 transition-all group"
+                                className="block bg-white rounded-2xl shadow-sm border border-secondary-200 overflow-hidden hover:shadow-md hover:border-secondary-300 transition-all group"
                             >
                                 <div className="md:flex">
                                     {/* Property image */}
@@ -281,12 +281,12 @@ const BookingListPage = () => {
                                     {/* Booking details */}
                                     <div className="p-6 md:w-2/3 flex flex-col justify-between">
                                         <div>
-                                            <h2 className="text-lg font-semibold text-black mb-2 group-hover:text-gray-700 transition-colors">
+                                            <h2 className="text-lg font-semibold text-black mb-2 group-hover:text-secondary-700 transition-colors">
                                                 {booking.property.title}
                                             </h2>
 
                                             {/* Location */}
-                                            <div className="flex items-center text-gray-500 mb-3">
+                                            <div className="flex items-center text-secondary-500 mb-3">
                                                 <FaMapMarkerAlt
                                                     className="mr-2"
                                                     size={12}
@@ -305,9 +305,9 @@ const BookingListPage = () => {
                                             </div>
 
                                             {/* Dates */}
-                                            <div className="flex items-center text-gray-600 mb-3">
+                                            <div className="flex items-center text-secondary-600 mb-3">
                                                 <FaCalendarAlt
-                                                    className="mr-2 text-gray-400"
+                                                    className="mr-2 text-secondary-400"
                                                     size={14}
                                                 />
                                                 <span className="text-sm">
@@ -322,7 +322,7 @@ const BookingListPage = () => {
                                             </div>
 
                                             {/* Guests */}
-                                            <div className="text-sm text-gray-600 mb-4">
+                                            <div className="text-sm text-secondary-600 mb-4">
                                                 {booking.numberOfGuests} guest
                                                 {booking.numberOfGuests !== 1
                                                     ? "s"
@@ -332,7 +332,7 @@ const BookingListPage = () => {
 
                                         {/* Price and booking date */}
                                         <div className="flex justify-between items-end">
-                                            <div className="text-xs text-gray-500">
+                                            <div className="text-xs text-secondary-500">
                                                 Booked{" "}
                                                 {formatDate(booking.createdAt)}
                                             </div>
@@ -358,7 +358,7 @@ const BookingListPage = () => {
                                     handlePageChange(filters.page - 1)
                                 }
                                 disabled={filters.page === 1}
-                                className="px-3 py-1 rounded-md mr-2 bg-white border border-gray-300 disabled:opacity-50"
+                                className="px-3 py-1 rounded-md mr-2 bg-white border border-secondary-300 disabled:opacity-50"
                             >
                                 Previous
                             </button>
@@ -372,7 +372,7 @@ const BookingListPage = () => {
                                         className={`px-3 py-1 rounded-md ${
                                             filters.page === index + 1
                                                 ? "bg-primary-600 text-white"
-                                                : "bg-white border border-gray-300"
+                                                : "bg-white border border-secondary-300"
                                         }`}
                                     >
                                         {index + 1}
@@ -384,7 +384,7 @@ const BookingListPage = () => {
                                     handlePageChange(filters.page + 1)
                                 }
                                 disabled={filters.page === data.totalPages}
-                                className="px-3 py-1 rounded-md ml-2 bg-white border border-gray-300 disabled:opacity-50"
+                                className="px-3 py-1 rounded-md ml-2 bg-white border border-secondary-300 disabled:opacity-50"
                             >
                                 Next
                             </button>

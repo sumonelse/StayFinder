@@ -17,7 +17,7 @@ export default {
                     900: "#881337",
                     950: "#4c0519",
                 },
-                // Secondary colors (clean grays)
+                // Secondary colors (clean gray)
                 secondary: {
                     50: "#f9fafb",
                     100: "#f3f4f6",

@@ -154,7 +154,7 @@ const PropertyForm = ({
                     <div>
                         <label
                             htmlFor="title"
-                            className="block text-sm font-medium text-gray-700"
+                            className="block text-sm font-medium text-secondary-700"
                         >
                             Title
                         </label>
@@ -162,7 +162,7 @@ const PropertyForm = ({
                             id="title"
                             type="text"
                             {...register("title")}
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                            className="mt-1 block w-full rounded-md border-secondary-300 shadow-sm focus:border-secondary-500 focus:ring-secondary-500"
                         />
                         {errors.title && (
                             <p className="mt-1 text-sm text-red-600">
@@ -175,7 +175,7 @@ const PropertyForm = ({
                     <div>
                         <label
                             htmlFor="description"
-                            className="block text-sm font-medium text-gray-700"
+                            className="block text-sm font-medium text-secondary-700"
                         >
                             Description
                         </label>
@@ -183,7 +183,7 @@ const PropertyForm = ({
                             id="description"
                             rows={4}
                             {...register("description")}
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                            className="mt-1 block w-full rounded-md border-secondary-300 shadow-sm focus:border-secondary-500 focus:ring-secondary-500"
                         />
                         {errors.description && (
                             <p className="mt-1 text-sm text-red-600">
@@ -196,14 +196,14 @@ const PropertyForm = ({
                     <div>
                         <label
                             htmlFor="type"
-                            className="block text-sm font-medium text-gray-700"
+                            className="block text-sm font-medium text-secondary-700"
                         >
                             Property Type
                         </label>
                         <select
                             id="type"
                             {...register("type")}
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                            className="mt-1 block w-full rounded-md border-secondary-300 shadow-sm focus:border-secondary-500 focus:ring-secondary-500"
                         >
                             <option value="apartment">Apartment</option>
                             <option value="house">House</option>
@@ -226,7 +226,7 @@ const PropertyForm = ({
                         <div>
                             <label
                                 htmlFor="price"
-                                className="block text-sm font-medium text-gray-700"
+                                className="block text-sm font-medium text-secondary-700"
                             >
                                 Price
                             </label>
@@ -236,7 +236,7 @@ const PropertyForm = ({
                                 min="0"
                                 step="0.01"
                                 {...register("price", { valueAsNumber: true })}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                                className="mt-1 block w-full rounded-md border-secondary-300 shadow-sm focus:border-secondary-500 focus:ring-secondary-500"
                             />
                             {errors.price && (
                                 <p className="mt-1 text-sm text-red-600">
@@ -248,14 +248,14 @@ const PropertyForm = ({
                         <div>
                             <label
                                 htmlFor="pricePeriod"
-                                className="block text-sm font-medium text-gray-700"
+                                className="block text-sm font-medium text-secondary-700"
                             >
                                 Price Period
                             </label>
                             <select
                                 id="pricePeriod"
                                 {...register("pricePeriod")}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                                className="mt-1 block w-full rounded-md border-secondary-300 shadow-sm focus:border-secondary-500 focus:ring-secondary-500"
                             >
                                 <option value="night">Per Night</option>
                                 <option value="week">Per Week</option>
@@ -274,7 +274,7 @@ const PropertyForm = ({
                         <div>
                             <label
                                 htmlFor="cleaningFee"
-                                className="block text-sm font-medium text-gray-700"
+                                className="block text-sm font-medium text-secondary-700"
                             >
                                 Cleaning Fee (optional)
                             </label>
@@ -288,14 +288,14 @@ const PropertyForm = ({
                                     setValueAs: (v) =>
                                         v === "" ? undefined : parseFloat(v),
                                 })}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                                className="mt-1 block w-full rounded-md border-secondary-300 shadow-sm focus:border-secondary-500 focus:ring-secondary-500"
                             />
                             {errors.cleaningFee && (
                                 <p className="mt-1 text-sm text-red-600">
                                     {errors.cleaningFee.message}
                                 </p>
                             )}
-                            <p className="mt-1 text-xs text-gray-500">
+                            <p className="mt-1 text-xs text-secondary-500">
                                 One-time fee charged to guests for cleaning the
                                 property
                             </p>
@@ -304,7 +304,7 @@ const PropertyForm = ({
                         <div>
                             <label
                                 htmlFor="serviceFee"
-                                className="block text-sm font-medium text-gray-700"
+                                className="block text-sm font-medium text-secondary-700"
                             >
                                 Service Fee (optional)
                             </label>
@@ -318,14 +318,14 @@ const PropertyForm = ({
                                     setValueAs: (v) =>
                                         v === "" ? undefined : parseFloat(v),
                                 })}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                                className="mt-1 block w-full rounded-md border-secondary-300 shadow-sm focus:border-secondary-500 focus:ring-secondary-500"
                             />
                             {errors.serviceFee && (
                                 <p className="mt-1 text-sm text-red-600">
                                     {errors.serviceFee.message}
                                 </p>
                             )}
-                            <p className="mt-1 text-xs text-gray-500">
+                            <p className="mt-1 text-xs text-secondary-500">
                                 Additional fee charged to guests for each
                                 booking
                             </p>
@@ -343,7 +343,7 @@ const PropertyForm = ({
                     <div>
                         <label
                             htmlFor="bedrooms"
-                            className="block text-sm font-medium text-gray-700"
+                            className="block text-sm font-medium text-secondary-700"
                         >
                             Bedrooms
                         </label>
@@ -352,7 +352,7 @@ const PropertyForm = ({
                             type="number"
                             min="0"
                             {...register("bedrooms", { valueAsNumber: true })}
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                            className="mt-1 block w-full rounded-md border-secondary-300 shadow-sm focus:border-secondary-500 focus:ring-secondary-500"
                         />
                         {errors.bedrooms && (
                             <p className="mt-1 text-sm text-red-600">
@@ -365,7 +365,7 @@ const PropertyForm = ({
                     <div>
                         <label
                             htmlFor="bathrooms"
-                            className="block text-sm font-medium text-gray-700"
+                            className="block text-sm font-medium text-secondary-700"
                         >
                             Bathrooms
                         </label>
@@ -375,7 +375,7 @@ const PropertyForm = ({
                             min="0"
                             step="0.5"
                             {...register("bathrooms", { valueAsNumber: true })}
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                            className="mt-1 block w-full rounded-md border-secondary-300 shadow-sm focus:border-secondary-500 focus:ring-secondary-500"
                         />
                         {errors.bathrooms && (
                             <p className="mt-1 text-sm text-red-600">
@@ -388,7 +388,7 @@ const PropertyForm = ({
                     <div>
                         <label
                             htmlFor="maxGuests"
-                            className="block text-sm font-medium text-gray-700"
+                            className="block text-sm font-medium text-secondary-700"
                         >
                             Maximum Guests
                         </label>
@@ -397,7 +397,7 @@ const PropertyForm = ({
                             type="number"
                             min="1"
                             {...register("maxGuests", { valueAsNumber: true })}
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                            className="mt-1 block w-full rounded-md border-secondary-300 shadow-sm focus:border-secondary-500 focus:ring-secondary-500"
                         />
                         {errors.maxGuests && (
                             <p className="mt-1 text-sm text-red-600">
@@ -413,7 +413,7 @@ const PropertyForm = ({
                 <h2 className="text-xl font-semibold mb-4">
                     Property Location
                 </h2>
-                <p className="text-gray-600 mb-4">
+                <p className="text-secondary-600 mb-4">
                     Use the map below to pinpoint your property's exact
                     location. You can search for an address or click directly on
                     the map.
@@ -457,7 +457,7 @@ const PropertyForm = ({
                 <button
                     type="submit"
                     disabled={isLoading}
-                    className="px-6 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50"
+                    className="px-6 py-2 bg-black text-white rounded-md hover:bg-secondary-800 focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:ring-offset-2 disabled:opacity-50"
                 >
                     {isLoading
                         ? "Saving..."

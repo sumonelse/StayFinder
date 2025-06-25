@@ -168,7 +168,7 @@ const PropertyReviewsPage = () => {
                                             className="h-14 w-14 rounded-full object-cover border border-secondary-100 shadow-sm"
                                         />
                                     ) : (
-                                        <div className="h-14 w-14 bg-primary-100 text-primary-700 rounded-full flex items-center justify-center border border-primary-50 shadow-sm">
+                                        <div className="h-14 w-14 bg-secondary-100 text-secondary-700 rounded-full flex items-center justify-center border border-secondary-200 shadow-sm">
                                             <span className="font-medium text-xl">
                                                 {review.reviewer?.name
                                                     ?.charAt(0)

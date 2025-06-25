@@ -244,15 +244,15 @@ const CompactCalendar = ({
 
     // Get CSS classes for date styling
     const getDateClassName = (dayInfo) => {
-        if (!dayInfo.isCurrentMonth) return "text-gray-300 opacity-30"
+        if (!dayInfo.isCurrentMonth) return "text-secondary-300 opacity-30"
 
         const classes = []
 
         // Base styling
         if (dayInfo.isPast) {
-            classes.push("text-gray-300 cursor-not-allowed")
+            classes.push("text-secondary-300 cursor-not-allowed")
         } else {
-            classes.push("text-gray-700")
+            classes.push("text-secondary-700")
         }
 
         // Today styling
@@ -300,7 +300,7 @@ const CompactCalendar = ({
     const calendarDays = generateCalendarDays()
 
     return (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-2">
+        <div className="bg-white rounded-lg shadow-sm border border-secondary-200 p-2">
             {/* Simplified selection instructions */}
             <div className="mb-2 text-xs text-secondary-700 flex items-center justify-center">
                 <span className="bg-primary-50 px-2 py-1 rounded-full">
@@ -318,10 +318,13 @@ const CompactCalendar = ({
                 <div className="flex justify-between items-center mb-1">
                     <button
                         onClick={goToPreviousMonth}
-                        className="p-1 rounded-full hover:bg-gray-100 transition-colors"
+                        className="p-1 rounded-full hover:bg-secondary-100 transition-colors"
                         aria-label="Previous month"
                     >
-                        <FaChevronLeft className="text-gray-600" size={14} />
+                        <FaChevronLeft
+                            className="text-secondary-600"
+                            size={14}
+                        />
                     </button>
                     <div className="text-sm font-medium">
                         {currentMonth.toLocaleDateString("en-US", {
@@ -331,10 +334,13 @@ const CompactCalendar = ({
                     </div>
                     <button
                         onClick={goToNextMonth}
-                        className="p-1 rounded-full hover:bg-gray-100 transition-colors"
+                        className="p-1 rounded-full hover:bg-secondary-100 transition-colors"
                         aria-label="Next month"
                     >
-                        <FaChevronRight className="text-gray-600" size={14} />
+                        <FaChevronRight
+                            className="text-secondary-600"
+                            size={14}
+                        />
                     </button>
                 </div>
 
@@ -355,7 +361,7 @@ const CompactCalendar = ({
                             {daysOfWeek.map((day) => (
                                 <div
                                     key={day}
-                                    className="text-center text-xs font-medium text-gray-500 py-1"
+                                    className="text-center text-xs font-medium text-secondary-500 py-1"
                                 >
                                     {day}
                                 </div>

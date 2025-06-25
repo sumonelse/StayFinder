@@ -179,7 +179,7 @@
     }
 
     .btn-primary {
-        @apply bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800 focus:ring-primary-500;
+        @apply bg-black text-white hover:bg-secondary-800 active:bg-secondary-900 focus:ring-secondary-500;
     }
 
     .btn-secondary {
@@ -204,7 +204,7 @@
 
     /* Input fields */
     .input-field {
-        @apply w-full px-4 py-2.5 border border-secondary-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors disabled:bg-secondary-50 disabled:text-secondary-500;
+        @apply w-full px-4 py-2.5 border border-secondary-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:border-secondary-500 transition-colors disabled:bg-secondary-50 disabled:text-secondary-500;
     }
 
     .input-error {
@@ -221,7 +221,7 @@
     }
 
     .card-interactive {
-        @apply cursor-pointer transition-all duration-300 hover:shadow-lg hover:border-primary-200;
+        @apply cursor-pointer transition-all duration-300 hover:shadow-lg hover:border-secondary-300;
     }
 
     /* Badge styles */
@@ -230,7 +230,7 @@
     }
 
     .badge-primary {
-        @apply bg-primary-50 text-primary-800;
+        @apply bg-secondary-100 text-secondary-800;
     }
 
     .badge-secondary {
@@ -289,11 +289,11 @@
 
     /* Checkbox and Radio */
     .form-checkbox {
-        @apply h-5 w-5 text-primary-600 border-secondary-300 rounded focus:ring-primary-500;
+        @apply h-5 w-5 text-secondary-600 border-secondary-300 rounded focus:ring-secondary-500;
     }
 
     .form-radio {
-        @apply h-5 w-5 text-primary-600 border-secondary-300 focus:ring-primary-500;
+        @apply h-5 w-5 text-secondary-600 border-secondary-300 focus:ring-secondary-500;
     }
 
     /* Section styling */

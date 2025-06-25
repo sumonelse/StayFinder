@@ -189,9 +189,11 @@ const FilterModal = ({
             onClose={onClose}
             title={
                 <div className="flex items-center justify-center w-full">
-                    <span className="font-medium text-gray-900">Filters</span>
+                    <span className="font-medium text-secondary-900">
+                        Filters
+                    </span>
                     {countActiveFilters() > 0 && (
-                        <span className="ml-2 bg-gray-100 text-gray-800 text-xs font-medium px-2 py-0.5 rounded-full">
+                        <span className="ml-2 bg-secondary-100 text-secondary-800 text-xs font-medium px-2 py-0.5 rounded-full">
                             {countActiveFilters()}
                         </span>
                     )}
@@ -202,16 +204,16 @@ const FilterModal = ({
         >
             <div className="flex flex-col h-full">
                 {/* Filter Categories */}
-                <div className="flex flex-col divide-y divide-gray-200 mt-4">
+                <div className="flex flex-col divide-y divide-secondary-200 mt-4">
                     {/* Property Type Category - Airbnb Style */}
                     <div className="py-6">
                         <div className="flex items-center justify-between mb-4">
-                            <h3 className="text-lg font-semibold text-gray-900">
+                            <h3 className="text-lg font-semibold text-secondary-900">
                                 Property Type
                             </h3>
-                            <span className="text-gray-500 text-sm">
+                            <span className="text-secondary-500 text-sm">
                                 {localFilters.type ? (
-                                    <span className="text-gray-800 font-medium capitalize">
+                                    <span className="text-secondary-800 font-medium capitalize">
                                         {localFilters.type}
                                     </span>
                                 ) : (
@@ -233,15 +235,15 @@ const FilterModal = ({
                                         }
                                         className={`relative flex flex-col items-center justify-center p-4 rounded-xl transition-all ${
                                             isSelected
-                                                ? "bg-gray-50 border-2 border-gray-900"
-                                                : "bg-white border border-gray-300 hover:border-gray-500"
+                                                ? "bg-secondary-50 border-2 border-secondary-900"
+                                                : "bg-white border border-secondary-300 hover:border-secondary-500"
                                         }`}
                                     >
                                         <div
                                             className={`text-2xl mb-2 ${
                                                 isSelected
-                                                    ? "text-gray-900"
-                                                    : "text-gray-500"
+                                                    ? "text-secondary-900"
+                                                    : "text-secondary-500"
                                             }`}
                                         >
                                             {type.icon}
@@ -249,14 +251,14 @@ const FilterModal = ({
                                         <span
                                             className={`text-sm ${
                                                 isSelected
-                                                    ? "font-medium text-gray-900"
-                                                    : "text-gray-600"
+                                                    ? "font-medium text-secondary-900"
+                                                    : "text-secondary-600"
                                             }`}
                                         >
                                             {type.name}
                                         </span>
                                         {isSelected && (
-                                            <div className="absolute top-2 right-2 bg-gray-900 text-white rounded-full p-0.5">
+                                            <div className="absolute top-2 right-2 bg-secondary-900 text-white rounded-full p-0.5">
                                                 <FaCheck size={8} />
                                             </div>
                                         )}
@@ -269,13 +271,13 @@ const FilterModal = ({
                     {/* Price Range Category */}
                     <div className="py-6">
                         <div className="flex items-center justify-between mb-4">
-                            <h3 className="text-lg font-semibold text-gray-900">
+                            <h3 className="text-lg font-semibold text-secondary-900">
                                 Price Range
                             </h3>
-                            <span className="text-gray-500 text-sm">
+                            <span className="text-secondary-500 text-sm">
                                 {localFilters.minPrice ||
                                 localFilters.maxPrice ? (
-                                    <span className="text-gray-800 font-medium">
+                                    <span className="text-secondary-800 font-medium">
                                         {localFilters.minPrice
                                             ? formatPrice(localFilters.minPrice)
                                             : `${getCurrencySymbol()}0`}{" "}
@@ -324,7 +326,7 @@ const FilterModal = ({
 
                             {/* Current price range display */}
                             <div className="mt-2 mb-4 text-center">
-                                <span className="text-sm font-medium text-gray-700">
+                                <span className="text-sm font-medium text-secondary-700">
                                     Current range: {getCurrencySymbol()}
                                     {formatPrice(priceRange[0])} -{" "}
                                     {getCurrencySymbol()}
@@ -334,12 +336,12 @@ const FilterModal = ({
 
                             <div className="flex items-center gap-4">
                                 <div className="flex-1">
-                                    <label className="block text-sm text-gray-600 mb-1">
+                                    <label className="block text-sm text-secondary-600 mb-1">
                                         Minimum
                                     </label>
                                     <div className="relative">
                                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <span className="text-gray-500">
+                                            <span className="text-secondary-500">
                                                 {getCurrencySymbol()}
                                             </span>
                                         </div>
@@ -379,22 +381,22 @@ const FilterModal = ({
                                                 }
                                             }}
                                             min="0"
-                                            className="w-full pl-7 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-200 focus:border-gray-400"
+                                            className="w-full pl-7 py-2 border border-secondary-300 rounded-lg focus:ring-2 focus:ring-secondary-200 focus:border-secondary-400"
                                         />
                                     </div>
                                 </div>
 
                                 <div className="flex items-center justify-center">
-                                    <div className="w-6 h-0.5 bg-gray-300"></div>
+                                    <div className="w-6 h-0.5 bg-secondary-300"></div>
                                 </div>
 
                                 <div className="flex-1">
-                                    <label className="block text-sm text-gray-600 mb-1">
+                                    <label className="block text-sm text-secondary-600 mb-1">
                                         Maximum
                                     </label>
                                     <div className="relative">
                                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <span className="text-gray-500">
+                                            <span className="text-secondary-500">
                                                 {getCurrencySymbol()}
                                             </span>
                                         </div>
@@ -434,13 +436,13 @@ const FilterModal = ({
                                                 }
                                             }}
                                             min={localFilters.minPrice || "0"}
-                                            className="w-full pl-7 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-200 focus:border-gray-400"
+                                            className="w-full pl-7 py-2 border border-secondary-300 rounded-lg focus:ring-2 focus:ring-secondary-200 focus:border-secondary-400"
                                         />
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="mt-6 flex justify-between text-sm text-gray-500">
+                            <div className="mt-6 flex justify-between text-sm text-secondary-500">
                                 <span>{getCurrencySymbol()}0</span>
                                 <span>{getCurrencySymbol()}2500</span>
                                 <span>{getCurrencySymbol()}5000</span>
@@ -466,7 +468,7 @@ const FilterModal = ({
                                             localFilters.maxPrice ===
                                             price.toString()
                                                 ? "bg-primary-50 border-primary-300 text-primary-700 font-medium"
-                                                : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300"
+                                                : "bg-white border-secondary-200 text-secondary-700 hover:bg-secondary-50 hover:border-secondary-300"
                                         }`}
                                     >
                                         Under {getCurrencySymbol()}
@@ -488,7 +490,7 @@ const FilterModal = ({
                                         !localFilters.minPrice &&
                                         !localFilters.maxPrice
                                             ? "bg-primary-50 border-primary-300 text-primary-700 font-medium"
-                                            : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300"
+                                            : "bg-white border-secondary-200 text-secondary-700 hover:bg-secondary-50 hover:border-secondary-300"
                                     }`}
                                 >
                                     Any price
@@ -504,11 +506,11 @@ const FilterModal = ({
                             onClick={() => toggleCategory("rooms")}
                             className="w-full flex items-center justify-between py-2"
                         >
-                            <h3 className="text-lg font-semibold text-gray-900">
+                            <h3 className="text-lg font-semibold text-secondary-900">
                                 Rooms & Guests
                             </h3>
                             <div className="flex items-center">
-                                <span className="text-gray-500">
+                                <span className="text-secondary-500">
                                     {localFilters.bedrooms ||
                                     localFilters.bathrooms ||
                                     localFilters.maxGuests ? (
@@ -546,13 +548,13 @@ const FilterModal = ({
                                                 .join(", ")}
                                         </span>
                                     ) : (
-                                        <span className="text-gray-400 text-sm font-normal">
+                                        <span className="text-secondary-400 text-sm font-normal">
                                             Any
                                         </span>
                                     )}
                                 </span>
                                 <svg
-                                    className={`ml-2 w-5 h-5 text-gray-400 transition-transform ${
+                                    className={`ml-2 w-5 h-5 text-secondary-400 transition-transform ${
                                         expandedCategory === "rooms"
                                             ? "transform rotate-180"
                                             : ""
@@ -572,12 +574,12 @@ const FilterModal = ({
                         </button>
 
                         {expandedCategory === "rooms" && (
-                            <div className="mt-4 bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                            <div className="mt-4 bg-white p-4 rounded-xl border border-secondary-100 shadow-sm">
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                     <div>
                                         <label
                                             htmlFor="bedrooms"
-                                            className="block text-gray-700 font-medium mb-2"
+                                            className="block text-secondary-700 font-medium mb-2"
                                         >
                                             Bedrooms
                                         </label>
@@ -586,7 +588,7 @@ const FilterModal = ({
                                             name="bedrooms"
                                             value={localFilters.bedrooms}
                                             onChange={handleLocalFilterChange}
-                                            className="w-full rounded-lg border-gray-200 focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50"
+                                            className="w-full rounded-lg border-secondary-200 focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50"
                                         >
                                             <option value="">Any</option>
                                             <option value="1">1</option>
@@ -599,7 +601,7 @@ const FilterModal = ({
                                     <div>
                                         <label
                                             htmlFor="bathrooms"
-                                            className="block text-gray-700 font-medium mb-2"
+                                            className="block text-secondary-700 font-medium mb-2"
                                         >
                                             Bathrooms
                                         </label>
@@ -608,7 +610,7 @@ const FilterModal = ({
                                             name="bathrooms"
                                             value={localFilters.bathrooms}
                                             onChange={handleLocalFilterChange}
-                                            className="w-full rounded-lg border-gray-200 focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50"
+                                            className="w-full rounded-lg border-secondary-200 focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50"
                                         >
                                             <option value="">Any</option>
                                             <option value="1">1</option>
@@ -620,7 +622,7 @@ const FilterModal = ({
                                     <div>
                                         <label
                                             htmlFor="maxGuests"
-                                            className="block text-gray-700 font-medium mb-2"
+                                            className="block text-secondary-700 font-medium mb-2"
                                         >
                                             Guests
                                         </label>
@@ -629,7 +631,7 @@ const FilterModal = ({
                                             name="maxGuests"
                                             value={localFilters.maxGuests}
                                             onChange={handleLocalFilterChange}
-                                            className="w-full rounded-lg border-gray-200 focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50"
+                                            className="w-full rounded-lg border-secondary-200 focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50"
                                         >
                                             <option value="">Any</option>
                                             <option value="1">1</option>
@@ -656,11 +658,11 @@ const FilterModal = ({
                             onClick={() => toggleCategory("location")}
                             className="w-full flex items-center justify-between py-2"
                         >
-                            <h3 className="text-lg font-semibold text-gray-900">
+                            <h3 className="text-lg font-semibold text-secondary-900">
                                 Location
                             </h3>
                             <div className="flex items-center">
-                                <span className="text-gray-500">
+                                <span className="text-secondary-500">
                                     {localFilters.city ||
                                     localFilters.country ? (
                                         <span className="text-primary-600 text-sm font-normal">
@@ -672,13 +674,13 @@ const FilterModal = ({
                                                 .join(", ")}
                                         </span>
                                     ) : (
-                                        <span className="text-gray-400 text-sm font-normal">
+                                        <span className="text-secondary-400 text-sm font-normal">
                                             Anywhere
                                         </span>
                                     )}
                                 </span>
                                 <svg
-                                    className={`ml-2 w-5 h-5 text-gray-400 transition-transform ${
+                                    className={`ml-2 w-5 h-5 text-secondary-400 transition-transform ${
                                         expandedCategory === "location"
                                             ? "transform rotate-180"
                                             : ""
@@ -698,12 +700,12 @@ const FilterModal = ({
                         </button>
 
                         {expandedCategory === "location" && (
-                            <div className="mt-4 bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                            <div className="mt-4 bg-white p-4 rounded-xl border border-secondary-100 shadow-sm">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
                                         <label
                                             htmlFor="country"
-                                            className="block text-gray-700 font-medium mb-2"
+                                            className="block text-secondary-700 font-medium mb-2"
                                         >
                                             Country
                                         </label>
@@ -720,14 +722,14 @@ const FilterModal = ({
                                                 onChange={
                                                     handleLocalFilterChange
                                                 }
-                                                className="input-field pl-10 rounded-lg border-gray-200 focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50"
+                                                className="input-field pl-10 rounded-lg border-secondary-200 focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50"
                                             />
                                         </div>
                                     </div>
                                     <div>
                                         <label
                                             htmlFor="city"
-                                            className="block text-gray-700 font-medium mb-2"
+                                            className="block text-secondary-700 font-medium mb-2"
                                         >
                                             City
                                         </label>
@@ -744,7 +746,7 @@ const FilterModal = ({
                                                 onChange={
                                                     handleLocalFilterChange
                                                 }
-                                                className="input-field pl-10 rounded-lg border-gray-200 focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50"
+                                                className="input-field pl-10 rounded-lg border-secondary-200 focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50"
                                             />
                                         </div>
                                     </div>
@@ -760,11 +762,11 @@ const FilterModal = ({
                             onClick={() => toggleCategory("amenities")}
                             className="w-full flex items-center justify-between py-2"
                         >
-                            <h3 className="text-lg font-semibold text-gray-900">
+                            <h3 className="text-lg font-semibold text-secondary-900">
                                 Amenities
                             </h3>
                             <div className="flex items-center">
-                                <span className="text-gray-500">
+                                <span className="text-secondary-500">
                                     {localFilters.amenities ? (
                                         <span className="text-primary-600 text-sm font-normal">
                                             {
@@ -775,13 +777,13 @@ const FilterModal = ({
                                             selected
                                         </span>
                                     ) : (
-                                        <span className="text-gray-400 text-sm font-normal">
+                                        <span className="text-secondary-400 text-sm font-normal">
                                             None selected
                                         </span>
                                     )}
                                 </span>
                                 <svg
-                                    className={`ml-2 w-5 h-5 text-gray-400 transition-transform ${
+                                    className={`ml-2 w-5 h-5 text-secondary-400 transition-transform ${
                                         expandedCategory === "amenities"
                                             ? "transform rotate-180"
                                             : ""
@@ -801,7 +803,7 @@ const FilterModal = ({
                         </button>
 
                         {expandedCategory === "amenities" && (
-                            <div className="mt-4 bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                            <div className="mt-4 bg-white p-4 rounded-xl border border-secondary-100 shadow-sm">
                                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                                     {amenities.map((amenity) => {
                                         const isSelected =
@@ -820,7 +822,7 @@ const FilterModal = ({
                                                 className={`flex items-center p-3 rounded-lg transition-all ${
                                                     isSelected
                                                         ? "bg-primary-50 text-primary-700 border border-primary-300 shadow-sm"
-                                                        : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 hover:border-primary-200"
+                                                        : "bg-white text-secondary-700 border border-secondary-200 hover:bg-secondary-50 hover:border-primary-200"
                                                 }`}
                                             >
                                                 <span className="mr-2 text-lg">
@@ -847,18 +849,18 @@ const FilterModal = ({
                 <div className="h-20"></div>
 
                 {/* Action Buttons - Airbnb Style */}
-                <div className="sticky bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 flex items-center justify-between shadow-md">
+                <div className="sticky bottom-0 left-0 right-0 bg-white border-t border-secondary-200 p-4 flex items-center justify-between shadow-md">
                     <button
                         type="button"
                         onClick={clearAllFilters}
-                        className="text-gray-800 underline font-medium hover:text-black"
+                        className="text-secondary-800 underline font-medium hover:text-black"
                     >
                         Clear all
                     </button>
                     <button
                         type="button"
                         onClick={(e) => applyFilters(e)}
-                        className="bg-black text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors"
+                        className="bg-black text-white px-6 py-3 rounded-lg font-medium hover:bg-secondary-800 transition-colors"
                     >
                         Show{" "}
                         {countActiveFilters() > 0

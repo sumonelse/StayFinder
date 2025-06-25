@@ -20,7 +20,6 @@ import ProfilePictureUploader from "../../components/user/ProfilePictureUploader
 const ProfilePage = () => {
     const navigate = useNavigate()
     const { user, updateProfile, logout } = useAuth()
-
     // Form state
     const [profileData, setProfileData] = useState({
         name: user?.name || "",
@@ -51,7 +50,7 @@ const ProfilePage = () => {
 
     // Update profile mutation
     const updateProfileMutation = useMutation({
-        mutationFn: (data) => authService.updateProfile(data),
+        mutationFn: (data) => updateProfile(data),
         onSuccess: () => {
             setSuccessMessage("Profile updated successfully")
             setTimeout(() => setSuccessMessage(""), 3000)
@@ -236,12 +235,12 @@ const ProfilePage = () => {
 
             <div className="bg-white rounded-lg shadow-md overflow-hidden">
                 {/* Tabs */}
-                <div className="flex border-b border-gray-200">
+                <div className="flex border-b border-secondary-200">
                     <button
                         className={`px-6 py-3 text-sm font-medium ${
                             activeTab === "profile"
-                                ? "border-b-2 border-primary-500 text-primary-600"
-                                : "text-gray-500 hover:text-gray-700"
+                                ? "border-b-2 border-black text-black"
+                                : "text-secondary-500 hover:text-secondary-700"
                         }`}
                         onClick={() => setActiveTab("profile")}
                     >
@@ -250,8 +249,8 @@ const ProfilePage = () => {
                     <button
                         className={`px-6 py-3 text-sm font-medium ${
                             activeTab === "security"
-                                ? "border-b-2 border-primary-500 text-primary-600"
-                                : "text-gray-500 hover:text-gray-700"
+                                ? "border-b-2 border-black text-black"
+                                : "text-secondary-500 hover:text-secondary-700"
                         }`}
                         onClick={() => setActiveTab("security")}
                     >
@@ -288,13 +287,13 @@ const ProfilePage = () => {
                                 <div>
                                     <label
                                         htmlFor="name"
-                                        className="block text-sm font-medium text-gray-700 mb-1"
+                                        className="block text-sm font-medium text-secondary-700 mb-1"
                                     >
                                         Full Name
                                     </label>
                                     <div className="relative">
                                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <FaUser className="text-gray-400" />
+                                            <FaUser className="text-secondary-400" />
                                         </div>
                                         <input
                                             type="text"
@@ -305,7 +304,7 @@ const ProfilePage = () => {
                                             className={`w-full pl-10 pr-3 py-2 border ${
                                                 errors.name
                                                     ? "border-red-500"
-                                                    : "border-gray-300"
+                                                    : "border-secondary-300"
                                             } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                         />
                                     </div>
@@ -320,13 +319,13 @@ const ProfilePage = () => {
                                 <div>
                                     <label
                                         htmlFor="email"
-                                        className="block text-sm font-medium text-gray-700 mb-1"
+                                        className="block text-sm font-medium text-secondary-700 mb-1"
                                     >
                                         Email Address
                                     </label>
                                     <div className="relative">
                                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <FaEnvelope className="text-gray-400" />
+                                            <FaEnvelope className="text-secondary-400" />
                                         </div>
                                         <input
                                             type="email"
@@ -337,7 +336,7 @@ const ProfilePage = () => {
                                             className={`w-full pl-10 pr-3 py-2 border ${
                                                 errors.email
                                                     ? "border-red-500"
-                                                    : "border-gray-300"
+                                                    : "border-secondary-300"
                                             } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                         />
                                     </div>
@@ -352,13 +351,13 @@ const ProfilePage = () => {
                                 <div>
                                     <label
                                         htmlFor="phone"
-                                        className="block text-sm font-medium text-gray-700 mb-1"
+                                        className="block text-sm font-medium text-secondary-700 mb-1"
                                     >
                                         Phone Number
                                     </label>
                                     <div className="relative">
                                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <FaPhone className="text-gray-400" />
+                                            <FaPhone className="text-secondary-400" />
                                         </div>
                                         <input
                                             type="tel"
@@ -370,7 +369,7 @@ const ProfilePage = () => {
                                             className={`w-full pl-10 pr-3 py-2 border ${
                                                 errors.phone
                                                     ? "border-red-500"
-                                                    : "border-gray-300"
+                                                    : "border-secondary-300"
                                             } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                         />
                                     </div>
@@ -391,13 +390,13 @@ const ProfilePage = () => {
                                     <div>
                                         <label
                                             htmlFor="address.street"
-                                            className="block text-sm font-medium text-gray-700 mb-1"
+                                            className="block text-sm font-medium text-secondary-700 mb-1"
                                         >
                                             Street Address
                                         </label>
                                         <div className="relative">
                                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                <FaMapMarkerAlt className="text-gray-400" />
+                                                <FaMapMarkerAlt className="text-secondary-400" />
                                             </div>
                                             <input
                                                 type="text"
@@ -407,14 +406,14 @@ const ProfilePage = () => {
                                                     profileData.address.street
                                                 }
                                                 onChange={handleProfileChange}
-                                                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                                className="w-full pl-10 pr-3 py-2 border border-secondary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                                             />
                                         </div>
                                     </div>
                                     <div>
                                         <label
                                             htmlFor="address.city"
-                                            className="block text-sm font-medium text-gray-700 mb-1"
+                                            className="block text-sm font-medium text-secondary-700 mb-1"
                                         >
                                             City
                                         </label>
@@ -424,13 +423,13 @@ const ProfilePage = () => {
                                             name="address.city"
                                             value={profileData.address.city}
                                             onChange={handleProfileChange}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                            className="w-full px-3 py-2 border border-secondary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                                         />
                                     </div>
                                     <div>
                                         <label
                                             htmlFor="address.state"
-                                            className="block text-sm font-medium text-gray-700 mb-1"
+                                            className="block text-sm font-medium text-secondary-700 mb-1"
                                         >
                                             State/Province
                                         </label>
@@ -440,13 +439,13 @@ const ProfilePage = () => {
                                             name="address.state"
                                             value={profileData.address.state}
                                             onChange={handleProfileChange}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                            className="w-full px-3 py-2 border border-secondary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                                         />
                                     </div>
                                     <div>
                                         <label
                                             htmlFor="address.zipCode"
-                                            className="block text-sm font-medium text-gray-700 mb-1"
+                                            className="block text-sm font-medium text-secondary-700 mb-1"
                                         >
                                             Zip/Postal Code
                                         </label>
@@ -456,13 +455,13 @@ const ProfilePage = () => {
                                             name="address.zipCode"
                                             value={profileData.address.zipCode}
                                             onChange={handleProfileChange}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                            className="w-full px-3 py-2 border border-secondary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                                         />
                                     </div>
                                     <div>
                                         <label
                                             htmlFor="address.country"
-                                            className="block text-sm font-medium text-gray-700 mb-1"
+                                            className="block text-sm font-medium text-secondary-700 mb-1"
                                         >
                                             Country
                                         </label>
@@ -472,7 +471,7 @@ const ProfilePage = () => {
                                             name="address.country"
                                             value={profileData.address.country}
                                             onChange={handleProfileChange}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                            className="w-full px-3 py-2 border border-secondary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                                         />
                                     </div>
                                 </div>
@@ -482,7 +481,7 @@ const ProfilePage = () => {
                             <div className="mb-6">
                                 <label
                                     htmlFor="bio"
-                                    className="block text-sm font-medium text-gray-700 mb-1"
+                                    className="block text-sm font-medium text-secondary-700 mb-1"
                                 >
                                     About You
                                 </label>
@@ -493,9 +492,9 @@ const ProfilePage = () => {
                                     value={profileData.bio}
                                     onChange={handleProfileChange}
                                     placeholder="Tell others about yourself..."
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                    className="w-full px-3 py-2 border border-secondary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                                 ></textarea>
-                                <p className="mt-1 text-sm text-gray-500">
+                                <p className="mt-1 text-sm text-secondary-500">
                                     This information will be displayed on your
                                     public profile.
                                 </p>
@@ -538,13 +537,13 @@ const ProfilePage = () => {
                                     <div>
                                         <label
                                             htmlFor="currentPassword"
-                                            className="block text-sm font-medium text-gray-700 mb-1"
+                                            className="block text-sm font-medium text-secondary-700 mb-1"
                                         >
                                             Current Password
                                         </label>
                                         <div className="relative">
                                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                <FaLock className="text-gray-400" />
+                                                <FaLock className="text-secondary-400" />
                                             </div>
                                             <input
                                                 type="password"
@@ -557,7 +556,7 @@ const ProfilePage = () => {
                                                 className={`w-full pl-10 pr-3 py-2 border ${
                                                     errors.currentPassword
                                                         ? "border-red-500"
-                                                        : "border-gray-300"
+                                                        : "border-secondary-300"
                                                 } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                             />
                                         </div>
@@ -572,13 +571,13 @@ const ProfilePage = () => {
                                     <div>
                                         <label
                                             htmlFor="newPassword"
-                                            className="block text-sm font-medium text-gray-700 mb-1"
+                                            className="block text-sm font-medium text-secondary-700 mb-1"
                                         >
                                             New Password
                                         </label>
                                         <div className="relative">
                                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                <FaLock className="text-gray-400" />
+                                                <FaLock className="text-secondary-400" />
                                             </div>
                                             <input
                                                 type="password"
@@ -589,7 +588,7 @@ const ProfilePage = () => {
                                                 className={`w-full pl-10 pr-3 py-2 border ${
                                                     errors.newPassword
                                                         ? "border-red-500"
-                                                        : "border-gray-300"
+                                                        : "border-secondary-300"
                                                 } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                             />
                                         </div>
@@ -604,13 +603,13 @@ const ProfilePage = () => {
                                     <div>
                                         <label
                                             htmlFor="confirmPassword"
-                                            className="block text-sm font-medium text-gray-700 mb-1"
+                                            className="block text-sm font-medium text-secondary-700 mb-1"
                                         >
                                             Confirm New Password
                                         </label>
                                         <div className="relative">
                                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                <FaLock className="text-gray-400" />
+                                                <FaLock className="text-secondary-400" />
                                             </div>
                                             <input
                                                 type="password"
@@ -623,7 +622,7 @@ const ProfilePage = () => {
                                                 className={`w-full pl-10 pr-3 py-2 border ${
                                                     errors.confirmPassword
                                                         ? "border-red-500"
-                                                        : "border-gray-300"
+                                                        : "border-secondary-300"
                                                 } rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500`}
                                             />
                                         </div>
@@ -652,11 +651,11 @@ const ProfilePage = () => {
                         </div>
 
                         {/* Account deletion */}
-                        <div className="border-t border-gray-200 pt-6">
+                        <div className="border-t border-secondary-200 pt-6">
                             <h2 className="text-xl font-semibold mb-4 text-red-600">
                                 Delete Account
                             </h2>
-                            <p className="text-gray-600 mb-4">
+                            <p className="text-secondary-600 mb-4">
                                 Once you delete your account, there is no going
                                 back. Please be certain.
                             </p>

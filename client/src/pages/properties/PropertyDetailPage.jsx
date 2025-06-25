@@ -237,17 +237,17 @@ const PropertyDetailPage = () => {
         return (
             <div className="min-h-screen bg-white flex items-center justify-center">
                 <div className="text-center">
-                    <FaExclamationCircle className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    <FaExclamationCircle className="mx-auto h-12 w-12 text-secondary-400 mb-4" />
+                    <h3 className="text-lg font-medium text-secondary-900 mb-2">
                         Property not found
                     </h3>
-                    <p className="text-gray-600 mb-4">
+                    <p className="text-secondary-600 mb-4">
                         The property you're looking for doesn't exist or has
                         been removed.
                     </p>
                     <button
                         onClick={() => navigate(-1)}
-                        className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-secondary-50"
+                        className="inline-flex items-center px-4 py-2 border border-secondary-300 rounded-lg text-sm font-medium text-secondary-700 bg-white hover:bg-secondary-50"
                     >
                         <FaArrowLeft className="mr-2" size={14} />
                         Go back
@@ -265,12 +265,12 @@ const PropertyDetailPage = () => {
                     {/* Title and Actions */}
                     <div className="flex flex-col lg:flex-row lg:items-start justify-between">
                         <div className="flex-1">
-                            <h1 className="text-2xl lg:text-3xl font-semibold text-gray-900 mb-2 leading-tight">
+                            <h1 className="text-2xl lg:text-3xl font-semibold text-secondary-900 mb-2 leading-tight">
                                 {property.title}
                             </h1>
 
                             {/* Location and Rating */}
-                            <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-2">
+                            <div className="flex flex-wrap items-center gap-4 text-sm text-secondary-600 mb-2">
                                 <div className="flex items-center">
                                     <FaStar
                                         className="text-black mr-1"
@@ -333,7 +333,7 @@ const PropertyDetailPage = () => {
                         <div className="flex items-center gap-2 mt-4 lg:mt-0">
                             <button
                                 onClick={() => setShowShareModal(true)}
-                                className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-secondary-50 transition-colors"
+                                className="flex items-center px-4 py-2 text-sm font-medium text-secondary-700 bg-white border border-secondary-300 rounded-lg hover:bg-secondary-50 transition-colors"
                             >
                                 <FaShare className="mr-2" size={14} />
                                 Share
@@ -344,7 +344,7 @@ const PropertyDetailPage = () => {
                                 className={`flex items-center px-4 py-2 text-sm font-medium border rounded-lg transition-colors ${
                                     isFavorite
                                         ? "text-red-600 bg-red-50 border-red-200 hover:bg-red-100"
-                                        : "text-gray-700 bg-white border-gray-300 hover:bg-secondary-50"
+                                        : "text-secondary-700 bg-white border-secondary-300 hover:bg-secondary-50"
                                 }`}
                             >
                                 {isFavorite ? (
@@ -376,11 +376,11 @@ const PropertyDetailPage = () => {
                     {/* Left Column - Property Details */}
                     <div className="lg:col-span-2">
                         {/* Host Information */}
-                        <div className="pb-8 border-b border-gray-200">
+                        <div className="pb-8 border-b border-secondary-200">
                             <div className="flex items-start justify-between">
                                 <div className="flex-1">
                                     <div className="flex items-center mb-2">
-                                        <h2 className="text-xl font-semibold text-gray-900 mr-3">
+                                        <h2 className="text-xl font-semibold text-secondary-900 mr-3">
                                             {property.type} hosted by{" "}
                                             {property.host?.name || "Host"}
                                         </h2>
@@ -388,25 +388,25 @@ const PropertyDetailPage = () => {
                                         <div className="flex items-center space-x-2">
                                             <div className="bg-secondary-100 px-2 py-1 rounded-full flex items-center">
                                                 <FaShieldAlt
-                                                    className="text-gray-600 mr-1"
+                                                    className="text-secondary-600 mr-1"
                                                     size={10}
                                                 />
-                                                <span className="text-xs text-gray-600">
+                                                <span className="text-xs text-secondary-600">
                                                     Verified
                                                 </span>
                                             </div>
                                             <div className="bg-secondary-100 px-2 py-1 rounded-full flex items-center">
                                                 <FaMedal
-                                                    className="text-gray-600 mr-1"
+                                                    className="text-secondary-600 mr-1"
                                                     size={10}
                                                 />
-                                                <span className="text-xs text-gray-600">
+                                                <span className="text-xs text-secondary-600">
                                                     Superhost
                                                 </span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="flex items-center text-gray-600 text-sm space-x-2 mb-3">
+                                    <div className="flex items-center text-secondary-600 text-sm space-x-2 mb-3">
                                         <span>
                                             {property.maxGuests} guest
                                             {property.maxGuests !== 1
@@ -426,7 +426,7 @@ const PropertyDetailPage = () => {
                                                 : ""}
                                         </span>
                                     </div>
-                                    <div className="flex items-center text-gray-600 text-sm space-x-4">
+                                    <div className="flex items-center text-secondary-600 text-sm space-x-4">
                                         <div className="flex items-center">
                                             <FaStar
                                                 className="text-black mr-1"
@@ -441,7 +441,7 @@ const PropertyDetailPage = () => {
                                         </div>
                                         <div className="flex items-center">
                                             <FaCalendarAlt
-                                                className="text-gray-500 mr-1"
+                                                className="text-secondary-500 mr-1"
                                                 size={12}
                                             />
                                             <span>Hosting for 3 years</span>
@@ -460,7 +460,7 @@ const PropertyDetailPage = () => {
                                             />
                                         ) : (
                                             <div className="h-16 w-16 bg-secondary-200 rounded-full flex items-center justify-center">
-                                                <span className="text-gray-600 font-medium text-xl">
+                                                <span className="text-secondary-600 font-medium text-xl">
                                                     {property.host?.name
                                                         ?.charAt(0)
                                                         .toUpperCase() || "H"}
@@ -475,27 +475,27 @@ const PropertyDetailPage = () => {
 
                             {/* Contact Host Button */}
                             <div className="mt-6">
-                                <button className="px-6 py-3 border border-gray-900 text-gray-900 rounded-lg hover:bg-secondary-50 transition-colors font-medium">
+                                <button className="px-6 py-3 border border-secondary-900 text-secondary-900 rounded-lg hover:bg-secondary-50 transition-colors font-medium">
                                     Contact Host
                                 </button>
                             </div>
                         </div>
 
                         {/* Property Highlights */}
-                        <div className="py-8 border-b border-gray-200">
+                        <div className="py-8 border-b border-secondary-200">
                             <div className="space-y-6">
                                 <div className="flex items-start space-x-4">
                                     <div className="flex-shrink-0">
                                         <FaLock
-                                            className="text-gray-700 mt-1"
+                                            className="text-secondary-700 mt-1"
                                             size={20}
                                         />
                                     </div>
                                     <div>
-                                        <h3 className="font-medium text-gray-900">
+                                        <h3 className="font-medium text-secondary-900">
                                             Self check-in
                                         </h3>
-                                        <p className="text-gray-600 text-sm">
+                                        <p className="text-secondary-600 text-sm">
                                             Check yourself in with the keypad.
                                         </p>
                                     </div>
@@ -504,15 +504,15 @@ const PropertyDetailPage = () => {
                                 <div className="flex items-start space-x-4">
                                     <div className="flex-shrink-0">
                                         <FaMapMarkerAlt
-                                            className="text-gray-700 mt-1"
+                                            className="text-secondary-700 mt-1"
                                             size={20}
                                         />
                                     </div>
                                     <div>
-                                        <h3 className="font-medium text-gray-900">
+                                        <h3 className="font-medium text-secondary-900">
                                             Great location
                                         </h3>
-                                        <p className="text-gray-600 text-sm">
+                                        <p className="text-secondary-600 text-sm">
                                             90% of recent guests gave the
                                             location a 5-star rating.
                                         </p>
@@ -522,15 +522,15 @@ const PropertyDetailPage = () => {
                                 <div className="flex items-start space-x-4">
                                     <div className="flex-shrink-0">
                                         <FaMedal
-                                            className="text-gray-700 mt-1"
+                                            className="text-secondary-700 mt-1"
                                             size={20}
                                         />
                                     </div>
                                     <div>
-                                        <h3 className="font-medium text-gray-900">
+                                        <h3 className="font-medium text-secondary-900">
                                             Great check-in experience
                                         </h3>
-                                        <p className="text-gray-600 text-sm">
+                                        <p className="text-secondary-600 text-sm">
                                             100% of recent guests gave the
                                             check-in process a 5-star rating.
                                         </p>
@@ -540,9 +540,9 @@ const PropertyDetailPage = () => {
                         </div>
 
                         {/* Description */}
-                        <div className="py-8 border-b border-gray-200">
+                        <div className="py-8 border-b border-secondary-200">
                             <div className="space-y-4">
-                                <p className="text-gray-900 leading-relaxed">
+                                <p className="text-secondary-900 leading-relaxed">
                                     {property.description?.length > 300
                                         ? `${property.description.substring(
                                               0,
@@ -564,8 +564,8 @@ const PropertyDetailPage = () => {
                         </div>
 
                         {/* Amenities */}
-                        <div className="py-8 border-b border-gray-200">
-                            <h2 className="text-xl font-semibold text-gray-900 mb-6">
+                        <div className="py-8 border-b border-secondary-200">
+                            <h2 className="text-xl font-semibold text-secondary-900 mb-6">
                                 What this place offers
                             </h2>
                             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -576,10 +576,10 @@ const PropertyDetailPage = () => {
                                             key={index}
                                             className="flex items-center space-x-3 p-3 bg-secondary-50 rounded-lg hover:bg-secondary-100 transition-colors"
                                         >
-                                            <div className="text-gray-700 flex-shrink-0">
+                                            <div className="text-secondary-700 flex-shrink-0">
                                                 {getAmenityIcon(amenity)}
                                             </div>
-                                            <span className="text-gray-900 text-sm font-medium truncate">
+                                            <span className="text-secondary-900 text-sm font-medium truncate">
                                                 {amenity}
                                             </span>
                                         </div>
@@ -588,7 +588,7 @@ const PropertyDetailPage = () => {
                             {property.amenities?.length > 0 && (
                                 <button
                                     onClick={() => setShowAmenitiesModal(true)}
-                                    className="mt-6 px-6 py-3 border border-gray-900 text-gray-900 rounded-lg hover:bg-secondary-50 transition-colors font-medium"
+                                    className="mt-6 px-6 py-3 border border-secondary-900 text-secondary-900 rounded-lg hover:bg-secondary-50 transition-colors font-medium"
                                 >
                                     {property.amenities.length > 8
                                         ? `Show all ${property.amenities.length} amenities`
@@ -600,11 +600,11 @@ const PropertyDetailPage = () => {
                         {/* Reviews */}
                         <div
                             id="reviews"
-                            className="py-8 border-b border-gray-200"
+                            className="py-8 border-b border-secondary-200"
                         >
                             <div className="flex items-center mb-8">
                                 <FaStar className="text-black mr-2" size={20} />
-                                <h2 className="text-xl font-semibold text-gray-900">
+                                <h2 className="text-xl font-semibold text-secondary-900">
                                     {property.avgRating > 0
                                         ? property.avgRating.toFixed(1)
                                         : "New"}{" "}
@@ -617,79 +617,79 @@ const PropertyDetailPage = () => {
                             {property.reviewCount > 0 && (
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                                     <div className="flex items-center justify-between">
-                                        <span className="text-sm text-gray-900">
+                                        <span className="text-sm text-secondary-900">
                                             Cleanliness
                                         </span>
                                         <div className="flex items-center">
                                             <div className="w-24 h-1 bg-secondary-200 rounded-full mr-2">
                                                 <div className="w-5/6 h-1 bg-black rounded-full"></div>
                                             </div>
-                                            <span className="text-sm font-medium text-gray-900">
+                                            <span className="text-sm font-medium text-secondary-900">
                                                 4.8
                                             </span>
                                         </div>
                                     </div>
                                     <div className="flex items-center justify-between">
-                                        <span className="text-sm text-gray-900">
+                                        <span className="text-sm text-secondary-900">
                                             Communication
                                         </span>
                                         <div className="flex items-center">
                                             <div className="w-24 h-1 bg-secondary-200 rounded-full mr-2">
                                                 <div className="w-full h-1 bg-black rounded-full"></div>
                                             </div>
-                                            <span className="text-sm font-medium text-gray-900">
+                                            <span className="text-sm font-medium text-secondary-900">
                                                 5.0
                                             </span>
                                         </div>
                                     </div>
                                     <div className="flex items-center justify-between">
-                                        <span className="text-sm text-gray-900">
+                                        <span className="text-sm text-secondary-900">
                                             Check-in
                                         </span>
                                         <div className="flex items-center">
                                             <div className="w-24 h-1 bg-secondary-200 rounded-full mr-2">
                                                 <div className="w-11/12 h-1 bg-black rounded-full"></div>
                                             </div>
-                                            <span className="text-sm font-medium text-gray-900">
+                                            <span className="text-sm font-medium text-secondary-900">
                                                 4.9
                                             </span>
                                         </div>
                                     </div>
                                     <div className="flex items-center justify-between">
-                                        <span className="text-sm text-gray-900">
+                                        <span className="text-sm text-secondary-900">
                                             Accuracy
                                         </span>
                                         <div className="flex items-center">
                                             <div className="w-24 h-1 bg-secondary-200 rounded-full mr-2">
                                                 <div className="w-5/6 h-1 bg-black rounded-full"></div>
                                             </div>
-                                            <span className="text-sm font-medium text-gray-900">
+                                            <span className="text-sm font-medium text-secondary-900">
                                                 4.7
                                             </span>
                                         </div>
                                     </div>
                                     <div className="flex items-center justify-between">
-                                        <span className="text-sm text-gray-900">
+                                        <span className="text-sm text-secondary-900">
                                             Location
                                         </span>
                                         <div className="flex items-center">
                                             <div className="w-24 h-1 bg-secondary-200 rounded-full mr-2">
                                                 <div className="w-11/12 h-1 bg-black rounded-full"></div>
                                             </div>
-                                            <span className="text-sm font-medium text-gray-900">
+                                            <span className="text-sm font-medium text-secondary-900">
                                                 4.9
                                             </span>
                                         </div>
                                     </div>
                                     <div className="flex items-center justify-between">
-                                        <span className="text-sm text-gray-900">
+                                        <span className="text-sm text-secondary-900">
                                             Value
                                         </span>
                                         <div className="flex items-center">
                                             <div className="w-24 h-1 bg-secondary-200 rounded-full mr-2">
                                                 <div className="w-4/5 h-1 bg-black rounded-full"></div>
                                             </div>
-                                            <span className="text-sm font-medium text-gray-900">
+                                            <span className="text-sm font-medium text-secondary-900">
                                                 4.6
                                             </span>
                                         </div>
@@ -708,7 +708,7 @@ const PropertyDetailPage = () => {
                                             >
                                                 <div className="flex items-center space-x-3">
                                                     <div className="h-10 w-10 bg-secondary-200 rounded-full flex items-center justify-center">
-                                                        <span className="text-gray-600 font-medium">
+                                                        <span className="text-secondary-600 font-medium">
                                                             {review.user?.name
                                                                 ?.charAt(0)
                                                                 .toUpperCase() ||
@@ -716,12 +716,12 @@ const PropertyDetailPage = () => {
                                                         </span>
                                                     </div>
                                                     <div>
-                                                        <p className="font-medium text-gray-900">
+                                                        <p className="font-medium text-secondary-900">
                                                             {review.user
                                                                 ?.name ||
                                                                 "Anonymous"}
                                                         </p>
-                                                        <p className="text-sm text-gray-600">
+                                                        <p className="text-sm text-secondary-600">
                                                             {new Date(
                                                                 review.createdAt
                                                             ).toLocaleDateString(
@@ -734,7 +734,7 @@ const PropertyDetailPage = () => {
                                                         </p>
                                                     </div>
                                                 </div>
-                                                <p className="text-gray-900 text-sm leading-relaxed">
+                                                <p className="text-secondary-900 text-sm leading-relaxed">
                                                     {review.comment?.length >
                                                     150
                                                         ? `${review.comment.substring(
@@ -747,31 +747,31 @@ const PropertyDetailPage = () => {
                                         ))}
                                 </div>
                             ) : (
-                                <p className="text-gray-600">
+                                <p className="text-secondary-600">
                                     No reviews yet. Be the first to review this
                                     property!
                                 </p>
                             )}
 
                             {reviewsData?.reviews?.length > 6 && (
-                                <button className="mt-6 px-6 py-3 border border-gray-900 text-gray-900 rounded-lg hover:bg-secondary-50 transition-colors font-medium">
+                                <button className="mt-6 px-6 py-3 border border-secondary-900 text-secondary-900 rounded-lg hover:bg-secondary-50 transition-colors font-medium">
                                     Show all {property.reviewCount} reviews
                                 </button>
                             )}
                         </div>
 
                         {/* Things to know */}
-                        <div className="py-8 border-b border-gray-200">
-                            <h2 className="text-xl font-semibold text-gray-900 mb-6">
+                        <div className="py-8 border-b border-secondary-200">
+                            <h2 className="text-xl font-semibold text-secondary-900 mb-6">
                                 Things to know
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                                 {/* House rules */}
                                 <div>
-                                    <h3 className="font-medium text-gray-900 mb-3">
+                                    <h3 className="font-medium text-secondary-900 mb-3">
                                         House rules
                                     </h3>
-                                    <div className="space-y-2 text-sm text-gray-600">
+                                    <div className="space-y-2 text-sm text-secondary-600">
                                         <p>Check-in: 3:00 PM - 9:00 PM</p>
                                         <p>Checkout: 11:00 AM</p>
                                         <p>8 guests maximum</p>
@@ -788,10 +788,10 @@ const PropertyDetailPage = () => {
 
                                 {/* Safety & property */}
                                 <div>
-                                    <h3 className="font-medium text-gray-900 mb-3">
+                                    <h3 className="font-medium text-secondary-900 mb-3">
                                         Safety & property
                                     </h3>
-                                    <div className="space-y-2 text-sm text-gray-600">
+                                    <div className="space-y-2 text-sm text-secondary-600">
                                         <p>Carbon monoxide alarm</p>
                                         <p>Smoke alarm</p>
                                         <p>Security camera/recording device</p>
@@ -803,10 +803,10 @@ const PropertyDetailPage = () => {
 
                                 {/* Cancellation policy */}
                                 <div>
-                                    <h3 className="font-medium text-gray-900 mb-3">
+                                    <h3 className="font-medium text-secondary-900 mb-3">
                                         Cancellation policy
                                     </h3>
-                                    <div className="space-y-2 text-sm text-gray-600">
+                                    <div className="space-y-2 text-sm text-secondary-600">
                                         <p>Free cancellation for 48 hours</p>
                                         <button className="text-black underline hover:no-underline font-medium">
                                             Show more
@@ -818,7 +818,7 @@ const PropertyDetailPage = () => {
 
                         {/* Location */}
                         <div id="location" className="py-8">
-                            <h2 className="text-xl font-semibold text-gray-900 mb-6">
+                            <h2 className="text-xl font-semibold text-secondary-900 mb-6">
                                 Where you'll be
                             </h2>
 
@@ -851,9 +851,9 @@ const PropertyDetailPage = () => {
                                 </div>
                             ) : (
                                 <div className="bg-secondary-50 rounded-xl h-96 flex items-center justify-center">
-                                    <div className="text-center text-gray-700 p-6">
+                                    <div className="text-center text-secondary-700 p-6">
                                         <FaMapMarkerAlt
-                                            className="mx-auto mb-4 text-gray-400"
+                                            className="mx-auto mb-4 text-secondary-400"
                                             size={32}
                                         />
                                         <p className="text-lg font-medium mb-2">
@@ -861,7 +861,7 @@ const PropertyDetailPage = () => {
                                             {property.address.state},{" "}
                                             {property.address.country}
                                         </p>
-                                        <p className="mb-4 text-gray-600">
+                                        <p className="mb-4 text-secondary-600">
                                             Exact location provided after
                                             booking confirmation
                                         </p>
@@ -878,10 +878,10 @@ const PropertyDetailPage = () => {
                                 {/* Price and Rating */}
                                 <div className="flex items-center justify-between mb-2">
                                     <div className="flex items-baseline">
-                                        <span className="text-2xl font-semibold text-gray-900">
+                                        <span className="text-2xl font-semibold text-secondary-900">
                                             {formatPrice(property.price)}
                                         </span>
-                                        <span className="text-gray-600 ml-1 text-base">
+                                        <span className="text-secondary-600 ml-1 text-base">
                                             / night
                                         </span>
                                     </div>
@@ -894,7 +894,7 @@ const PropertyDetailPage = () => {
                                             <span className="font-medium text-black text-sm">
                                                 {property.avgRating.toFixed(1)}
                                             </span>
-                                            <span className="text-gray-600 ml-1 text-sm">
+                                            <span className="text-secondary-600 ml-1 text-sm">
                                                 ({property.reviewCount})
                                             </span>
                                         </div>
@@ -917,7 +917,7 @@ const PropertyDetailPage = () => {
                                 {/* Booking Form */}
                                 <div className="space-y-4">
                                     {/* Date Selection */}
-                                    <div className="border border-gray-300 rounded-lg">
+                                    <div className="border border-secondary-300 rounded-lg">
                                         <AvailabilityCalendar
                                             propertyId={id}
                                             initialStartDate={
@@ -933,13 +933,13 @@ const PropertyDetailPage = () => {
                                     </div>
 
                                     {/* Guest Selection */}
-                                    <div className="border border-gray-300 rounded-lg p-4 hover:border-gray-400 transition-colors">
+                                    <div className="border border-secondary-300 rounded-lg p-4 hover:border-secondary-400 transition-colors">
                                         <div className="flex items-center justify-between">
                                             <div>
-                                                <p className="font-medium text-gray-900">
+                                                <p className="font-medium text-secondary-900">
                                                     Guests
                                                 </p>
-                                                <p className="text-sm text-gray-600">
+                                                <p className="text-sm text-secondary-600">
                                                     Max {property.maxGuests}
                                                 </p>
                                             </div>
@@ -955,14 +955,14 @@ const PropertyDetailPage = () => {
                                                     }
                                                     className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all ${
                                                         guestCount <= 1
-                                                            ? "border-gray-200 text-gray-300 cursor-not-allowed"
-                                                            : "border-gray-400 text-gray-700 hover:border-gray-600 hover:scale-110"
+                                                            ? "border-secondary-200 text-secondary-300 cursor-not-allowed"
+                                                            : "border-secondary-400 text-secondary-700 hover:border-secondary-600 hover:scale-110"
                                                     }`}
                                                     disabled={guestCount <= 1}
                                                 >
                                                     −
                                                 </button>
-                                                <span className="font-medium text-gray-900 w-8 text-center text-lg">
+                                                <span className="font-medium text-secondary-900 w-8 text-center text-lg">
                                                     {guestCount}
                                                 </span>
                                                 <button
@@ -977,8 +977,8 @@ const PropertyDetailPage = () => {
                                                     className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all ${
                                                         guestCount >=
                                                         property.maxGuests
-                                                            ? "border-gray-200 text-gray-300 cursor-not-allowed"
-                                                            : "border-gray-400 text-gray-700 hover:border-gray-600 hover:scale-110"
+                                                            ? "border-secondary-200 text-secondary-300 cursor-not-allowed"
+                                                            : "border-secondary-400 text-secondary-700 hover:border-secondary-600 hover:scale-110"
                                                     }`}
                                                     disabled={
                                                         guestCount >=
@@ -1001,14 +1001,14 @@ const PropertyDetailPage = () => {
                                             Reserve
                                         </button>
                                     ) : (
-                                        <div className="w-full bg-secondary-100 text-gray-500 py-4 rounded-lg font-semibold text-lg text-center border border-gray-200">
+                                        <div className="w-full bg-secondary-100 text-secondary-500 py-4 rounded-lg font-semibold text-lg text-center border border-secondary-200">
                                             {!property.isApproved
                                                 ? "Under Review"
                                                 : "Not Available"}
                                         </div>
                                     )}
 
-                                    <p className="text-center text-sm text-gray-600 font-medium">
+                                    <p className="text-center text-sm text-secondary-600 font-medium">
                                         You won't be charged yet
                                     </p>
 
@@ -1016,13 +1016,13 @@ const PropertyDetailPage = () => {
                                     {selectedDates.startDate &&
                                         selectedDates.endDate &&
                                         bookingPriceDetails && (
-                                            <div className="pt-4 border-t border-gray-200">
+                                            <div className="pt-4 border-t border-secondary-200">
                                                 <div className="flex justify-between items-center">
                                                     <div>
-                                                        <span className="font-medium text-base text-gray-900">
+                                                        <span className="font-medium text-base text-secondary-900">
                                                             Total
                                                         </span>
-                                                        <p className="text-sm text-gray-600">
+                                                        <p className="text-sm text-secondary-600">
                                                             {calculateNights(
                                                                 selectedDates.startDate,
                                                                 selectedDates.endDate
@@ -1036,7 +1036,7 @@ const PropertyDetailPage = () => {
                                                         </p>
                                                     </div>
                                                     <div className="text-right">
-                                                        <span className="font-semibold text-lg text-gray-900">
+                                                        <span className="font-semibold text-lg text-secondary-900">
                                                             {formatPrice(
                                                                 bookingPriceDetails.total
                                                             )}
@@ -1062,7 +1062,7 @@ const PropertyDetailPage = () => {
                             <div className="mt-6 text-center">
                                 <button
                                     onClick={() => setShowReportModal(true)}
-                                    className="text-sm text-gray-600 hover:text-gray-900 underline"
+                                    className="text-sm text-secondary-600 hover:text-secondary-900 underline"
                                 >
                                     <FaFlag className="inline mr-1" size={12} />
                                     Report this listing
@@ -1114,14 +1114,14 @@ const PropertyDetailPage = () => {
             />
 
             {/* Mobile Floating Booking Bar */}
-            <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-2xl z-50 backdrop-blur-sm bg-white/95">
+            <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-secondary-200 p-4 shadow-2xl z-50 backdrop-blur-sm bg-white/95">
                 <div className="flex items-center justify-between">
                     <div>
                         <div className="flex items-baseline">
-                            <span className="text-lg font-semibold text-gray-900">
+                            <span className="text-lg font-semibold text-secondary-900">
                                 {formatPrice(property.price)}
                             </span>
-                            <span className="text-gray-600 ml-1 text-sm">
+                            <span className="text-secondary-600 ml-1 text-sm">
                                 night
                             </span>
                         </div>
@@ -1131,7 +1131,7 @@ const PropertyDetailPage = () => {
                                 <span className="text-xs font-medium text-black">
                                     {property.avgRating.toFixed(1)}
                                 </span>
-                                <span className="text-gray-600 ml-1 text-xs">
+                                <span className="text-secondary-600 ml-1 text-xs">
                                     ({property.reviewCount})
                                 </span>
                             </div>
@@ -1142,7 +1142,7 @@ const PropertyDetailPage = () => {
                         className={`px-6 py-3 rounded-lg font-medium transition-all ${
                             property.isApproved && property.isAvailable
                                 ? "bg-gradient-to-r from-pink-500 to-red-500 text-white hover:from-pink-600 hover:to-red-600 transform hover:scale-[1.02]"
-                                : "bg-secondary-100 text-gray-500 cursor-not-allowed"
+                                : "bg-secondary-100 text-secondary-500 cursor-not-allowed"
                         }`}
                         disabled={!property.isApproved || !property.isAvailable}
                     >

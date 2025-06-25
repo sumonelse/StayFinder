@@ -99,7 +99,7 @@ const PropertyImageUploader = ({
     return (
         <div className={className}>
             <h3 className="text-lg font-medium mb-2">Property Images</h3>
-            <p className="text-sm text-gray-600 mb-4">
+            <p className="text-sm text-secondary-600 mb-4">
                 Upload high-quality images of your property. You can upload up
                 to 10 images.
             </p>

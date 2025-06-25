@@ -93,8 +93,8 @@ const ImageUploader = ({
             <div
                 className={`relative border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer transition-colors ${
                     dragActive
-                        ? "border-primary-500 bg-primary-50"
-                        : "border-gray-300 hover:border-gray-400"
+                        ? "border-secondary-500 bg-secondary-50"
+                        : "border-secondary-300 hover:border-secondary-400"
                 }`}
                 onDragEnter={handleDrag}
                 onDragLeave={handleDrag}
@@ -111,12 +111,12 @@ const ImageUploader = ({
                     onChange={handleChange}
                 />
 
-                <FiUpload className="w-10 h-10 text-gray-400 mb-2" />
-                <p className="text-sm text-gray-600 text-center">
+                <FiUpload className="w-10 h-10 text-secondary-400 mb-2" />
+                <p className="text-sm text-secondary-600 text-center">
                     Drag & drop {multiple ? "images" : "an image"} here, or
                     click to select {multiple ? "files" : "a file"}
                 </p>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-secondary-500 mt-1">
                     {multiple ? `Up to ${maxFiles} images, ` : ""}Maximum{" "}
                     {maxSize}MB per file
                 </p>

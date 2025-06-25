@@ -61,7 +61,7 @@ const PropertyCard = ({ property, className = "" }) => {
 
     return (
         <div
-            className={`bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 group ${className}`}
+            className={`bg-white rounded-xl shadow-sm border border-secondary-200 overflow-hidden hover:shadow-lg transition-all duration-300 group ${className}`}
         >
             <Link to={`/properties/${property._id}`} className="block">
                 {/* Image Section */}
@@ -74,8 +74,8 @@ const PropertyCard = ({ property, className = "" }) => {
                             onError={() => setImageError(true)}
                         />
                     ) : (
-                        <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                            <span className="text-gray-400">No Image</span>
+                        <div className="w-full h-full bg-secondary-200 flex items-center justify-center">
+                            <span className="text-secondary-400">No Image</span>
                         </div>
                     )}
 
@@ -98,7 +98,10 @@ const PropertyCard = ({ property, className = "" }) => {
                                 }}
                                 className="p-2 bg-white bg-opacity-90 rounded-full hover:bg-opacity-100 transition-colors opacity-0 group-hover:opacity-100"
                             >
-                                <FaShare className="text-gray-600" size={14} />
+                                <FaShare
+                                    className="text-secondary-600"
+                                    size={14}
+                                />
                             </button>
 
                             {isAuthenticated && (
@@ -114,7 +117,7 @@ const PropertyCard = ({ property, className = "" }) => {
                                         />
                                     ) : (
                                         <FaRegHeart
-                                            className="text-gray-600"
+                                            className="text-secondary-600"
                                             size={14}
                                         />
                                     )}
@@ -124,7 +127,7 @@ const PropertyCard = ({ property, className = "" }) => {
 
                         {/* View Details Button */}
                         <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <div className="bg-white bg-opacity-90 px-3 py-1 rounded-full text-sm font-medium text-gray-700 flex items-center">
+                            <div className="bg-white bg-opacity-90 px-3 py-1 rounded-full text-sm font-medium text-secondary-700 flex items-center">
                                 <FaEye className="mr-1" size={12} />
                                 View Details
                             </div>
@@ -136,16 +139,16 @@ const PropertyCard = ({ property, className = "" }) => {
                 <div className="p-4">
                     {/* Title and Rating */}
                     <div className="flex items-start justify-between mb-2">
-                        <h3 className="font-semibold text-gray-900 text-lg leading-tight group-hover:text-blue-600 transition-colors">
+                        <h3 className="font-semibold text-secondary-900 text-lg leading-tight group-hover:text-blue-600 transition-colors">
                             {property.title}
                         </h3>
                         {property.avgRating > 0 && (
-                            <div className="flex items-center bg-gray-50 px-2 py-1 rounded-full ml-2">
+                            <div className="flex items-center bg-secondary-50 px-2 py-1 rounded-full ml-2">
                                 <FaStar
                                     className="text-yellow-500 mr-1"
                                     size={12}
                                 />
-                                <span className="text-sm font-medium text-gray-700">
+                                <span className="text-sm font-medium text-secondary-700">
                                     {property.avgRating.toFixed(1)}
                                 </span>
                             </div>
@@ -153,7 +156,7 @@ const PropertyCard = ({ property, className = "" }) => {
                     </div>
 
                     {/* Location */}
-                    <div className="flex items-center text-gray-600 mb-3">
+                    <div className="flex items-center text-secondary-600 mb-3">
                         <FaMapMarkerAlt className="mr-1" size={12} />
                         <span className="text-sm">
                             {property.address.city}, {property.address.state}
@@ -161,7 +164,7 @@ const PropertyCard = ({ property, className = "" }) => {
                     </div>
 
                     {/* Property Details */}
-                    <div className="flex items-center space-x-4 text-sm text-gray-600 mb-3">
+                    <div className="flex items-center space-x-4 text-sm text-secondary-600 mb-3">
                         <div className="flex items-center">
                             <FaUsers className="mr-1" size={12} />
                             <span>{property.maxGuests} guests</span>
@@ -186,7 +189,7 @@ const PropertyCard = ({ property, className = "" }) => {
                                     return icon ? (
                                         <div
                                             key={index}
-                                            className="p-1 bg-gray-100 rounded text-gray-600"
+                                            className="p-1 bg-secondary-100 rounded text-secondary-600"
                                             title={amenity}
                                         >
                                             {icon}
@@ -194,7 +197,7 @@ const PropertyCard = ({ property, className = "" }) => {
                                     ) : null
                                 })}
                             {property.amenities.length > 4 && (
-                                <span className="text-xs text-gray-500">
+                                <span className="text-xs text-secondary-500">
                                     +{property.amenities.length - 4} more
                                 </span>
                             )}
@@ -204,17 +207,17 @@ const PropertyCard = ({ property, className = "" }) => {
                     {/* Price */}
                     <div className="flex items-center justify-between">
                         <div>
-                            <span className="text-xl font-bold text-gray-900">
+                            <span className="text-xl font-bold text-secondary-900">
                                 {formatPrice(property.price)}
                             </span>
-                            <span className="text-gray-600 text-sm ml-1">
+                            <span className="text-secondary-600 text-sm ml-1">
                                 / night
                             </span>
                         </div>
 
                         {/* Booking Status Indicator */}
                         {!property.isApproved || !property.isAvailable ? (
-                            <div className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                            <div className="text-xs text-secondary-500 bg-secondary-100 px-2 py-1 rounded">
                                 {!property.isApproved
                                     ? "Under Review"
                                     : "Unavailable"}

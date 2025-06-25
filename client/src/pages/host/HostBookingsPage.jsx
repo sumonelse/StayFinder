@@ -148,7 +148,7 @@ const HostBookingsPage = () => {
                 )
             default:
                 return (
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary-100 text-secondary-800">
                         {status}
                     </span>
                 )
@@ -168,14 +168,14 @@ const HostBookingsPage = () => {
             <div className="container mx-auto px-4 py-8">
                 <h1 className="text-3xl font-bold mb-6">Booking Requests</h1>
                 <div className="animate-pulse">
-                    <div className="h-12 bg-gray-200 rounded mb-6"></div>
+                    <div className="h-12 bg-secondary-200 rounded mb-6"></div>
                     <div className="bg-white rounded-lg shadow-md p-6">
-                        <div className="h-8 bg-gray-200 rounded w-1/4 mb-6"></div>
+                        <div className="h-8 bg-secondary-200 rounded w-1/4 mb-6"></div>
                         <div className="space-y-4">
                             {[...Array(5)].map((_, index) => (
                                 <div
                                     key={index}
-                                    className="h-20 bg-gray-200 rounded"
+                                    className="h-20 bg-secondary-200 rounded"
                                 ></div>
                             ))}
                         </div>
@@ -213,14 +213,14 @@ const HostBookingsPage = () => {
                     >
                         <div className="relative flex-1">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <FaSearch className="text-gray-400" />
+                                <FaSearch className="text-secondary-400" />
                             </div>
                             <input
                                 type="text"
                                 name="search"
                                 placeholder="Search by guest name..."
                                 defaultValue={filters.search}
-                                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                className="w-full pl-10 pr-3 py-2 border border-secondary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                             />
                         </div>
                         <button
@@ -234,7 +234,7 @@ const HostBookingsPage = () => {
                     <button
                         type="button"
                         onClick={() => setIsFilterOpen(!isFilterOpen)}
-                        className="md:w-auto w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 flex items-center justify-center"
+                        className="md:w-auto w-full px-4 py-2 bg-secondary-100 text-secondary-700 rounded-md hover:bg-secondary-200 flex items-center justify-center"
                     >
                         <FaFilter className="mr-2" />
                         <span>Filters</span>
@@ -247,7 +247,7 @@ const HostBookingsPage = () => {
                         <div>
                             <label
                                 htmlFor="status"
-                                className="block text-sm font-medium text-gray-700 mb-1"
+                                className="block text-sm font-medium text-secondary-700 mb-1"
                             >
                                 Status
                             </label>
@@ -256,7 +256,7 @@ const HostBookingsPage = () => {
                                 name="status"
                                 value={filters.status}
                                 onChange={handleFilterChange}
-                                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                className="w-full p-2 border border-secondary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                             >
                                 <option value="">All Statuses</option>
                                 <option value="pending">Pending</option>
@@ -268,7 +268,7 @@ const HostBookingsPage = () => {
                         <div>
                             <label
                                 htmlFor="propertyId"
-                                className="block text-sm font-medium text-gray-700 mb-1"
+                                className="block text-sm font-medium text-secondary-700 mb-1"
                             >
                                 Property
                             </label>
@@ -277,7 +277,7 @@ const HostBookingsPage = () => {
                                 name="propertyId"
                                 value={filters.propertyId}
                                 onChange={handleFilterChange}
-                                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                className="w-full p-2 border border-secondary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                             >
                                 <option value="">All Properties</option>
                                 {data?.properties?.map((property) => (
@@ -298,12 +298,12 @@ const HostBookingsPage = () => {
             {data?.bookings?.length === 0 && (
                 <div className="bg-white rounded-lg shadow-md p-8 text-center">
                     <div className="flex justify-center mb-4">
-                        <FaCalendarAlt className="text-gray-400 text-4xl" />
+                        <FaCalendarAlt className="text-secondary-400 text-4xl" />
                     </div>
                     <h2 className="text-xl font-semibold mb-2">
                         No bookings yet
                     </h2>
-                    <p className="text-gray-600">
+                    <p className="text-secondary-600">
                         When guests book your properties, they'll appear here.
                     </p>
                 </div>
@@ -313,48 +313,48 @@ const HostBookingsPage = () => {
             {data?.bookings?.length > 0 && (
                 <div className="bg-white rounded-lg shadow-md overflow-hidden">
                     <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-gray-50">
+                        <table className="min-w-full divide-y divide-secondary-200">
+                            <thead className="bg-secondary-50">
                                 <tr>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider"
                                     >
                                         Guest
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider"
                                     >
                                         Property
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider"
                                     >
                                         Dates
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider"
                                     >
                                         Status
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider"
                                     >
                                         Amount
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider"
                                     >
                                         Actions
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
+                            <tbody className="bg-white divide-y divide-secondary-200">
                                 {data.bookings.map((booking) => (
                                     <tr key={booking._id}>
                                         <td className="px-6 py-4 whitespace-nowrap">
@@ -371,10 +371,10 @@ const HostBookingsPage = () => {
                                                     />
                                                 </div>
                                                 <div className="ml-4">
-                                                    <div className="text-sm font-medium text-gray-900">
+                                                    <div className="text-sm font-medium text-secondary-900">
                                                         {booking.guest.name}
                                                     </div>
-                                                    <div className="text-sm text-gray-500">
+                                                    <div className="text-sm text-secondary-500">
                                                         {booking.guests} guest
                                                         {booking.guests !== 1
                                                             ? "s"
@@ -384,26 +384,26 @@ const HostBookingsPage = () => {
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-sm text-gray-900">
+                                            <div className="text-sm text-secondary-900">
                                                 {booking.property.title}
                                             </div>
-                                            <div className="text-sm text-gray-500">
+                                            <div className="text-sm text-secondary-500">
                                                 {booking.property.address.city}
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-sm text-gray-900">
+                                            <div className="text-sm text-secondary-900">
                                                 {formatDate(
                                                     booking.checkInDate
                                                 )}
                                             </div>
-                                            <div className="text-sm text-gray-500">
+                                            <div className="text-sm text-secondary-500">
                                                 to{" "}
                                                 {formatDate(
                                                     booking.checkOutDate
                                                 )}
                                             </div>
-                                            <div className="text-xs text-gray-500">
+                                            <div className="text-xs text-secondary-500">
                                                 {calculateNights(
                                                     booking.checkInDate,
                                                     booking.checkOutDate
@@ -414,7 +414,7 @@ const HostBookingsPage = () => {
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             {getStatusBadge(booking.status)}
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-secondary-500">
                                             {formatPrice(booking.totalPrice)}
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -483,7 +483,7 @@ const HostBookingsPage = () => {
                         <button
                             onClick={() => handlePageChange(filters.page - 1)}
                             disabled={filters.page === 1}
-                            className="px-3 py-1 rounded-md mr-2 bg-white border border-gray-300 disabled:opacity-50"
+                            className="px-3 py-1 rounded-md mr-2 bg-white border border-secondary-300 disabled:opacity-50"
                         >
                             Previous
                         </button>
@@ -495,7 +495,7 @@ const HostBookingsPage = () => {
                                     className={`px-3 py-1 rounded-md ${
                                         filters.page === index + 1
                                             ? "bg-primary-600 text-white"
-                                            : "bg-white border border-gray-300"
+                                            : "bg-white border border-secondary-300"
                                     }`}
                                 >
                                     {index + 1}
@@ -505,7 +505,7 @@ const HostBookingsPage = () => {
                         <button
                             onClick={() => handlePageChange(filters.page + 1)}
                             disabled={filters.page === data.totalPages}
-                            className="px-3 py-1 rounded-md ml-2 bg-white border border-gray-300 disabled:opacity-50"
+                            className="px-3 py-1 rounded-md ml-2 bg-white border border-secondary-300 disabled:opacity-50"
                         >
                             Next
                         </button>
@@ -525,7 +525,7 @@ const HostBookingsPage = () => {
 
                         {actionType === "confirmed" ? (
                             <div className="mb-6">
-                                <p className="text-gray-700">
+                                <p className="text-secondary-700">
                                     Are you sure you want to confirm this
                                     booking request?
                                 </p>
@@ -534,7 +534,7 @@ const HostBookingsPage = () => {
                             <div className="mb-6">
                                 <div className="flex items-start mb-4">
                                     <FaExclamationTriangle className="text-yellow-500 mr-2 mt-1" />
-                                    <p className="text-gray-700">
+                                    <p className="text-secondary-700">
                                         Are you sure you want to cancel this
                                         booking? The guest will be notified.
                                     </p>
@@ -542,7 +542,7 @@ const HostBookingsPage = () => {
                                 <div className="mb-4">
                                     <label
                                         htmlFor="actionReason"
-                                        className="block text-sm font-medium text-gray-700 mb-1"
+                                        className="block text-sm font-medium text-secondary-700 mb-1"
                                     >
                                         Reason for cancellation
                                     </label>
@@ -553,7 +553,7 @@ const HostBookingsPage = () => {
                                         onChange={(e) =>
                                             setActionReason(e.target.value)
                                         }
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                        className="w-full px-3 py-2 border border-secondary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                                         placeholder="Please provide a reason for cancellation"
                                     ></textarea>
                                 </div>
@@ -563,7 +563,7 @@ const HostBookingsPage = () => {
                         <div className="flex justify-end space-x-3">
                             <button
                                 onClick={() => setShowActionModal(false)}
-                                className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
+                                className="px-4 py-2 border border-secondary-300 rounded-md hover:bg-secondary-50"
                             >
                                 Cancel
                             </button>

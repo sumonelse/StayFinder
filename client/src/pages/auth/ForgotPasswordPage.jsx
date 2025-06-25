@@ -145,7 +145,7 @@ const ForgotPasswordPage = () => {
                                         className={`input-field pl-10 ${
                                             errors.email
                                                 ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                                                : "focus:border-primary-500 focus:ring-primary-500"
+                                                : "focus:border-secondary-500 focus:ring-secondary-500"
                                         }`}
                                         placeholder="your@email.com"
                                         disabled={isLoading}

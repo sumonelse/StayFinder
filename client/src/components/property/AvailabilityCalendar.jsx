@@ -479,7 +479,7 @@ const AvailabilityCalendar = ({
             dayInfo.dateString !== selectedDates.endDate
         ) {
             classes.push(
-                "bg-secondary-600 border-t border-b border-primary-200"
+                "bg-secondary-600 border-t border-b border-secondary-200"
             )
         }
 
@@ -644,7 +644,7 @@ const AvailabilityCalendar = ({
             {/* Selected dates summary */}
             {selectedDates.startDate && selectedDates.endDate && (
                 <div className="border-t border-secondary-200 pt-3 mt-2 mb-2">
-                    <div className="bg-secondary-50 rounded-lg p-3 border border-primary-100">
+                    <div className="bg-secondary-50 rounded-lg p-3 border border-secondary-200">
                         <div className="flex items-center justify-between mb-1">
                             <div className="flex items-center text-secondary-800">
                                 <FaCalendarAlt className="mr-2 text-secondary-600" />

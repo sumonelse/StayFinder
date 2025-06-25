@@ -341,7 +341,7 @@ const BookingPage = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-secondary-50">
             <div className="container mx-auto px-4 py-2 md:py-4">
                 {/* Back button and title */}
                 <div className="mb-6 md:mb-8 animate-fadeIn">
@@ -349,7 +349,7 @@ const BookingPage = () => {
                         <h1 className="text-2xl md:text-3xl font-semibold text-black">
                             Request to book
                         </h1>
-                        <p className="text-gray-600 text-sm md:text-base">
+                        <p className="text-secondary-600 text-sm md:text-base">
                             Your trip to {property.title}
                         </p>
                     </div>
@@ -358,7 +358,7 @@ const BookingPage = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
                     {/* Left column - Booking form */}
                     <div className="lg:col-span-2">
-                        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-8 mb-6 animate-fadeIn animation-delay-100">
+                        <div className="bg-white rounded-2xl shadow-sm border border-secondary-200 p-6 md:p-8 mb-6 animate-fadeIn animation-delay-100">
                             <h2 className="text-xl font-semibold mb-8 text-black">
                                 Your trip
                             </h2>
@@ -374,7 +374,7 @@ const BookingPage = () => {
                                             Dates
                                         </h3>
                                     </div>
-                                    <div className="bg-gray-50 rounded-xl border border-gray-200 p-4 md:p-6">
+                                    <div className="bg-secondary-50 rounded-xl border border-secondary-200 p-4 md:p-6">
                                         <AvailabilityCalendar
                                             propertyId={id}
                                             onDateSelect={handleDateSelect}
@@ -417,8 +417,8 @@ const BookingPage = () => {
                                         bookingData.checkOutDate && (
                                             <div className="mt-4">
                                                 {availabilityLoading ? (
-                                                    <div className="flex items-center text-gray-600 bg-gray-50 p-3 rounded-lg">
-                                                        <FaSpinner className="animate-spin mr-2 text-gray-400" />
+                                                    <div className="flex items-center text-secondary-600 bg-secondary-50 p-3 rounded-lg">
+                                                        <FaSpinner className="animate-spin mr-2 text-secondary-400" />
                                                         <span className="text-sm">
                                                             Checking
                                                             availability...
@@ -461,10 +461,10 @@ const BookingPage = () => {
                                             name="numberOfGuests"
                                             value={bookingData.numberOfGuests}
                                             onChange={handleInputChange}
-                                            className={`w-full px-4 py-3 border rounded-xl text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all ${
+                                            className={`w-full px-4 py-3 border rounded-xl text-secondary-900 bg-white focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all ${
                                                 errors.numberOfGuests
                                                     ? "border-red-300 focus:ring-red-500"
-                                                    : "border-gray-300 hover:border-gray-400"
+                                                    : "border-secondary-300 hover:border-secondary-400"
                                             }`}
                                         >
                                             {[...Array(property.maxGuests)].map(
@@ -489,9 +489,9 @@ const BookingPage = () => {
                                             </p>
                                         )}
 
-                                        <div className="bg-gray-50 p-4 rounded-xl text-gray-600 text-sm">
+                                        <div className="bg-secondary-50 p-4 rounded-xl text-secondary-600 text-sm">
                                             <p className="flex items-start">
-                                                <FaInfoCircle className="text-gray-400 mr-2 mt-0.5 flex-shrink-0" />
+                                                <FaInfoCircle className="text-secondary-400 mr-2 mt-0.5 flex-shrink-0" />
                                                 <span>
                                                     This property can
                                                     accommodate up to{" "}
@@ -514,13 +514,13 @@ const BookingPage = () => {
                                             House rules
                                         </h3>
                                     </div>
-                                    <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                                    <div className="bg-secondary-50 p-6 rounded-xl border border-secondary-200">
                                         <div className="flex items-center justify-between">
                                             <div>
                                                 <p className="text-black font-medium mb-1">
                                                     Review the house rules
                                                 </p>
-                                                <p className="text-gray-600 text-sm">
+                                                <p className="text-secondary-600 text-sm">
                                                     Make sure you understand the
                                                     host's requirements
                                                 </p>
@@ -530,15 +530,15 @@ const BookingPage = () => {
                                                 onClick={() =>
                                                     setShowHouseRulesModal(true)
                                                 }
-                                                className="px-4 py-2 border border-gray-300 rounded-xl text-sm font-medium text-black hover:border-gray-400 hover:bg-gray-50 transition-colors"
+                                                className="px-4 py-2 border border-secondary-300 rounded-xl text-sm font-medium text-black hover:border-secondary-400 hover:bg-secondary-50 transition-colors"
                                             >
                                                 View rules
                                             </button>
                                         </div>
 
-                                        <div className="mt-6 pt-4 border-t border-gray-200 text-gray-600 text-sm">
+                                        <div className="mt-6 pt-4 border-t border-secondary-200 text-secondary-600 text-sm">
                                             <p className="flex items-start">
-                                                <FaInfoCircle className="text-gray-400 mr-2 mt-0.5 flex-shrink-0" />
+                                                <FaInfoCircle className="text-secondary-400 mr-2 mt-0.5 flex-shrink-0" />
                                                 <span>
                                                     By proceeding with this
                                                     booking, you agree to follow
@@ -568,12 +568,12 @@ const BookingPage = () => {
                                             onChange={handleInputChange}
                                             rows="4"
                                             placeholder="Let the host know why you're traveling, who's coming with you, or anything else they should know."
-                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all resize-none hover:border-gray-400"
+                                            className="w-full px-4 py-3 border border-secondary-300 rounded-xl text-secondary-900 bg-white focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all resize-none hover:border-secondary-400"
                                         ></textarea>
 
-                                        <div className="text-gray-500 text-sm">
+                                        <div className="text-secondary-500 text-sm">
                                             <p className="flex items-start">
-                                                <FaRegSmile className="text-gray-400 mr-2 mt-0.5 flex-shrink-0" />
+                                                <FaRegSmile className="text-secondary-400 mr-2 mt-0.5 flex-shrink-0" />
                                                 <span>
                                                     Tell your host about your
                                                     trip to help them prepare
@@ -594,7 +594,7 @@ const BookingPage = () => {
                                             Booking protection
                                         </h3>
                                     </div>
-                                    <div className="bg-gray-50 p-6 rounded-xl border border-gray-200 space-y-6">
+                                    <div className="bg-secondary-50 p-6 rounded-xl border border-secondary-200 space-y-6">
                                         <div className="flex items-start">
                                             <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
                                                 <FaShieldAlt
@@ -606,7 +606,7 @@ const BookingPage = () => {
                                                 <h4 className="font-medium text-black mb-2">
                                                     You won't be charged yet
                                                 </h4>
-                                                <p className="text-gray-600 text-sm leading-relaxed">
+                                                <p className="text-secondary-600 text-sm leading-relaxed">
                                                     We'll secure your booking,
                                                     and payment will be
                                                     collected by the host after
@@ -626,7 +626,7 @@ const BookingPage = () => {
                                                 <h4 className="font-medium text-black mb-2">
                                                     Free cancellation
                                                 </h4>
-                                                <p className="text-gray-600 text-sm leading-relaxed">
+                                                <p className="text-secondary-600 text-sm leading-relaxed">
                                                     Cancel for free before{" "}
                                                     {formatDate(
                                                         (() => {
@@ -661,7 +661,7 @@ const BookingPage = () => {
                                 )}
 
                                 {/* Submit button */}
-                                <div className="pt-6 border-t border-gray-200">
+                                <div className="pt-6 border-t border-secondary-200">
                                     <button
                                         type="submit"
                                         disabled={
@@ -690,9 +690,9 @@ const BookingPage = () => {
                     {/* Right column - Booking summary */}
                     <div className="lg:col-span-1">
                         <div className="sticky top-8 animate-fadeIn animation-delay-200">
-                            <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 mb-4">
+                            <div className="bg-white rounded-2xl shadow-lg border border-secondary-200 p-6 mb-4">
                                 {/* Property info */}
-                                <div className="flex mb-1 pb-4 border-b border-gray-100">
+                                <div className="flex mb-1 pb-4 border-b border-secondary-100">
                                     <div className="w-20 h-20 rounded-xl overflow-hidden mr-4 flex-shrink-0">
                                         <img
                                             src={
@@ -712,18 +712,18 @@ const BookingPage = () => {
                                         <h3 className="font-medium text-black text-sm mb-1 truncate">
                                             {property.title}
                                         </h3>
-                                        <p className="text-xs text-gray-500 mb-2 flex items-center">
+                                        <p className="text-xs text-secondary-500 mb-2 flex items-center">
                                             <FaMapMarkerAlt
-                                                className="text-gray-400 mr-1"
+                                                className="text-secondary-400 mr-1"
                                                 size={10}
                                             />
                                             {property.address.city},{" "}
                                             {property.address.country}
                                         </p>
-                                        <div className="flex text-xs text-gray-500 space-x-3">
+                                        <div className="flex text-xs text-secondary-500 space-x-3">
                                             <span className="flex items-center">
                                                 <FaBed
-                                                    className="text-gray-400 mr-1"
+                                                    className="text-secondary-400 mr-1"
                                                     size={10}
                                                 />
                                                 {property.bedrooms} bed
@@ -733,7 +733,7 @@ const BookingPage = () => {
                                             </span>
                                             <span className="flex items-center">
                                                 <FaBath
-                                                    className="text-gray-400 mr-1"
+                                                    className="text-secondary-400 mr-1"
                                                     size={10}
                                                 />
                                                 {property.bathrooms} bath
@@ -750,9 +750,9 @@ const BookingPage = () => {
                                 bookingData.checkOutDate ? (
                                     <div className="mb-2">
                                         <div className="space-y-4">
-                                            <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                                            <div className="flex justify-between items-center py-2 border-b border-secondary-100">
                                                 <div>
-                                                    <p className="text-xs text-gray-500 uppercase tracking-wide">
+                                                    <p className="text-xs text-secondary-500 uppercase tracking-wide">
                                                         Check-in
                                                     </p>
                                                     <p className="font-medium text-black text-sm">
@@ -771,7 +771,7 @@ const BookingPage = () => {
                                                     </p>
                                                 </div>
                                                 <div className="text-right">
-                                                    <p className="text-xs text-gray-500 uppercase tracking-wide">
+                                                    <p className="text-xs text-secondary-500 uppercase tracking-wide">
                                                         Check-out
                                                     </p>
                                                     <p className="font-medium text-black text-sm">
@@ -800,7 +800,7 @@ const BookingPage = () => {
                                                 </div>
                                             </div>
                                             <div className="py-1">
-                                                <p className="text-xs text-gray-500 uppercase tracking-wide">
+                                                <p className="text-xs text-secondary-500 uppercase tracking-wide">
                                                     Guests
                                                 </p>
                                                 <p className="font-medium text-black text-sm">
@@ -814,9 +814,9 @@ const BookingPage = () => {
                                         </div>
                                     </div>
                                 ) : (
-                                    <div className="bg-gray-50 p-4 rounded-xl mb-6 text-sm text-gray-600">
+                                    <div className="bg-secondary-50 p-4 rounded-xl mb-6 text-sm text-secondary-600">
                                         <p className="flex items-center">
-                                            <FaInfoCircle className="text-gray-400 mr-2" />
+                                            <FaInfoCircle className="text-secondary-400 mr-2" />
                                             Select your dates to see the total
                                             price
                                         </p>
@@ -824,10 +824,10 @@ const BookingPage = () => {
                                 )}
 
                                 {/* Price details */}
-                                <div className="border-t border-gray-200 pt-6">
+                                <div className="border-t border-secondary-200 pt-6">
                                     <div className="space-y-4 mb-6">
                                         <div className="flex justify-between items-center">
-                                            <span className="text-gray-600 text-sm underline">
+                                            <span className="text-secondary-600 text-sm underline">
                                                 {formatPrice(property.price)} x{" "}
                                                 {bookingDetails.nights || "0"}{" "}
                                                 nights
@@ -839,10 +839,10 @@ const BookingPage = () => {
                                             </span>
                                         </div>
                                         <div className="flex justify-between items-center">
-                                            <span className="text-gray-600 text-sm underline flex items-center">
+                                            <span className="text-secondary-600 text-sm underline flex items-center">
                                                 Cleaning fee
                                                 <FaInfoCircle
-                                                    className="text-gray-400 ml-1 cursor-help"
+                                                    className="text-secondary-400 ml-1 cursor-help"
                                                     size={12}
                                                     title="One-time fee charged by host for cleaning their space"
                                                 />
@@ -854,10 +854,10 @@ const BookingPage = () => {
                                             </span>
                                         </div>
                                         <div className="flex justify-between items-center">
-                                            <span className="text-gray-600 text-sm underline flex items-center">
+                                            <span className="text-secondary-600 text-sm underline flex items-center">
                                                 Service fee
                                                 <FaInfoCircle
-                                                    className="text-gray-400 ml-1 cursor-help"
+                                                    className="text-secondary-400 ml-1 cursor-help"
                                                     size={12}
                                                     title="Fee that helps support our platform and services"
                                                 />
@@ -871,7 +871,7 @@ const BookingPage = () => {
                                     </div>
 
                                     {/* Total */}
-                                    <div className="border-t border-gray-200 pt-4">
+                                    <div className="border-t border-secondary-200 pt-4">
                                         <div className="flex justify-between items-center">
                                             <span className="text-black font-semibold">
                                                 Total (INR)
@@ -887,16 +887,16 @@ const BookingPage = () => {
                             </div>
 
                             {/* Safety notice */}
-                            <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                            <div className="bg-secondary-50 p-4 rounded-xl border border-secondary-200">
                                 <div className="flex items-start">
-                                    <div className="text-gray-600 mr-3 mt-1">
+                                    <div className="text-secondary-600 mr-3 mt-1">
                                         <FaShieldAlt size={20} />
                                     </div>
                                     <div>
                                         <h4 className="font-medium text-black mb-1">
                                             Safe booking guarantee
                                         </h4>
-                                        <p className="text-sm text-gray-600">
+                                        <p className="text-sm text-secondary-600">
                                             Book with confidence. Your payment
                                             is protected by our secure payment
                                             system.

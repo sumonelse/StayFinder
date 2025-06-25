@@ -142,7 +142,7 @@ const PropertyCard = ({ property, onToggleFavorite, viewMode = "grid" }) => {
                         <div className="flex justify-between items-start">
                             <div>
                                 {/* Location */}
-                                <div className="flex items-center text-gray-800 mb-1">
+                                <div className="flex items-center text-secondary-800 mb-1">
                                     <span className="text-sm font-medium line-clamp-1">
                                         {property.address?.city},{" "}
                                         {property.address?.country}
@@ -150,7 +150,7 @@ const PropertyCard = ({ property, onToggleFavorite, viewMode = "grid" }) => {
                                 </div>
 
                                 {/* Property Title */}
-                                <h3 className="text-base text-gray-500 line-clamp-1">
+                                <h3 className="text-base text-secondary-500 line-clamp-1">
                                     {property.title}
                                 </h3>
                             </div>
@@ -162,7 +162,7 @@ const PropertyCard = ({ property, onToggleFavorite, viewMode = "grid" }) => {
                                         className="text-black mr-1"
                                         size={12}
                                     />
-                                    <span className="font-medium text-gray-900">
+                                    <span className="font-medium text-secondary-900">
                                         {property.avgRating.toFixed(1)}
                                     </span>
                                 </div>
@@ -170,7 +170,7 @@ const PropertyCard = ({ property, onToggleFavorite, viewMode = "grid" }) => {
                         </div>
 
                         {/* Property Features - Airbnb Style */}
-                        <div className="mt-1 text-gray-500 text-sm">
+                        <div className="mt-1 text-secondary-500 text-sm">
                             <span>
                                 {property.bedrooms}{" "}
                                 {property.bedrooms === 1 ? "bed" : "beds"}
@@ -196,10 +196,10 @@ const PropertyCard = ({ property, onToggleFavorite, viewMode = "grid" }) => {
                         {/* Price - Airbnb Style */}
                         <div className="mt-2">
                             <div className="flex items-baseline">
-                                <span className="font-semibold text-gray-900">
+                                <span className="font-semibold text-secondary-900">
                                     {formatPrice(property.price)}
                                 </span>
-                                <span className="text-gray-600 ml-1 text-sm">
+                                <span className="text-secondary-600 ml-1 text-sm">
                                     /{" "}
                                     {property.pricePeriod === "night" ||
                                     property.pricePeriod === "nightly"
@@ -221,7 +221,7 @@ const PropertyCard = ({ property, onToggleFavorite, viewMode = "grid" }) => {
             className="group block"
             aria-label={`View details for ${property.title}`}
         >
-            <div className="overflow-hidden bg-white border-b border-gray-100 py-6 transition-all duration-300 hover:bg-gray-50">
+            <div className="overflow-hidden bg-white border-b border-secondary-100 py-6 transition-all duration-300 hover:bg-secondary-50">
                 <div className="flex flex-col md:flex-row gap-4">
                     {/* Property Image - Airbnb Style */}
                     <div className="relative md:w-1/3 aspect-[4/3] md:aspect-square overflow-hidden rounded-xl">
@@ -291,7 +291,7 @@ const PropertyCard = ({ property, onToggleFavorite, viewMode = "grid" }) => {
                         <div className="flex justify-between items-start">
                             <div>
                                 {/* Location */}
-                                <div className="flex items-center text-gray-800 mb-1">
+                                <div className="flex items-center text-secondary-800 mb-1">
                                     <span className="text-sm font-medium line-clamp-1">
                                         {property.address?.city},{" "}
                                         {property.address?.country}
@@ -299,15 +299,15 @@ const PropertyCard = ({ property, onToggleFavorite, viewMode = "grid" }) => {
                                 </div>
 
                                 {/* Property Title */}
-                                <h3 className="text-xl font-medium text-gray-900 mb-1">
+                                <h3 className="text-xl font-medium text-secondary-900 mb-1">
                                     {property.title}
                                 </h3>
 
                                 {/* Separator Line */}
-                                <div className="w-12 h-px bg-gray-200 my-2"></div>
+                                <div className="w-12 h-px bg-secondary-200 my-2"></div>
 
                                 {/* Property Features - Airbnb Style */}
-                                <div className="text-gray-500 text-sm">
+                                <div className="text-secondary-500 text-sm">
                                     <span>
                                         {property.bedrooms}{" "}
                                         {property.bedrooms === 1
@@ -342,7 +342,7 @@ const PropertyCard = ({ property, onToggleFavorite, viewMode = "grid" }) => {
                                         className="text-black mr-1"
                                         size={14}
                                     />
-                                    <span className="font-medium text-gray-900">
+                                    <span className="font-medium text-secondary-900">
                                         {property.avgRating.toFixed(1)}
                                     </span>
                                 </div>
@@ -350,7 +350,7 @@ const PropertyCard = ({ property, onToggleFavorite, viewMode = "grid" }) => {
                         </div>
 
                         {/* Description */}
-                        <p className="text-gray-600 text-sm line-clamp-2 mt-3">
+                        <p className="text-secondary-600 text-sm line-clamp-2 mt-3">
                             {property.description ||
                                 "Experience this beautiful property in a prime location with all the amenities you need for a comfortable stay."}
                         </p>
@@ -361,7 +361,7 @@ const PropertyCard = ({ property, onToggleFavorite, viewMode = "grid" }) => {
                                 {randomAmenities.map((amenity, index) => (
                                     <span
                                         key={index}
-                                        className="text-gray-600 text-sm"
+                                        className="text-secondary-600 text-sm"
                                     >
                                         {index > 0 && (
                                             <span className="mr-2">·</span>
@@ -371,7 +371,7 @@ const PropertyCard = ({ property, onToggleFavorite, viewMode = "grid" }) => {
                                 ))}
                                 {property.amenities &&
                                     property.amenities.length > 2 && (
-                                        <span className="text-gray-600 text-sm">
+                                        <span className="text-secondary-600 text-sm">
                                             <span className="mr-2">·</span>+
                                             {property.amenities.length - 2} more
                                         </span>
@@ -382,10 +382,10 @@ const PropertyCard = ({ property, onToggleFavorite, viewMode = "grid" }) => {
                         {/* Price - Airbnb Style */}
                         <div className="mt-auto pt-3">
                             <div className="flex items-baseline">
-                                <span className="font-semibold text-gray-900">
+                                <span className="font-semibold text-secondary-900">
                                     {formatPrice(property.price)}
                                 </span>
-                                <span className="text-gray-600 ml-1 text-sm">
+                                <span className="text-secondary-600 ml-1 text-sm">
                                     /{" "}
                                     {property.pricePeriod === "night" ||
                                     property.pricePeriod === "nightly"

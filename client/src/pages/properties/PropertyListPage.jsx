@@ -294,17 +294,17 @@ const PropertyListPage = () => {
         <div className="min-h-screen bg-white">
             <div className="max-w-[2000px] mx-auto">
                 {/* Airbnb-style Search Header */}
-                <div className="sticky top-0 z-20 bg-white border-b border-gray-200 px-4 py-4">
+                <div className="sticky top-0 z-20 bg-white border-b border-secondary-200 px-4 py-4">
                     <div className="flex flex-col md:flex-row gap-4 items-center">
                         {/* Search Bar */}
                         <div className="w-full md:max-w-xl">
                             <form
                                 onSubmit={handleSearch}
-                                className="flex items-center border border-gray-300 rounded-full overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                                className="flex items-center border border-secondary-300 rounded-full overflow-hidden shadow-sm hover:shadow-md transition-shadow"
                             >
                                 <div className="flex-1 relative">
                                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                        <FaSearch className="text-gray-500" />
+                                        <FaSearch className="text-secondary-500" />
                                     </div>
                                     <input
                                         ref={searchInputRef}
@@ -316,11 +316,11 @@ const PropertyListPage = () => {
                                     />
                                 </div>
 
-                                <div className="h-8 w-px bg-gray-300 mx-1"></div>
+                                <div className="h-8 w-px bg-secondary-300 mx-1"></div>
 
                                 <div className="relative">
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <FaMapMarkerAlt className="text-gray-500" />
+                                        <FaMapMarkerAlt className="text-secondary-500" />
                                     </div>
                                     <input
                                         ref={locationInputRef}
@@ -346,9 +346,9 @@ const PropertyListPage = () => {
                             <button
                                 type="button"
                                 onClick={() => setIsFilterModalOpen(true)}
-                                className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-full text-sm font-medium hover:shadow-md transition-shadow relative"
+                                className="flex items-center gap-2 px-4 py-2 border border-secondary-300 rounded-full text-sm font-medium hover:shadow-md transition-shadow relative"
                             >
-                                <FaFilter className="text-gray-600" />
+                                <FaFilter className="text-secondary-600" />
                                 <span>Filters</span>
                                 {activeFilters > 0 && (
                                     <span className="absolute -top-1 -right-1 bg-primary-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
@@ -357,13 +357,13 @@ const PropertyListPage = () => {
                                 )}
                             </button>
 
-                            <div className="flex border border-gray-300 rounded-full p-1">
+                            <div className="flex border border-secondary-300 rounded-full p-1">
                                 <button
                                     onClick={() => setViewMode("grid")}
                                     className={`p-2 rounded-full ${
                                         viewMode === "grid"
-                                            ? "bg-gray-100 text-gray-800"
-                                            : "text-gray-500 hover:bg-gray-50"
+                                            ? "bg-secondary-100 text-secondary-800"
+                                            : "text-secondary-500 hover:bg-secondary-50"
                                     }`}
                                     aria-label="Grid view"
                                 >
@@ -373,8 +373,8 @@ const PropertyListPage = () => {
                                     onClick={() => setViewMode("list")}
                                     className={`p-2 rounded-full ${
                                         viewMode === "list"
-                                            ? "bg-gray-100 text-gray-800"
-                                            : "text-gray-500 hover:bg-gray-50"
+                                            ? "bg-secondary-100 text-secondary-800"
+                                            : "text-secondary-500 hover:bg-secondary-50"
                                     }`}
                                     aria-label="List view"
                                 >
@@ -384,10 +384,10 @@ const PropertyListPage = () => {
 
                             <button
                                 onClick={() => setShowMap(!showMap)}
-                                className={`p-2.5 border border-gray-300 rounded-full hover:shadow-md transition-all ${
+                                className={`p-2.5 border border-secondary-300 rounded-full hover:shadow-md transition-all ${
                                     showMap
-                                        ? "bg-gray-100 text-gray-800 border-gray-400"
-                                        : "text-gray-600 hover:bg-gray-50"
+                                        ? "bg-secondary-100 text-secondary-800 border-secondary-400"
+                                        : "text-secondary-600 hover:bg-secondary-50"
                                 }`}
                                 aria-label={showMap ? "Hide map" : "Show map"}
                                 title={showMap ? "Hide map" : "Show map"}
@@ -399,14 +399,14 @@ const PropertyListPage = () => {
                 </div>
 
                 {/* Horizontal Category Filter Bar - Airbnb Style */}
-                <div className="relative border-b border-gray-200 bg-white">
+                <div className="relative border-b border-secondary-200 bg-white">
                     <div className="px-4 py-4 flex items-center">
                         <button
                             onClick={() => scrollFilters("left")}
-                            className="absolute left-0 z-10 bg-white bg-opacity-90 p-2 rounded-full shadow-md border border-gray-200 hover:bg-gray-50 transition-colors"
+                            className="absolute left-0 z-10 bg-white bg-opacity-90 p-2 rounded-full shadow-md border border-secondary-200 hover:bg-secondary-50 transition-colors"
                             aria-label="Scroll filters left"
                         >
-                            <FaChevronLeft className="text-gray-600" />
+                            <FaChevronLeft className="text-secondary-600" />
                         </button>
 
                         <div
@@ -427,15 +427,15 @@ const PropertyListPage = () => {
                                         }
                                         className={`flex flex-col items-center min-w-[80px] pb-2 pt-1 border-b-2 transition-colors ${
                                             isActive
-                                                ? "border-gray-800 text-gray-800"
-                                                : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-800"
+                                                ? "border-secondary-800 text-secondary-800"
+                                                : "border-transparent text-secondary-500 hover:border-secondary-300 hover:text-secondary-800"
                                         }`}
                                     >
                                         <div
                                             className={`text-2xl mb-1 ${
                                                 isActive
-                                                    ? "text-gray-800"
-                                                    : "text-gray-400"
+                                                    ? "text-secondary-800"
+                                                    : "text-secondary-400"
                                             }`}
                                         >
                                             {category.icon}
@@ -457,15 +457,15 @@ const PropertyListPage = () => {
                                         }
                                         className={`flex flex-col items-center min-w-[80px] pb-2 pt-1 border-b-2 transition-colors ${
                                             isActive
-                                                ? "border-gray-800 text-gray-800"
-                                                : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-800"
+                                                ? "border-secondary-800 text-secondary-800"
+                                                : "border-transparent text-secondary-500 hover:border-secondary-300 hover:text-secondary-800"
                                         }`}
                                     >
                                         <div
                                             className={`text-2xl mb-1 ${
                                                 isActive
-                                                    ? "text-gray-800"
-                                                    : "text-gray-400"
+                                                    ? "text-secondary-800"
+                                                    : "text-secondary-400"
                                             }`}
                                         >
                                             {type.icon}
@@ -480,10 +480,10 @@ const PropertyListPage = () => {
 
                         <button
                             onClick={() => scrollFilters("right")}
-                            className="absolute right-0 z-10 bg-white bg-opacity-90 p-2 rounded-full shadow-md border border-gray-200 hover:bg-gray-50 transition-colors"
+                            className="absolute right-0 z-10 bg-white bg-opacity-90 p-2 rounded-full shadow-md border border-secondary-200 hover:bg-secondary-50 transition-colors"
                             aria-label="Scroll filters right"
                         >
-                            <FaChevronRight className="text-gray-600" />
+                            <FaChevronRight className="text-secondary-600" />
                         </button>
                     </div>
                 </div>
@@ -493,7 +493,7 @@ const PropertyListPage = () => {
                     <div className="px-4 py-3 bg-white animate-fadeIn">
                         <div className="flex flex-wrap items-center gap-2">
                             {filters.search && (
-                                <span className="bg-gray-100 text-gray-800 text-sm px-3 py-1.5 rounded-full flex items-center">
+                                <span className="bg-secondary-100 text-secondary-800 text-sm px-3 py-1.5 rounded-full flex items-center">
                                     <FaSearch className="mr-1.5 text-xs" />
                                     {filters.search.length > 15
                                         ? filters.search.substring(0, 15) +
@@ -501,7 +501,7 @@ const PropertyListPage = () => {
                                         : filters.search}
                                     <button
                                         onClick={() => clearFilter("search")}
-                                        className="ml-2 text-gray-500 hover:text-gray-700"
+                                        className="ml-2 text-secondary-500 hover:text-secondary-700"
                                     >
                                         <FaTimes size={12} />
                                     </button>
@@ -509,13 +509,13 @@ const PropertyListPage = () => {
                             )}
 
                             {filters.type && (
-                                <span className="bg-gray-100 text-gray-800 text-sm px-3 py-1.5 rounded-full flex items-center">
+                                <span className="bg-secondary-100 text-secondary-800 text-sm px-3 py-1.5 rounded-full flex items-center">
                                     <FaHome className="mr-1.5 text-xs" />
                                     {filters.type.charAt(0).toUpperCase() +
                                         filters.type.slice(1)}
                                     <button
                                         onClick={() => clearFilter("type")}
-                                        className="ml-2 text-gray-500 hover:text-gray-700"
+                                        className="ml-2 text-secondary-500 hover:text-secondary-700"
                                     >
                                         <FaTimes size={12} />
                                     </button>
@@ -523,12 +523,12 @@ const PropertyListPage = () => {
                             )}
 
                             {filters.city && (
-                                <span className="bg-gray-100 text-gray-800 text-sm px-3 py-1.5 rounded-full flex items-center">
+                                <span className="bg-secondary-100 text-secondary-800 text-sm px-3 py-1.5 rounded-full flex items-center">
                                     <FaMapMarkerAlt className="mr-1.5 text-xs" />
                                     {filters.city}
                                     <button
                                         onClick={() => clearFilter("city")}
-                                        className="ml-2 text-gray-500 hover:text-gray-700"
+                                        className="ml-2 text-secondary-500 hover:text-secondary-700"
                                     >
                                         <FaTimes size={12} />
                                     </button>
@@ -536,7 +536,7 @@ const PropertyListPage = () => {
                             )}
 
                             {(filters.minPrice || filters.maxPrice) && (
-                                <span className="bg-gray-100 text-gray-800 text-sm px-3 py-1.5 rounded-full flex items-center">
+                                <span className="bg-secondary-100 text-secondary-800 text-sm px-3 py-1.5 rounded-full flex items-center">
                                     <FaRupeeSign className="mr-1.5 text-xs" />
                                     {filters.minPrice
                                         ? `${getCurrencySymbol()}${
@@ -556,7 +556,7 @@ const PropertyListPage = () => {
                                             if (filters.maxPrice)
                                                 clearFilter("maxPrice")
                                         }}
-                                        className="ml-2 text-gray-500 hover:text-gray-700"
+                                        className="ml-2 text-secondary-500 hover:text-secondary-700"
                                     >
                                         <FaTimes size={12} />
                                     </button>
@@ -564,12 +564,12 @@ const PropertyListPage = () => {
                             )}
 
                             {filters.bedrooms && (
-                                <span className="bg-gray-100 text-gray-800 text-sm px-3 py-1.5 rounded-full flex items-center">
+                                <span className="bg-secondary-100 text-secondary-800 text-sm px-3 py-1.5 rounded-full flex items-center">
                                     <FaBed className="mr-1.5 text-xs" />
                                     {filters.bedrooms}+ beds
                                     <button
                                         onClick={() => clearFilter("bedrooms")}
-                                        className="ml-2 text-gray-500 hover:text-gray-700"
+                                        className="ml-2 text-secondary-500 hover:text-secondary-700"
                                     >
                                         <FaTimes size={12} />
                                     </button>
@@ -577,12 +577,12 @@ const PropertyListPage = () => {
                             )}
 
                             {filters.bathrooms && (
-                                <span className="bg-gray-100 text-gray-800 text-sm px-3 py-1.5 rounded-full flex items-center">
+                                <span className="bg-secondary-100 text-secondary-800 text-sm px-3 py-1.5 rounded-full flex items-center">
                                     <FaBath className="mr-1.5 text-xs" />
                                     {filters.bathrooms}+ baths
                                     <button
                                         onClick={() => clearFilter("bathrooms")}
-                                        className="ml-2 text-gray-500 hover:text-gray-700"
+                                        className="ml-2 text-secondary-500 hover:text-secondary-700"
                                     >
                                         <FaTimes size={12} />
                                     </button>
@@ -590,12 +590,12 @@ const PropertyListPage = () => {
                             )}
 
                             {filters.maxGuests && (
-                                <span className="bg-gray-100 text-gray-800 text-sm px-3 py-1.5 rounded-full flex items-center">
+                                <span className="bg-secondary-100 text-secondary-800 text-sm px-3 py-1.5 rounded-full flex items-center">
                                     <FaUsers className="mr-1.5 text-xs" />
                                     {filters.maxGuests} guests
                                     <button
                                         onClick={() => clearFilter("maxGuests")}
-                                        className="ml-2 text-gray-500 hover:text-gray-700"
+                                        className="ml-2 text-secondary-500 hover:text-secondary-700"
                                     >
                                         <FaTimes size={12} />
                                     </button>
@@ -609,7 +609,7 @@ const PropertyListPage = () => {
                                     .map((amenity, index) => (
                                         <span
                                             key={index}
-                                            className="bg-gray-100 text-gray-800 text-sm px-3 py-1.5 rounded-full flex items-center"
+                                            className="bg-secondary-100 text-secondary-800 text-sm px-3 py-1.5 rounded-full flex items-center"
                                         >
                                             <IoIosRocket className="mr-1.5 text-xs" />
                                             {amenity}
@@ -630,7 +630,7 @@ const PropertyListPage = () => {
                                                         page: 1,
                                                     }))
                                                 }}
-                                                className="ml-2 text-gray-500 hover:text-gray-700"
+                                                className="ml-2 text-secondary-500 hover:text-secondary-700"
                                             >
                                                 <FaTimes size={12} />
                                             </button>
@@ -670,12 +670,12 @@ const PropertyListPage = () => {
                     {isLoading ? (
                         <div className="flex justify-center items-center py-20">
                             <Spinner size="lg" />
-                            <p className="ml-4 text-gray-600">
+                            <p className="ml-4 text-secondary-600">
                                 Finding your perfect stays...
                             </p>
                         </div>
                     ) : isError ? (
-                        <div className="text-center py-16 bg-white rounded-xl shadow-sm border border-gray-100">
+                        <div className="text-center py-16 bg-white rounded-xl shadow-sm border border-secondary-100">
                             <div className="bg-red-50 text-red-700 p-6 rounded-xl max-w-lg mx-auto">
                                 <p className="font-medium text-lg">
                                     Error loading properties
@@ -690,21 +690,21 @@ const PropertyListPage = () => {
                             </div>
                         </div>
                     ) : data?.properties?.length === 0 ? (
-                        <div className="text-center py-16 bg-white rounded-xl shadow-sm border border-gray-100">
-                            <div className="text-7xl mb-6 text-gray-300">
+                        <div className="text-center py-16 bg-white rounded-xl shadow-sm border border-secondary-100">
+                            <div className="text-7xl mb-6 text-secondary-300">
                                 <MdOutlineExplore className="mx-auto" />
                             </div>
-                            <h3 className="text-2xl font-bold text-gray-800 mb-3">
+                            <h3 className="text-2xl font-bold text-secondary-800 mb-3">
                                 No properties found
                             </h3>
-                            <p className="text-gray-600 mb-8 max-w-md mx-auto">
+                            <p className="text-secondary-600 mb-8 max-w-md mx-auto">
                                 We couldn't find any properties matching your
                                 criteria. Try adjusting your filters or
                                 exploring different locations.
                             </p>
                             <button
                                 onClick={clearAllFilters}
-                                className="px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
+                                className="px-6 py-2 bg-black text-white rounded-lg hover:bg-secondary-800 transition-colors"
                             >
                                 Clear all filters
                             </button>
@@ -714,8 +714,8 @@ const PropertyListPage = () => {
                             {/* Results Count and Sort */}
                             <div className="flex flex-wrap justify-between items-center mb-6">
                                 <div>
-                                    <p className="text-gray-700">
-                                        <span className="font-semibold text-gray-900">
+                                    <p className="text-secondary-700">
+                                        <span className="font-semibold text-secondary-900">
                                             {data?.pagination?.total || 0}
                                         </span>{" "}
                                         {data?.pagination?.total === 1
@@ -725,7 +725,7 @@ const PropertyListPage = () => {
                                             <span>
                                                 {" "}
                                                 in{" "}
-                                                <span className="font-semibold text-gray-900">
+                                                <span className="font-semibold text-secondary-900">
                                                     {filters.city}
                                                 </span>
                                             </span>
@@ -740,7 +740,7 @@ const PropertyListPage = () => {
                                             name="sort"
                                             value={filters.sort}
                                             onChange={handleFilterChange}
-                                            className="appearance-none bg-transparent border border-gray-300 rounded-lg pl-3 pr-10 py-2 text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-300"
+                                            className="appearance-none bg-transparent border border-secondary-300 rounded-lg pl-3 pr-10 py-2 text-sm font-medium text-secondary-700 focus:outline-none focus:ring-2 focus:ring-secondary-200 focus:border-secondary-300"
                                         >
                                             <option value="-createdAt">
                                                 Newest first
@@ -755,7 +755,7 @@ const PropertyListPage = () => {
                                                 Top rated
                                             </option>
                                         </select>
-                                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-secondary-700">
                                             <svg
                                                 className="w-4 h-4"
                                                 fill="none"
@@ -819,7 +819,7 @@ const PropertyListPage = () => {
                                             )
                                         ) : (
                                             <div className="col-span-full text-center py-10">
-                                                <p className="text-gray-500">
+                                                <p className="text-secondary-500">
                                                     No properties found matching
                                                     your criteria.
                                                 </p>
@@ -830,15 +830,15 @@ const PropertyListPage = () => {
 
                                 {/* Map View */}
                                 {showMap && (
-                                    <div className="md:w-2/5 h-[500px] md:h-auto md:sticky md:top-[76px] bg-gray-100 rounded-lg mt-6 md:mt-0 md:ml-6">
+                                    <div className="md:w-2/5 h-[500px] md:h-auto md:sticky md:top-[76px] bg-secondary-100 rounded-lg mt-6 md:mt-0 md:ml-6">
                                         <div className="h-full flex items-center justify-center">
                                             <div className="text-center">
-                                                <FaMap className="text-4xl text-gray-400 mx-auto mb-3" />
-                                                <p className="text-gray-600">
+                                                <FaMap className="text-4xl text-secondary-400 mx-auto mb-3" />
+                                                <p className="text-secondary-600">
                                                     Map view would be displayed
                                                     here
                                                 </p>
-                                                <p className="text-gray-500 text-sm mt-2">
+                                                <p className="text-secondary-500 text-sm mt-2">
                                                     (Map integration would be
                                                     implemented with Google Maps
                                                     or Mapbox)
@@ -863,8 +863,8 @@ const PropertyListPage = () => {
                                 disabled={filters.page === 1}
                                 className={`flex items-center gap-2 px-4 py-2 border rounded-full ${
                                     filters.page === 1
-                                        ? "border-gray-200 text-gray-300 cursor-not-allowed"
-                                        : "border-gray-300 text-gray-700 hover:border-gray-900 transition-colors"
+                                        ? "border-secondary-200 text-secondary-300 cursor-not-allowed"
+                                        : "border-secondary-300 text-secondary-700 hover:border-secondary-900 transition-colors"
                                 }`}
                                 aria-label="Previous page"
                             >
@@ -872,13 +872,13 @@ const PropertyListPage = () => {
                                 <span className="font-medium">Previous</span>
                             </button>
 
-                            <div className="mx-4 text-sm text-gray-500">
+                            <div className="mx-4 text-sm text-secondary-500">
                                 Page{" "}
-                                <span className="font-semibold text-gray-900">
+                                <span className="font-semibold text-secondary-900">
                                     {filters.page}
                                 </span>{" "}
                                 of{" "}
-                                <span className="font-semibold text-gray-900">
+                                <span className="font-semibold text-secondary-900">
                                     {data.pagination.pages}
                                 </span>
                             </div>
@@ -892,8 +892,8 @@ const PropertyListPage = () => {
                                 }
                                 className={`flex items-center gap-2 px-4 py-2 border rounded-full ${
                                     filters.page === data.pagination.pages
-                                        ? "border-gray-200 text-gray-300 cursor-not-allowed"
-                                        : "border-gray-300 text-gray-700 hover:border-gray-900 transition-colors"
+                                        ? "border-secondary-200 text-secondary-300 cursor-not-allowed"
+                                        : "border-secondary-300 text-secondary-700 hover:border-secondary-900 transition-colors"
                                 }`}
                                 aria-label="Next page"
                             >

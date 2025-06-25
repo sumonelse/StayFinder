@@ -130,7 +130,7 @@ const ResetPasswordPage = () => {
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
                 <Link
                     to="/"
-                    className="flex justify-center items-center mb-5 text-primary-600 hover:text-primary-700 transition-colors"
+                    className="flex justify-center items-center mb-5 text-secondary-600 hover:text-secondary-700 transition-colors"
                 >
                     <FaHome className="text-3xl" />
                 </Link>
@@ -196,7 +196,7 @@ const ResetPasswordPage = () => {
                                         className={`input-field pl-10 pr-10 ${
                                             errors.password
                                                 ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                                                : "focus:border-primary-500 focus:ring-primary-500"
+                                                : "focus:border-secondary-500 focus:ring-secondary-500"
                                         }`}
                                         placeholder="••••••••"
                                         disabled={isLoading}
@@ -294,7 +294,7 @@ const ResetPasswordPage = () => {
                                         className={`input-field pl-10 pr-10 ${
                                             errors.confirmPassword
                                                 ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                                                : "focus:border-primary-500 focus:ring-primary-500"
+                                                : "focus:border-secondary-500 focus:ring-secondary-500"
                                         }`}
                                         placeholder="••••••••"
                                         disabled={isLoading}
@@ -326,16 +326,16 @@ const ResetPasswordPage = () => {
                                 )}
                             </div>
 
-                            <div className="bg-primary-50 p-4 rounded-lg border border-primary-100">
+                            <div className="bg-secondary-50 p-4 rounded-lg border border-secondary-200">
                                 <div className="flex">
                                     <div className="flex-shrink-0">
-                                        <FaShieldAlt className="h-5 w-5 text-primary-600" />
+                                        <FaShieldAlt className="h-5 w-5 text-secondary-600" />
                                     </div>
                                     <div className="ml-3">
-                                        <h3 className="text-sm font-medium text-primary-800">
+                                        <h3 className="text-sm font-medium text-secondary-800">
                                             Password security tips
                                         </h3>
-                                        <div className="mt-2 text-sm text-primary-700">
+                                        <div className="mt-2 text-sm text-secondary-700">
                                             <ul className="list-disc pl-5 space-y-1">
                                                 <li>
                                                     Use a unique password you
@@ -378,7 +378,7 @@ const ResetPasswordPage = () => {
                 <div className="mt-6 text-center">
                     <Link
                         to="/login"
-                        className="font-medium text-primary-600 hover:text-primary-500 transition-colors"
+                        className="font-medium text-secondary-600 hover:text-primary-500 transition-colors"
                     >
                         Back to login
                     </Link>

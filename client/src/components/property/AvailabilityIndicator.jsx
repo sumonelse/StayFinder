@@ -31,7 +31,7 @@ const AvailabilityIndicator = ({
                 status: "loading",
                 label: "Loading...",
                 description: "Checking property status...",
-                color: "gray",
+                color: "secondary",
                 icon: FaClock,
                 canBook: false,
             }
@@ -104,7 +104,7 @@ const AvailabilityIndicator = ({
                             ? "text-yellow-600"
                             : availabilityInfo.color === "red"
                             ? "text-red-600"
-                            : "text-gray-600"
+                            : "text-secondary-600"
                     }`}
                     size={14}
                 />
@@ -116,7 +116,7 @@ const AvailabilityIndicator = ({
                             ? "text-yellow-800"
                             : availabilityInfo.color === "red"
                             ? "text-red-800"
-                            : "text-gray-800"
+                            : "text-secondary-800"
                     }`}
                 >
                     {availabilityInfo.label}
@@ -136,7 +136,7 @@ const AvailabilityIndicator = ({
                         ? "bg-yellow-100 text-yellow-800"
                         : availabilityInfo.color === "red"
                         ? "bg-red-100 text-red-800"
-                        : "bg-gray-100 text-gray-800"
+                        : "bg-secondary-100 text-secondary-800"
                 } ${className}`}
             >
                 <availabilityInfo.icon className="mr-1" size={10} />
@@ -156,7 +156,7 @@ const AvailabilityIndicator = ({
                         ? "border-yellow-400 bg-yellow-50"
                         : availabilityInfo.color === "red"
                         ? "border-red-400 bg-red-50"
-                        : "border-gray-400 bg-gray-50"
+                        : "border-secondary-400 bg-secondary-50"
                 }`}
             >
                 <div className="flex items-start">
@@ -168,7 +168,7 @@ const AvailabilityIndicator = ({
                                 ? "bg-yellow-100 text-yellow-600"
                                 : availabilityInfo.color === "red"
                                 ? "bg-red-100 text-red-600"
-                                : "bg-gray-100 text-gray-600"
+                                : "bg-secondary-100 text-secondary-600"
                         }`}
                     >
                         <availabilityInfo.icon size={20} />
@@ -183,7 +183,7 @@ const AvailabilityIndicator = ({
                                     ? "text-yellow-900"
                                     : availabilityInfo.color === "red"
                                     ? "text-red-900"
-                                    : "text-gray-900"
+                                    : "text-secondary-900"
                             }`}
                         >
                             {availabilityInfo.label}
@@ -197,7 +197,7 @@ const AvailabilityIndicator = ({
                                     ? "text-yellow-800"
                                     : availabilityInfo.color === "red"
                                     ? "text-red-800"
-                                    : "text-gray-800"
+                                    : "text-secondary-800"
                             }`}
                         >
                             {availabilityInfo.description}
@@ -236,7 +236,7 @@ const AvailabilityIndicator = ({
                                         ? "text-yellow-700 hover:text-yellow-800"
                                         : availabilityInfo.color === "red"
                                         ? "text-red-700 hover:text-red-800"
-                                        : "text-gray-700 hover:text-gray-800"
+                                        : "text-secondary-700 hover:text-secondary-800"
                                 }`}
                             >
                                 <FaInfoCircle className="mr-1" size={10} />
@@ -256,7 +256,7 @@ const AvailabilityIndicator = ({
                                             ? "border-yellow-200"
                                             : availabilityInfo.color === "red"
                                             ? "border-red-200"
-                                            : "border-gray-200"
+                                            : "border-secondary-200"
                                     }`}
                                 >
                                     <p
@@ -269,7 +269,7 @@ const AvailabilityIndicator = ({
                                                 : availabilityInfo.color ===
                                                   "red"
                                                 ? "text-red-800"
-                                                : "text-gray-800"
+                                                : "text-secondary-800"
                                         }`}
                                     >
                                         {availabilityInfo.detailedDescription}
@@ -297,7 +297,7 @@ const AvailabilityIndicator = ({
                                     </button>
                                 )}
 
-                                <button className="inline-flex items-center px-3 py-1.5 bg-white border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors text-xs font-medium">
+                                <button className="inline-flex items-center px-3 py-1.5 bg-white border border-secondary-300 rounded-md text-secondary-700 hover:bg-secondary-50 transition-colors text-xs font-medium">
                                     <FaEye className="mr-1" size={10} />
                                     View similar properties
                                 </button>

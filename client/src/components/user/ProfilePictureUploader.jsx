@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import { FiUpload, FiX } from "react-icons/fi"
 import { uploadService } from "../../services/api/"
 import { authService } from "../../services/api/"
+import { useAuth } from "../../context/AuthContext"
 
 /**
  * Component for uploading and managing a user's profile picture
@@ -12,6 +13,7 @@ const ProfilePictureUploader = ({
     onImageUploaded,
     className = "",
 }) => {
+    const { updateProfile } = useAuth()
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(null)
     const [previewImage, setPreviewImage] = useState(currentImage || "")
@@ -65,7 +67,9 @@ const ProfilePictureUploader = ({
             // Save the image URL to the user profile in the backend
             try {
                 // Only update the profilePicture field
-                await authService.updateProfile({ profilePicture: imageUrl })
+                await updateProfile({
+                    profilePicture: imageUrl,
+                })
                 console.log("Profile picture updated in backend successfully")
             } catch (updateError) {
                 console.error(
@@ -81,7 +85,7 @@ const ProfilePictureUploader = ({
                 onImageUploaded(imageUrl)
 
                 // Log the result for debugging
-                console.log("Image upload successful:", result.data)
+                // console.log("Image upload successful:", result.data)
             }
 
             setError(null)
@@ -113,7 +117,7 @@ const ProfilePictureUploader = ({
                         <img
                             src={previewImage}
                             alt="Profile"
-                            className="w-full h-full object-cover rounded-full border-2 border-gray-200"
+                            className="w-full h-full object-cover rounded-full border-2 border-secondary-200"
                         />
                         <button
                             type="button"
@@ -124,8 +128,8 @@ const ProfilePictureUploader = ({
                         </button>
                     </>
                 ) : (
-                    <div className="w-full h-full rounded-full bg-gray-200 flex items-center justify-center">
-                        <span className="text-gray-500 text-4xl">?</span>
+                    <div className="w-full h-full rounded-full bg-secondary-200 flex items-center justify-center">
+                        <span className="text-secondary-500 text-4xl">?</span>
                     </div>
                 )}
 
@@ -150,7 +154,7 @@ const ProfilePictureUploader = ({
 
             {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
 
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-xs text-secondary-500 mt-2">
                 JPG, PNG or GIF. Max size 2MB.
             </p>
         </div>

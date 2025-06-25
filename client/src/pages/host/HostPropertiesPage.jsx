@@ -116,14 +116,14 @@ const HostPropertiesPage = () => {
             <div className="container mx-auto px-4 py-8">
                 <h1 className="text-3xl font-bold mb-6">Your Properties</h1>
                 <div className="animate-pulse">
-                    <div className="h-12 bg-gray-200 rounded mb-6"></div>
+                    <div className="h-12 bg-secondary-200 rounded mb-6"></div>
                     <div className="bg-white rounded-lg shadow-md p-6">
-                        <div className="h-8 bg-gray-200 rounded w-1/4 mb-6"></div>
+                        <div className="h-8 bg-secondary-200 rounded w-1/4 mb-6"></div>
                         <div className="space-y-4">
                             {[...Array(5)].map((_, index) => (
                                 <div
                                     key={index}
-                                    className="h-20 bg-gray-200 rounded"
+                                    className="h-20 bg-secondary-200 rounded"
                                 ></div>
                             ))}
                         </div>
@@ -173,14 +173,14 @@ const HostPropertiesPage = () => {
                     >
                         <div className="relative flex-1">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <FaSearch className="text-gray-400" />
+                                <FaSearch className="text-secondary-400" />
                             </div>
                             <input
                                 type="text"
                                 name="search"
                                 placeholder="Search properties..."
                                 defaultValue={filters.search}
-                                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                className="w-full pl-10 pr-3 py-2 border border-secondary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                             />
                         </div>
                         <button
@@ -194,7 +194,7 @@ const HostPropertiesPage = () => {
                     <button
                         type="button"
                         onClick={() => setIsFilterOpen(!isFilterOpen)}
-                        className="md:w-auto w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 flex items-center justify-center"
+                        className="md:w-auto w-full px-4 py-2 bg-secondary-100 text-secondary-700 rounded-md hover:bg-secondary-200 flex items-center justify-center"
                     >
                         <FaFilter className="mr-2" />
                         <span>Filters</span>
@@ -207,7 +207,7 @@ const HostPropertiesPage = () => {
                         <div>
                             <label
                                 htmlFor="status"
-                                className="block text-sm font-medium text-gray-700 mb-1"
+                                className="block text-sm font-medium text-secondary-700 mb-1"
                             >
                                 Status
                             </label>
@@ -216,7 +216,7 @@ const HostPropertiesPage = () => {
                                 name="status"
                                 value={filters.status}
                                 onChange={handleFilterChange}
-                                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                className="w-full p-2 border border-secondary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                             >
                                 <option value="">All Statuses</option>
                                 <option value="available">Available</option>
@@ -229,7 +229,7 @@ const HostPropertiesPage = () => {
                         <div>
                             <label
                                 htmlFor="type"
-                                className="block text-sm font-medium text-gray-700 mb-1"
+                                className="block text-sm font-medium text-secondary-700 mb-1"
                             >
                                 Property Type
                             </label>
@@ -238,7 +238,7 @@ const HostPropertiesPage = () => {
                                 name="type"
                                 value={filters.type}
                                 onChange={handleFilterChange}
-                                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                className="w-full p-2 border border-secondary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                             >
                                 <option value="">All Types</option>
                                 <option value="apartment">Apartment</option>
@@ -258,7 +258,7 @@ const HostPropertiesPage = () => {
                     <h2 className="text-xl font-semibold mb-2">
                         You don't have any properties yet
                     </h2>
-                    <p className="text-gray-600 mb-6">
+                    <p className="text-secondary-600 mb-6">
                         Start by adding your first property to rent out.
                     </p>
                     <Link
@@ -275,48 +275,48 @@ const HostPropertiesPage = () => {
             {data?.properties?.length > 0 && (
                 <div className="bg-white rounded-lg shadow-md overflow-hidden">
                     <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-gray-50">
+                        <table className="min-w-full divide-y divide-secondary-200">
+                            <thead className="bg-secondary-50">
                                 <tr>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider"
                                     >
                                         Property
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider"
                                     >
                                         Location
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider"
                                     >
                                         Price
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider"
                                     >
                                         Rating
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider"
                                     >
                                         Status
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                        className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider"
                                     >
                                         Actions
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
+                            <tbody className="bg-white divide-y divide-secondary-200">
                                 {data.properties.map((property) => (
                                     <tr key={property._id}>
                                         <td className="px-6 py-4 whitespace-nowrap">
@@ -333,10 +333,10 @@ const HostPropertiesPage = () => {
                                                     />
                                                 </div>
                                                 <div className="ml-4">
-                                                    <div className="text-sm font-medium text-gray-900">
+                                                    <div className="text-sm font-medium text-secondary-900">
                                                         {property.title}
                                                     </div>
-                                                    <div className="text-sm text-gray-500">
+                                                    <div className="text-sm text-secondary-500">
                                                         {property.type
                                                             .charAt(0)
                                                             .toUpperCase() +
@@ -348,20 +348,20 @@ const HostPropertiesPage = () => {
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-sm text-gray-900">
+                                            <div className="text-sm text-secondary-900">
                                                 {property.address?.city ||
                                                     "N/A"}
                                             </div>
-                                            <div className="text-sm text-gray-500">
+                                            <div className="text-sm text-secondary-500">
                                                 {property.address?.country ||
                                                     "N/A"}
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-sm text-gray-900">
+                                            <div className="text-sm text-secondary-900">
                                                 {formatPrice(property.price)}
                                             </div>
-                                            <div className="text-sm text-gray-500">
+                                            <div className="text-sm text-secondary-500">
                                                 per{" "}
                                                 {property.pricePeriod ===
                                                 "nightly"
@@ -380,7 +380,7 @@ const HostPropertiesPage = () => {
                                                         : "New"}
                                                 </span>
                                                 {property.reviewCount > 0 && (
-                                                    <span className="text-gray-500 text-sm ml-1">
+                                                    <span className="text-secondary-500 text-sm ml-1">
                                                         ({property.reviewCount})
                                                     </span>
                                                 )}
@@ -472,7 +472,7 @@ const HostPropertiesPage = () => {
                         <button
                             onClick={() => handlePageChange(filters.page - 1)}
                             disabled={filters.page === 1}
-                            className="px-3 py-1 rounded-md mr-2 bg-white border border-gray-300 disabled:opacity-50"
+                            className="px-3 py-1 rounded-md mr-2 bg-white border border-secondary-300 disabled:opacity-50"
                         >
                             Previous
                         </button>
@@ -484,7 +484,7 @@ const HostPropertiesPage = () => {
                                     className={`px-3 py-1 rounded-md ${
                                         filters.page === index + 1
                                             ? "bg-primary-600 text-white"
-                                            : "bg-white border border-gray-300"
+                                            : "bg-white border border-secondary-300"
                                     }`}
                                 >
                                     {index + 1}
@@ -494,7 +494,7 @@ const HostPropertiesPage = () => {
                         <button
                             onClick={() => handlePageChange(filters.page + 1)}
                             disabled={filters.page === data.totalPages}
-                            className="px-3 py-1 rounded-md ml-2 bg-white border border-gray-300 disabled:opacity-50"
+                            className="px-3 py-1 rounded-md ml-2 bg-white border border-secondary-300 disabled:opacity-50"
                         >
                             Next
                         </button>
@@ -509,14 +509,14 @@ const HostPropertiesPage = () => {
                         <h2 className="text-xl font-semibold mb-4">
                             Delete Property
                         </h2>
-                        <p className="text-gray-700 mb-6">
+                        <p className="text-secondary-700 mb-6">
                             Are you sure you want to delete this property? This
                             action cannot be undone.
                         </p>
                         <div className="flex justify-end space-x-3">
                             <button
                                 onClick={() => setShowDeleteModal(false)}
-                                className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
+                                className="px-4 py-2 border border-secondary-300 rounded-md hover:bg-secondary-50"
                             >
                                 Cancel
                             </button>

@@ -284,14 +284,14 @@ const LocationPicker = ({
                 <div className="flex">
                     <div className="relative flex-grow">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <FaSearch className="text-gray-400" />
+                            <FaSearch className="text-secondary-400" />
                         </div>
                         <input
                             type="text"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             placeholder="Search for a location"
-                            className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                            className="block w-full pl-10 pr-3 py-2 border border-secondary-300 rounded-l-md focus:outline-none focus:ring-secondary-500 focus:border-secondary-500"
                             onKeyDown={(e) => {
                                 // Handle Enter key press
                                 if (e.key === "Enter") {
@@ -304,7 +304,7 @@ const LocationPicker = ({
                     <button
                         type="button"
                         onClick={handleSearch}
-                        className="bg-primary-600 text-white px-4 py-2 rounded-r-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                        className="bg-black text-white px-4 py-2 rounded-r-md hover:bg-secondary-800 focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:ring-offset-2"
                         disabled={isSearching}
                     >
                         {isSearching ? "Searching..." : "Search"}
@@ -315,7 +315,7 @@ const LocationPicker = ({
                 <button
                     type="button"
                     onClick={getCurrentLocation}
-                    className="mt-2 flex items-center justify-center px-4 py-2 border border-primary-300 bg-primary-50 rounded-md text-sm text-primary-700 hover:bg-primary-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors w-full"
+                    className="mt-2 flex items-center justify-center px-4 py-2 border border-secondary-300 bg-secondary-50 rounded-md text-sm text-secondary-700 hover:bg-secondary-100 focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:ring-offset-2 transition-colors w-full"
                     disabled={isGettingCurrentLocation}
                 >
                     <FaMapMarkerAlt className="mr-2" />
@@ -326,12 +326,12 @@ const LocationPicker = ({
 
                 {/* Search results */}
                 {geocodeResults.length > 0 && (
-                    <div className="absolute z-10 mt-1 w-full bg-white shadow-lg rounded-md border border-gray-200 max-h-60 overflow-auto">
+                    <div className="absolute z-10 mt-1 w-full bg-white shadow-lg rounded-md border border-secondary-200 max-h-60 overflow-auto">
                         <ul className="py-1">
                             {geocodeResults.map((result) => (
                                 <li
                                     key={result.place_id}
-                                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-start"
+                                    className="px-4 py-2 hover:bg-secondary-100 cursor-pointer flex items-start"
                                     onClick={() => handleSelectLocation(result)}
                                 >
                                     <FaMapMarkerAlt className="text-primary-500 mt-1 mr-2 flex-shrink-0" />
@@ -346,22 +346,22 @@ const LocationPicker = ({
             {/* Map container */}
             <div
                 ref={mapRef}
-                className="h-96 rounded-lg border border-gray-300 shadow-sm"
+                className="h-96 rounded-lg border border-secondary-300 shadow-sm"
                 style={{ background: "#f0f0f0" }}
             >
                 {!isMapLoaded && (
                     <div className="h-full flex items-center justify-center">
-                        <p className="text-gray-500">Loading map...</p>
+                        <p className="text-secondary-500">Loading map...</p>
                     </div>
                 )}
             </div>
 
             {/* Selected coordinates display */}
-            <div className="bg-gray-50 p-3 rounded-md border border-gray-200">
-                <p className="text-sm text-gray-700 font-medium">
+            <div className="bg-secondary-50 p-3 rounded-md border border-secondary-200">
+                <p className="text-sm text-secondary-700 font-medium">
                     Selected coordinates:
                 </p>
-                <p className="text-gray-900">
+                <p className="text-secondary-900">
                     Longitude: {selectedLocation.coordinates[0].toFixed(6)},
                     Latitude: {selectedLocation.coordinates[1].toFixed(6)}
                 </p>

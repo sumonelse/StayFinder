@@ -16,8 +16,8 @@ const HouseRulesModal = ({ isOpen, onClose, rules = {} }) => {
                 />
             </div>
 
-            <div className="mt-6 pt-4 border-t border-gray-200">
-                <p className="text-sm text-gray-600 leading-relaxed">
+            <div className="mt-6 pt-4 border-t border-secondary-200">
+                <p className="text-sm text-secondary-600 leading-relaxed">
                     By proceeding with this booking, you agree to follow the
                     house rules set by the host.
                 </p>

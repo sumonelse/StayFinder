@@ -73,7 +73,7 @@ const PropertyRules = ({
             id: "checkIn",
             label: "Check-in",
             value: propertyRules.checkIn,
-            icon: <FaRegClock className="text-gray-600" size={18} />,
+            icon: <FaRegClock className="text-secondary-600" size={18} />,
             type: "text",
             description:
                 "Please respect the check-in time to ensure the property is properly prepared for your arrival.",
@@ -82,7 +82,7 @@ const PropertyRules = ({
             id: "checkOut",
             label: "Check-out",
             value: propertyRules.checkOut,
-            icon: <FaRegCalendarAlt className="text-gray-600" size={18} />,
+            icon: <FaRegCalendarAlt className="text-secondary-600" size={18} />,
             type: "text",
             description:
                 "Please check out on time to allow the host to prepare the property for the next guests.",
@@ -167,7 +167,7 @@ const PropertyRules = ({
             id: "quietHours",
             label: "Quiet hours",
             value: propertyRules.quietHours,
-            icon: <FaRegMoon className="text-gray-600" size={18} />,
+            icon: <FaRegMoon className="text-secondary-600" size={18} />,
             type: "text",
             description:
                 "Please respect quiet hours to ensure all guests can enjoy a peaceful stay.",
@@ -180,7 +180,7 @@ const PropertyRules = ({
             id: `additional-${index}`,
             label: rule.title || "House rule",
             value: rule.description,
-            icon: <FaRegCommentDots className="text-gray-600" size={18} />,
+            icon: <FaRegCommentDots className="text-secondary-600" size={18} />,
             type: "text",
             description: rule.description,
         })
@@ -206,7 +206,7 @@ const PropertyRules = ({
                         key={rule.id}
                         className={`rounded-lg transition-all duration-200 ${
                             activeRule === rule.id
-                                ? "bg-gray-50 border border-gray-200"
+                                ? "bg-secondary-50 border border-secondary-200"
                                 : ""
                         }`}
                     >
@@ -219,14 +219,14 @@ const PropertyRules = ({
                             </div>
                             <div className="flex-grow">
                                 <div className="flex justify-between items-center">
-                                    <h4 className="font-medium text-gray-900">
+                                    <h4 className="font-medium text-secondary-900">
                                         {rule.label}
                                     </h4>
                                     {rule.description && (
                                         <FaInfoCircle
-                                            className={`text-gray-400 transition-colors duration-200 ${
+                                            className={`text-secondary-400 transition-colors duration-200 ${
                                                 activeRule === rule.id
-                                                    ? "text-gray-600"
+                                                    ? "text-secondary-600"
                                                     : ""
                                             }`}
                                             size={14}
@@ -257,7 +257,7 @@ const PropertyRules = ({
                                         </span>
                                     </div>
                                 ) : (
-                                    <p className="text-gray-700">
+                                    <p className="text-secondary-700">
                                         {rule.value}
                                     </p>
                                 )}
@@ -266,7 +266,7 @@ const PropertyRules = ({
 
                         {/* Expandable description */}
                         {activeRule === rule.id && rule.description && (
-                            <div className="px-2 pb-3 pl-9 text-sm text-gray-600 animate-fadeIn">
+                            <div className="px-2 pb-3 pl-9 text-sm text-secondary-600 animate-fadeIn">
                                 {rule.description}
                             </div>
                         )}
@@ -276,7 +276,7 @@ const PropertyRules = ({
                 {allRules.length > maxInitialRules && (
                     <button
                         onClick={() => setExpanded(!expanded)}
-                        className="flex items-center text-black hover:text-gray-700 font-medium mt-2 transition-colors duration-200 underline"
+                        className="flex items-center text-black hover:text-secondary-700 font-medium mt-2 transition-colors duration-200 underline"
                     >
                         {expanded ? (
                             <>

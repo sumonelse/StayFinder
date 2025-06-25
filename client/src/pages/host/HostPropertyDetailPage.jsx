@@ -92,11 +92,11 @@ const HostPropertyDetailPage = () => {
         return (
             <div className="container mx-auto px-4 py-8">
                 <div className="animate-pulse">
-                    <div className="h-8 bg-gray-200 rounded w-1/3 mb-6"></div>
-                    <div className="h-96 bg-gray-200 rounded mb-6"></div>
-                    <div className="h-4 bg-gray-200 rounded w-1/4 mb-4"></div>
-                    <div className="h-4 bg-gray-200 rounded w-1/2 mb-8"></div>
-                    <div className="h-24 bg-gray-200 rounded mb-6"></div>
+                    <div className="h-8 bg-secondary-200 rounded w-1/3 mb-6"></div>
+                    <div className="h-96 bg-secondary-200 rounded mb-6"></div>
+                    <div className="h-4 bg-secondary-200 rounded w-1/4 mb-4"></div>
+                    <div className="h-4 bg-secondary-200 rounded w-1/2 mb-8"></div>
+                    <div className="h-24 bg-secondary-200 rounded mb-6"></div>
                 </div>
             </div>
         )
@@ -139,7 +139,7 @@ const HostPropertyDetailPage = () => {
                         <FaArrowLeft className="mr-2" />
                         <span>Back to properties</span>
                     </button>
-                    <h1 className="text-3xl font-bold text-gray-800">
+                    <h1 className="text-3xl font-bold text-secondary-800">
                         {property.title}
                     </h1>
                 </div>
@@ -179,8 +179,8 @@ const HostPropertyDetailPage = () => {
                                 />
                             </div>
                         ) : (
-                            <div className="h-96 bg-gray-200 flex items-center justify-center">
-                                <span className="text-gray-500">
+                            <div className="h-96 bg-secondary-200 flex items-center justify-center">
+                                <span className="text-secondary-500">
                                     No images available
                                 </span>
                             </div>
@@ -214,8 +214,8 @@ const HostPropertyDetailPage = () => {
                     <div className="bg-white rounded-lg shadow-md p-6 mb-6">
                         <div className="flex flex-col md:flex-row md:items-center justify-between mb-4">
                             <div className="flex items-center mb-2 md:mb-0">
-                                <FaMapMarkerAlt className="text-gray-500 mr-2" />
-                                <span className="text-gray-700">
+                                <FaMapMarkerAlt className="text-secondary-500 mr-2" />
+                                <span className="text-secondary-700">
                                     {property.address.street},{" "}
                                     {property.address.city},{" "}
                                     {property.address.country}
@@ -252,36 +252,36 @@ const HostPropertyDetailPage = () => {
                         </div>
 
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                            <div className="flex flex-col items-center p-3 bg-gray-50 rounded-lg">
-                                <FaBed className="text-gray-500 mb-1" />
-                                <span className="text-sm text-gray-500">
+                            <div className="flex flex-col items-center p-3 bg-secondary-50 rounded-lg">
+                                <FaBed className="text-secondary-500 mb-1" />
+                                <span className="text-sm text-secondary-500">
                                     Bedrooms
                                 </span>
                                 <span className="font-medium">
                                     {property.bedrooms}
                                 </span>
                             </div>
-                            <div className="flex flex-col items-center p-3 bg-gray-50 rounded-lg">
-                                <FaBath className="text-gray-500 mb-1" />
-                                <span className="text-sm text-gray-500">
+                            <div className="flex flex-col items-center p-3 bg-secondary-50 rounded-lg">
+                                <FaBath className="text-secondary-500 mb-1" />
+                                <span className="text-sm text-secondary-500">
                                     Bathrooms
                                 </span>
                                 <span className="font-medium">
                                     {property.bathrooms}
                                 </span>
                             </div>
-                            <div className="flex flex-col items-center p-3 bg-gray-50 rounded-lg">
-                                <FaUsers className="text-gray-500 mb-1" />
-                                <span className="text-sm text-gray-500">
+                            <div className="flex flex-col items-center p-3 bg-secondary-50 rounded-lg">
+                                <FaUsers className="text-secondary-500 mb-1" />
+                                <span className="text-sm text-secondary-500">
                                     Max Guests
                                 </span>
                                 <span className="font-medium">
                                     {property.maxGuests}
                                 </span>
                             </div>
-                            <div className="flex flex-col items-center p-3 bg-gray-50 rounded-lg">
+                            <div className="flex flex-col items-center p-3 bg-secondary-50 rounded-lg">
                                 <FaStar className="text-yellow-500 mb-1" />
-                                <span className="text-sm text-gray-500">
+                                <span className="text-sm text-secondary-500">
                                     Rating
                                 </span>
                                 <span className="font-medium">
@@ -298,7 +298,7 @@ const HostPropertyDetailPage = () => {
                             <h2 className="text-xl font-semibold mb-2">
                                 Description
                             </h2>
-                            <p className="text-gray-700 whitespace-pre-line">
+                            <p className="text-secondary-700 whitespace-pre-line">
                                 {property.description}
                             </p>
                         </div>
@@ -315,14 +315,14 @@ const HostPropertyDetailPage = () => {
                                             className="flex items-center"
                                         >
                                             <FaCheckCircle className="text-green-500 mr-2" />
-                                            <span className="text-gray-700 capitalize">
+                                            <span className="text-secondary-700 capitalize">
                                                 {amenity}
                                             </span>
                                         </div>
                                     ))}
                                 </div>
                             ) : (
-                                <p className="text-gray-500">
+                                <p className="text-secondary-500">
                                     No amenities listed
                                 </p>
                             )}
@@ -333,13 +333,13 @@ const HostPropertyDetailPage = () => {
                                 Pricing
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div className="p-3 bg-gray-50 rounded-lg">
-                                    <span className="text-sm text-gray-500">
+                                <div className="p-3 bg-secondary-50 rounded-lg">
+                                    <span className="text-sm text-secondary-500">
                                         Base Price
                                     </span>
                                     <div className="font-medium">
                                         {formatPrice(property.price)}{" "}
-                                        <span className="text-sm font-normal text-gray-500">
+                                        <span className="text-sm font-normal text-secondary-500">
                                             /{" "}
                                             {property.pricePeriod === "nightly"
                                                 ? "night"
@@ -347,16 +347,16 @@ const HostPropertyDetailPage = () => {
                                         </span>
                                     </div>
                                 </div>
-                                <div className="p-3 bg-gray-50 rounded-lg">
-                                    <span className="text-sm text-gray-500">
+                                <div className="p-3 bg-secondary-50 rounded-lg">
+                                    <span className="text-sm text-secondary-500">
                                         Cleaning Fee
                                     </span>
                                     <div className="font-medium">
                                         {formatPrice(property.cleaningFee || 0)}
                                     </div>
                                 </div>
-                                <div className="p-3 bg-gray-50 rounded-lg">
-                                    <span className="text-sm text-gray-500">
+                                <div className="p-3 bg-secondary-50 rounded-lg">
+                                    <span className="text-sm text-secondary-500">
                                         Service Fee
                                     </span>
                                     <div className="font-medium">
@@ -386,7 +386,7 @@ const HostPropertyDetailPage = () => {
                                 {[...Array(3)].map((_, index) => (
                                     <div
                                         key={index}
-                                        className="h-16 bg-gray-200 rounded"
+                                        className="h-16 bg-secondary-200 rounded"
                                     ></div>
                                 ))}
                             </div>
@@ -394,8 +394,8 @@ const HostPropertyDetailPage = () => {
                           !bookingsData.bookings ||
                           bookingsData.bookings.length === 0 ? (
                             <div className="text-center py-6">
-                                <FaCalendarAlt className="text-gray-400 text-3xl mx-auto mb-2" />
-                                <p className="text-gray-600">
+                                <FaCalendarAlt className="text-secondary-400 text-3xl mx-auto mb-2" />
+                                <p className="text-secondary-600">
                                     No bookings yet for this property
                                 </p>
                             </div>
@@ -404,7 +404,7 @@ const HostPropertyDetailPage = () => {
                                 {bookingsData.bookings.map((booking) => (
                                     <div
                                         key={booking._id}
-                                        className="border border-gray-200 rounded-lg p-4"
+                                        className="border border-secondary-200 rounded-lg p-4"
                                     >
                                         <div className="flex justify-between mb-2">
                                             <div className="font-medium">
@@ -430,14 +430,14 @@ const HostPropertyDetailPage = () => {
                                                     booking.status.slice(1)}
                                             </span>
                                         </div>
-                                        <div className="text-sm text-gray-600">
+                                        <div className="text-sm text-secondary-600">
                                             {formatDate(booking.startDate)} -{" "}
                                             {formatDate(booking.endDate)} •{" "}
                                             {booking.guests} guest
                                             {booking.guests !== 1 ? "s" : ""}
                                         </div>
                                         <div className="flex justify-between items-center mt-2">
-                                            <div className="text-sm text-gray-500">
+                                            <div className="text-sm text-secondary-500">
                                                 Booked on{" "}
                                                 {formatDate(booking.createdAt)}
                                             </div>
@@ -466,13 +466,13 @@ const HostPropertyDetailPage = () => {
                 <div className="lg:col-span-1">
                     <div className="sticky top-8 space-y-6">
                         {/* Property stats */}
-                        <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+                        <div className="bg-white rounded-lg shadow-md p-6 border border-secondary-200">
                             <h2 className="text-xl font-semibold mb-4">
                                 Property Stats
                             </h2>
                             <div className="space-y-4">
                                 <div className="flex justify-between items-center">
-                                    <span className="text-gray-600">
+                                    <span className="text-secondary-600">
                                         Listing created
                                     </span>
                                     <span className="font-medium">
@@ -480,7 +480,7 @@ const HostPropertyDetailPage = () => {
                                     </span>
                                 </div>
                                 <div className="flex justify-between items-center">
-                                    <span className="text-gray-600">
+                                    <span className="text-secondary-600">
                                         Last updated
                                     </span>
                                     <span className="font-medium">
@@ -488,7 +488,7 @@ const HostPropertyDetailPage = () => {
                                     </span>
                                 </div>
                                 <div className="flex justify-between items-center">
-                                    <span className="text-gray-600">
+                                    <span className="text-secondary-600">
                                         Total bookings
                                     </span>
                                     <span className="font-medium">
@@ -496,7 +496,7 @@ const HostPropertyDetailPage = () => {
                                     </span>
                                 </div>
                                 <div className="flex justify-between items-center">
-                                    <span className="text-gray-600">
+                                    <span className="text-secondary-600">
                                         Occupancy rate
                                     </span>
                                     <span className="font-medium">
@@ -508,7 +508,7 @@ const HostPropertyDetailPage = () => {
                                     </span>
                                 </div>
                                 <div className="flex justify-between items-center">
-                                    <span className="text-gray-600">
+                                    <span className="text-secondary-600">
                                         Total revenue
                                     </span>
                                     <span className="font-medium">
@@ -521,7 +521,7 @@ const HostPropertyDetailPage = () => {
                         </div>
 
                         {/* Quick actions */}
-                        <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+                        <div className="bg-white rounded-lg shadow-md p-6 border border-secondary-200">
                             <h2 className="text-xl font-semibold mb-4">
                                 Quick Actions
                             </h2>
@@ -534,7 +534,7 @@ const HostPropertyDetailPage = () => {
                                 </Link>
                                 <Link
                                     to={`/properties/${id}`}
-                                    className="block w-full text-center px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors"
+                                    className="block w-full text-center px-4 py-2 bg-secondary-100 text-secondary-700 rounded-md hover:bg-secondary-200 transition-colors"
                                 >
                                     View Public Listing
                                 </Link>
@@ -579,7 +579,7 @@ const HostPropertyDetailPage = () => {
                         <h2 className="text-xl font-semibold mb-4">
                             Delete Property
                         </h2>
-                        <p className="text-gray-700 mb-6">
+                        <p className="text-secondary-700 mb-6">
                             Are you sure you want to delete this property? This
                             action cannot be undone and will cancel all future
                             bookings.
@@ -587,7 +587,7 @@ const HostPropertyDetailPage = () => {
                         <div className="flex justify-end space-x-3">
                             <button
                                 onClick={() => setShowDeleteModal(false)}
-                                className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
+                                className="px-4 py-2 border border-secondary-300 rounded-md hover:bg-secondary-50"
                             >
                                 Cancel
                             </button>

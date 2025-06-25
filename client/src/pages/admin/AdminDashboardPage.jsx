@@ -36,15 +36,15 @@ const AdminDashboardPage = () => {
         return (
             <div className="container mx-auto px-4 py-8">
                 <div className="animate-pulse">
-                    <div className="h-8 bg-gray-200 rounded w-1/4 mb-8"></div>
+                    <div className="h-8 bg-secondary-200 rounded w-1/4 mb-8"></div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                         {[...Array(4)].map((_, i) => (
                             <div
                                 key={i}
                                 className="bg-white p-6 rounded-lg shadow-sm"
                             >
-                                <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                                <div className="h-8 bg-gray-200 rounded w-1/2"></div>
+                                <div className="h-4 bg-secondary-200 rounded w-3/4 mb-2"></div>
+                                <div className="h-8 bg-secondary-200 rounded w-1/2"></div>
                             </div>
                         ))}
                     </div>
@@ -99,14 +99,14 @@ const AdminDashboardPage = () => {
     ]
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-secondary-50">
             <div className="container mx-auto px-4 py-8">
                 {/* Header */}
                 <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                    <h1 className="text-3xl font-bold text-secondary-900 mb-2">
                         Admin Dashboard
                     </h1>
-                    <p className="text-gray-600">
+                    <p className="text-secondary-600">
                         Overview of your platform's performance and activity
                     </p>
                 </div>
@@ -117,17 +117,17 @@ const AdminDashboardPage = () => {
                         <Link
                             key={index}
                             to={card.link}
-                            className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-6 border border-gray-200"
+                            className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-6 border border-secondary-200"
                         >
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-sm font-medium text-gray-600 mb-1">
+                                    <p className="text-sm font-medium text-secondary-600 mb-1">
                                         {card.title}
                                     </p>
-                                    <p className="text-2xl font-bold text-gray-900">
+                                    <p className="text-2xl font-bold text-secondary-900">
                                         {card.value}
                                     </p>
-                                    <p className="text-xs text-gray-500 mt-1">
+                                    <p className="text-xs text-secondary-500 mt-1">
                                         {card.subtext}
                                     </p>
                                 </div>
@@ -145,10 +145,10 @@ const AdminDashboardPage = () => {
                 {/* Recent Activity */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {/* Recent Properties */}
-                    <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-                        <div className="p-6 border-b border-gray-200">
+                    <div className="bg-white rounded-lg shadow-sm border border-secondary-200">
+                        <div className="p-6 border-b border-secondary-200">
                             <div className="flex items-center justify-between">
-                                <h2 className="text-lg font-semibold text-gray-900">
+                                <h2 className="text-lg font-semibold text-secondary-900">
                                     Recent Properties
                                 </h2>
                                 <Link
@@ -168,15 +168,15 @@ const AdminDashboardPage = () => {
                                             className="flex items-start space-x-3"
                                         >
                                             <div className="flex-shrink-0">
-                                                <div className="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center">
-                                                    <FaHome className="text-gray-500" />
+                                                <div className="w-12 h-12 bg-secondary-200 rounded-lg flex items-center justify-center">
+                                                    <FaHome className="text-secondary-500" />
                                                 </div>
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <p className="text-sm font-medium text-gray-900 truncate">
+                                                <p className="text-sm font-medium text-secondary-900 truncate">
                                                     {property.title}
                                                 </p>
-                                                <p className="text-sm text-gray-500">
+                                                <p className="text-sm text-secondary-500">
                                                     by {property.host.name}
                                                 </p>
                                                 <div className="flex items-center mt-1">
@@ -203,7 +203,7 @@ const AdminDashboardPage = () => {
                                     ))}
                                 </div>
                             ) : (
-                                <p className="text-gray-500 text-sm">
+                                <p className="text-secondary-500 text-sm">
                                     No recent properties
                                 </p>
                             )}
@@ -211,10 +211,10 @@ const AdminDashboardPage = () => {
                     </div>
 
                     {/* Recent Bookings */}
-                    <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-                        <div className="p-6 border-b border-gray-200">
+                    <div className="bg-white rounded-lg shadow-sm border border-secondary-200">
+                        <div className="p-6 border-b border-secondary-200">
                             <div className="flex items-center justify-between">
-                                <h2 className="text-lg font-semibold text-gray-900">
+                                <h2 className="text-lg font-semibold text-secondary-900">
                                     Recent Bookings
                                 </h2>
                                 <Link
@@ -234,15 +234,15 @@ const AdminDashboardPage = () => {
                                             className="flex items-start space-x-3"
                                         >
                                             <div className="flex-shrink-0">
-                                                <div className="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center">
-                                                    <FaCalendarCheck className="text-gray-500" />
+                                                <div className="w-12 h-12 bg-secondary-200 rounded-lg flex items-center justify-center">
+                                                    <FaCalendarCheck className="text-secondary-500" />
                                                 </div>
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <p className="text-sm font-medium text-gray-900 truncate">
+                                                <p className="text-sm font-medium text-secondary-900 truncate">
                                                     {booking.property.title}
                                                 </p>
-                                                <p className="text-sm text-gray-500">
+                                                <p className="text-sm text-secondary-500">
                                                     by {booking.guest.name}
                                                 </p>
                                                 <div className="flex items-center mt-1 space-x-2">
@@ -259,7 +259,7 @@ const AdminDashboardPage = () => {
                                                     >
                                                         {booking.status}
                                                     </span>
-                                                    <span className="text-xs text-gray-500">
+                                                    <span className="text-xs text-secondary-500">
                                                         {formatPrice(
                                                             booking.totalPrice
                                                         )}
@@ -270,7 +270,7 @@ const AdminDashboardPage = () => {
                                     ))}
                                 </div>
                             ) : (
-                                <p className="text-gray-500 text-sm">
+                                <p className="text-secondary-500 text-sm">
                                     No recent bookings
                                 </p>
                             )}
@@ -279,21 +279,21 @@ const AdminDashboardPage = () => {
                 </div>
 
                 {/* Quick Actions */}
-                <div className="mt-8 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                    <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                <div className="mt-8 bg-white rounded-lg shadow-sm border border-secondary-200 p-6">
+                    <h2 className="text-lg font-semibold text-secondary-900 mb-4">
                         Quick Actions
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <Link
                             to="/admin/properties?status=pending"
-                            className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                            className="flex items-center p-4 border border-secondary-200 rounded-lg hover:bg-secondary-50 transition-colors"
                         >
                             <FaClock className="text-yellow-500 mr-3" />
                             <div>
-                                <p className="font-medium text-gray-900">
+                                <p className="font-medium text-secondary-900">
                                     Review Pending Properties
                                 </p>
-                                <p className="text-sm text-gray-500">
+                                <p className="text-sm text-secondary-500">
                                     {stats.properties.pending} properties
                                     awaiting approval
                                 </p>
@@ -302,14 +302,14 @@ const AdminDashboardPage = () => {
 
                         <Link
                             to="/admin/bookings?status=pending"
-                            className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                            className="flex items-center p-4 border border-secondary-200 rounded-lg hover:bg-secondary-50 transition-colors"
                         >
                             <FaCalendarCheck className="text-blue-500 mr-3" />
                             <div>
-                                <p className="font-medium text-gray-900">
+                                <p className="font-medium text-secondary-900">
                                     Review Pending Bookings
                                 </p>
-                                <p className="text-sm text-gray-500">
+                                <p className="text-sm text-secondary-500">
                                     {stats.bookings.pending} bookings need
                                     attention
                                 </p>
@@ -318,14 +318,14 @@ const AdminDashboardPage = () => {
 
                         <Link
                             to="/admin/users"
-                            className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                            className="flex items-center p-4 border border-secondary-200 rounded-lg hover:bg-secondary-50 transition-colors"
                         >
                             <FaUsers className="text-purple-500 mr-3" />
                             <div>
-                                <p className="font-medium text-gray-900">
+                                <p className="font-medium text-secondary-900">
                                     Manage Users
                                 </p>
-                                <p className="text-sm text-gray-500">
+                                <p className="text-sm text-secondary-500">
                                     {stats.users.total} users registered
                                 </p>
                             </div>

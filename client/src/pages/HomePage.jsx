@@ -508,13 +508,13 @@ const HomePage = () => {
                         </h2>
                         <div className="flex items-center">
                             {/* Simple filter tabs */}
-                            <div className="hidden md:flex border border-gray-200 rounded-full p-1 mr-4">
+                            <div className="hidden md:flex border border-secondary-200 rounded-full p-1 mr-4">
                                 <button
                                     onClick={() => setActiveTab("all")}
                                     className={`px-4 py-1.5 text-sm font-medium rounded-full transition-colors ${
                                         activeTab === "all"
                                             ? "bg-dark-900 text-white"
-                                            : "text-dark-600 hover:bg-gray-100"
+                                            : "text-dark-600 hover:bg-secondary-100"
                                     }`}
                                 >
                                     All
@@ -524,7 +524,7 @@ const HomePage = () => {
                                     className={`px-4 py-1.5 text-sm font-medium rounded-full transition-colors ${
                                         activeTab === "luxury"
                                             ? "bg-dark-900 text-white"
-                                            : "text-dark-600 hover:bg-gray-100"
+                                            : "text-dark-600 hover:bg-secondary-100"
                                     }`}
                                 >
                                     Luxury
@@ -534,7 +534,7 @@ const HomePage = () => {
                                     className={`px-4 py-1.5 text-sm font-medium rounded-full transition-colors ${
                                         activeTab === "trending"
                                             ? "bg-dark-900 text-white"
-                                            : "text-dark-600 hover:bg-gray-100"
+                                            : "text-dark-600 hover:bg-secondary-100"
                                     }`}
                                 >
                                     Trending
@@ -544,7 +544,7 @@ const HomePage = () => {
                                     className={`px-4 py-1.5 text-sm font-medium rounded-full transition-colors ${
                                         activeTab === "popular"
                                             ? "bg-dark-900 text-white"
-                                            : "text-dark-600 hover:bg-gray-100"
+                                            : "text-dark-600 hover:bg-secondary-100"
                                     }`}
                                 >
                                     Popular
@@ -567,7 +567,7 @@ const HomePage = () => {
                             className={`px-4 py-1.5 text-sm font-medium rounded-full whitespace-nowrap transition-colors ${
                                 activeTab === "all"
                                     ? "bg-dark-900 text-white"
-                                    : "bg-gray-100 text-dark-600"
+                                    : "bg-secondary-100 text-dark-600"
                             }`}
                         >
                             All
@@ -577,7 +577,7 @@ const HomePage = () => {
                             className={`px-4 py-1.5 text-sm font-medium rounded-full whitespace-nowrap transition-colors ${
                                 activeTab === "luxury"
                                     ? "bg-dark-900 text-white"
-                                    : "bg-gray-100 text-dark-600"
+                                    : "bg-secondary-100 text-dark-600"
                             }`}
                         >
                             Luxury
@@ -587,7 +587,7 @@ const HomePage = () => {
                             className={`px-4 py-1.5 text-sm font-medium rounded-full whitespace-nowrap transition-colors ${
                                 activeTab === "trending"
                                     ? "bg-dark-900 text-white"
-                                    : "bg-gray-100 text-dark-600"
+                                    : "bg-secondary-100 text-dark-600"
                             }`}
                         >
                             Trending
@@ -597,7 +597,7 @@ const HomePage = () => {
                             className={`px-4 py-1.5 text-sm font-medium rounded-full whitespace-nowrap transition-colors ${
                                 activeTab === "popular"
                                     ? "bg-dark-900 text-white"
-                                    : "bg-gray-100 text-dark-600"
+                                    : "bg-secondary-100 text-dark-600"
                             }`}
                         >
                             Popular
@@ -651,7 +651,7 @@ const HomePage = () => {
                                                     // Favorite functionality would go here
                                                 }}
                                             >
-                                                <FaHeart className="text-gray-400 hover:text-accent-500" />
+                                                <FaHeart className="text-secondary-400 hover:text-accent-500" />
                                             </button>
 
                                             {property.createdAt &&
@@ -726,7 +726,7 @@ const HomePage = () => {
             </section>
 
             {/* How It Works Section - Simplified */}
-            <section className="py-12 bg-gray-50">
+            <section className="py-12 bg-secondary-50">
                 <div className="container mx-auto px-4">
                     <h2 className="text-2xl font-semibold text-dark-900 mb-8 text-center">
                         How it works
@@ -776,7 +776,7 @@ const HomePage = () => {
             </section>
 
             {/* Why Choose Us Section - Simplified */}
-            <section className="py-12 border-t border-gray-100">
+            <section className="py-12 border-t border-secondary-100">
                 <div className="container mx-auto px-4">
                     <div className="flex flex-col md:flex-row gap-8 items-center">
                         <div className="md:w-1/2">

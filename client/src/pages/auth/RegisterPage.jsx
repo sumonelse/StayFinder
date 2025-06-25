@@ -612,7 +612,7 @@ const RegisterPage = () => {
                                         key={role.id}
                                         className={`border rounded-xl p-4 cursor-pointer transition-all duration-200 ${
                                             watch("role") === role.id
-                                                ? "border-primary-500 bg-primary-50 shadow-md"
+                                                ? "border-black bg-secondary-50 shadow-md"
                                                 : "border-secondary-200 hover:bg-secondary-50 hover:shadow"
                                         }`}
                                     >
