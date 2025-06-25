@@ -278,7 +278,7 @@ const AvailabilityCalendar = ({
                             </div>
                             <p class="text-secondary-700 mb-4">Your selected date range includes dates that are already booked. Please select a different range.</p>
                             <div class="flex justify-end">
-                                <button class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+                                <button class="px-4 py-2 bg-secondary-800 text-white rounded-lg hover:bg-secondary-700 transition-colors">
                                     OK
                                 </button>
                             </div>
@@ -436,9 +436,9 @@ const AvailabilityCalendar = ({
 
         // Base styling
         if (dayInfo.isPast) {
-            classes.push("text-gray-300 cursor-not-allowed")
+            classes.push("text-secondary-300 cursor-not-allowed")
         } else {
-            classes.push("text-gray-700")
+            classes.push("text-secondary-700")
         }
 
         // Today styling
@@ -448,27 +448,27 @@ const AvailabilityCalendar = ({
 
         // Availability styling - improved with light background for better UX
         if (dayInfo.isBooked || dayInfo.isBlocked) {
-            classes.push("line-through text-gray-200 cursor-not-allowed")
+            classes.push("line-through text-secondary-200 cursor-not-allowed")
         }
         // The "checkout only" feature means that the previous day is booked,
         // but this day can be selected as a checkout date
 
         // Selection styling
         if (dayInfo.isSelected) {
-            classes.push("bg-primary-500 text-white font-medium")
+            classes.push("bg-secondary-800 text-white font-medium")
         } else if (dayInfo.isHovered) {
-            classes.push("bg-primary-100 text-primary-800")
+            classes.push("bg-secondary-100 text-secondary-800")
         }
 
         // Range selection styling with improved visual indicators
         if (dayInfo.dateString === selectedDates.startDate) {
             classes.push(
-                "bg-primary-600 text-white rounded-l-md shadow-md z-10"
+                "bg-secondary-600 text-white rounded-l-md shadow-md z-10"
             )
         }
         if (dayInfo.dateString === selectedDates.endDate) {
             classes.push(
-                "bg-primary-600 text-white rounded-r-md shadow-md z-10"
+                "bg-secondary-600 text-white rounded-r-md shadow-md z-10"
             )
         }
 
@@ -478,7 +478,9 @@ const AvailabilityCalendar = ({
             dayInfo.dateString !== selectedDates.startDate &&
             dayInfo.dateString !== selectedDates.endDate
         ) {
-            classes.push("bg-primary-100 border-t border-b border-primary-200")
+            classes.push(
+                "bg-secondary-600 border-t border-b border-primary-200"
+            )
         }
 
         return classes.join(" ")
@@ -501,10 +503,10 @@ const AvailabilityCalendar = ({
     const calendarDays = generateCalendarDays()
 
     return (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3">
+        <div className="bg-white rounded-lg shadow-sm border border-secondary-100 p-2">
             {/* Simplified selection instructions */}
             <div className="mb-2 text-xs text-secondary-700 flex items-center justify-center">
-                <span className="bg-primary-50 px-2 py-1 rounded-full">
+                <span className="bg-secondary-50 px-2 py-1 rounded-full">
                     {!selectedDates.startDate
                         ? "Select check-in date"
                         : !selectedDates.endDate
@@ -519,12 +521,12 @@ const AvailabilityCalendar = ({
                 <div className="flex justify-between items-center mb-2">
                     <button
                         onClick={goToPreviousMonth}
-                        className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+                        className="p-2 rounded-full hover:bg-secondary-100 transition-colors"
                         aria-label="Previous month"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5 text-gray-600"
+                            className="h-5 w-5 text-secondary-600"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -538,18 +540,18 @@ const AvailabilityCalendar = ({
                         </svg>
                     </button>
 
-                    <h3 className="text-lg font-medium text-gray-900">
+                    <h3 className="text-lg font-medium text-secondary-900">
                         {formatMonthName(currentMonth)}
                     </h3>
 
                     <button
                         onClick={goToNextMonth}
-                        className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+                        className="p-2 rounded-full hover:bg-secondary-100 transition-colors"
                         aria-label="Next month"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5 text-gray-600"
+                            className="h-5 w-5 text-secondary-600"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -566,7 +568,7 @@ const AvailabilityCalendar = ({
 
                 {isLoading ? (
                     <div className="flex justify-center items-center py-4">
-                        <FaSpinner className="animate-spin text-primary-500 mr-2" />
+                        <FaSpinner className="animate-spin text-secondary-500 mr-2" />
                         <span>Loading availability...</span>
                     </div>
                 ) : error ? (
@@ -580,7 +582,7 @@ const AvailabilityCalendar = ({
                                 setError(null)
                                 setIsLoading(true)
                             }}
-                            className="text-xs text-primary-600 hover:text-primary-800 underline"
+                            className="text-xs text-secondary-600 hover:text-secondary-800 underline"
                         >
                             Try again
                         </button>
@@ -593,7 +595,7 @@ const AvailabilityCalendar = ({
                             {daysOfWeek.map((day) => (
                                 <div
                                     key={day}
-                                    className="text-center text-xs font-medium text-gray-500 py-1"
+                                    className="text-center text-xs font-medium text-secondary-500 py-1"
                                 >
                                     {day}
                                 </div>
@@ -619,7 +621,7 @@ const AvailabilityCalendar = ({
                         flex items-center justify-center h-full w-full rounded-md text-sm relative
                         ${
                             dayInfo.isSelectable
-                                ? "hover:bg-primary-100 hover:scale-110 transition-transform"
+                                ? "hover:bg-secondary-100 hover:scale-110 transition-transform"
                                 : ""
                         }
                         ${getDateClassName(dayInfo)}
@@ -641,14 +643,14 @@ const AvailabilityCalendar = ({
 
             {/* Selected dates summary */}
             {selectedDates.startDate && selectedDates.endDate && (
-                <div className="border-t border-gray-200 pt-3 mt-2 mb-2">
-                    <div className="bg-primary-50 rounded-lg p-3 border border-primary-100">
+                <div className="border-t border-secondary-200 pt-3 mt-2 mb-2">
+                    <div className="bg-secondary-50 rounded-lg p-3 border border-primary-100">
                         <div className="flex items-center justify-between mb-1">
-                            <div className="flex items-center text-primary-800">
-                                <FaCalendarAlt className="mr-2 text-primary-600" />
+                            <div className="flex items-center text-secondary-800">
+                                <FaCalendarAlt className="mr-2 text-secondary-600" />
                                 <span className="font-medium">Your stay</span>
                             </div>
-                            <div className="text-primary-700 font-medium">
+                            <div className="text-secondary-700 font-medium">
                                 {(() => {
                                     // Calculate nights directly here to ensure accuracy
                                     const nights = getDaysBetweenDates(
@@ -663,7 +665,7 @@ const AvailabilityCalendar = ({
                         </div>
                         <div className="grid grid-cols-2 gap-2 text-sm">
                             <div>
-                                <div className="text-gray-500 text-xs">
+                                <div className="text-secondary-500 text-xs">
                                     CHECK-IN
                                 </div>
                                 <div className="font-medium">
@@ -671,7 +673,7 @@ const AvailabilityCalendar = ({
                                 </div>
                             </div>
                             <div>
-                                <div className="text-gray-500 text-xs">
+                                <div className="text-secondary-500 text-xs">
                                     CHECK-OUT
                                 </div>
                                 <div className="font-medium">
