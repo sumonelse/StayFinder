@@ -14,10 +14,10 @@ export const propertyValidators = {
             "string.max": "Title cannot exceed 100 characters",
             "any.required": "Title is required",
         }),
-        description: Joi.string().required().trim().min(20).max(2000).messages({
+        description: Joi.string().required().trim().min(20).max(4000).messages({
             "string.empty": "Description is required",
             "string.min": "Description must be at least 20 characters long",
-            "string.max": "Description cannot exceed 2000 characters",
+            "string.max": "Description cannot exceed 4000 characters",
             "any.required": "Description is required",
         }),
         type: Joi.string()
@@ -150,9 +150,9 @@ export const propertyValidators = {
             "string.min": "Title must be at least 5 characters long",
             "string.max": "Title cannot exceed 100 characters",
         }),
-        description: Joi.string().trim().min(20).max(2000).messages({
+        description: Joi.string().trim().min(20).max(4000).messages({
             "string.min": "Description must be at least 20 characters long",
-            "string.max": "Description cannot exceed 2000 characters",
+            "string.max": "Description cannot exceed 4000 characters",
         }),
         type: Joi.string()
             .valid(
