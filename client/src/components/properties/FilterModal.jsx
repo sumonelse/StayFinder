@@ -4,8 +4,6 @@ import ReactSlider from "react-slider"
 import "./FilterModal.css"
 import {
     FaMapMarkerAlt,
-    FaRupeeSign,
-    FaUsers,
     FaWifi,
     FaSwimmingPool,
     FaDumbbell,
@@ -17,8 +15,6 @@ import {
     FaHotel,
     FaCity,
     FaCheck,
-    FaTimes,
-    FaFilter,
 } from "react-icons/fa"
 import {
     MdOutdoorGrill,
@@ -27,7 +23,6 @@ import {
     MdTv,
     MdKitchen,
 } from "react-icons/md"
-import { IoIosRocket } from "react-icons/io"
 import Modal from "../ui/Modal"
 import { formatPrice, getCurrencySymbol } from "../../utils/currency"
 
@@ -204,9 +199,9 @@ const FilterModal = ({
         >
             <div className="flex flex-col h-full">
                 {/* Filter Categories */}
-                <div className="flex flex-col divide-y divide-secondary-200 mt-4">
+                <div className="flex flex-col divide-y divide-secondary-200">
                     {/* Property Type Category - Airbnb Style */}
-                    <div className="py-6">
+                    <div className="pb-2">
                         <div className="flex items-center justify-between mb-4">
                             <h3 className="text-lg font-semibold text-secondary-900">
                                 Property Type
@@ -467,7 +462,7 @@ const FilterModal = ({
                                         className={`px-3 py-1.5 text-sm rounded-full border ${
                                             localFilters.maxPrice ===
                                             price.toString()
-                                                ? "bg-primary-50 border-primary-300 text-primary-700 font-medium"
+                                                ? "bg-secondary-50 border-secondary-300 text-secondary-700 font-medium"
                                                 : "bg-white border-secondary-200 text-secondary-700 hover:bg-secondary-50 hover:border-secondary-300"
                                         }`}
                                     >
@@ -489,7 +484,7 @@ const FilterModal = ({
                                     className={`px-3 py-1.5 text-sm rounded-full border ${
                                         !localFilters.minPrice &&
                                         !localFilters.maxPrice
-                                            ? "bg-primary-50 border-primary-300 text-primary-700 font-medium"
+                                            ? "bg-secondary-50 border-secondary-300 text-secondary-700 font-medium"
                                             : "bg-white border-secondary-200 text-secondary-700 hover:bg-secondary-50 hover:border-secondary-300"
                                     }`}
                                 >
@@ -588,7 +583,7 @@ const FilterModal = ({
                                             name="bedrooms"
                                             value={localFilters.bedrooms}
                                             onChange={handleLocalFilterChange}
-                                            className="w-full rounded-lg border-secondary-200 focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50"
+                                            className="w-full rounded-lg border-secondary-200 focus:border-secondary-400 focus:ring focus:ring-secondary-200 focus:ring-opacity-50"
                                         >
                                             <option value="">Any</option>
                                             <option value="1">1</option>
@@ -610,7 +605,7 @@ const FilterModal = ({
                                             name="bathrooms"
                                             value={localFilters.bathrooms}
                                             onChange={handleLocalFilterChange}
-                                            className="w-full rounded-lg border-secondary-200 focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50"
+                                            className="w-full rounded-lg border-secondary-200 focus:border-secondary-400 focus:ring focus:ring-secondary-200 focus:ring-opacity-50"
                                         >
                                             <option value="">Any</option>
                                             <option value="1">1</option>
@@ -631,7 +626,7 @@ const FilterModal = ({
                                             name="maxGuests"
                                             value={localFilters.maxGuests}
                                             onChange={handleLocalFilterChange}
-                                            className="w-full rounded-lg border-secondary-200 focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50"
+                                            className="w-full rounded-lg border-secondary-200 focus:border-secondary-400 focus:ring focus:ring-secondary-200 focus:ring-opacity-50"
                                         >
                                             <option value="">Any</option>
                                             <option value="1">1</option>
@@ -711,7 +706,7 @@ const FilterModal = ({
                                         </label>
                                         <div className="relative">
                                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                <FaMapMarkerAlt className="text-primary-500" />
+                                                <FaMapMarkerAlt className="text-secondary-500" />
                                             </div>
                                             <input
                                                 type="text"
@@ -722,7 +717,7 @@ const FilterModal = ({
                                                 onChange={
                                                     handleLocalFilterChange
                                                 }
-                                                className="input-field pl-10 rounded-lg border-secondary-200 focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50"
+                                                className="input-field pl-10 rounded-lg border-secondary-200 focus:border-secondary-400 focus:ring focus:ring-secondary-200 focus:ring-opacity-50"
                                             />
                                         </div>
                                     </div>
@@ -735,7 +730,7 @@ const FilterModal = ({
                                         </label>
                                         <div className="relative">
                                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                <FaMapMarkerAlt className="text-primary-500" />
+                                                <FaMapMarkerAlt className="text-secondary-500" />
                                             </div>
                                             <input
                                                 type="text"
@@ -746,7 +741,7 @@ const FilterModal = ({
                                                 onChange={
                                                     handleLocalFilterChange
                                                 }
-                                                className="input-field pl-10 rounded-lg border-secondary-200 focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50"
+                                                className="input-field pl-10 rounded-lg border-secondary-200 focus:border-secondary-400 focus:ring focus:ring-secondary-200 focus:ring-opacity-50"
                                             />
                                         </div>
                                     </div>
@@ -821,8 +816,8 @@ const FilterModal = ({
                                                 }
                                                 className={`flex items-center p-3 rounded-lg transition-all ${
                                                     isSelected
-                                                        ? "bg-primary-50 text-primary-700 border border-primary-300 shadow-sm"
-                                                        : "bg-white text-secondary-700 border border-secondary-200 hover:bg-secondary-50 hover:border-primary-200"
+                                                        ? "bg-secondary-50 text-secondary-700 border border-secondary-300 shadow-sm"
+                                                        : "bg-white text-secondary-700 border border-secondary-200 hover:bg-secondary-50 hover:border-secondary-200"
                                                 }`}
                                             >
                                                 <span className="mr-2 text-lg">
@@ -846,7 +841,7 @@ const FilterModal = ({
                 </div>
 
                 {/* Spacer to prevent content from being hidden behind the fixed footer */}
-                <div className="h-20"></div>
+                <div className="h-10"></div>
 
                 {/* Action Buttons - Airbnb Style */}
                 <div className="sticky bottom-0 left-0 right-0 bg-white border-t border-secondary-200 p-4 flex items-center justify-between shadow-md">
