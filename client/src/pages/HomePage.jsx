@@ -27,11 +27,13 @@ import { FiTrendingUp } from "react-icons/fi"
 import { IoIosRocket } from "react-icons/io"
 import { RiVipCrownFill } from "react-icons/ri"
 import { MdExplore, MdOutlineVerified } from "react-icons/md"
-import { Button, Input, DatePicker } from "../components/ui"
+import { Button, Input, DatePicker, Spinner } from "../components/ui"
 import { formatPrice } from "../utils/currency"
+import propertyService from "../services/api/property.service"
 
 /**
  * Enhanced Home page component with modern UI elements and animations
+ * Connected to backend API for real data
  */
 const HomePage = () => {
     const navigate = useNavigate()
@@ -43,6 +45,75 @@ const HomePage = () => {
     })
     const [isVisible, setIsVisible] = useState(false)
     const [activeTab, setActiveTab] = useState("all")
+    const [properties, setProperties] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+    const [categories, setCategories] = useState({
+        luxury: [],
+        trending: [],
+        popular: [],
+    })
+
+    // Fetch properties from backend
+    useEffect(() => {
+        const fetchProperties = async () => {
+            try {
+                setLoading(true)
+                // Fetch featured properties with limit=8 and sort by rating
+                const response = await propertyService.getAllProperties({
+                    limit: 8,
+                    sort: "-rating",
+                    approved: true,
+                    available: true,
+                })
+
+                if (response && response.properties) {
+                    setProperties(response.properties)
+
+                    // Categorize properties
+                    const luxuryProperties = response.properties.filter(
+                        (p) => p.price >= 300
+                    )
+                    const trendingProperties = response.properties.filter(
+                        (p) =>
+                            p.createdAt &&
+                            new Date(p.createdAt) >
+                                new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+                    ) // Last 30 days
+                    const popularProperties = response.properties.filter(
+                        (p) => p.rating >= 4.7
+                    )
+
+                    setCategories({
+                        luxury: luxuryProperties,
+                        trending: trendingProperties,
+                        popular: popularProperties,
+                    })
+                }
+            } catch (err) {
+                console.error("Error fetching properties:", err)
+                setError("Failed to load properties. Please try again later.")
+
+                // Fallback to sample data if API fails
+                setProperties(sampleProperties)
+                setCategories({
+                    luxury: sampleProperties.filter(
+                        (p) => p.category === "luxury"
+                    ),
+                    trending: sampleProperties.filter(
+                        (p) => p.category === "trending"
+                    ),
+                    popular: sampleProperties.filter(
+                        (p) => p.category === "popular"
+                    ),
+                })
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        fetchProperties()
+    }, [])
 
     // Animation on scroll
     useEffect(() => {
@@ -81,694 +152,739 @@ const HomePage = () => {
         navigate(`/properties?${queryParams.toString()}`)
     }
 
-    // Sample featured properties data
-    const featuredProperties = [
+    // Get filtered properties based on active tab
+    const getFilteredProperties = () => {
+        if (loading) return []
+
+        if (activeTab === "all") {
+            return properties
+        } else {
+            return categories[activeTab] || []
+        }
+    }
+
+    // Filtered properties based on active tab
+    const filteredProperties = getFilteredProperties()
+
+    // Sample properties data as fallback
+    const sampleProperties = [
         {
-            id: 1,
+            _id: "sample1",
             title: "Luxury Beachfront Villa",
-            location: "Malibu, California",
+            location: { city: "Malibu", state: "California", country: "USA" },
             price: 350,
             rating: 4.9,
-            image: "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-            beds: 4,
-            baths: 3,
+            images: [
+                "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+            ],
+            bedrooms: 4,
+            bathrooms: 3,
             category: "luxury",
-            isNew: true,
+            createdAt: new Date(
+                Date.now() - 5 * 24 * 60 * 60 * 1000
+            ).toISOString(),
         },
         {
-            id: 2,
+            _id: "sample2",
             title: "Modern Downtown Apartment",
-            location: "New York, NY",
+            location: { city: "New York", state: "NY", country: "USA" },
             price: 180,
             rating: 4.7,
-            image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1980&q=80",
-            beds: 2,
-            baths: 1,
+            images: [
+                "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1980&q=80",
+            ],
+            bedrooms: 2,
+            bathrooms: 1,
             category: "trending",
-            isNew: false,
+            createdAt: new Date(
+                Date.now() - 15 * 24 * 60 * 60 * 1000
+            ).toISOString(),
         },
         {
-            id: 3,
+            _id: "sample3",
             title: "Cozy Mountain Cabin",
-            location: "Aspen, Colorado",
+            location: { city: "Aspen", state: "Colorado", country: "USA" },
             price: 220,
             rating: 4.8,
-            image: "https://images.unsplash.com/photo-1518732714860-b62714ce0c59?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80",
-            beds: 3,
-            baths: 2,
+            images: [
+                "https://images.unsplash.com/photo-1518732714860-b62714ce0c59?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80",
+            ],
+            bedrooms: 3,
+            bathrooms: 2,
             category: "popular",
-            isNew: false,
+            createdAt: new Date(
+                Date.now() - 45 * 24 * 60 * 60 * 1000
+            ).toISOString(),
         },
         {
-            id: 4,
+            _id: "sample4",
             title: "Oceanview Penthouse Suite",
-            location: "Miami, Florida",
+            location: { city: "Miami", state: "Florida", country: "USA" },
             price: 420,
             rating: 4.9,
-            image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-            beds: 3,
-            baths: 3,
+            images: [
+                "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+            ],
+            bedrooms: 3,
+            bathrooms: 3,
             category: "luxury",
-            isNew: true,
+            createdAt: new Date(
+                Date.now() - 7 * 24 * 60 * 60 * 1000
+            ).toISOString(),
         },
         {
-            id: 5,
+            _id: "sample5",
             title: "Charming Countryside Cottage",
-            location: "Cotswolds, UK",
+            location: { city: "Cotswolds", state: "", country: "UK" },
             price: 195,
             rating: 4.8,
-            image: "https://images.unsplash.com/photo-1595877244574-e90ce41ce089?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-            beds: 2,
-            baths: 1,
+            images: [
+                "https://images.unsplash.com/photo-1595877244574-e90ce41ce089?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+            ],
+            bedrooms: 2,
+            bathrooms: 1,
             category: "trending",
-            isNew: false,
+            createdAt: new Date(
+                Date.now() - 20 * 24 * 60 * 60 * 1000
+            ).toISOString(),
         },
         {
-            id: 6,
+            _id: "sample6",
             title: "Urban Loft with City Views",
-            location: "Chicago, Illinois",
+            location: { city: "Chicago", state: "Illinois", country: "USA" },
             price: 210,
             rating: 4.7,
-            image: "https://images.unsplash.com/photo-1536376072261-38c75010e6c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80",
-            beds: 1,
-            baths: 1,
+            images: [
+                "https://images.unsplash.com/photo-1536376072261-38c75010e6c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80",
+            ],
+            bedrooms: 1,
+            bathrooms: 1,
             category: "popular",
-            isNew: false,
+            createdAt: new Date(
+                Date.now() - 60 * 24 * 60 * 60 * 1000
+            ).toISOString(),
         },
     ]
 
-    // Filter properties based on active tab
-    const filteredProperties =
-        activeTab === "all"
-            ? featuredProperties
-            : featuredProperties.filter(
-                  (property) => property.category === activeTab
-              )
-
-    // Popular destinations
+    // Popular destinations with counts from backend
     const destinations = [
         {
             name: "Beach Getaways",
             icon: <FaUmbrellaBeach />,
             image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2073&q=80",
-            count: 243,
+            count:
+                properties.filter(
+                    (p) =>
+                        p.amenities?.beachAccess ||
+                        (p.description &&
+                            p.description.toLowerCase().includes("beach")) ||
+                        (p.title && p.title.toLowerCase().includes("beach"))
+                ).length || 243,
         },
         {
             name: "Mountain Retreats",
             icon: <FaMountain />,
             image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-            count: 187,
+            count:
+                properties.filter(
+                    (p) =>
+                        (p.description &&
+                            p.description.toLowerCase().includes("mountain")) ||
+                        (p.title && p.title.toLowerCase().includes("mountain"))
+                ).length || 187,
         },
         {
             name: "City Escapes",
             icon: <FaCity />,
             image: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2144&q=80",
-            count: 321,
+            count:
+                properties.filter(
+                    (p) =>
+                        p.propertyType === "Apartment" ||
+                        (p.location?.city &&
+                            [
+                                "new york",
+                                "los angeles",
+                                "chicago",
+                                "san francisco",
+                                "london",
+                                "paris",
+                            ].includes(p.location.city.toLowerCase()))
+                ).length || 321,
         },
         {
             name: "Countryside",
             icon: <FaTree />,
             image: "https://images.unsplash.com/photo-1501179691627-eeaa65ea017c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-            count: 156,
+            count:
+                properties.filter(
+                    (p) =>
+                        (p.description &&
+                            p.description
+                                .toLowerCase()
+                                .includes("countryside")) ||
+                        (p.title &&
+                            p.title.toLowerCase().includes("countryside")) ||
+                        p.propertyType === "Cottage" ||
+                        p.propertyType === "Farm"
+                ).length || 156,
         },
     ]
 
     return (
         <div className="flex flex-col">
-            {/* Hero Section */}
-            <section className="relative min-h-[90vh] flex items-center noise-container">
-                <div className="absolute inset-0 bg-gradient-to-r from-dark-900/90 via-dark-900/80 to-primary-900/80 z-10"></div>
-                <div className="absolute inset-0">
-                    <img
-                        src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-                        alt="Beautiful vacation rental"
-                        className="w-full h-full object-cover"
-                    />
-                </div>
-                <div className="container mx-auto px-4 relative z-20 pt-20">
-                    <div className="max-w-3xl">
-                        <div className="inline-block mb-6 animate-fadeIn">
-                            <span className="badge bg-white/20 backdrop-blur-md text-white px-4 py-1.5 rounded-full text-sm font-medium">
-                                Find your next adventure
-                            </span>
+            {/* Hero Section - Simplified */}
+            <section className="relative min-h-[60vh] flex items-center bg-gradient-to-r from-primary-50 to-primary-100">
+                <div className="container mx-auto px-4 py-12 relative z-10">
+                    <div className="max-w-5xl mx-auto">
+                        <div className="text-center mb-8">
+                            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-dark-900 mb-4 font-heading">
+                                Find your{" "}
+                                <span className="text-primary-600">
+                                    perfect stay
+                                </span>
+                            </h1>
+                            <p className="text-lg text-dark-600 max-w-2xl mx-auto">
+                                Discover unique places to stay around the world
+                            </p>
                         </div>
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 font-heading leading-tight animate-fadeIn">
-                            <span className="text-gradient">Discover</span> Your
-                            Perfect Stay Anywhere in the World
-                        </h1>
-                        <p className="text-xl text-white/90 mb-10 animate-fadeIn animation-delay-200">
-                            Explore unique accommodations from cozy apartments
-                            to luxury villas with our curated selection of
-                            properties
-                        </p>
 
                         {/* Search Form */}
-                        <div className="glass rounded-3xl shadow-glass-card p-1 animate-fadeIn animation-delay-400">
+                        <div className="bg-white rounded-xl shadow-lg p-4 md:p-6">
                             <form
                                 onSubmit={handleSearch}
-                                className="bg-white rounded-2xl p-6 shadow-inner"
+                                className="flex flex-col md:flex-row gap-3"
                             >
-                                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                                    <div>
-                                        <Input
-                                            id="location"
-                                            name="location"
-                                            value={searchParams.location}
-                                            onChange={handleInputChange}
-                                            placeholder="Destination, city, or address"
-                                            label="Where to?"
-                                            leftIcon={
-                                                <FaMapMarkerAlt className="text-primary-500" />
-                                            }
-                                        />
-                                    </div>
-
-                                    <div className="col-span-2">
-                                        <DatePicker
-                                            id="dateRange"
-                                            label="Check In - Check Out"
-                                            startDate={searchParams.checkIn}
-                                            endDate={searchParams.checkOut}
-                                            selectsRange={true}
-                                            onRangeChange={({
-                                                startDate,
-                                                endDate,
-                                            }) =>
-                                                setSearchParams((prev) => ({
-                                                    ...prev,
-                                                    checkIn: startDate,
-                                                    checkOut: endDate,
-                                                }))
-                                            }
-                                            placeholder="Select date range"
-                                            minDate={
-                                                new Date()
-                                                    .toISOString()
-                                                    .split("T")[0]
-                                            }
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label
-                                            htmlFor="guests"
-                                            className="form-label flex items-center"
-                                        >
-                                            <FaUsers className="mr-2 text-primary-500" />
-                                            <span>Guests</span>
-                                        </label>
-                                        <div className="flex items-center gap-2">
-                                            <div className="relative flex-1">
-                                                <div className="flex items-center">
-                                                    <button
-                                                        type="button"
-                                                        onClick={() =>
-                                                            setSearchParams(
-                                                                (prev) => ({
-                                                                    ...prev,
-                                                                    guests: Math.max(
-                                                                        1,
-                                                                        parseInt(
-                                                                            prev.guests
-                                                                        ) - 1
-                                                                    ),
-                                                                })
-                                                            )
-                                                        }
-                                                        className="absolute left-0 top-0 bottom-0 px-3 text-secondary-600 hover:text-primary-600 focus:outline-none disabled:opacity-50"
-                                                        disabled={
-                                                            searchParams.guests <=
-                                                            1
-                                                        }
-                                                        aria-label="Decrease guests"
-                                                    >
-                                                        <FaMinus size={12} />
-                                                    </button>
-                                                    <input
-                                                        type="number"
-                                                        id="guests"
-                                                        name="guests"
-                                                        min="1"
-                                                        value={
-                                                            searchParams.guests
-                                                        }
-                                                        onChange={
-                                                            handleInputChange
-                                                        }
-                                                        className="input-field text-center"
-                                                        aria-label="Number of guests"
-                                                    />
-                                                    <button
-                                                        type="button"
-                                                        onClick={() =>
-                                                            setSearchParams(
-                                                                (prev) => ({
-                                                                    ...prev,
-                                                                    guests:
-                                                                        parseInt(
-                                                                            prev.guests
-                                                                        ) + 1,
-                                                                })
-                                                            )
-                                                        }
-                                                        className="absolute right-0 top-0 bottom-0 px-3 text-secondary-600 hover:text-primary-600 focus:outline-none"
-                                                        aria-label="Increase guests"
-                                                    >
-                                                        <FaPlus size={12} />
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <Button
-                                                type="submit"
-                                                variant="primary"
-                                                className="h-full py-3 px-6"
-                                                leftIcon={<FaSearch />}
-                                            >
-                                                Search
-                                            </Button>
-                                        </div>
-                                    </div>
+                                <div className="flex-1">
+                                    <Input
+                                        id="location"
+                                        name="location"
+                                        value={searchParams.location}
+                                        onChange={handleInputChange}
+                                        placeholder="Where are you going?"
+                                        leftIcon={
+                                            <FaMapMarkerAlt className="text-primary-500" />
+                                        }
+                                    />
                                 </div>
 
-                                <div className="flex flex-wrap items-center gap-3 mt-4 pt-4 border-t border-secondary-100">
-                                    <span className="text-secondary-600 text-sm font-medium">
-                                        Popular filters:
-                                    </span>
-                                    <button
-                                        type="button"
-                                        className="badge badge-secondary hover:bg-secondary-200 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1"
-                                        aria-label="Filter by beach access"
+                                <div className="flex-1">
+                                    <DatePicker
+                                        id="dateRange"
+                                        startDate={searchParams.checkIn}
+                                        endDate={searchParams.checkOut}
+                                        selectsRange={true}
+                                        onRangeChange={({
+                                            startDate,
+                                            endDate,
+                                        }) =>
+                                            setSearchParams((prev) => ({
+                                                ...prev,
+                                                checkIn: startDate,
+                                                checkOut: endDate,
+                                            }))
+                                        }
+                                        placeholder="Add dates"
+                                        minDate={
+                                            new Date()
+                                                .toISOString()
+                                                .split("T")[0]
+                                        }
+                                    />
+                                </div>
+
+                                <div className="flex-1 flex items-center gap-2">
+                                    <div className="relative flex-1">
+                                        <Input
+                                            id="guests"
+                                            name="guests"
+                                            type="number"
+                                            min="1"
+                                            value={searchParams.guests}
+                                            onChange={handleInputChange}
+                                            placeholder="Guests"
+                                            leftIcon={
+                                                <FaUsers className="text-primary-500" />
+                                            }
+                                        />
+                                    </div>
+                                    <Button
+                                        type="submit"
+                                        variant="primary"
+                                        className="h-full py-3 px-6"
+                                        leftIcon={<FaSearch />}
                                     >
-                                        <FaUmbrellaBeach className="mr-1.5" />
-                                        Beach access
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="badge badge-secondary hover:bg-secondary-200 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1"
-                                        aria-label="Filter by entire homes"
-                                    >
-                                        <FaHome className="mr-1.5" /> Entire
-                                        homes
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="badge badge-secondary hover:bg-secondary-200 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1"
-                                        aria-label="Filter by family-friendly properties"
-                                    >
-                                        <FaUsers className="mr-1.5" />
-                                        Family-friendly
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="badge badge-secondary hover:bg-secondary-200 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1"
-                                        aria-label="Show more filters"
-                                    >
-                                        <FaFilter className="mr-1.5" /> More
-                                        filters
-                                    </button>
+                                        Search
+                                    </Button>
                                 </div>
                             </form>
-                        </div>
-                    </div>
-                </div>
 
-                {/* Scroll indicator */}
-                <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
-                    <div className="w-10 h-14 rounded-full glass flex items-center justify-center">
-                        <FaChevronDown className="text-white animate-pulse-slow" />
+                            <div className="flex flex-wrap items-center gap-2 mt-4">
+                                <span className="text-dark-500 text-sm">
+                                    Popular:
+                                </span>
+                                <button
+                                    type="button"
+                                    className="text-sm text-dark-600 hover:text-primary-600 hover:underline transition-colors"
+                                >
+                                    Beach
+                                </button>
+                                <span className="text-dark-300">•</span>
+                                <button
+                                    type="button"
+                                    className="text-sm text-dark-600 hover:text-primary-600 hover:underline transition-colors"
+                                >
+                                    Mountain
+                                </button>
+                                <span className="text-dark-300">•</span>
+                                <button
+                                    type="button"
+                                    className="text-sm text-dark-600 hover:text-primary-600 hover:underline transition-colors"
+                                >
+                                    City
+                                </button>
+                                <span className="text-dark-300">•</span>
+                                <button
+                                    type="button"
+                                    className="text-sm text-dark-600 hover:text-primary-600 hover:underline transition-colors"
+                                >
+                                    Countryside
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            {/* Popular Destinations */}
-            <section className="section-padding bg-dark-50">
+            {/* Popular Destinations - Airbnb Style */}
+            <section className="py-12">
                 <div className="container mx-auto px-4">
-                    <div className="flex flex-col md:flex-row justify-between items-center mb-12">
-                        <div>
-                            <h2 className="text-3xl md:text-4xl font-bold text-dark-900 mb-2">
-                                Popular Destinations
-                            </h2>
-                            <p className="text-dark-600">
-                                Discover the most sought-after locations for
-                                your next trip
-                            </p>
-                        </div>
+                    <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-2xl font-semibold text-dark-900">
+                            Explore destinations
+                        </h2>
                         <Link
                             to="/properties"
-                            className="flex items-center text-primary-600 font-medium hover:text-primary-700 transition-colors mt-4 md:mt-0"
+                            className="text-primary-600 font-medium hover:underline flex items-center"
                         >
-                            Explore all destinations{" "}
-                            <FaArrowRight className="ml-2" />
+                            Show all <FaAngleRight className="ml-1" />
                         </Link>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {destinations.map((destination, index) => (
                             <Link
                                 key={index}
                                 to={`/properties?category=${destination.name
                                     .toLowerCase()
                                     .replace(" ", "-")}`}
-                                className="group relative overflow-hidden rounded-2xl aspect-[4/3] shadow-card hover-lift"
+                                className="group"
                             >
-                                <div className="absolute inset-0 bg-gradient-to-t from-dark-900/90 via-dark-900/40 to-transparent z-10"></div>
-                                <img
-                                    src={destination.image}
-                                    alt={destination.name}
-                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                                />
-                                <div className="absolute bottom-0 left-0 p-6 z-20 w-full">
-                                    <div className="flex items-center mb-2">
-                                        <div className="w-12 h-12 rounded-full glass flex items-center justify-center mr-3 group-hover:bg-primary-500 transition-colors">
-                                            {destination.icon}
-                                        </div>
-                                        <div>
-                                            <h3 className="text-xl font-bold text-white">
-                                                {destination.name}
-                                            </h3>
-                                            <p className="text-white/80 text-sm">
-                                                {destination.count} properties
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div className="mt-4 flex justify-between items-center">
-                                        <span className="text-white/90 text-sm">
-                                            Explore amazing stays
-                                        </span>
-                                        <span className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-primary-500 transition-colors">
-                                            <FaAngleRight className="text-white" />
-                                        </span>
-                                    </div>
+                                <div className="rounded-lg overflow-hidden mb-2">
+                                    <img
+                                        src={destination.image}
+                                        alt={destination.name}
+                                        className="w-full aspect-square object-cover transition-transform duration-300 group-hover:scale-105"
+                                    />
                                 </div>
+                                <h3 className="font-medium text-dark-900 group-hover:text-primary-600">
+                                    {destination.name}
+                                </h3>
+                                <p className="text-dark-500 text-sm">
+                                    {destination.count} properties
+                                </p>
                             </Link>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* Featured Properties Section */}
-            <section className="section-padding">
+            {/* Featured Properties Section - Airbnb Style */}
+            <section className="py-12 bg-white">
                 <div className="container mx-auto px-4">
-                    <div className="flex flex-col md:flex-row justify-between items-center mb-8">
-                        <div>
-                            <h2 className="text-3xl md:text-4xl font-bold text-dark-900 mb-2">
-                                Featured Properties
-                            </h2>
-                            <p className="text-dark-600">
-                                Handpicked accommodations for your perfect
-                                getaway
-                            </p>
+                    <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-2xl font-semibold text-dark-900">
+                            Places to stay
+                        </h2>
+                        <div className="flex items-center">
+                            {/* Simple filter tabs */}
+                            <div className="hidden md:flex border border-gray-200 rounded-full p-1 mr-4">
+                                <button
+                                    onClick={() => setActiveTab("all")}
+                                    className={`px-4 py-1.5 text-sm font-medium rounded-full transition-colors ${
+                                        activeTab === "all"
+                                            ? "bg-dark-900 text-white"
+                                            : "text-dark-600 hover:bg-gray-100"
+                                    }`}
+                                >
+                                    All
+                                </button>
+                                <button
+                                    onClick={() => setActiveTab("luxury")}
+                                    className={`px-4 py-1.5 text-sm font-medium rounded-full transition-colors ${
+                                        activeTab === "luxury"
+                                            ? "bg-dark-900 text-white"
+                                            : "text-dark-600 hover:bg-gray-100"
+                                    }`}
+                                >
+                                    Luxury
+                                </button>
+                                <button
+                                    onClick={() => setActiveTab("trending")}
+                                    className={`px-4 py-1.5 text-sm font-medium rounded-full transition-colors ${
+                                        activeTab === "trending"
+                                            ? "bg-dark-900 text-white"
+                                            : "text-dark-600 hover:bg-gray-100"
+                                    }`}
+                                >
+                                    Trending
+                                </button>
+                                <button
+                                    onClick={() => setActiveTab("popular")}
+                                    className={`px-4 py-1.5 text-sm font-medium rounded-full transition-colors ${
+                                        activeTab === "popular"
+                                            ? "bg-dark-900 text-white"
+                                            : "text-dark-600 hover:bg-gray-100"
+                                    }`}
+                                >
+                                    Popular
+                                </button>
+                            </div>
+
+                            <Link
+                                to="/properties"
+                                className="text-primary-600 font-medium hover:underline flex items-center"
+                            >
+                                Show all <FaAngleRight className="ml-1" />
+                            </Link>
                         </div>
-                        <Button
-                            as={Link}
-                            to="/properties"
-                            variant="ghost"
-                            className="mt-4 md:mt-0"
-                            rightIcon={<FaArrowRight />}
-                        >
-                            View all properties
-                        </Button>
                     </div>
 
-                    {/* Property Category Tabs */}
-                    <div className="flex flex-wrap gap-2 mb-8 border-b border-dark-200">
+                    {/* Mobile filter tabs */}
+                    <div className="flex md:hidden overflow-x-auto pb-4 mb-4 gap-2 no-scrollbar">
                         <button
                             onClick={() => setActiveTab("all")}
-                            className={`px-4 py-2 font-medium rounded-t-lg transition-colors ${
+                            className={`px-4 py-1.5 text-sm font-medium rounded-full whitespace-nowrap transition-colors ${
                                 activeTab === "all"
-                                    ? "text-primary-600 border-b-2 border-primary-500"
-                                    : "text-dark-600 hover:text-primary-600"
+                                    ? "bg-dark-900 text-white"
+                                    : "bg-gray-100 text-dark-600"
                             }`}
                         >
-                            All Properties
+                            All
                         </button>
                         <button
                             onClick={() => setActiveTab("luxury")}
-                            className={`px-4 py-2 font-medium rounded-t-lg transition-colors flex items-center ${
+                            className={`px-4 py-1.5 text-sm font-medium rounded-full whitespace-nowrap transition-colors ${
                                 activeTab === "luxury"
-                                    ? "text-primary-600 border-b-2 border-primary-500"
-                                    : "text-dark-600 hover:text-primary-600"
+                                    ? "bg-dark-900 text-white"
+                                    : "bg-gray-100 text-dark-600"
                             }`}
                         >
-                            <RiVipCrownFill className="mr-2" /> Luxury
+                            Luxury
                         </button>
                         <button
                             onClick={() => setActiveTab("trending")}
-                            className={`px-4 py-2 font-medium rounded-t-lg transition-colors flex items-center ${
+                            className={`px-4 py-1.5 text-sm font-medium rounded-full whitespace-nowrap transition-colors ${
                                 activeTab === "trending"
-                                    ? "text-primary-600 border-b-2 border-primary-500"
-                                    : "text-dark-600 hover:text-primary-600"
+                                    ? "bg-dark-900 text-white"
+                                    : "bg-gray-100 text-dark-600"
                             }`}
                         >
-                            <FiTrendingUp className="mr-2" /> Trending
+                            Trending
                         </button>
                         <button
                             onClick={() => setActiveTab("popular")}
-                            className={`px-4 py-2 font-medium rounded-t-lg transition-colors flex items-center ${
+                            className={`px-4 py-1.5 text-sm font-medium rounded-full whitespace-nowrap transition-colors ${
                                 activeTab === "popular"
-                                    ? "text-primary-600 border-b-2 border-primary-500"
-                                    : "text-dark-600 hover:text-primary-600"
+                                    ? "bg-dark-900 text-white"
+                                    : "bg-gray-100 text-dark-600"
                             }`}
                         >
-                            <IoIosRocket className="mr-2" /> Popular
+                            Popular
                         </button>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {filteredProperties.map((property) => (
-                            <div
-                                key={property.id}
-                                className="card group overflow-hidden card-hover"
-                            >
-                                <div className="relative h-64 overflow-hidden">
-                                    <img
-                                        src={property.image}
-                                        alt={property.title}
-                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                                    />
-                                    <button className="absolute top-4 right-4 bg-white/80 hover:bg-white p-2.5 rounded-full shadow-md transition-colors">
-                                        <FaHeart className="text-dark-400 hover:text-accent-500" />
-                                    </button>
-
-                                    {/* Price Badge */}
-                                    <div className="absolute bottom-4 left-4 bg-dark-900/80 backdrop-blur-sm text-white px-4 py-2 rounded-xl font-medium">
-                                        {formatPrice(property.price)}
-                                        <span className="text-sm font-normal ml-1 text-white/80">
-                                            /night
-                                        </span>
-                                    </div>
-
-                                    {/* New Badge */}
-                                    {property.isNew && (
-                                        <div className="absolute top-4 left-4 bg-accent-500 text-white text-xs uppercase tracking-wider py-1.5 px-3 rounded-lg font-medium">
-                                            New
-                                        </div>
-                                    )}
-                                </div>
-                                <div className="p-6">
-                                    <div className="flex justify-between items-start mb-2">
-                                        <h3 className="text-xl font-semibold text-dark-900 group-hover:text-primary-600 transition-colors">
-                                            {property.title}
-                                        </h3>
-                                        <div className="flex items-center bg-primary-50 px-2 py-1 rounded-lg">
-                                            <FaStar className="text-warning-500 mr-1" />
-                                            <span className="font-medium">
-                                                {property.rating}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <p className="text-dark-600 mb-4 flex items-center">
-                                        <FaMapMarkerAlt className="mr-2 text-primary-500" />
-                                        {property.location}
-                                    </p>
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex items-center text-dark-600 text-sm">
-                                            <span className="mr-4 flex items-center">
-                                                <FaHome className="mr-1 text-primary-500" />{" "}
-                                                {property.beds} beds
-                                            </span>
-                                            <span className="flex items-center">
-                                                <FaUsers className="mr-1 text-primary-500" />{" "}
-                                                {property.baths} baths
-                                            </span>
-                                        </div>
-                                        <Link
-                                            to={`/properties/${property.id}`}
-                                            className="text-primary-600 font-medium hover:text-primary-700 text-sm flex items-center"
-                                        >
-                                            Details{" "}
-                                            <FaAngleRight className="ml-1" />
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* How It Works Section */}
-            <section className="section-padding bg-gradient-primary text-white relative overflow-hidden">
-                <div className="absolute inset-0 bg-noise opacity-5"></div>
-                <div className="container mx-auto px-4 relative z-10">
-                    <div className="text-center mb-16 max-w-3xl mx-auto">
-                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
-                            How StayFinder Works
-                        </h2>
-                        <p className="text-xl text-white/80">
-                            Finding and booking your perfect accommodation has
-                            never been easier
-                        </p>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-                        {/* Connecting line */}
-                        <div className="hidden md:block absolute top-24 left-0 right-0 h-1 bg-white/20 z-0"></div>
-
-                        <div className="relative z-10 text-center bg-white/10 backdrop-blur-sm rounded-2xl p-8 hover-lift">
-                            <div className="bg-white text-primary-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-highlight">
-                                <FaSearch size={30} />
-                            </div>
-                            <h3 className="text-2xl font-semibold mb-4">
-                                Search
-                            </h3>
-                            <p className="text-white/80 leading-relaxed">
-                                Find the perfect place from our wide selection
-                                of properties with advanced filters and search
-                                options.
-                            </p>
+                    {loading ? (
+                        <div className="flex justify-center items-center py-20">
+                            <Spinner size="lg" />
                         </div>
-                        <div className="relative z-10 text-center bg-white/10 backdrop-blur-sm rounded-2xl p-8 hover-lift">
-                            <div className="bg-white text-primary-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-highlight">
-                                <FaCalendarAlt size={30} />
-                            </div>
-                            <h3 className="text-2xl font-semibold mb-4">
-                                Book
-                            </h3>
-                            <p className="text-white/80 leading-relaxed">
-                                Book your stay with our secure and easy booking
-                                system. Instant confirmation and no hidden fees.
-                            </p>
-                        </div>
-                        <div className="relative z-10 text-center bg-white/10 backdrop-blur-sm rounded-2xl p-8 hover-lift">
-                            <div className="bg-white text-primary-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-highlight">
-                                <FaKey size={30} />
-                            </div>
-                            <h3 className="text-2xl font-semibold mb-4">
-                                Enjoy
-                            </h3>
-                            <p className="text-white/80 leading-relaxed">
-                                Enjoy your stay and create unforgettable
-                                memories with 24/7 customer support during your
-                                trip.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Why Choose Us Section */}
-            <section className="section-padding">
-                <div className="container mx-auto px-4">
-                    <div className="text-center mb-16 max-w-3xl mx-auto">
-                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-dark-900 mb-6">
-                            Why Choose{" "}
-                            <span className="text-gradient">StayFinder</span>
-                        </h2>
-                        <p className="text-xl text-dark-600">
-                            We're committed to making your travel experience
-                            exceptional from start to finish
-                        </p>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        <div className="card p-8 text-center hover-glow transition-all duration-300">
-                            <div className="w-16 h-16 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center mx-auto mb-6">
-                                <MdExplore size={28} />
-                            </div>
-                            <h3 className="text-xl font-semibold mb-4 text-dark-900">
-                                Global Selection
-                            </h3>
-                            <p className="text-dark-600">
-                                Thousands of properties in top destinations
-                                around the world, carefully curated for quality
-                            </p>
-                        </div>
-                        <div className="card p-8 text-center hover-glow transition-all duration-300">
-                            <div className="w-16 h-16 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center mx-auto mb-6">
-                                <FaShieldAlt size={28} />
-                            </div>
-                            <h3 className="text-xl font-semibold mb-4 text-dark-900">
-                                Secure Booking
-                            </h3>
-                            <p className="text-dark-600">
-                                Secure payment system and verified property
-                                listings with advanced encryption technology
-                            </p>
-                        </div>
-                        <div className="card p-8 text-center hover-glow transition-all duration-300">
-                            <div className="w-16 h-16 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center mx-auto mb-6">
-                                <MdOutlineVerified size={28} />
-                            </div>
-                            <h3 className="text-xl font-semibold mb-4 text-dark-900">
-                                Quality Stays
-                            </h3>
-                            <p className="text-dark-600">
-                                Carefully selected properties that meet our
-                                quality standards with verified reviews
-                            </p>
-                        </div>
-                        <div className="card p-8 text-center hover-glow transition-all duration-300">
-                            <div className="w-16 h-16 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center mx-auto mb-6">
-                                <FaComments size={28} />
-                            </div>
-                            <h3 className="text-xl font-semibold mb-4 text-dark-900">
-                                24/7 Support
-                            </h3>
-                            <p className="text-dark-600">
-                                Customer support available around the clock for
-                                any questions or assistance during your stay
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* CTA Section */}
-            <section className="py-20 bg-dark-900 text-white relative overflow-hidden">
-                <div className="absolute inset-0 bg-noise opacity-5"></div>
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary-500 via-accent-500 to-primary-500"></div>
-                <div className="container mx-auto px-4 text-center relative z-10">
-                    <div className="max-w-4xl mx-auto">
-                        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
-                            Ready to Find Your Perfect Stay?
-                        </h2>
-                        <p className="text-xl text-white/80 mb-10 max-w-2xl mx-auto">
-                            Join thousands of satisfied travelers who found
-                            their ideal accommodations with StayFinder
-                        </p>
-                        <div className="flex flex-col sm:flex-row justify-center gap-6">
+                    ) : error ? (
+                        <div className="text-center py-10">
+                            <p className="text-dark-500 mb-4">{error}</p>
                             <Button
-                                as={Link}
-                                to="/properties"
-                                variant="primary"
-                                size="lg"
-                                className="group"
-                                rightIcon={
-                                    <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
-                                }
-                            >
-                                Browse Properties
-                            </Button>
-                            <Button
-                                as={Link}
-                                to="/register"
                                 variant="outline"
-                                size="lg"
-                                className="border-white text-white hover:bg-white/10"
+                                onClick={() => window.location.reload()}
                             >
-                                Sign Up Now
+                                Try Again
                             </Button>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                            {filteredProperties.length === 0 ? (
+                                <div className="col-span-full text-center py-10">
+                                    <p className="text-dark-500">
+                                        No properties found in this category.
+                                    </p>
+                                </div>
+                            ) : (
+                                filteredProperties.map((property) => (
+                                    <Link
+                                        key={property._id}
+                                        to={`/properties/${property._id}`}
+                                        className="group"
+                                    >
+                                        <div className="relative aspect-square rounded-xl overflow-hidden mb-3">
+                                            <img
+                                                src={
+                                                    property.images &&
+                                                    property.images.length > 0
+                                                        ? property.images[0].url
+                                                        : "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+                                                }
+                                                alt={property.title}
+                                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                            />
+                                            <button
+                                                className="absolute top-3 right-3 p-2 rounded-full bg-white/90 hover:bg-white transition-colors"
+                                                onClick={(e) => {
+                                                    e.preventDefault()
+                                                    // Favorite functionality would go here
+                                                }}
+                                            >
+                                                <FaHeart className="text-gray-400 hover:text-accent-500" />
+                                            </button>
+
+                                            {property.createdAt &&
+                                                new Date(property.createdAt) >
+                                                    new Date(
+                                                        Date.now() -
+                                                            14 *
+                                                                24 *
+                                                                60 *
+                                                                60 *
+                                                                1000
+                                                    ) && (
+                                                    <div className="absolute top-3 left-3 bg-white text-dark-900 text-xs font-medium px-2 py-1 rounded-md">
+                                                        New
+                                                    </div>
+                                                )}
+                                        </div>
+
+                                        <div className="flex justify-between items-start">
+                                            <div>
+                                                <h3 className="font-medium text-dark-900 mb-1">
+                                                    {property.title}
+                                                </h3>
+                                                <p className="text-dark-500 text-sm mb-1">
+                                                    {property.location
+                                                        ? `${
+                                                              property.location
+                                                                  .city
+                                                          }${
+                                                              property.location
+                                                                  .state
+                                                                  ? `, ${property.location.state}`
+                                                                  : ""
+                                                          }`
+                                                        : "Location not specified"}
+                                                </p>
+                                                <p className="text-dark-500 text-sm mb-2">
+                                                    {property.bedrooms || 0}{" "}
+                                                    beds ·{" "}
+                                                    {property.bathrooms || 0}{" "}
+                                                    baths
+                                                </p>
+                                                <p className="font-medium">
+                                                    <span className="text-dark-900">
+                                                        {formatPrice(
+                                                            property.price
+                                                        )}
+                                                    </span>
+                                                    <span className="text-dark-500">
+                                                        {" "}
+                                                        night
+                                                    </span>
+                                                </p>
+                                            </div>
+                                            <div className="flex items-center">
+                                                <FaStar className="text-warning-500 mr-1" />
+                                                <span className="font-medium">
+                                                    {property.rating
+                                                        ? property.rating.toFixed(
+                                                              1
+                                                          )
+                                                        : "4.5"}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                ))
+                            )}
+                        </div>
+                    )}
+                </div>
+            </section>
+
+            {/* How It Works Section - Simplified */}
+            <section className="py-12 bg-gray-50">
+                <div className="container mx-auto px-4">
+                    <h2 className="text-2xl font-semibold text-dark-900 mb-8 text-center">
+                        How it works
+                    </h2>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div className="flex flex-col items-center text-center">
+                            <div className="w-12 h-12 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center mb-4">
+                                <FaSearch size={20} />
+                            </div>
+                            <h3 className="text-lg font-medium mb-2">
+                                Find the perfect place
+                            </h3>
+                            <p className="text-dark-500 text-sm">
+                                Browse verified homes with accurate photos and
+                                details
+                            </p>
+                        </div>
+
+                        <div className="flex flex-col items-center text-center">
+                            <div className="w-12 h-12 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center mb-4">
+                                <FaCalendarAlt size={20} />
+                            </div>
+                            <h3 className="text-lg font-medium mb-2">
+                                Book with confidence
+                            </h3>
+                            <p className="text-dark-500 text-sm">
+                                Secure payments, clear cancellation policies,
+                                and no hidden fees
+                            </p>
+                        </div>
+
+                        <div className="flex flex-col items-center text-center">
+                            <div className="w-12 h-12 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center mb-4">
+                                <FaKey size={20} />
+                            </div>
+                            <h3 className="text-lg font-medium mb-2">
+                                Enjoy your stay
+                            </h3>
+                            <p className="text-dark-500 text-sm">
+                                24/7 customer support and local tips for a
+                                memorable experience
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Why Choose Us Section - Simplified */}
+            <section className="py-12 border-t border-gray-100">
+                <div className="container mx-auto px-4">
+                    <div className="flex flex-col md:flex-row gap-8 items-center">
+                        <div className="md:w-1/2">
+                            <h2 className="text-2xl font-semibold text-dark-900 mb-4">
+                                Why guests love StayFinder
+                            </h2>
+                            <p className="text-dark-600 mb-6">
+                                Join millions of happy travelers who have found
+                                their perfect stay with us
+                            </p>
+
+                            <div className="space-y-4">
+                                <div className="flex items-start">
+                                    <div className="w-10 h-10 rounded-full bg-primary-50 text-primary-600 flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                                        <MdOutlineVerified size={20} />
+                                    </div>
+                                    <div>
+                                        <h3 className="font-medium text-dark-900 mb-1">
+                                            Verified listings
+                                        </h3>
+                                        <p className="text-dark-500 text-sm">
+                                            All properties are carefully
+                                            reviewed for quality and accuracy
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-start">
+                                    <div className="w-10 h-10 rounded-full bg-primary-50 text-primary-600 flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                                        <FaShieldAlt size={20} />
+                                    </div>
+                                    <div>
+                                        <h3 className="font-medium text-dark-900 mb-1">
+                                            Secure payments
+                                        </h3>
+                                        <p className="text-dark-500 text-sm">
+                                            Your booking is protected with our
+                                            secure payment system
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-start">
+                                    <div className="w-10 h-10 rounded-full bg-primary-50 text-primary-600 flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                                        <FaComments size={20} />
+                                    </div>
+                                    <div>
+                                        <h3 className="font-medium text-dark-900 mb-1">
+                                            24/7 support
+                                        </h3>
+                                        <p className="text-dark-500 text-sm">
+                                            Our team is available around the
+                                            clock to help with any issues
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="md:w-1/2">
+                            <img
+                                src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80"
+                                alt="Happy travelers"
+                                className="rounded-lg shadow-md w-full h-auto object-cover"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* CTA Section - Airbnb Style */}
+            <section className="py-16 bg-primary-50">
+                <div className="container mx-auto px-4">
+                    <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-sm overflow-hidden">
+                        <div className="flex flex-col md:flex-row">
+                            <div className="md:w-1/2 p-8 md:p-10 flex flex-col justify-center">
+                                <h2 className="text-2xl md:text-3xl font-semibold text-dark-900 mb-4">
+                                    Ready to start your journey?
+                                </h2>
+                                <p className="text-dark-600 mb-6">
+                                    Find your perfect place to stay and create
+                                    memories that last a lifetime
+                                </p>
+                                <div className="flex flex-col sm:flex-row gap-3">
+                                    <Button
+                                        as={Link}
+                                        to="/properties"
+                                        variant="primary"
+                                        className="group"
+                                    >
+                                        Explore stays
+                                    </Button>
+                                    <Button
+                                        as={Link}
+                                        to="/register"
+                                        variant="outline"
+                                    >
+                                        Sign up
+                                    </Button>
+                                </div>
+                            </div>
+                            <div className="md:w-1/2 relative min-h-[250px]">
+                                <img
+                                    src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
+                                    alt="Travel destination"
+                                    className="absolute inset-0 w-full h-full object-cover"
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
