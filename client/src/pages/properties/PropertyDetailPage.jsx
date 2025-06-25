@@ -210,21 +210,21 @@ const PropertyDetailPage = () => {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                     <div className="animate-pulse">
                         {/* Header skeleton */}
-                        <div className="h-6 bg-gray-200 rounded w-20 mb-6"></div>
-                        <div className="h-8 bg-gray-200 rounded w-2/3 mb-4"></div>
-                        <div className="h-4 bg-gray-200 rounded w-1/2 mb-8"></div>
+                        <div className="h-6 bg-secondary-200 rounded w-20 mb-6"></div>
+                        <div className="h-8 bg-secondary-200 rounded w-2/3 mb-4"></div>
+                        <div className="h-4 bg-secondary-200 rounded w-1/2 mb-8"></div>
 
                         {/* Image skeleton */}
-                        <div className="h-96 bg-gray-200 rounded-xl mb-8"></div>
+                        <div className="h-96 bg-secondary-200 rounded-xl mb-8"></div>
 
                         {/* Content skeleton */}
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                             <div className="lg:col-span-2 space-y-8">
-                                <div className="h-32 bg-gray-200 rounded"></div>
-                                <div className="h-48 bg-gray-200 rounded"></div>
-                                <div className="h-64 bg-gray-200 rounded"></div>
+                                <div className="h-32 bg-secondary-200 rounded"></div>
+                                <div className="h-48 bg-secondary-200 rounded"></div>
+                                <div className="h-64 bg-secondary-200 rounded"></div>
                             </div>
-                            <div className="h-96 bg-gray-200 rounded-xl"></div>
+                            <div className="h-96 bg-secondary-200 rounded-xl"></div>
                         </div>
                     </div>
                 </div>
@@ -247,7 +247,7 @@ const PropertyDetailPage = () => {
                     </p>
                     <button
                         onClick={() => navigate(-1)}
-                        className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                        className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-secondary-50"
                     >
                         <FaArrowLeft className="mr-2" size={14} />
                         Go back
@@ -333,7 +333,7 @@ const PropertyDetailPage = () => {
                         <div className="flex items-center gap-2 mt-4 lg:mt-0">
                             <button
                                 onClick={() => setShowShareModal(true)}
-                                className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                                className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-secondary-50 transition-colors"
                             >
                                 <FaShare className="mr-2" size={14} />
                                 Share
@@ -344,7 +344,7 @@ const PropertyDetailPage = () => {
                                 className={`flex items-center px-4 py-2 text-sm font-medium border rounded-lg transition-colors ${
                                     isFavorite
                                         ? "text-red-600 bg-red-50 border-red-200 hover:bg-red-100"
-                                        : "text-gray-700 bg-white border-gray-300 hover:bg-gray-50"
+                                        : "text-gray-700 bg-white border-gray-300 hover:bg-secondary-50"
                                 }`}
                             >
                                 {isFavorite ? (
@@ -386,7 +386,7 @@ const PropertyDetailPage = () => {
                                         </h2>
                                         {/* Host verification badges */}
                                         <div className="flex items-center space-x-2">
-                                            <div className="bg-gray-100 px-2 py-1 rounded-full flex items-center">
+                                            <div className="bg-secondary-100 px-2 py-1 rounded-full flex items-center">
                                                 <FaShieldAlt
                                                     className="text-gray-600 mr-1"
                                                     size={10}
@@ -395,7 +395,7 @@ const PropertyDetailPage = () => {
                                                     Verified
                                                 </span>
                                             </div>
-                                            <div className="bg-gray-100 px-2 py-1 rounded-full flex items-center">
+                                            <div className="bg-secondary-100 px-2 py-1 rounded-full flex items-center">
                                                 <FaMedal
                                                     className="text-gray-600 mr-1"
                                                     size={10}
@@ -459,7 +459,7 @@ const PropertyDetailPage = () => {
                                                 className="h-16 w-16 rounded-full object-cover"
                                             />
                                         ) : (
-                                            <div className="h-16 w-16 bg-gray-200 rounded-full flex items-center justify-center">
+                                            <div className="h-16 w-16 bg-secondary-200 rounded-full flex items-center justify-center">
                                                 <span className="text-gray-600 font-medium text-xl">
                                                     {property.host?.name
                                                         ?.charAt(0)
@@ -475,7 +475,7 @@ const PropertyDetailPage = () => {
 
                             {/* Contact Host Button */}
                             <div className="mt-6">
-                                <button className="px-6 py-3 border border-gray-900 text-gray-900 rounded-lg hover:bg-gray-50 transition-colors font-medium">
+                                <button className="px-6 py-3 border border-gray-900 text-gray-900 rounded-lg hover:bg-secondary-50 transition-colors font-medium">
                                     Contact Host
                                 </button>
                             </div>
@@ -574,7 +574,7 @@ const PropertyDetailPage = () => {
                                     .map((amenity, index) => (
                                         <div
                                             key={index}
-                                            className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                                            className="flex items-center space-x-3 p-3 bg-secondary-50 rounded-lg hover:bg-secondary-100 transition-colors"
                                         >
                                             <div className="text-gray-700 flex-shrink-0">
                                                 {getAmenityIcon(amenity)}
@@ -588,7 +588,7 @@ const PropertyDetailPage = () => {
                             {property.amenities?.length > 0 && (
                                 <button
                                     onClick={() => setShowAmenitiesModal(true)}
-                                    className="mt-6 px-6 py-3 border border-gray-900 text-gray-900 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                                    className="mt-6 px-6 py-3 border border-gray-900 text-gray-900 rounded-lg hover:bg-secondary-50 transition-colors font-medium"
                                 >
                                     {property.amenities.length > 8
                                         ? `Show all ${property.amenities.length} amenities`
@@ -621,7 +621,7 @@ const PropertyDetailPage = () => {
                                             Cleanliness
                                         </span>
                                         <div className="flex items-center">
-                                            <div className="w-24 h-1 bg-gray-200 rounded-full mr-2">
+                                            <div className="w-24 h-1 bg-secondary-200 rounded-full mr-2">
                                                 <div className="w-5/6 h-1 bg-black rounded-full"></div>
                                             </div>
                                             <span className="text-sm font-medium text-gray-900">
@@ -634,7 +634,7 @@ const PropertyDetailPage = () => {
                                             Communication
                                         </span>
                                         <div className="flex items-center">
-                                            <div className="w-24 h-1 bg-gray-200 rounded-full mr-2">
+                                            <div className="w-24 h-1 bg-secondary-200 rounded-full mr-2">
                                                 <div className="w-full h-1 bg-black rounded-full"></div>
                                             </div>
                                             <span className="text-sm font-medium text-gray-900">
@@ -647,7 +647,7 @@ const PropertyDetailPage = () => {
                                             Check-in
                                         </span>
                                         <div className="flex items-center">
-                                            <div className="w-24 h-1 bg-gray-200 rounded-full mr-2">
+                                            <div className="w-24 h-1 bg-secondary-200 rounded-full mr-2">
                                                 <div className="w-11/12 h-1 bg-black rounded-full"></div>
                                             </div>
                                             <span className="text-sm font-medium text-gray-900">
@@ -660,7 +660,7 @@ const PropertyDetailPage = () => {
                                             Accuracy
                                         </span>
                                         <div className="flex items-center">
-                                            <div className="w-24 h-1 bg-gray-200 rounded-full mr-2">
+                                            <div className="w-24 h-1 bg-secondary-200 rounded-full mr-2">
                                                 <div className="w-5/6 h-1 bg-black rounded-full"></div>
                                             </div>
                                             <span className="text-sm font-medium text-gray-900">
@@ -673,7 +673,7 @@ const PropertyDetailPage = () => {
                                             Location
                                         </span>
                                         <div className="flex items-center">
-                                            <div className="w-24 h-1 bg-gray-200 rounded-full mr-2">
+                                            <div className="w-24 h-1 bg-secondary-200 rounded-full mr-2">
                                                 <div className="w-11/12 h-1 bg-black rounded-full"></div>
                                             </div>
                                             <span className="text-sm font-medium text-gray-900">
@@ -686,7 +686,7 @@ const PropertyDetailPage = () => {
                                             Value
                                         </span>
                                         <div className="flex items-center">
-                                            <div className="w-24 h-1 bg-gray-200 rounded-full mr-2">
+                                            <div className="w-24 h-1 bg-secondary-200 rounded-full mr-2">
                                                 <div className="w-4/5 h-1 bg-black rounded-full"></div>
                                             </div>
                                             <span className="text-sm font-medium text-gray-900">
@@ -707,7 +707,7 @@ const PropertyDetailPage = () => {
                                                 className="space-y-3"
                                             >
                                                 <div className="flex items-center space-x-3">
-                                                    <div className="h-10 w-10 bg-gray-200 rounded-full flex items-center justify-center">
+                                                    <div className="h-10 w-10 bg-secondary-200 rounded-full flex items-center justify-center">
                                                         <span className="text-gray-600 font-medium">
                                                             {review.user?.name
                                                                 ?.charAt(0)
@@ -754,7 +754,7 @@ const PropertyDetailPage = () => {
                             )}
 
                             {reviewsData?.reviews?.length > 6 && (
-                                <button className="mt-6 px-6 py-3 border border-gray-900 text-gray-900 rounded-lg hover:bg-gray-50 transition-colors font-medium">
+                                <button className="mt-6 px-6 py-3 border border-gray-900 text-gray-900 rounded-lg hover:bg-secondary-50 transition-colors font-medium">
                                     Show all {property.reviewCount} reviews
                                 </button>
                             )}
@@ -850,7 +850,7 @@ const PropertyDetailPage = () => {
                                     </div>
                                 </div>
                             ) : (
-                                <div className="bg-gray-50 rounded-xl h-96 flex items-center justify-center">
+                                <div className="bg-secondary-50 rounded-xl h-96 flex items-center justify-center">
                                     <div className="text-center text-gray-700 p-6">
                                         <FaMapMarkerAlt
                                             className="mx-auto mb-4 text-gray-400"
@@ -886,7 +886,7 @@ const PropertyDetailPage = () => {
                                         </span>
                                     </div>
                                     {property.avgRating > 0 && (
-                                        <div className="flex items-center bg-gray-50 px-2 py-1 rounded-lg">
+                                        <div className="flex items-center bg-secondary-50 px-2 py-1 rounded-lg">
                                             <FaStar
                                                 className="text-black mr-1"
                                                 size={12}
@@ -1001,7 +1001,7 @@ const PropertyDetailPage = () => {
                                             Reserve
                                         </button>
                                     ) : (
-                                        <div className="w-full bg-gray-100 text-gray-500 py-4 rounded-lg font-semibold text-lg text-center border border-gray-200">
+                                        <div className="w-full bg-secondary-100 text-gray-500 py-4 rounded-lg font-semibold text-lg text-center border border-gray-200">
                                             {!property.isApproved
                                                 ? "Under Review"
                                                 : "Not Available"}
@@ -1142,7 +1142,7 @@ const PropertyDetailPage = () => {
                         className={`px-6 py-3 rounded-lg font-medium transition-all ${
                             property.isApproved && property.isAvailable
                                 ? "bg-gradient-to-r from-pink-500 to-red-500 text-white hover:from-pink-600 hover:to-red-600 transform hover:scale-[1.02]"
-                                : "bg-gray-100 text-gray-500 cursor-not-allowed"
+                                : "bg-secondary-100 text-gray-500 cursor-not-allowed"
                         }`}
                         disabled={!property.isApproved || !property.isAvailable}
                     >
