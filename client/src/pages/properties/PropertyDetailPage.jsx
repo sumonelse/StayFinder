@@ -874,7 +874,7 @@ const PropertyDetailPage = () => {
                     {/* Right Column - Booking Card */}
                     <div className="lg:col-span-1">
                         <div className="sticky top-24">
-                            <div className="bg-white border border-gray-300 rounded-xl shadow-xl p-6 hover:shadow-2xl transition-shadow duration-300">
+                            <div className="bg-white border border-secondary-100 rounded-xl shadow-xl p-6 hover:shadow-2xl transition-shadow duration-300">
                                 {/* Price and Rating */}
                                 <div className="flex items-center justify-between mb-2">
                                     <div className="flex items-baseline">

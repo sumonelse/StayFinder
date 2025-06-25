@@ -73,7 +73,7 @@ const PropertyRules = ({
             id: "checkIn",
             label: "Check-in",
             value: propertyRules.checkIn,
-            icon: <FaRegClock className="text-primary-500" size={18} />,
+            icon: <FaRegClock className="text-gray-600" size={18} />,
             type: "text",
             description:
                 "Please respect the check-in time to ensure the property is properly prepared for your arrival.",
@@ -82,7 +82,7 @@ const PropertyRules = ({
             id: "checkOut",
             label: "Check-out",
             value: propertyRules.checkOut,
-            icon: <FaRegCalendarAlt className="text-primary-500" size={18} />,
+            icon: <FaRegCalendarAlt className="text-gray-600" size={18} />,
             type: "text",
             description:
                 "Please check out on time to allow the host to prepare the property for the next guests.",
@@ -167,7 +167,7 @@ const PropertyRules = ({
             id: "quietHours",
             label: "Quiet hours",
             value: propertyRules.quietHours,
-            icon: <FaRegMoon className="text-primary-500" size={18} />,
+            icon: <FaRegMoon className="text-gray-600" size={18} />,
             type: "text",
             description:
                 "Please respect quiet hours to ensure all guests can enjoy a peaceful stay.",
@@ -180,7 +180,7 @@ const PropertyRules = ({
             id: `additional-${index}`,
             label: rule.title || "House rule",
             value: rule.description,
-            icon: <FaRegCommentDots className="text-primary-500" size={18} />,
+            icon: <FaRegCommentDots className="text-gray-600" size={18} />,
             type: "text",
             description: rule.description,
         })
@@ -206,7 +206,7 @@ const PropertyRules = ({
                         key={rule.id}
                         className={`rounded-lg transition-all duration-200 ${
                             activeRule === rule.id
-                                ? "bg-secondary-50 border border-secondary-100"
+                                ? "bg-gray-50 border border-gray-200"
                                 : ""
                         }`}
                     >
@@ -224,9 +224,9 @@ const PropertyRules = ({
                                     </h4>
                                     {rule.description && (
                                         <FaInfoCircle
-                                            className={`text-secondary-400 transition-colors duration-200 ${
+                                            className={`text-gray-400 transition-colors duration-200 ${
                                                 activeRule === rule.id
-                                                    ? "text-primary-500"
+                                                    ? "text-gray-600"
                                                     : ""
                                             }`}
                                             size={14}
@@ -266,7 +266,7 @@ const PropertyRules = ({
 
                         {/* Expandable description */}
                         {activeRule === rule.id && rule.description && (
-                            <div className="px-2 pb-3 pl-9 text-sm text-secondary-600 animate-fadeIn">
+                            <div className="px-2 pb-3 pl-9 text-sm text-gray-600 animate-fadeIn">
                                 {rule.description}
                             </div>
                         )}
@@ -276,7 +276,7 @@ const PropertyRules = ({
                 {allRules.length > maxInitialRules && (
                     <button
                         onClick={() => setExpanded(!expanded)}
-                        className="flex items-center text-primary-600 hover:text-primary-800 font-medium mt-2 transition-colors duration-200"
+                        className="flex items-center text-black hover:text-gray-700 font-medium mt-2 transition-colors duration-200 underline"
                     >
                         {expanded ? (
                             <>

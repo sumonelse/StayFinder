@@ -25,7 +25,7 @@ import { formatPrice } from "../../utils/currency"
 import { calculateBookingPrice } from "../../utils/bookingCalculator"
 import { formatDate } from "../../utils/dateUtils"
 import { useAuth } from "../../context/AuthContext"
-import PropertyRules from "../../components/property/PropertyRules"
+import HouseRulesModal from "../../components/property/HouseRulesModal"
 import AvailabilityCalendar from "../../components/property/AvailabilityCalendar"
 
 /**
@@ -60,6 +60,9 @@ const BookingPage = () => {
     // Validation state
     const [errors, setErrors] = useState({})
     const [isSubmitting, setIsSubmitting] = useState(false)
+
+    // Modal state
+    const [showHouseRulesModal, setShowHouseRulesModal] = useState(false)
 
     // Fetch property details
     const {
@@ -339,16 +342,9 @@ const BookingPage = () => {
 
     return (
         <div className="min-h-screen bg-gray-50">
-            <div className="container mx-auto px-4 py-6 md:py-8">
+            <div className="container mx-auto px-4 py-2 md:py-4">
                 {/* Back button and title */}
                 <div className="mb-6 md:mb-8 animate-fadeIn">
-                    <button
-                        onClick={() => navigate(`/properties/${id}`)}
-                        className="flex items-center text-gray-600 hover:text-black mb-4 transition-colors group"
-                    >
-                        <FaArrowLeft className="mr-2 group-hover:-translate-x-1 transition-transform" />
-                        <span className="font-medium">Back to property</span>
-                    </button>
                     <div className="space-y-2">
                         <h1 className="text-2xl md:text-3xl font-semibold text-black">
                             Request to book
@@ -519,11 +515,26 @@ const BookingPage = () => {
                                         </h3>
                                     </div>
                                     <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
-                                        <PropertyRules
-                                            rules={property?.rules || {}}
-                                            showAll={true}
-                                            className="text-sm"
-                                        />
+                                        <div className="flex items-center justify-between">
+                                            <div>
+                                                <p className="text-black font-medium mb-1">
+                                                    Review the house rules
+                                                </p>
+                                                <p className="text-gray-600 text-sm">
+                                                    Make sure you understand the
+                                                    host's requirements
+                                                </p>
+                                            </div>
+                                            <button
+                                                type="button"
+                                                onClick={() =>
+                                                    setShowHouseRulesModal(true)
+                                                }
+                                                className="px-4 py-2 border border-gray-300 rounded-xl text-sm font-medium text-black hover:border-gray-400 hover:bg-gray-50 transition-colors"
+                                            >
+                                                View rules
+                                            </button>
+                                        </div>
 
                                         <div className="mt-6 pt-4 border-t border-gray-200 text-gray-600 text-sm">
                                             <p className="flex items-start">
@@ -679,9 +690,9 @@ const BookingPage = () => {
                     {/* Right column - Booking summary */}
                     <div className="lg:col-span-1">
                         <div className="sticky top-8 animate-fadeIn animation-delay-200">
-                            <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 mb-6">
+                            <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 mb-4">
                                 {/* Property info */}
-                                <div className="flex mb-6 pb-6 border-b border-gray-100">
+                                <div className="flex mb-1 pb-4 border-b border-gray-100">
                                     <div className="w-20 h-20 rounded-xl overflow-hidden mr-4 flex-shrink-0">
                                         <img
                                             src={
@@ -737,9 +748,9 @@ const BookingPage = () => {
                                 {/* Trip details */}
                                 {bookingData.checkInDate &&
                                 bookingData.checkOutDate ? (
-                                    <div className="mb-6">
+                                    <div className="mb-2">
                                         <div className="space-y-4">
-                                            <div className="flex justify-between items-center py-3 border-b border-gray-100">
+                                            <div className="flex justify-between items-center py-2 border-b border-gray-100">
                                                 <div>
                                                     <p className="text-xs text-gray-500 uppercase tracking-wide">
                                                         Check-in
@@ -788,7 +799,7 @@ const BookingPage = () => {
                                                     </p>
                                                 </div>
                                             </div>
-                                            <div className="py-3">
+                                            <div className="py-1">
                                                 <p className="text-xs text-gray-500 uppercase tracking-wide">
                                                     Guests
                                                 </p>
@@ -876,16 +887,16 @@ const BookingPage = () => {
                             </div>
 
                             {/* Safety notice */}
-                            <div className="bg-secondary-50 p-4 rounded-xl border border-secondary-200">
+                            <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
                                 <div className="flex items-start">
-                                    <div className="text-primary-500 mr-3 mt-1">
+                                    <div className="text-gray-600 mr-3 mt-1">
                                         <FaShieldAlt size={20} />
                                     </div>
                                     <div>
-                                        <h4 className="font-medium text-secondary-900 mb-1">
+                                        <h4 className="font-medium text-black mb-1">
                                             Safe booking guarantee
                                         </h4>
-                                        <p className="text-sm text-secondary-700">
+                                        <p className="text-sm text-gray-600">
                                             Book with confidence. Your payment
                                             is protected by our secure payment
                                             system.
@@ -897,6 +908,13 @@ const BookingPage = () => {
                     </div>
                 </div>
             </div>
+
+            {/* House Rules Modal */}
+            <HouseRulesModal
+                isOpen={showHouseRulesModal}
+                onClose={() => setShowHouseRulesModal(false)}
+                rules={property?.rules || {}}
+            />
         </div>
     )
 }

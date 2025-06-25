@@ -93,7 +93,7 @@ const Modal = ({
 
     return ReactDOM.createPortal(
         <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-secondary-900/50 backdrop-blur-sm transition-opacity overflow-y-auto"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm transition-opacity overflow-y-auto"
             onClick={handleOverlayClick}
             onMouseDown={(e) => e.stopPropagation()}
             aria-modal="true"
@@ -103,20 +103,20 @@ const Modal = ({
             <div
                 ref={modalRef}
                 onClick={(e) => e.stopPropagation()}
-                className={`${getModalWidth()} w-full bg-white rounded-xl shadow-xl transform transition-all duration-300 ease-in-out animate-scaleIn my-8 max-h-[90vh] flex flex-col`}
+                className={`${getModalWidth()} w-full bg-white rounded-2xl shadow-xl transform transition-all duration-300 ease-in-out animate-scaleIn my-8 max-h-[90vh] flex flex-col`}
             >
                 {title && (
-                    <div className="flex items-center justify-between px-6 py-4 border-b border-secondary-100">
+                    <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
                         <h3
                             id="modal-title"
-                            className="text-lg font-semibold text-secondary-900"
+                            className="text-lg font-semibold text-black"
                         >
                             {title}
                         </h3>
                         {showCloseButton && (
                             <button
                                 type="button"
-                                className="text-secondary-400 hover:text-secondary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-full p-1"
+                                className="text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-black rounded-full p-2 hover:bg-gray-100 transition-colors"
                                 onClick={onClose}
                                 aria-label="Close modal"
                             >
@@ -133,7 +133,7 @@ const Modal = ({
                     {!title && showCloseButton && (
                         <button
                             type="button"
-                            className="absolute top-4 right-4 text-secondary-400 hover:text-secondary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-full p-1 z-10"
+                            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-black rounded-full p-2 hover:bg-gray-100 transition-colors z-10"
                             onClick={onClose}
                             aria-label="Close modal"
                         >

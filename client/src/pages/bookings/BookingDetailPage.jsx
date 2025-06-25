@@ -396,8 +396,8 @@ const BookingDetailPage = () => {
                                     <div className="flex flex-col space-y-3">
                                         <div className="flex items-center justify-between bg-white p-3 rounded-lg border border-secondary-100">
                                             <div className="flex items-center">
-                                                <div className="bg-primary-100 p-2 rounded-full mr-3">
-                                                    <FaRegCalendarCheck className="text-primary-600" />
+                                                <div className="bg-gray-100 p-2 rounded-full mr-3">
+                                                    <FaRegCalendarCheck className="text-gray-600" />
                                                 </div>
                                                 <div>
                                                     <p className="text-xs text-secondary-600">
@@ -436,8 +436,8 @@ const BookingDetailPage = () => {
 
                                         <div className="flex items-center justify-between bg-white p-3 rounded-lg border border-secondary-100">
                                             <div className="flex items-center">
-                                                <div className="bg-primary-100 p-2 rounded-full mr-3">
-                                                    <FaRegCalendarTimes className="text-primary-600" />
+                                                <div className="bg-gray-100 p-2 rounded-full mr-3">
+                                                    <FaRegCalendarTimes className="text-gray-600" />
                                                 </div>
                                                 <div>
                                                     <p className="text-xs text-secondary-600">
@@ -474,8 +474,8 @@ const BookingDetailPage = () => {
                                             </span>
                                         </div>
 
-                                        <div className="text-center bg-primary-50 py-2 px-4 rounded-lg border border-primary-100">
-                                            <span className="font-medium text-primary-700">
+                                        <div className="text-center bg-gray-50 py-2 px-4 rounded-lg border border-gray-200">
+                                            <span className="font-medium text-black">
                                                 {calculateNights(
                                                     booking.checkInDate,
                                                     booking.checkOutDate
@@ -486,16 +486,16 @@ const BookingDetailPage = () => {
                                     </div>
                                 </div>
 
-                                <div className="bg-secondary-50 p-5 rounded-xl border border-secondary-100">
-                                    <h3 className="font-medium text-secondary-900 mb-3 flex items-center">
-                                        <FaUsers className="text-primary-500 mr-2" />
+                                <div className="bg-gray-50 p-5 rounded-xl border border-gray-200">
+                                    <h3 className="font-medium text-black mb-3 flex items-center">
+                                        <FaUsers className="text-gray-600 mr-2" />
                                         Guest Information
                                     </h3>
                                     <div className="flex flex-col space-y-3">
                                         <div className="flex items-center justify-between bg-white p-3 rounded-lg border border-secondary-100">
                                             <div className="flex items-center">
-                                                <div className="bg-primary-100 p-2 rounded-full mr-3">
-                                                    <FaRegUser className="text-primary-600" />
+                                                <div className="bg-gray-100 p-2 rounded-full mr-3">
+                                                    <FaRegUser className="text-gray-600" />
                                                 </div>
                                                 <div>
                                                     <p className="text-xs text-secondary-600">
@@ -549,12 +549,12 @@ const BookingDetailPage = () => {
                             {/* Special requests */}
                             {booking.specialRequests && (
                                 <div className="mb-8">
-                                    <h3 className="font-medium text-secondary-900 mb-3 flex items-center">
-                                        <FaRegCommentDots className="text-primary-500 mr-2" />
+                                    <h3 className="font-medium text-black mb-3 flex items-center">
+                                        <FaRegCommentDots className="text-gray-600 mr-2" />
                                         Special Requests
                                     </h3>
-                                    <div className="bg-secondary-50 p-4 rounded-xl border border-secondary-100">
-                                        <p className="text-secondary-800 italic">
+                                    <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                                        <p className="text-gray-800 italic">
                                             "{booking.specialRequests}"
                                         </p>
                                     </div>
@@ -563,11 +563,11 @@ const BookingDetailPage = () => {
 
                             {/* House Rules */}
                             <div className="mb-8">
-                                <h3 className="font-medium text-secondary-900 mb-3 flex items-center">
-                                    <FaClipboardList className="text-primary-500 mr-2" />
+                                <h3 className="font-medium text-black mb-3 flex items-center">
+                                    <FaClipboardList className="text-gray-600 mr-2" />
                                     House Rules
                                 </h3>
-                                <div className="bg-secondary-50 p-4 rounded-xl border border-secondary-100">
+                                <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
                                     <PropertyRules
                                         rules={booking.property.rules || {}}
                                         showAll={true}
@@ -575,7 +575,7 @@ const BookingDetailPage = () => {
                                     />
 
                                     <div className="mt-4 pt-3 border-t border-secondary-200 text-secondary-600 text-sm flex items-center">
-                                        <FaInfoCircle className="text-primary-500 mr-2 flex-shrink-0" />
+                                        <FaInfoCircle className="text-gray-400 mr-2 flex-shrink-0" />
                                         <span>
                                             Please make sure to follow these
                                             house rules during your stay.
@@ -586,11 +586,11 @@ const BookingDetailPage = () => {
 
                             {/* What to bring */}
                             <div className="mb-8">
-                                <h3 className="font-medium text-secondary-900 mb-3 flex items-center">
-                                    <FaSuitcase className="text-primary-500 mr-2" />
+                                <h3 className="font-medium text-black mb-3 flex items-center">
+                                    <FaSuitcase className="text-gray-600 mr-2" />
                                     What to Bring
                                 </h3>
-                                <div className="bg-secondary-50 p-4 rounded-xl border border-secondary-100">
+                                <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div className="bg-white p-3 rounded-lg border border-secondary-100">
                                             <h4 className="font-medium text-secondary-900 mb-2 flex items-center">
@@ -692,7 +692,7 @@ const BookingDetailPage = () => {
                                     </div>
 
                                     <div className="mt-4 pt-3 border-t border-secondary-200 text-secondary-600 text-sm flex items-center">
-                                        <FaInfoCircle className="text-primary-500 mr-2 flex-shrink-0" />
+                                        <FaInfoCircle className="text-gray-400 mr-2 flex-shrink-0" />
                                         <span>
                                             Contact the host if you have any
                                             specific questions about what's
@@ -705,7 +705,7 @@ const BookingDetailPage = () => {
                             {/* Booking status information */}
                             <div className="mb-8">
                                 <h3 className="font-medium text-secondary-900 mb-3 flex items-center">
-                                    <FaInfoCircle className="text-primary-500 mr-2" />
+                                    <FaInfoCircle className="text-gray-600 mr-2" />
                                     Status Information
                                 </h3>
                                 <div className="rounded-xl overflow-hidden border border-secondary-100">
@@ -786,18 +786,18 @@ const BookingDetailPage = () => {
                                     )}
 
                                     {booking.status === "completed" && (
-                                        <div className="bg-primary-50 p-5 flex items-start">
-                                            <div className="bg-primary-100 p-3 rounded-full mr-4 flex-shrink-0">
+                                        <div className="bg-blue-50 p-5 flex items-start">
+                                            <div className="bg-blue-100 p-3 rounded-full mr-4 flex-shrink-0">
                                                 <FaCheckCircle
-                                                    className="text-primary-600"
+                                                    className="text-blue-600"
                                                     size={20}
                                                 />
                                             </div>
                                             <div>
-                                                <p className="font-medium text-primary-800 mb-1">
+                                                <p className="font-medium text-blue-800 mb-1">
                                                     Stay completed
                                                 </p>
-                                                <p className="text-primary-700 mb-2">
+                                                <p className="text-blue-700 mb-2">
                                                     Your stay has been
                                                     completed. We hope you had a
                                                     great time!
@@ -805,7 +805,7 @@ const BookingDetailPage = () => {
                                                 {!booking.hasReview && (
                                                     <Link
                                                         to={`/reviews/add?propertyId=${booking.property._id}&bookingId=${booking._id}`}
-                                                        className="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+                                                        className="inline-flex items-center px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
                                                     >
                                                         <FaRegStar className="mr-2" />
                                                         Leave a review
@@ -820,7 +820,7 @@ const BookingDetailPage = () => {
                             {/* Cancellation policy */}
                             <div className="mb-8">
                                 <h3 className="font-medium text-secondary-900 mb-3 flex items-center">
-                                    <FaRegClock className="text-primary-500 mr-2" />
+                                    <FaRegClock className="text-gray-600 mr-2" />
                                     Cancellation Policy
                                 </h3>
                                 <div className="bg-secondary-50 p-4 rounded-xl border border-secondary-100 text-secondary-800">
@@ -843,7 +843,7 @@ const BookingDetailPage = () => {
                             {/* Travel Tips */}
                             <div>
                                 <h3 className="font-medium text-secondary-900 mb-3 flex items-center">
-                                    <FaRoute className="text-primary-500 mr-2" />
+                                    <FaRoute className="text-gray-600 mr-2" />
                                     Travel Tips
                                 </h3>
                                 <div className="bg-secondary-50 p-4 rounded-xl border border-secondary-100">
@@ -851,7 +851,7 @@ const BookingDetailPage = () => {
                                         <div className="bg-white p-3 rounded-lg border border-secondary-100">
                                             <h4 className="font-medium text-secondary-900 mb-2 flex items-center">
                                                 <FaMapMarkedAlt
-                                                    className="text-primary-500 mr-2"
+                                                    className="text-gray-600 mr-2"
                                                     size={14}
                                                 />
                                                 Getting There
@@ -962,7 +962,7 @@ const BookingDetailPage = () => {
                                         <div className="bg-white p-3 rounded-lg border border-secondary-100">
                                             <h4 className="font-medium text-secondary-900 mb-2 flex items-center">
                                                 <FaLightbulb
-                                                    className="text-primary-500 mr-2"
+                                                    className="text-gray-600 mr-2"
                                                     size={14}
                                                 />
                                                 Helpful Tips
@@ -1019,7 +1019,7 @@ const BookingDetailPage = () => {
                                     </div>
 
                                     <div className="mt-4 pt-3 border-t border-secondary-200 text-secondary-600 text-sm flex items-center">
-                                        <FaInfoCircle className="text-primary-500 mr-2 flex-shrink-0" />
+                                        <FaInfoCircle className="text-gray-400 mr-2 flex-shrink-0" />
                                         <span>
                                             Message your host for specific
                                             directions or local recommendations.
@@ -1032,7 +1032,7 @@ const BookingDetailPage = () => {
                         {/* Host information */}
                         <div className="bg-white rounded-xl shadow-md p-6 mb-6 border border-secondary-100 animate-fadeIn animation-delay-300">
                             <h2 className="text-2xl font-semibold mb-6 text-secondary-900 flex items-center">
-                                <FaRegUser className="text-primary-500 mr-3" />
+                                <FaRegUser className="text-gray-600 mr-3" />
                                 Host Information
                             </h2>
                             <div className="flex flex-col md:flex-row md:items-start">
@@ -1051,7 +1051,7 @@ const BookingDetailPage = () => {
                                         {booking.host.name}
                                     </h3>
                                     <div className="flex items-center mb-4">
-                                        <span className="bg-primary-50 text-primary-700 text-sm px-3 py-1 rounded-full border border-primary-100">
+                                        <span className="bg-gray-100 text-gray-700 text-sm px-3 py-1 rounded-full border border-gray-200">
                                             Host since{" "}
                                             {new Date(
                                                 booking.host.createdAt
@@ -1071,8 +1071,8 @@ const BookingDetailPage = () => {
                                             </h4>
                                             <div className="space-y-3">
                                                 <div className="flex items-center bg-white p-3 rounded-lg border border-secondary-100">
-                                                    <div className="bg-primary-100 p-2 rounded-full mr-3">
-                                                        <FaPhone className="text-primary-600" />
+                                                    <div className="bg-gray-100 p-2 rounded-full mr-3">
+                                                        <FaPhone className="text-gray-600" />
                                                     </div>
                                                     <div>
                                                         <p className="text-xs text-secondary-600">
@@ -1086,8 +1086,8 @@ const BookingDetailPage = () => {
                                                     </div>
                                                 </div>
                                                 <div className="flex items-center bg-white p-3 rounded-lg border border-secondary-100">
-                                                    <div className="bg-primary-100 p-2 rounded-full mr-3">
-                                                        <FaEnvelope className="text-primary-600" />
+                                                    <div className="bg-gray-100 p-2 rounded-full mr-3">
+                                                        <FaEnvelope className="text-gray-600" />
                                                     </div>
                                                     <div>
                                                         <p className="text-xs text-secondary-600">
@@ -1105,7 +1105,7 @@ const BookingDetailPage = () => {
                                     ) : (
                                         <div className="bg-secondary-50 p-4 rounded-xl border border-secondary-100 text-secondary-700">
                                             <div className="flex items-center">
-                                                <FaInfoCircle className="text-primary-500 mr-2" />
+                                                <FaInfoCircle className="text-gray-400 mr-2" />
                                                 <p>
                                                     Contact information will be
                                                     available once your booking
@@ -1125,7 +1125,7 @@ const BookingDetailPage = () => {
                             {/* Price summary */}
                             <div className="bg-white rounded-xl shadow-md p-6 border border-secondary-200 animate-fadeIn animation-delay-200">
                                 <h2 className="text-xl font-semibold mb-5 text-secondary-900 flex items-center">
-                                    <FaRegMoneyBillAlt className="text-primary-500 mr-2" />
+                                    <FaRegMoneyBillAlt className="text-gray-600 mr-2" />
                                     Price Details
                                 </h2>
                                 <div className="space-y-4 mb-5">
@@ -1202,7 +1202,7 @@ const BookingDetailPage = () => {
                                             </div>
                                         ) : (
                                             <div className="bg-secondary-50 text-secondary-700 p-3 rounded-lg border border-secondary-100 flex items-center">
-                                                <FaRegCreditCard className="text-primary-500 mr-2" />
+                                                <FaRegCreditCard className="text-gray-600 mr-2" />
                                                 <span>
                                                     Payment will be processed
                                                     upon arrival
@@ -1237,7 +1237,7 @@ const BookingDetailPage = () => {
                                     {/* Contact host button */}
                                     <Link
                                         to={`/messages?hostId=${booking.host._id}`}
-                                        className="w-full flex justify-center items-center px-4 py-3 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-colors font-medium"
+                                        className="w-full flex justify-center items-center px-4 py-3 bg-black text-white rounded-xl hover:bg-gray-800 transition-colors font-medium"
                                     >
                                         <FaEnvelope className="mr-2" />
                                         Contact host
@@ -1246,7 +1246,7 @@ const BookingDetailPage = () => {
                                     {/* View property button */}
                                     <Link
                                         to={`/properties/${booking.property._id}`}
-                                        className="w-full flex justify-center items-center px-4 py-3 bg-secondary-100 text-secondary-800 rounded-xl hover:bg-secondary-200 transition-colors font-medium"
+                                        className="w-full flex justify-center items-center px-4 py-3 bg-gray-100 text-gray-800 rounded-xl hover:bg-gray-200 transition-colors font-medium"
                                     >
                                         <FaHome className="mr-2" />
                                         View property
@@ -1255,13 +1255,13 @@ const BookingDetailPage = () => {
                             </div>
 
                             {/* Safety notice */}
-                            <div className="bg-secondary-50 p-4 rounded-xl border border-secondary-200 animate-fadeIn animation-delay-400">
+                            <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 animate-fadeIn animation-delay-400">
                                 <div className="flex items-start">
-                                    <div className="text-primary-500 mr-3 mt-1">
+                                    <div className="text-gray-600 mr-3 mt-1">
                                         <FaShieldAlt size={20} />
                                     </div>
                                     <div>
-                                        <h4 className="font-medium text-secondary-900 mb-1">
+                                        <h4 className="font-medium text-black mb-1">
                                             Booking Protection
                                         </h4>
                                         <p className="text-sm text-secondary-700">
