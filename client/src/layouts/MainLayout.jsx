@@ -2,16 +2,15 @@ import { Outlet, useLocation } from "react-router-dom"
 import { useEffect, useState } from "react"
 import Header from "../components/layout/Header"
 import Footer from "../components/layout/Footer"
-import { FaArrowUp, FaCookieBite, FaTimes } from "react-icons/fa"
+import { FaArrowUp } from "react-icons/fa"
 
 /**
  * Enhanced main layout component with improved structure, scroll behavior,
- * cookie consent, and loading transitions
+ * and loading transitions
  */
 const MainLayout = () => {
     const location = useLocation()
     const [showScrollButton, setShowScrollButton] = useState(false)
-    const [showCookieConsent, setShowCookieConsent] = useState(true)
     const [pageTransition, setPageTransition] = useState(false)
 
     // Scroll to top on route change and trigger page transition
@@ -30,18 +29,6 @@ const MainLayout = () => {
         window.addEventListener("scroll", handleScroll)
         return () => window.removeEventListener("scroll", handleScroll)
     }, [])
-
-    // Check if cookie consent was previously accepted
-    useEffect(() => {
-        const consentGiven = localStorage.getItem("cookieConsent") === "true"
-        setShowCookieConsent(!consentGiven)
-    }, [])
-
-    // Handle cookie consent
-    const acceptCookies = () => {
-        localStorage.setItem("cookieConsent", "true")
-        setShowCookieConsent(false)
-    }
 
     // Determine if current page is homepage
     const isHomePage = location.pathname === "/"
@@ -75,50 +62,6 @@ const MainLayout = () => {
                 >
                     <FaArrowUp className="h-5 w-5" />
                 </button>
-            )}
-
-            {/* Cookie consent banner */}
-            {showCookieConsent && (
-                <div className="fixed bottom-0 inset-x-0 pb-2 sm:pb-5 z-50 animate-slideInRight">
-                    <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
-                        <div className="p-2 rounded-lg bg-primary-600 shadow-lg sm:p-3">
-                            <div className="flex items-center justify-between flex-wrap">
-                                <div className="flex-1 flex items-center">
-                                    <span className="flex p-2 rounded-lg bg-primary-800">
-                                        <FaCookieBite className="h-6 w-6 text-white" />
-                                    </span>
-                                    <p className="ml-3 font-medium text-white truncate">
-                                        <span className="md:hidden">
-                                            We use cookies for better
-                                            experience.
-                                        </span>
-                                        <span className="hidden md:inline">
-                                            We use cookies to enhance your
-                                            browsing experience and analyze our
-                                            traffic.
-                                        </span>
-                                    </p>
-                                </div>
-                                <div className="flex-shrink-0 flex items-center">
-                                    <button
-                                        onClick={acceptCookies}
-                                        className="flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-primary-600 bg-white hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-primary-600 focus:ring-white"
-                                    >
-                                        Accept
-                                    </button>
-                                    <button
-                                        onClick={() =>
-                                            setShowCookieConsent(false)
-                                        }
-                                        className="ml-3 flex items-center justify-center p-2 rounded-md text-white hover:text-primary-100 focus:outline-none focus:ring-2 focus:ring-white"
-                                    >
-                                        <FaTimes className="h-5 w-5" />
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             )}
 
             {/* Page loading indicator (optional) */}

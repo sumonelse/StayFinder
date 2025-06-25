@@ -11,7 +11,6 @@ This directory contains the layout components used throughout the StayFinder app
     -   Responsive header with navigation
     -   Footer with site information
     -   Scroll-to-top button that appears when scrolling
-    -   Cookie consent banner
     -   Page transition animations
     -   Loading indicator
 
