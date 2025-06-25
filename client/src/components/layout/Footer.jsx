@@ -19,36 +19,6 @@ const Footer = () => {
     return (
         <footer className="bg-secondary-900 text-white pt-16 pb-8">
             <div className="container mx-auto px-4">
-                {/* Newsletter Section */}
-                <div className="bg-primary-900 rounded-xl p-8 mb-12 shadow-lg transform -translate-y-20">
-                    <div className="flex flex-col md:flex-row items-center justify-between">
-                        <div className="mb-6 md:mb-0 md:mr-8">
-                            <h3 className="text-2xl font-bold text-white mb-2">
-                                Subscribe to our newsletter
-                            </h3>
-                            <p className="text-primary-100">
-                                Get the latest updates on new properties and
-                                travel tips
-                            </p>
-                        </div>
-                        <div className="w-full md:w-auto">
-                            <form className="flex flex-col sm:flex-row gap-2">
-                                <input
-                                    type="email"
-                                    placeholder="Your email address"
-                                    className="px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-300 bg-primary-800 text-white placeholder-primary-300 border border-primary-700"
-                                />
-                                <button
-                                    type="submit"
-                                    className="btn bg-white text-primary-700 hover:bg-primary-50 px-6"
-                                >
-                                    Subscribe
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
                     {/* Company Info */}
                     <div>
