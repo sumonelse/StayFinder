@@ -1555,7 +1555,7 @@ const PropertyDetailPage = () => {
                                                 Pets allowed (with restrictions)
                                             </span>
                                         </div>
-                                        <div className="flex items-center text-secondary-700">
+                                        <div className="flex items-center text-secondary-600">
                                             <div className="w-8 h-8 bg-green-50 rounded-full flex items-center justify-center mr-3 text-green-500">
                                                 <FaCheck size={14} />
                                             </div>
