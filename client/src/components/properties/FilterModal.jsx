@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react"
 import PropTypes from "prop-types"
+import ReactSlider from "react-slider"
+import "./FilterModal.css"
 import {
     FaMapMarkerAlt,
     FaRupeeSign,
@@ -47,10 +49,20 @@ const FilterModal = ({
     // Track if any changes were made
     const [hasChanges, setHasChanges] = useState(false)
 
+    // Price range state for the slider
+    const [priceRange, setPriceRange] = useState([
+        parseInt(localFilters.minPrice) || 0,
+        parseInt(localFilters.maxPrice) || 10000,
+    ])
+
     // Reset local filters when modal opens
     useEffect(() => {
         if (isOpen) {
             setLocalFilters({ ...filters })
+            setPriceRange([
+                parseInt(filters.minPrice) || 0,
+                parseInt(filters.maxPrice) || 10000,
+            ])
             setHasChanges(false)
         }
     }, [isOpen, filters])
@@ -146,6 +158,7 @@ const FilterModal = ({
             amenities: "",
         }
         setLocalFilters(clearedFilters)
+        setPriceRange([0, 10000])
         setHasChanges(true)
     }
 
@@ -175,11 +188,10 @@ const FilterModal = ({
             isOpen={isOpen}
             onClose={onClose}
             title={
-                <div className="flex items-center">
-                    <FaFilter className="mr-2 text-primary-500" />
-                    <span>Filters</span>
+                <div className="flex items-center justify-center w-full">
+                    <span className="font-medium text-gray-900">Filters</span>
                     {countActiveFilters() > 0 && (
-                        <span className="ml-2 bg-primary-100 text-primary-700 text-xs font-medium px-2 py-0.5 rounded-full">
+                        <span className="ml-2 bg-gray-100 text-gray-800 text-xs font-medium px-2 py-0.5 rounded-full">
                             {countActiveFilters()}
                         </span>
                     )}
@@ -190,263 +202,348 @@ const FilterModal = ({
         >
             <div className="flex flex-col h-full">
                 {/* Filter Categories */}
-                <div className="flex flex-col divide-y divide-gray-200">
-                    {/* Property Type Category */}
-                    <div className="py-4">
-                        <button
-                            className="w-full flex items-center justify-between text-left font-medium text-gray-900 mb-2"
-                            onClick={() => toggleCategory("propertyType")}
-                        >
-                            <div className="flex items-center">
-                                <FaHome className="mr-2 text-primary-500" />
-                                <span className="text-lg">Property Type</span>
-                            </div>
-                            <div className="flex items-center">
-                                <span className="text-gray-500">
-                                    {localFilters.type ? (
-                                        <span className="text-primary-600 text-sm font-normal capitalize">
-                                            {localFilters.type}
-                                        </span>
-                                    ) : (
-                                        <span className="text-gray-400 text-sm font-normal">
-                                            Any type
-                                        </span>
-                                    )}
-                                </span>
-                                <svg
-                                    className={`ml-2 w-5 h-5 text-gray-400 transition-transform ${
-                                        expandedCategory === "propertyType"
-                                            ? "transform rotate-180"
-                                            : ""
-                                    }`}
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M19 9l-7 7-7-7"
-                                    />
-                                </svg>
-                            </div>
-                        </button>
+                <div className="flex flex-col divide-y divide-gray-200 mt-4">
+                    {/* Property Type Category - Airbnb Style */}
+                    <div className="py-6">
+                        <div className="flex items-center justify-between mb-4">
+                            <h3 className="text-lg font-semibold text-gray-900">
+                                Property Type
+                            </h3>
+                            <span className="text-gray-500 text-sm">
+                                {localFilters.type ? (
+                                    <span className="text-gray-800 font-medium capitalize">
+                                        {localFilters.type}
+                                    </span>
+                                ) : (
+                                    <span>Any type</span>
+                                )}
+                            </span>
+                        </div>
 
-                        {expandedCategory === "propertyType" && (
-                            <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-                                {propertyTypes.map((type) => {
-                                    const isSelected =
-                                        localFilters.type === type.value
-                                    return (
-                                        <button
-                                            key={type.value}
-                                            type="button"
-                                            onClick={() =>
-                                                togglePropertyType(type.value)
-                                            }
-                                            className={`flex flex-col items-center justify-center p-4 rounded-xl transition-all ${
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+                            {propertyTypes.map((type) => {
+                                const isSelected =
+                                    localFilters.type === type.value
+                                return (
+                                    <button
+                                        key={type.value}
+                                        type="button"
+                                        onClick={() =>
+                                            togglePropertyType(type.value)
+                                        }
+                                        className={`relative flex flex-col items-center justify-center p-4 rounded-xl transition-all ${
+                                            isSelected
+                                                ? "bg-gray-50 border-2 border-gray-900"
+                                                : "bg-white border border-gray-300 hover:border-gray-500"
+                                        }`}
+                                    >
+                                        <div
+                                            className={`text-2xl mb-2 ${
                                                 isSelected
-                                                    ? "bg-primary-50 text-primary-700 border-2 border-primary-500 shadow-md"
-                                                    : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 hover:border-primary-200"
+                                                    ? "text-gray-900"
+                                                    : "text-gray-500"
                                             }`}
                                         >
-                                            <div
-                                                className={`text-2xl mb-2 ${
-                                                    isSelected
-                                                        ? "text-primary-600"
-                                                        : "text-gray-500"
-                                                }`}
-                                            >
-                                                {type.icon}
+                                            {type.icon}
+                                        </div>
+                                        <span
+                                            className={`text-sm ${
+                                                isSelected
+                                                    ? "font-medium text-gray-900"
+                                                    : "text-gray-600"
+                                            }`}
+                                        >
+                                            {type.name}
+                                        </span>
+                                        {isSelected && (
+                                            <div className="absolute top-2 right-2 bg-gray-900 text-white rounded-full p-0.5">
+                                                <FaCheck size={8} />
                                             </div>
-                                            <span className="text-sm font-medium">
-                                                {type.name}
-                                            </span>
-                                            {isSelected && (
-                                                <div className="absolute top-2 right-2 bg-primary-500 text-white rounded-full p-0.5">
-                                                    <FaCheck size={10} />
-                                                </div>
-                                            )}
-                                        </button>
-                                    )
-                                })}
-                            </div>
-                        )}
+                                        )}
+                                    </button>
+                                )
+                            })}
+                        </div>
                     </div>
 
                     {/* Price Range Category */}
-                    <div className="py-4">
-                        <button
-                            className="w-full flex items-center justify-between text-left font-medium text-gray-900 mb-2"
-                            onClick={() => toggleCategory("priceRange")}
-                        >
-                            <div className="flex items-center">
-                                <FaRupeeSign className="mr-2 text-primary-500" />
-                                <span className="text-lg">Price Range</span>
+                    <div className="py-6">
+                        <div className="flex items-center justify-between mb-4">
+                            <h3 className="text-lg font-semibold text-gray-900">
+                                Price Range
+                            </h3>
+                            <span className="text-gray-500 text-sm">
+                                {localFilters.minPrice ||
+                                localFilters.maxPrice ? (
+                                    <span className="text-gray-800 font-medium">
+                                        {localFilters.minPrice
+                                            ? formatPrice(localFilters.minPrice)
+                                            : `${getCurrencySymbol()}0`}{" "}
+                                        -{" "}
+                                        {localFilters.maxPrice
+                                            ? formatPrice(localFilters.maxPrice)
+                                            : "Any"}
+                                    </span>
+                                ) : (
+                                    <span>Any price</span>
+                                )}
+                            </span>
+                        </div>
+                        <div className="bg-white p-4 rounded-xl">
+                            {/* Interactive price range slider using ReactSlider */}
+                            <div className="mb-6 px-2">
+                                <ReactSlider
+                                    className="horizontal-slider"
+                                    thumbClassName="thumb"
+                                    trackClassName="track"
+                                    value={priceRange}
+                                    ariaLabel={[
+                                        "Minimum price",
+                                        "Maximum price",
+                                    ]}
+                                    ariaValuetext={(state) =>
+                                        `${getCurrencySymbol()}${
+                                            state.valueNow
+                                        }`
+                                    }
+                                    pearling
+                                    min={0}
+                                    max={10000}
+                                    minDistance={500}
+                                    onChange={(value) => {
+                                        setPriceRange(value)
+                                        setLocalFilters((prev) => ({
+                                            ...prev,
+                                            minPrice: value[0].toString(),
+                                            maxPrice: value[1].toString(),
+                                        }))
+                                        setHasChanges(true)
+                                    }}
+                                />
                             </div>
-                            <div className="flex items-center">
-                                <span className="text-gray-500">
-                                    {localFilters.minPrice ||
-                                    localFilters.maxPrice ? (
-                                        <span className="text-primary-600 text-sm font-normal">
-                                            {localFilters.minPrice
-                                                ? formatPrice(
-                                                      localFilters.minPrice
-                                                  )
-                                                : `${getCurrencySymbol()}0`}{" "}
-                                            -{" "}
-                                            {localFilters.maxPrice
-                                                ? formatPrice(
-                                                      localFilters.maxPrice
-                                                  )
-                                                : "Any"}
-                                        </span>
-                                    ) : (
-                                        <span className="text-gray-400 text-sm font-normal">
-                                            Any price
-                                        </span>
-                                    )}
-                                </span>
-                                <svg
-                                    className={`ml-2 w-5 h-5 text-gray-400 transition-transform ${
-                                        expandedCategory === "priceRange"
-                                            ? "transform rotate-180"
-                                            : ""
-                                    }`}
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d="M19 9l-7 7-7-7"
-                                    />
-                                </svg>
-                            </div>
-                        </button>
 
-                        {expandedCategory === "priceRange" && (
-                            <div className="mt-4 bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-                                <div className="flex items-center gap-3">
-                                    <div className="relative flex-1">
+                            {/* Current price range display */}
+                            <div className="mt-2 mb-4 text-center">
+                                <span className="text-sm font-medium text-gray-700">
+                                    Current range: {getCurrencySymbol()}
+                                    {formatPrice(priceRange[0])} -{" "}
+                                    {getCurrencySymbol()}
+                                    {formatPrice(priceRange[1])}
+                                </span>
+                            </div>
+
+                            <div className="flex items-center gap-4">
+                                <div className="flex-1">
+                                    <label className="block text-sm text-gray-600 mb-1">
+                                        Minimum
+                                    </label>
+                                    <div className="relative">
                                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <FaRupeeSign className="text-primary-500" />
+                                            <span className="text-gray-500">
+                                                {getCurrencySymbol()}
+                                            </span>
                                         </div>
                                         <input
                                             type="number"
                                             name="minPrice"
-                                            placeholder="Min price"
+                                            placeholder="0"
                                             value={localFilters.minPrice}
-                                            onChange={handleLocalFilterChange}
-                                            className="input-field pl-8 rounded-lg border-gray-200 focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50"
+                                            onChange={(e) => {
+                                                handleLocalFilterChange(e)
+                                                const newMinPrice =
+                                                    parseInt(e.target.value) ||
+                                                    0
+
+                                                // Ensure min price is not greater than max price
+                                                if (
+                                                    localFilters.maxPrice &&
+                                                    newMinPrice >
+                                                        parseInt(
+                                                            localFilters.maxPrice
+                                                        )
+                                                ) {
+                                                    setLocalFilters((prev) => ({
+                                                        ...prev,
+                                                        maxPrice:
+                                                            e.target.value,
+                                                    }))
+                                                    setPriceRange([
+                                                        newMinPrice,
+                                                        newMinPrice,
+                                                    ])
+                                                } else {
+                                                    setPriceRange([
+                                                        newMinPrice,
+                                                        priceRange[1],
+                                                    ])
+                                                }
+                                            }}
+                                            min="0"
+                                            className="w-full pl-7 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-200 focus:border-gray-400"
                                         />
                                     </div>
-                                    <span className="text-gray-400">to</span>
-                                    <div className="relative flex-1">
+                                </div>
+
+                                <div className="flex items-center justify-center">
+                                    <div className="w-6 h-0.5 bg-gray-300"></div>
+                                </div>
+
+                                <div className="flex-1">
+                                    <label className="block text-sm text-gray-600 mb-1">
+                                        Maximum
+                                    </label>
+                                    <div className="relative">
                                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <FaRupeeSign className="text-primary-500" />
+                                            <span className="text-gray-500">
+                                                {getCurrencySymbol()}
+                                            </span>
                                         </div>
                                         <input
                                             type="number"
                                             name="maxPrice"
-                                            placeholder="Max price"
+                                            placeholder="Any"
                                             value={localFilters.maxPrice}
-                                            onChange={handleLocalFilterChange}
-                                            className="input-field pl-8 rounded-lg border-gray-200 focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50"
+                                            onChange={(e) => {
+                                                handleLocalFilterChange(e)
+                                                const newMaxPrice =
+                                                    parseInt(e.target.value) ||
+                                                    10000
+
+                                                // Ensure max price is not less than min price
+                                                if (
+                                                    localFilters.minPrice &&
+                                                    newMaxPrice <
+                                                        parseInt(
+                                                            localFilters.minPrice
+                                                        )
+                                                ) {
+                                                    setLocalFilters((prev) => ({
+                                                        ...prev,
+                                                        minPrice:
+                                                            e.target.value,
+                                                    }))
+                                                    setPriceRange([
+                                                        newMaxPrice,
+                                                        newMaxPrice,
+                                                    ])
+                                                } else {
+                                                    setPriceRange([
+                                                        priceRange[0],
+                                                        newMaxPrice,
+                                                    ])
+                                                }
+                                            }}
+                                            min={localFilters.minPrice || "0"}
+                                            className="w-full pl-7 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-200 focus:border-gray-400"
                                         />
                                     </div>
                                 </div>
-
-                                <div className="mt-6 mb-2">
-                                    <div className="relative h-2 bg-gray-200 rounded-full">
-                                        <div
-                                            className="absolute left-0 right-0 h-full bg-primary-500 rounded-full"
-                                            style={{ width: "60%" }}
-                                        ></div>
-                                        <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-4 h-4 bg-white border-2 border-primary-500 rounded-full"></div>
-                                        <div className="absolute left-[60%] top-1/2 transform -translate-y-1/2 w-4 h-4 bg-white border-2 border-primary-500 rounded-full"></div>
-                                    </div>
-                                </div>
-
-                                <div className="mt-4 flex justify-between text-sm text-gray-500">
-                                    <span>{getCurrencySymbol()}0</span>
-                                    <span>{getCurrencySymbol()}500</span>
-                                    <span>{getCurrencySymbol()}1000</span>
-                                    <span>{getCurrencySymbol()}1500+</span>
-                                </div>
-
-                                <div className="mt-4 flex flex-wrap gap-2">
-                                    {[100, 200, 500, 1000, 1500].map(
-                                        (price) => (
-                                            <button
-                                                key={price}
-                                                type="button"
-                                                onClick={() => {
-                                                    setLocalFilters((prev) => ({
-                                                        ...prev,
-                                                        maxPrice:
-                                                            price.toString(),
-                                                    }))
-                                                    setHasChanges(true)
-                                                }}
-                                                className={`px-3 py-1.5 text-sm rounded-full border ${
-                                                    localFilters.maxPrice ===
-                                                    price.toString()
-                                                        ? "bg-primary-50 border-primary-300 text-primary-700"
-                                                        : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
-                                                }`}
-                                            >
-                                                Under {getCurrencySymbol()}
-                                                {price}
-                                            </button>
-                                        )
-                                    )}
-                                </div>
                             </div>
-                        )}
+
+                            <div className="mt-6 flex justify-between text-sm text-gray-500">
+                                <span>{getCurrencySymbol()}0</span>
+                                <span>{getCurrencySymbol()}2500</span>
+                                <span>{getCurrencySymbol()}5000</span>
+                                <span>{getCurrencySymbol()}7500</span>
+                                <span>{getCurrencySymbol()}10000+</span>
+                            </div>
+
+                            <div className="mt-4 flex flex-wrap gap-2">
+                                {[500, 1000, 2500, 5000, 7500].map((price) => (
+                                    <button
+                                        key={price}
+                                        type="button"
+                                        onClick={() => {
+                                            setLocalFilters((prev) => ({
+                                                ...prev,
+                                                minPrice: "0",
+                                                maxPrice: price.toString(),
+                                            }))
+                                            setPriceRange([0, price])
+                                            setHasChanges(true)
+                                        }}
+                                        className={`px-3 py-1.5 text-sm rounded-full border ${
+                                            localFilters.maxPrice ===
+                                            price.toString()
+                                                ? "bg-primary-50 border-primary-300 text-primary-700 font-medium"
+                                                : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300"
+                                        }`}
+                                    >
+                                        Under {getCurrencySymbol()}
+                                        {price}
+                                    </button>
+                                ))}
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setLocalFilters((prev) => ({
+                                            ...prev,
+                                            minPrice: "",
+                                            maxPrice: "",
+                                        }))
+                                        setPriceRange([0, 10000])
+                                        setHasChanges(true)
+                                    }}
+                                    className={`px-3 py-1.5 text-sm rounded-full border ${
+                                        !localFilters.minPrice &&
+                                        !localFilters.maxPrice
+                                            ? "bg-primary-50 border-primary-300 text-primary-700 font-medium"
+                                            : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300"
+                                    }`}
+                                >
+                                    Any price
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
                     {/* Rooms & Guests Category */}
                     <div className="py-4">
                         <button
-                            className="w-full flex items-center justify-between text-left font-medium text-gray-900 mb-2"
-                            onClick={() => toggleCategory("roomsGuests")}
+                            type="button"
+                            onClick={() => toggleCategory("rooms")}
+                            className="w-full flex items-center justify-between py-2"
                         >
-                            <div className="flex items-center">
-                                <FaUsers className="mr-2 text-primary-500" />
-                                <span className="text-lg">Rooms & Guests</span>
-                            </div>
+                            <h3 className="text-lg font-semibold text-gray-900">
+                                Rooms & Guests
+                            </h3>
                             <div className="flex items-center">
                                 <span className="text-gray-500">
                                     {localFilters.bedrooms ||
                                     localFilters.bathrooms ||
                                     localFilters.maxGuests ? (
                                         <span className="text-primary-600 text-sm font-normal">
-                                            {localFilters.bedrooms
-                                                ? `${localFilters.bedrooms}+ beds`
-                                                : ""}
-                                            {localFilters.bathrooms
-                                                ? `${
-                                                      localFilters.bedrooms
-                                                          ? " · "
-                                                          : ""
-                                                  }${
-                                                      localFilters.bathrooms
-                                                  }+ baths`
-                                                : ""}
-                                            {localFilters.maxGuests
-                                                ? `${
-                                                      localFilters.bedrooms ||
-                                                      localFilters.bathrooms
-                                                          ? " · "
-                                                          : ""
-                                                  }${
-                                                      localFilters.maxGuests
-                                                  } guests`
-                                                : ""}
+                                            {[
+                                                localFilters.bedrooms &&
+                                                    `${
+                                                        localFilters.bedrooms
+                                                    } bed${
+                                                        localFilters.bedrooms !==
+                                                        "1"
+                                                            ? "s"
+                                                            : ""
+                                                    }`,
+                                                localFilters.bathrooms &&
+                                                    `${
+                                                        localFilters.bathrooms
+                                                    } bath${
+                                                        localFilters.bathrooms !==
+                                                        "1"
+                                                            ? "s"
+                                                            : ""
+                                                    }`,
+                                                localFilters.maxGuests &&
+                                                    `${
+                                                        localFilters.maxGuests
+                                                    } guest${
+                                                        localFilters.maxGuests !==
+                                                        "1"
+                                                            ? "s"
+                                                            : ""
+                                                    }`,
+                                            ]
+                                                .filter(Boolean)
+                                                .join(", ")}
                                         </span>
                                     ) : (
                                         <span className="text-gray-400 text-sm font-normal">
@@ -456,7 +553,7 @@ const FilterModal = ({
                                 </span>
                                 <svg
                                     className={`ml-2 w-5 h-5 text-gray-400 transition-transform ${
-                                        expandedCategory === "roomsGuests"
+                                        expandedCategory === "rooms"
                                             ? "transform rotate-180"
                                             : ""
                                     }`}
@@ -474,9 +571,9 @@ const FilterModal = ({
                             </div>
                         </button>
 
-                        {expandedCategory === "roomsGuests" && (
+                        {expandedCategory === "rooms" && (
                             <div className="mt-4 bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                     <div>
                                         <label
                                             htmlFor="bedrooms"
@@ -484,50 +581,20 @@ const FilterModal = ({
                                         >
                                             Bedrooms
                                         </label>
-                                        <div className="flex gap-2">
-                                            {[
-                                                "Any",
-                                                "1+",
-                                                "2+",
-                                                "3+",
-                                                "4+",
-                                                "5+",
-                                            ].map((value, index) => (
-                                                <button
-                                                    key={value}
-                                                    type="button"
-                                                    onClick={() => {
-                                                        setLocalFilters(
-                                                            (prev) => ({
-                                                                ...prev,
-                                                                bedrooms:
-                                                                    index === 0
-                                                                        ? ""
-                                                                        : value.replace(
-                                                                              "+",
-                                                                              ""
-                                                                          ),
-                                                            })
-                                                        )
-                                                        setHasChanges(true)
-                                                    }}
-                                                    className={`flex-1 py-2 rounded-lg border ${
-                                                        (index === 0 &&
-                                                            !localFilters.bedrooms) ||
-                                                        (index > 0 &&
-                                                            localFilters.bedrooms ===
-                                                                value.replace(
-                                                                    "+",
-                                                                    ""
-                                                                ))
-                                                            ? "bg-primary-50 border-primary-300 text-primary-700"
-                                                            : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
-                                                    }`}
-                                                >
-                                                    {value}
-                                                </button>
-                                            ))}
-                                        </div>
+                                        <select
+                                            id="bedrooms"
+                                            name="bedrooms"
+                                            value={localFilters.bedrooms}
+                                            onChange={handleLocalFilterChange}
+                                            className="w-full rounded-lg border-gray-200 focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50"
+                                        >
+                                            <option value="">Any</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5+</option>
+                                        </select>
                                     </div>
                                     <div>
                                         <label
@@ -536,49 +603,19 @@ const FilterModal = ({
                                         >
                                             Bathrooms
                                         </label>
-                                        <div className="flex gap-2">
-                                            {[
-                                                "Any",
-                                                "1+",
-                                                "2+",
-                                                "3+",
-                                                "4+",
-                                            ].map((value, index) => (
-                                                <button
-                                                    key={value}
-                                                    type="button"
-                                                    onClick={() => {
-                                                        setLocalFilters(
-                                                            (prev) => ({
-                                                                ...prev,
-                                                                bathrooms:
-                                                                    index === 0
-                                                                        ? ""
-                                                                        : value.replace(
-                                                                              "+",
-                                                                              ""
-                                                                          ),
-                                                            })
-                                                        )
-                                                        setHasChanges(true)
-                                                    }}
-                                                    className={`flex-1 py-2 rounded-lg border ${
-                                                        (index === 0 &&
-                                                            !localFilters.bathrooms) ||
-                                                        (index > 0 &&
-                                                            localFilters.bathrooms ===
-                                                                value.replace(
-                                                                    "+",
-                                                                    ""
-                                                                ))
-                                                            ? "bg-primary-50 border-primary-300 text-primary-700"
-                                                            : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
-                                                    }`}
-                                                >
-                                                    {value}
-                                                </button>
-                                            ))}
-                                        </div>
+                                        <select
+                                            id="bathrooms"
+                                            name="bathrooms"
+                                            value={localFilters.bathrooms}
+                                            onChange={handleLocalFilterChange}
+                                            className="w-full rounded-lg border-gray-200 focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50"
+                                        >
+                                            <option value="">Any</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4+</option>
+                                        </select>
                                     </div>
                                     <div>
                                         <label
@@ -587,46 +624,25 @@ const FilterModal = ({
                                         >
                                             Guests
                                         </label>
-                                        <div className="flex gap-2">
-                                            {["Any", "2", "4", "6", "8+"].map(
-                                                (value, index) => (
-                                                    <button
-                                                        key={value}
-                                                        type="button"
-                                                        onClick={() => {
-                                                            setLocalFilters(
-                                                                (prev) => ({
-                                                                    ...prev,
-                                                                    maxGuests:
-                                                                        index ===
-                                                                        0
-                                                                            ? ""
-                                                                            : value.replace(
-                                                                                  "+",
-                                                                                  ""
-                                                                              ),
-                                                                })
-                                                            )
-                                                            setHasChanges(true)
-                                                        }}
-                                                        className={`flex-1 py-2 rounded-lg border ${
-                                                            (index === 0 &&
-                                                                !localFilters.maxGuests) ||
-                                                            (index > 0 &&
-                                                                localFilters.maxGuests ===
-                                                                    value.replace(
-                                                                        "+",
-                                                                        ""
-                                                                    ))
-                                                                ? "bg-primary-50 border-primary-300 text-primary-700"
-                                                                : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
-                                                        }`}
-                                                    >
-                                                        {value}
-                                                    </button>
-                                                )
-                                            )}
-                                        </div>
+                                        <select
+                                            id="maxGuests"
+                                            name="maxGuests"
+                                            value={localFilters.maxGuests}
+                                            onChange={handleLocalFilterChange}
+                                            className="w-full rounded-lg border-gray-200 focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50"
+                                        >
+                                            <option value="">Any</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10+</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -636,23 +652,24 @@ const FilterModal = ({
                     {/* Location Category */}
                     <div className="py-4">
                         <button
-                            className="w-full flex items-center justify-between text-left font-medium text-gray-900 mb-2"
+                            type="button"
                             onClick={() => toggleCategory("location")}
+                            className="w-full flex items-center justify-between py-2"
                         >
-                            <div className="flex items-center">
-                                <FaMapMarkerAlt className="mr-2 text-primary-500" />
-                                <span className="text-lg">Location</span>
-                            </div>
+                            <h3 className="text-lg font-semibold text-gray-900">
+                                Location
+                            </h3>
                             <div className="flex items-center">
                                 <span className="text-gray-500">
                                     {localFilters.city ||
                                     localFilters.country ? (
                                         <span className="text-primary-600 text-sm font-normal">
-                                            {localFilters.city &&
-                                            localFilters.country
-                                                ? `${localFilters.city}, ${localFilters.country}`
-                                                : localFilters.city ||
-                                                  localFilters.country}
+                                            {[
+                                                localFilters.city,
+                                                localFilters.country,
+                                            ]
+                                                .filter(Boolean)
+                                                .join(", ")}
                                         </span>
                                     ) : (
                                         <span className="text-gray-400 text-sm font-normal">
@@ -732,41 +749,6 @@ const FilterModal = ({
                                         </div>
                                     </div>
                                 </div>
-
-                                <div className="mt-4">
-                                    <p className="text-sm text-gray-500 mb-2">
-                                        Popular destinations
-                                    </p>
-                                    <div className="flex flex-wrap gap-2">
-                                        {[
-                                            "New York",
-                                            "Los Angeles",
-                                            "Miami",
-                                            "Chicago",
-                                            "San Francisco",
-                                            "Las Vegas",
-                                        ].map((city) => (
-                                            <button
-                                                key={city}
-                                                type="button"
-                                                onClick={() => {
-                                                    setLocalFilters((prev) => ({
-                                                        ...prev,
-                                                        city,
-                                                    }))
-                                                    setHasChanges(true)
-                                                }}
-                                                className={`px-3 py-1.5 text-sm rounded-full border ${
-                                                    localFilters.city === city
-                                                        ? "bg-primary-50 border-primary-300 text-primary-700"
-                                                        : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
-                                                }`}
-                                            >
-                                                {city}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
                             </div>
                         )}
                     </div>
@@ -774,13 +756,13 @@ const FilterModal = ({
                     {/* Amenities Category */}
                     <div className="py-4">
                         <button
-                            className="w-full flex items-center justify-between text-left font-medium text-gray-900 mb-2"
+                            type="button"
                             onClick={() => toggleCategory("amenities")}
+                            className="w-full flex items-center justify-between py-2"
                         >
-                            <div className="flex items-center">
-                                <IoIosRocket className="mr-2 text-primary-500" />
-                                <span className="text-lg">Amenities</span>
-                            </div>
+                            <h3 className="text-lg font-semibold text-gray-900">
+                                Amenities
+                            </h3>
                             <div className="flex items-center">
                                 <span className="text-gray-500">
                                     {localFilters.amenities ? (
@@ -861,40 +843,28 @@ const FilterModal = ({
                     </div>
                 </div>
 
-                {/* Action Buttons */}
-                <div className="mt-6 flex items-center justify-between pt-4 border-t border-gray-200">
+                {/* Spacer to prevent content from being hidden behind the fixed footer */}
+                <div className="h-20"></div>
+
+                {/* Action Buttons - Airbnb Style */}
+                <div className="sticky bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 flex items-center justify-between shadow-md">
                     <button
                         type="button"
                         onClick={clearAllFilters}
-                        className="text-primary-600 hover:text-primary-800 font-medium flex items-center"
+                        className="text-gray-800 underline font-medium hover:text-black"
                     >
-                        <FaTimes className="mr-1" size={14} />
-                        Clear all filters
+                        Clear all
                     </button>
-                    <div className="flex gap-3">
-                        <button
-                            type="button"
-                            onClick={onClose}
-                            className="btn btn-secondary"
-                        >
-                            Cancel
-                        </button>
-                        <button
-                            type="button"
-                            onClick={(e) => applyFilters(e)}
-                            className={`btn ${
-                                hasChanges ? "btn-primary" : "btn-secondary"
-                            }`}
-                            disabled={!hasChanges}
-                        >
-                            Apply Filters
-                            {countActiveFilters() > 0 && (
-                                <span className="ml-2 bg-white text-primary-600 text-xs font-medium px-2 py-0.5 rounded-full">
-                                    {countActiveFilters()}
-                                </span>
-                            )}
-                        </button>
-                    </div>
+                    <button
+                        type="button"
+                        onClick={(e) => applyFilters(e)}
+                        className="bg-black text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors"
+                    >
+                        Show{" "}
+                        {countActiveFilters() > 0
+                            ? "filtered homes"
+                            : "results"}
+                    </button>
                 </div>
             </div>
         </Modal>

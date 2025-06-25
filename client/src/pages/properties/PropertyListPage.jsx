@@ -384,12 +384,15 @@ const PropertyListPage = () => {
 
                             <button
                                 onClick={() => setShowMap(!showMap)}
-                                className={`flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-full text-sm font-medium hover:shadow-md transition-shadow ${
-                                    showMap ? "bg-gray-100 text-gray-800" : ""
+                                className={`p-2.5 border border-gray-300 rounded-full hover:shadow-md transition-all ${
+                                    showMap
+                                        ? "bg-gray-100 text-gray-800 border-gray-400"
+                                        : "text-gray-600 hover:bg-gray-50"
                                 }`}
+                                aria-label={showMap ? "Hide map" : "Show map"}
+                                title={showMap ? "Hide map" : "Show map"}
                             >
-                                <FaMap className="text-gray-600" />
-                                <span>{showMap ? "Hide map" : "Show map"}</span>
+                                <FaMap size={16} />
                             </button>
                         </div>
                     </div>

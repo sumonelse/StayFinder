@@ -65,7 +65,7 @@ const PropertyCard = ({ property, onToggleFavorite, viewMode = "grid" }) => {
         })
     }
 
-    // Grid View Card
+    // Grid View Card - Airbnb Style
     if (viewMode === "grid") {
         return (
             <Link
@@ -73,13 +73,10 @@ const PropertyCard = ({ property, onToggleFavorite, viewMode = "grid" }) => {
                 className="group block"
                 aria-label={`View details for ${property.title}`}
             >
-                <Card
-                    interactive
-                    hoverable
-                    className="overflow-hidden h-full bg-white border border-gray-100 hover:border-primary-200 transition-all duration-300 hover:shadow-xl"
-                >
-                    {/* Property Image - Enhanced with better transitions */}
-                    <div className="relative aspect-[4/3] overflow-hidden">
+                <div className="overflow-hidden h-full transition-all duration-300">
+                    {/* Property Image Carousel - Airbnb Style */}
+                    <div className="relative aspect-[1/1] overflow-hidden rounded-xl">
+                        {/* Main Image */}
                         <img
                             src={
                                 property.images?.[0]
@@ -89,199 +86,31 @@ const PropertyCard = ({ property, onToggleFavorite, viewMode = "grid" }) => {
                                     : "https://via.placeholder.com/400x300?text=No+Image"
                             }
                             alt={property.title}
-                            className="w-full h-full object-cover transition-all duration-500 ease-in-out group-hover:scale-110 group-hover:brightness-105"
+                            className="w-full h-full object-cover transition-all duration-500 ease-in-out group-hover:scale-105"
                             loading="lazy"
                         />
 
-                        {/* Favorite Button - Enhanced with better styling and interaction */}
-                        {isAuthenticated && (
-                            <button
-                                onClick={handleFavoriteClick}
-                                className="absolute top-4 right-4 bg-white p-2.5 rounded-full shadow-md hover:bg-white transition-all z-10 focus:outline-none focus:ring-2 focus:ring-primary-500 border border-gray-100 hover:border-primary-200 hover:scale-110"
-                                aria-label={
-                                    isFavorite
-                                        ? "Remove from favorites"
-                                        : "Add to favorites"
-                                }
-                            >
-                                {isFavorite ? (
-                                    <FaHeart className="text-primary-500 text-lg" />
-                                ) : (
-                                    <FaRegHeart className="text-secondary-400 text-lg group-hover:text-primary-500 transition-colors" />
-                                )}
-                            </button>
-                        )}
-
-                        {/* Property Type Badge - Enhanced with better styling */}
-                        <Badge
-                            variant="secondary"
-                            className="absolute top-4 left-4 bg-secondary-900 text-white text-xs uppercase tracking-wider py-1.5 px-3 font-medium shadow-md border border-secondary-800"
-                        >
-                            {property.type}
-                        </Badge>
-
-                        {/* Price Badge - Enhanced with better styling */}
-                        <div className="absolute bottom-4 left-4 bg-primary-600 text-white px-4 py-2 rounded-lg font-medium shadow-md border border-primary-500">
-                            {formatPrice(property.price)}
-                            <span className="text-sm font-normal ml-1 text-white/90">
-                                /{" "}
-                                {property.pricePeriod === "night" ||
-                                property.pricePeriod === "nightly"
-                                    ? "night"
-                                    : property.pricePeriod || "night"}
-                            </span>
-                        </div>
-
-                        {/* Rating - Enhanced with better styling */}
-                        {property.avgRating > 0 && (
-                            <div className="absolute bottom-4 right-4 flex items-center bg-white px-3 py-1.5 rounded-lg shadow-md border border-gray-100">
-                                <FaStar className="text-warning-500 mr-1.5" />
-                                <span className="font-medium text-secondary-800">
-                                    {property.avgRating.toFixed(1)}
-                                </span>
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Property Details - Enhanced with better spacing and transitions */}
-                    <div className="p-6">
-                        <div className="flex items-start justify-between mb-3">
-                            <h3 className="text-xl font-semibold text-secondary-900 line-clamp-1 group-hover:text-primary-600 transition-colors pr-2 tracking-tight">
-                                {property.title}
-                            </h3>
-
-                            {/* Verified Badge - if property is verified */}
-                            {property.isVerified && (
-                                <div className="tooltip">
-                                    <MdVerified className="text-primary-500 text-lg flex-shrink-0 animate-pulse-slow" />
-                                    <span className="tooltip-text -mt-8 ml-2">
-                                        Verified Property
-                                    </span>
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Location - Enhanced with better styling */}
-                        <div className="flex items-center text-secondary-600 mb-4 bg-gray-50 px-3 py-1.5 rounded-lg -mx-1">
-                            <MdLocationOn className="mr-2 text-primary-500 flex-shrink-0" />
-                            <span className="text-sm line-clamp-1 font-medium">
-                                {property.address?.city},{" "}
-                                {property.address?.country}
-                            </span>
-                        </div>
-
-                        {/* Availability Status */}
-                        <div className="mb-4">
-                            <AvailabilityIndicator
-                                property={property}
-                                variant="badge"
-                                showActions={false}
-                                className="shadow-sm"
-                            />
-                        </div>
-
-                        {/* Amenities Preview */}
-                        {randomAmenities.length > 0 && (
-                            <div className="flex flex-wrap gap-2 mb-4">
-                                {randomAmenities.map((amenity, index) => (
-                                    <Badge
-                                        key={index}
-                                        variant="primary"
-                                        className="flex items-center text-xs"
-                                        icon={<FaCheck size={10} />}
-                                    >
-                                        {amenity}
-                                    </Badge>
+                        {/* Image Navigation Dots */}
+                        {property.images && property.images.length > 1 && (
+                            <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
+                                {Array.from({
+                                    length: Math.min(5, property.images.length),
+                                }).map((_, i) => (
+                                    <span
+                                        key={i}
+                                        className={`w-1.5 h-1.5 rounded-full ${
+                                            i === 0 ? "bg-white" : "bg-white/60"
+                                        }`}
+                                    ></span>
                                 ))}
-                                {property.amenities &&
-                                    property.amenities.length > 2 && (
-                                        <Badge
-                                            variant="secondary"
-                                            className="text-xs"
-                                        >
-                                            +{property.amenities.length - 2}{" "}
-                                            more
-                                        </Badge>
-                                    )}
                             </div>
                         )}
 
-                        {/* Property Features - Enhanced with better styling and visual appeal */}
-                        <div className="flex items-center justify-between border-t border-secondary-100 pt-4">
-                            <div className="flex items-center gap-4">
-                                <div className="flex items-center text-secondary-700 bg-gray-50 px-2.5 py-1.5 rounded-lg">
-                                    <FaBed className="text-primary-500 mr-1.5" />
-                                    <span className="text-sm font-medium">
-                                        {property.bedrooms}
-                                    </span>
-                                </div>
-
-                                <div className="flex items-center text-secondary-700 bg-gray-50 px-2.5 py-1.5 rounded-lg">
-                                    <FaBath className="text-primary-500 mr-1.5" />
-                                    <span className="text-sm font-medium">
-                                        {property.bathrooms}
-                                    </span>
-                                </div>
-
-                                <div className="flex items-center text-secondary-700 bg-gray-50 px-2.5 py-1.5 rounded-lg">
-                                    <FaUsers className="text-primary-500 mr-1.5" />
-                                    <span className="text-sm font-medium">
-                                        {property.maxGuests}
-                                    </span>
-                                </div>
-                            </div>
-
-                            <span className="text-primary-600 font-medium text-sm flex items-center group-hover:text-primary-700 transition-colors">
-                                Details{" "}
-                                <FaAngleRight className="ml-1 group-hover:translate-x-0.5 transition-transform" />
-                            </span>
-                        </div>
-                    </div>
-
-                    {/* View Details Button - Visible on Hover - Enhanced for smoother transition */}
-                    <div className="absolute inset-0 bg-primary-900/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-2xl pointer-events-none">
-                        <span className="bg-white text-primary-600 font-medium py-3 px-6 rounded-xl shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 border border-primary-100">
-                            View Property
-                        </span>
-                    </div>
-                </Card>
-            </Link>
-        )
-    }
-
-    // List View Card
-    return (
-        <Link
-            to={`/properties/${property._id}`}
-            className="group block"
-            aria-label={`View details for ${property.title}`}
-        >
-            <Card
-                interactive
-                hoverable
-                className="overflow-hidden bg-white border border-gray-100 hover:border-primary-200 transition-all duration-300 hover:shadow-xl"
-            >
-                <div className="flex flex-col md:flex-row">
-                    {/* Property Image - Enhanced with better transitions */}
-                    <div className="relative md:w-1/3 aspect-[4/3] md:aspect-auto overflow-hidden">
-                        <img
-                            src={
-                                property.images?.[0]
-                                    ? typeof property.images[0] === "object"
-                                        ? property.images[0].url
-                                        : property.images[0]
-                                    : "https://via.placeholder.com/400x300?text=No+Image"
-                            }
-                            alt={property.title}
-                            className="w-full h-full object-cover transition-all duration-500 ease-in-out group-hover:scale-110 group-hover:brightness-105"
-                            loading="lazy"
-                        />
-
-                        {/* Favorite Button - Enhanced with better styling and interaction */}
+                        {/* Favorite Button - Airbnb Style */}
                         {isAuthenticated && (
                             <button
                                 onClick={handleFavoriteClick}
-                                className="absolute top-4 right-4 bg-white p-2.5 rounded-full shadow-md hover:bg-white transition-all z-10 focus:outline-none focus:ring-2 focus:ring-primary-500 border border-gray-100 hover:border-primary-200 hover:scale-110"
+                                className="absolute top-3 right-3 p-2 rounded-full z-10 focus:outline-none transition-transform hover:scale-110"
                                 aria-label={
                                     isFavorite
                                         ? "Remove from favorites"
@@ -289,56 +118,88 @@ const PropertyCard = ({ property, onToggleFavorite, viewMode = "grid" }) => {
                                 }
                             >
                                 {isFavorite ? (
-                                    <FaHeart className="text-primary-500 text-lg" />
+                                    <FaHeart className="text-red-500 text-xl drop-shadow-sm" />
                                 ) : (
-                                    <FaRegHeart className="text-secondary-400 text-lg group-hover:text-primary-500 transition-colors" />
+                                    <FaRegHeart className="text-white text-xl drop-shadow-sm" />
                                 )}
                             </button>
                         )}
 
-                        {/* Property Type Badge - Enhanced with better styling */}
-                        <Badge
-                            variant="secondary"
-                            className="absolute top-4 left-4 bg-secondary-900 text-white text-xs uppercase tracking-wider py-1.5 px-3 font-medium shadow-md border border-secondary-800"
-                        >
-                            {property.type}
-                        </Badge>
+                        {/* Superhost Badge - If property is verified */}
+                        {property.isVerified && (
+                            <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-xs font-medium px-2 py-1 rounded-full flex items-center shadow-sm">
+                                <MdVerified
+                                    className="text-black mr-1"
+                                    size={12}
+                                />
+                                <span>Superhost</span>
+                            </div>
+                        )}
                     </div>
 
-                    {/* Property Details - Enhanced with better styling */}
-                    <div className="p-6 md:w-2/3 flex flex-col">
-                        <div className="flex items-start justify-between mb-2">
+                    {/* Property Details - Airbnb Style */}
+                    <div className="pt-3">
+                        <div className="flex justify-between items-start">
                             <div>
-                                <div className="flex items-center gap-2">
-                                    <h3 className="text-xl font-semibold text-secondary-900 line-clamp-1 group-hover:text-primary-600 transition-colors tracking-tight">
-                                        {property.title}
-                                    </h3>
-                                    {property.isVerified && (
-                                        <MdVerified className="text-primary-500 text-lg flex-shrink-0 animate-pulse-slow" />
-                                    )}
-                                </div>
-
-                                {/* Location - Enhanced with better styling */}
-                                <div className="flex items-center text-secondary-600 mt-1 mb-2 bg-gray-50 px-2 py-1 rounded-lg">
-                                    <MdLocationOn className="mr-1.5 text-primary-500 flex-shrink-0" />
-                                    <span className="text-sm line-clamp-1 font-medium">
+                                {/* Location */}
+                                <div className="flex items-center text-gray-800 mb-1">
+                                    <span className="text-sm font-medium line-clamp-1">
                                         {property.address?.city},{" "}
                                         {property.address?.country}
                                     </span>
                                 </div>
 
-                                {/* Availability Status */}
-                                <AvailabilityIndicator
-                                    property={property}
-                                    variant="compact"
-                                    showActions={false}
-                                />
+                                {/* Property Title */}
+                                <h3 className="text-base text-gray-500 line-clamp-1">
+                                    {property.title}
+                                </h3>
                             </div>
 
-                            {/* Price - Enhanced with better styling */}
-                            <div className="bg-primary-600 text-white px-4 py-2 rounded-lg font-medium shadow-md border border-primary-500">
-                                {formatPrice(property.price)}
-                                <span className="text-sm font-normal ml-1 text-white/90">
+                            {/* Rating */}
+                            {property.avgRating > 0 && (
+                                <div className="flex items-center">
+                                    <FaStar
+                                        className="text-black mr-1"
+                                        size={12}
+                                    />
+                                    <span className="font-medium text-gray-900">
+                                        {property.avgRating.toFixed(1)}
+                                    </span>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Property Features - Airbnb Style */}
+                        <div className="mt-1 text-gray-500 text-sm">
+                            <span>
+                                {property.bedrooms}{" "}
+                                {property.bedrooms === 1 ? "bed" : "beds"}
+                            </span>
+                            <span className="mx-1">·</span>
+                            <span>
+                                {property.bathrooms}{" "}
+                                {property.bathrooms === 1 ? "bath" : "baths"}
+                            </span>
+                            {property.maxGuests && (
+                                <>
+                                    <span className="mx-1">·</span>
+                                    <span>
+                                        {property.maxGuests}{" "}
+                                        {property.maxGuests === 1
+                                            ? "guest"
+                                            : "guests"}
+                                    </span>
+                                </>
+                            )}
+                        </div>
+
+                        {/* Price - Airbnb Style */}
+                        <div className="mt-2">
+                            <div className="flex items-baseline">
+                                <span className="font-semibold text-gray-900">
+                                    {formatPrice(property.price)}
+                                </span>
+                                <span className="text-gray-600 ml-1 text-sm">
                                     /{" "}
                                     {property.pricePeriod === "night" ||
                                     property.pricePeriod === "nightly"
@@ -347,104 +208,195 @@ const PropertyCard = ({ property, onToggleFavorite, viewMode = "grid" }) => {
                                 </span>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </Link>
+        )
+    }
 
-                        {/* Description */}
-                        <p className="text-gray-600 text-sm line-clamp-2 mb-4 mt-2">
-                            {property.description ||
-                                "Beautiful property with modern amenities and convenient location."}
-                        </p>
+    // List View Card - Airbnb Style
+    return (
+        <Link
+            to={`/properties/${property._id}`}
+            className="group block"
+            aria-label={`View details for ${property.title}`}
+        >
+            <div className="overflow-hidden bg-white border-b border-gray-100 py-6 transition-all duration-300 hover:bg-gray-50">
+                <div className="flex flex-col md:flex-row gap-4">
+                    {/* Property Image - Airbnb Style */}
+                    <div className="relative md:w-1/3 aspect-[4/3] md:aspect-square overflow-hidden rounded-xl">
+                        {/* Main Image */}
+                        <img
+                            src={
+                                property.images?.[0]
+                                    ? typeof property.images[0] === "object"
+                                        ? property.images[0].url
+                                        : property.images[0]
+                                    : "https://via.placeholder.com/400x300?text=No+Image"
+                            }
+                            alt={property.title}
+                            className="w-full h-full object-cover transition-all duration-500 ease-in-out group-hover:scale-105"
+                            loading="lazy"
+                        />
 
-                        {/* Amenities and Features - Enhanced with better styling */}
-                        <div className="flex flex-wrap gap-4 mb-4">
-                            <div className="flex items-center text-secondary-700 bg-gray-50 px-2.5 py-1.5 rounded-lg">
-                                <FaBed className="text-primary-500 mr-1.5" />
-                                <span className="text-sm font-medium">
-                                    {property.bedrooms}{" "}
-                                    {property.bedrooms === 1
-                                        ? "Bedroom"
-                                        : "Bedrooms"}
-                                </span>
+                        {/* Image Navigation Dots */}
+                        {property.images && property.images.length > 1 && (
+                            <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
+                                {Array.from({
+                                    length: Math.min(5, property.images.length),
+                                }).map((_, i) => (
+                                    <span
+                                        key={i}
+                                        className={`w-1.5 h-1.5 rounded-full ${
+                                            i === 0 ? "bg-white" : "bg-white/60"
+                                        }`}
+                                    ></span>
+                                ))}
+                            </div>
+                        )}
+
+                        {/* Favorite Button - Airbnb Style */}
+                        {isAuthenticated && (
+                            <button
+                                onClick={handleFavoriteClick}
+                                className="absolute top-3 right-3 p-2 rounded-full z-10 focus:outline-none transition-transform hover:scale-110"
+                                aria-label={
+                                    isFavorite
+                                        ? "Remove from favorites"
+                                        : "Add to favorites"
+                                }
+                            >
+                                {isFavorite ? (
+                                    <FaHeart className="text-red-500 text-xl drop-shadow-sm" />
+                                ) : (
+                                    <FaRegHeart className="text-white text-xl drop-shadow-sm" />
+                                )}
+                            </button>
+                        )}
+
+                        {/* Superhost Badge - If property is verified */}
+                        {property.isVerified && (
+                            <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-xs font-medium px-2 py-1 rounded-full flex items-center shadow-sm">
+                                <MdVerified
+                                    className="text-black mr-1"
+                                    size={12}
+                                />
+                                <span>Superhost</span>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Property Details - Airbnb Style */}
+                    <div className="md:w-2/3 flex flex-col">
+                        <div className="flex justify-between items-start">
+                            <div>
+                                {/* Location */}
+                                <div className="flex items-center text-gray-800 mb-1">
+                                    <span className="text-sm font-medium line-clamp-1">
+                                        {property.address?.city},{" "}
+                                        {property.address?.country}
+                                    </span>
+                                </div>
+
+                                {/* Property Title */}
+                                <h3 className="text-xl font-medium text-gray-900 mb-1">
+                                    {property.title}
+                                </h3>
+
+                                {/* Separator Line */}
+                                <div className="w-12 h-px bg-gray-200 my-2"></div>
+
+                                {/* Property Features - Airbnb Style */}
+                                <div className="text-gray-500 text-sm">
+                                    <span>
+                                        {property.bedrooms}{" "}
+                                        {property.bedrooms === 1
+                                            ? "bed"
+                                            : "beds"}
+                                    </span>
+                                    <span className="mx-1">·</span>
+                                    <span>
+                                        {property.bathrooms}{" "}
+                                        {property.bathrooms === 1
+                                            ? "bath"
+                                            : "baths"}
+                                    </span>
+                                    {property.maxGuests && (
+                                        <>
+                                            <span className="mx-1">·</span>
+                                            <span>
+                                                {property.maxGuests}{" "}
+                                                {property.maxGuests === 1
+                                                    ? "guest"
+                                                    : "guests"}
+                                            </span>
+                                        </>
+                                    )}
+                                </div>
                             </div>
 
-                            <div className="flex items-center text-secondary-700 bg-gray-50 px-2.5 py-1.5 rounded-lg">
-                                <FaBath className="text-primary-500 mr-1.5" />
-                                <span className="text-sm font-medium">
-                                    {property.bathrooms}{" "}
-                                    {property.bathrooms === 1
-                                        ? "Bathroom"
-                                        : "Bathrooms"}
-                                </span>
-                            </div>
-
-                            <div className="flex items-center text-secondary-700 bg-gray-50 px-2.5 py-1.5 rounded-lg">
-                                <FaUsers className="text-primary-500 mr-1.5" />
-                                <span className="text-sm font-medium">
-                                    {property.maxGuests}{" "}
-                                    {property.maxGuests === 1
-                                        ? "Guest"
-                                        : "Guests"}
-                                </span>
-                            </div>
-
+                            {/* Rating */}
                             {property.avgRating > 0 && (
-                                <div className="flex items-center text-secondary-700 bg-gray-50 px-2.5 py-1.5 rounded-lg">
-                                    <FaStar className="text-warning-500 mr-1.5" />
-                                    <span className="text-sm font-medium">
+                                <div className="flex items-center">
+                                    <FaStar
+                                        className="text-black mr-1"
+                                        size={14}
+                                    />
+                                    <span className="font-medium text-gray-900">
                                         {property.avgRating.toFixed(1)}
                                     </span>
                                 </div>
                             )}
                         </div>
 
-                        {/* Bottom Section - Enhanced with better styling */}
-                        <div className="mt-auto flex items-center justify-between border-t border-secondary-100 pt-4">
-                            {/* Amenities Preview */}
-                            <div className="flex flex-wrap gap-2">
+                        {/* Description */}
+                        <p className="text-gray-600 text-sm line-clamp-2 mt-3">
+                            {property.description ||
+                                "Experience this beautiful property in a prime location with all the amenities you need for a comfortable stay."}
+                        </p>
+
+                        {/* Amenities Preview */}
+                        {randomAmenities.length > 0 && (
+                            <div className="flex flex-wrap gap-2 mt-3">
                                 {randomAmenities.map((amenity, index) => (
-                                    <Badge
+                                    <span
                                         key={index}
-                                        variant="primary"
-                                        className="flex items-center text-xs"
-                                        icon={<FaCheck size={10} />}
+                                        className="text-gray-600 text-sm"
                                     >
+                                        {index > 0 && (
+                                            <span className="mr-2">·</span>
+                                        )}
                                         {amenity}
-                                    </Badge>
+                                    </span>
                                 ))}
                                 {property.amenities &&
                                     property.amenities.length > 2 && (
-                                        <Badge
-                                            variant="secondary"
-                                            className="text-xs"
-                                        >
-                                            +{property.amenities.length - 2}{" "}
-                                            more
-                                        </Badge>
+                                        <span className="text-gray-600 text-sm">
+                                            <span className="mr-2">·</span>+
+                                            {property.amenities.length - 2} more
+                                        </span>
                                     )}
                             </div>
+                        )}
 
-                            <div className="flex items-center gap-4">
-                                {property.createdAt && (
-                                    <div className="flex items-center text-secondary-500 text-xs">
-                                        <FaRegCalendarAlt className="mr-1.5" />
-                                        <span>{getPropertyDate()}</span>
-                                    </div>
-                                )}
-                                <span className="text-primary-600 font-medium text-sm flex items-center group-hover:text-primary-700 transition-colors">
-                                    View Details{" "}
-                                    <FaAngleRight className="ml-1 group-hover:translate-x-0.5 transition-transform" />
+                        {/* Price - Airbnb Style */}
+                        <div className="mt-auto pt-3">
+                            <div className="flex items-baseline">
+                                <span className="font-semibold text-gray-900">
+                                    {formatPrice(property.price)}
+                                </span>
+                                <span className="text-gray-600 ml-1 text-sm">
+                                    /{" "}
+                                    {property.pricePeriod === "night" ||
+                                    property.pricePeriod === "nightly"
+                                        ? "night"
+                                        : property.pricePeriod || "night"}
                                 </span>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                {/* View Details Button - Visible on Hover - Enhanced for smoother transition */}
-                <div className="absolute inset-0 bg-primary-900/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-2xl pointer-events-none">
-                    <span className="bg-white text-primary-600 font-medium py-3 px-6 rounded-xl shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 border border-primary-100">
-                        View Property
-                    </span>
-                </div>
-            </Card>
+            </div>
         </Link>
     )
 }
