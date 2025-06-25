@@ -102,7 +102,7 @@ const Pagination = ({
                                 }
                                 className={`px-3 py-2 leading-tight border ${
                                     pageNumber === currentPage
-                                        ? "bg-primary-50 text-primary-600 border-primary-300 z-10"
+                                        ? "bg-secondary-50 text-secondary-600 border-secondary-300 z-10"
                                         : "bg-white text-secondary-500 hover:bg-secondary-50 hover:text-secondary-700 border-secondary-300"
                                 }`}
                                 aria-current={

@@ -726,7 +726,7 @@ const Header = () => {
                                     className={({ isActive }) =>
                                         `flex items-center p-3 ${
                                             isActive
-                                                ? "bg-primary-50 text-primary-600 font-medium border-l-4 border-primary-500"
+                                                ? "bg-secondary-50 text-secondary-600 font-medium border-l-4 border-secondary-500"
                                                 : "text-secondary-700 hover:bg-secondary-100 border-l-4 border-transparent"
                                         } focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors duration-200`
                                     }
@@ -742,7 +742,7 @@ const Header = () => {
                                         className={({ isActive }) =>
                                             `flex items-center p-3 ${
                                                 isActive
-                                                    ? "bg-primary-50 text-primary-600 font-medium border-l-4 border-primary-500"
+                                                    ? "bg-secondary-50 text-secondary-600 font-medium border-l-4 border-secondary-500"
                                                     : "text-secondary-700 hover:bg-secondary-100 border-l-4 border-transparent"
                                             } focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors duration-200`
                                         }
@@ -767,7 +767,7 @@ const Header = () => {
                                         className={({ isActive }) =>
                                             `flex items-center p-3 ${
                                                 isActive
-                                                    ? "bg-primary-50 text-primary-600 font-medium border-l-4 border-primary-500"
+                                                    ? "bg-secondary-50 text-secondary-600 font-medium border-l-4 border-secondary-500"
                                                     : "text-secondary-700 hover:bg-secondary-100 border-l-4 border-transparent"
                                             } focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors duration-200`
                                         }
@@ -782,7 +782,7 @@ const Header = () => {
                                         className={({ isActive }) =>
                                             `flex items-center p-3 ${
                                                 isActive
-                                                    ? "bg-primary-50 text-primary-600 font-medium border-l-4 border-primary-500"
+                                                    ? "bg-secondary-50 text-secondary-600 font-medium border-l-4 border-secondary-500"
                                                     : "text-secondary-700 hover:bg-secondary-100 border-l-4 border-transparent"
                                             } focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors duration-200`
                                         }
@@ -807,7 +807,7 @@ const Header = () => {
                                         className={({ isActive }) =>
                                             `flex items-center p-3 ${
                                                 isActive
-                                                    ? "bg-primary-50 text-primary-600 font-medium border-l-4 border-primary-500"
+                                                    ? "bg-secondary-50 text-secondary-600 font-medium border-l-4 border-secondary-500"
                                                     : "text-secondary-700 hover:bg-secondary-100 border-l-4 border-transparent"
                                             } focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors duration-200`
                                         }
@@ -822,7 +822,7 @@ const Header = () => {
                                         className={({ isActive }) =>
                                             `flex items-center p-3 ${
                                                 isActive
-                                                    ? "bg-primary-50 text-primary-600 font-medium border-l-4 border-primary-500"
+                                                    ? "bg-secondary-50 text-secondary-600 font-medium border-l-4 border-secondary-500"
                                                     : "text-secondary-700 hover:bg-secondary-100 border-l-4 border-transparent"
                                             } focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors duration-200`
                                         }
@@ -837,7 +837,7 @@ const Header = () => {
                                         className={({ isActive }) =>
                                             `flex items-center p-3 ${
                                                 isActive
-                                                    ? "bg-primary-50 text-primary-600 font-medium border-l-4 border-primary-500"
+                                                    ? "bg-secondary-50 text-secondary-600 font-medium border-l-4 border-secondary-500"
                                                     : "text-secondary-700 hover:bg-secondary-100 border-l-4 border-transparent"
                                             } focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors duration-200`
                                         }

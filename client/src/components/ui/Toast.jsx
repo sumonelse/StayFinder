@@ -85,7 +85,7 @@ const Toast = ({ id, type = "info", message, duration = 5000, onClose }) => {
                 return "bg-warning-50 border-warning-100"
             case "info":
             default:
-                return "bg-primary-50 border-primary-100"
+                return "bg-secondary-50 border-secondary-100"
         }
     }
 

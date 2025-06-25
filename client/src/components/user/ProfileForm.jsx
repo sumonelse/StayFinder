@@ -82,7 +82,7 @@ const ProfileForm = ({ initialData, onSubmit, isLoading = false }) => {
                                 id="name"
                                 type="text"
                                 {...register("name")}
-                                className="mt-1 block w-full rounded-md border-secondary-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                                className="mt-1 block w-full rounded-md border-secondary-300 shadow-sm focus:border-secondary-500 focus:ring-secondary-500"
                             />
                             {errors.name && (
                                 <p className="mt-1 text-sm text-red-600">
@@ -103,7 +103,7 @@ const ProfileForm = ({ initialData, onSubmit, isLoading = false }) => {
                                 id="email"
                                 type="email"
                                 {...register("email")}
-                                className="mt-1 block w-full rounded-md border-secondary-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                                className="mt-1 block w-full rounded-md border-secondary-300 shadow-sm focus:border-secondary-500 focus:ring-secondary-500"
                             />
                             {errors.email && (
                                 <p className="mt-1 text-sm text-red-600">
@@ -124,7 +124,7 @@ const ProfileForm = ({ initialData, onSubmit, isLoading = false }) => {
                                 id="phone"
                                 type="tel"
                                 {...register("phone")}
-                                className="mt-1 block w-full rounded-md border-secondary-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                                className="mt-1 block w-full rounded-md border-secondary-300 shadow-sm focus:border-secondary-500 focus:ring-secondary-500"
                             />
                             {errors.phone && (
                                 <p className="mt-1 text-sm text-red-600">
@@ -145,7 +145,7 @@ const ProfileForm = ({ initialData, onSubmit, isLoading = false }) => {
                                 id="bio"
                                 rows={4}
                                 {...register("bio")}
-                                className="mt-1 block w-full rounded-md border-secondary-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                                className="mt-1 block w-full rounded-md border-secondary-300 shadow-sm focus:border-secondary-500 focus:ring-secondary-500"
                                 placeholder="Tell others about yourself..."
                             />
                             {errors.bio && (

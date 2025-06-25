@@ -210,11 +210,11 @@ const DashboardLayout = () => {
                                 <img
                                     src={user.profilePicture}
                                     alt={user.name}
-                                    className="w-10 h-10 rounded-full object-cover border-2 border-primary-100"
+                                    className="w-10 h-10 rounded-full object-cover border-2 border-secondary-200"
                                 />
                             ) : (
-                                <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
-                                    <FaUserCircle className="text-primary-600 text-xl" />
+                                <div className="w-10 h-10 rounded-full bg-secondary-100 flex items-center justify-center">
+                                    <FaUserCircle className="text-secondary-600 text-xl" />
                                 </div>
                             )}
                             <div className="flex-1 min-w-0">

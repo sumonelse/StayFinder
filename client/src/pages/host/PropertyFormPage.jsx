@@ -901,7 +901,7 @@ The property is conveniently located near public transportation. There's also st
                                             </span>{" "}
                                             to create headers. Example:
                                         </p>
-                                        <div className="mt-2 text-xs bg-white p-2 rounded border border-primary-100 font-mono text-secondary-700">
+                                        <div className="mt-2 text-xs bg-white p-2 rounded border border-secondary-200 font-mono text-secondary-700">
                                             ## The Space
                                             <br />
                                             This cozy apartment features...
