@@ -116,7 +116,7 @@ class NotificationService {
                         <p><strong>Check-in:</strong> ${checkInDate}</p>
                         <p><strong>Check-out:</strong> ${checkOutDate}</p>
                         <p><strong>Guests:</strong> ${booking.numberOfGuests}</p>
-                        <p><strong>Total Price:</strong> $${booking.totalPrice}</p>
+                        <p><strong>Total Price:</strong> ₹${booking.totalPrice}</p>
                         <p><strong>Booking ID:</strong> ${booking._id}</p>
                     </div>
                     
@@ -167,7 +167,7 @@ class NotificationService {
                         <p><strong>Check-in:</strong> ${checkInDate}</p>
                         <p><strong>Check-out:</strong> ${checkOutDate}</p>
                         <p><strong>Guests:</strong> ${booking.numberOfGuests}</p>
-                        <p><strong>Total Price:</strong> $${booking.totalPrice}</p>
+                        <p><strong>Total Price:</strong> ₹${booking.totalPrice}</p>
                         <p><strong>Status:</strong> Pending Confirmation</p>
                     </div>
                     
