@@ -137,8 +137,29 @@ const PropertyForm = ({
     }
 
     // Handle image upload completion
-    const handleImagesUploaded = (images) => {
-        setUploadedImages(images)
+    const handleImagesUploaded = (newImages) => {
+        // Combine existing images with newly uploaded ones
+        setUploadedImages((prevImages) => {
+            // Extract URLs from both existing and new images
+            const existingUrls = prevImages
+                ? prevImages.map((img) =>
+                      typeof img === "string" ? img : img.url
+                  )
+                : []
+            const newUrls = newImages.map((img) =>
+                typeof img === "string" ? img : img.url
+            )
+
+            // Combine and remove duplicates
+            const allUrls = [...existingUrls, ...newUrls]
+            const uniqueUrls = [...new Set(allUrls)]
+
+            console.log("PropertyForm - Existing images:", existingUrls)
+            console.log("PropertyForm - New images:", newUrls)
+            console.log("PropertyForm - Combined unique images:", uniqueUrls)
+
+            return uniqueUrls
+        })
     }
 
     return (

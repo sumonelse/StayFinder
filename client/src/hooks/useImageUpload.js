@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useCallback } from "react"
 import { uploadService } from "../services/api"
 
 /**
@@ -14,84 +14,133 @@ const useImageUpload = (options = {}) => {
     const [uploadedImages, setUploadedImages] = useState([])
     const [previewImages, setPreviewImages] = useState([])
 
+    // Track which images are initial (already uploaded)
+    const [initialImages, setInitialImages] = useState([])
+
     /**
      * Handle file selection
      * @param {File|Array<File>} files - Selected file(s)
      */
-    const handleFileSelect = (files) => {
-        setError(null)
+    const handleFileSelect = useCallback(
+        (files) => {
+            setError(null)
 
-        if (multiple) {
-            // For multiple files
-            if (previewImages.length + files.length > maxFiles) {
-                setError(`You can only upload up to ${maxFiles} images.`)
-                return
-            }
+            if (multiple) {
+                // For multiple files
+                if (previewImages.length + files.length > maxFiles) {
+                    setError(`You can only upload up to ${maxFiles} images.`)
+                    return
+                }
 
-            // Check if any files are initial images (already uploaded)
-            const initialFiles = files.filter((file) => file.isInitial)
-            const newFiles = files.filter((file) => !file.isInitial)
+                // Check if any files are initial images (already uploaded)
+                const initialFiles = files.filter((file) => file.isInitial)
+                const newFiles = files.filter((file) => !file.isInitial)
 
-            // Add initial files to both preview and uploaded arrays
-            if (initialFiles.length > 0) {
-                const initialUrls = initialFiles.map((file) => file.url)
-                setPreviewImages((prev) => [...prev, ...initialUrls])
-                setUploadedImages((prev) => [
-                    ...prev,
-                    ...initialUrls.map((url) => ({ url, publicId: "" })),
-                ])
-            }
+                // Add initial files to both preview and uploaded arrays
+                if (initialFiles.length > 0) {
+                    const initialUrls = initialFiles.map((file) => file.url)
 
-            // Add new files to preview only
-            if (newFiles.length > 0) {
-                setPreviewImages((prev) => [...prev, ...newFiles])
-            }
-        } else {
-            // For single file
-            const file = Array.isArray(files) ? files[0] : files
+                    // Add to preview images
+                    setPreviewImages((prev) => [...prev, ...initialUrls])
 
-            // Check if it's an initial image (already uploaded)
-            if (file.isInitial) {
-                setPreviewImages([file.url])
-                setUploadedImages([{ url: file.url, publicId: "" }])
+                    // Create image objects for initial images
+                    const initialImageObjects = initialUrls.map((url) => ({
+                        url,
+                        publicId: "",
+                        isInitial: true,
+                    }))
+
+                    // Add to uploaded images
+                    setUploadedImages((prev) => [
+                        ...prev,
+                        ...initialImageObjects,
+                    ])
+
+                    // Track these as initial images
+                    setInitialImages((prev) => [
+                        ...prev,
+                        ...initialImageObjects,
+                    ])
+                }
+
+                // Add new files to preview only
+                if (newFiles.length > 0) {
+                    setPreviewImages((prev) => [...prev, ...newFiles])
+                }
             } else {
-                setPreviewImages([file])
+                // For single file
+                const file = Array.isArray(files) ? files[0] : files
+
+                // Check if it's an initial image (already uploaded)
+                if (file.isInitial) {
+                    const initialImage = {
+                        url: file.url,
+                        publicId: "",
+                        isInitial: true,
+                    }
+                    setPreviewImages([file.url])
+                    setUploadedImages([initialImage])
+                    setInitialImages([initialImage])
+                } else {
+                    setPreviewImages([file])
+                    // Clear uploaded images since we're replacing with a new one
+                    setUploadedImages([])
+                    setInitialImages([])
+                }
             }
-        }
-    }
+        },
+        [multiple, maxFiles, previewImages]
+    )
 
     /**
      * Remove a preview image
      * @param {number} index - Index of the image to remove
      */
-    const removeImage = (index) => {
-        setPreviewImages((prev) => prev.filter((_, i) => i !== index))
+    const removeImage = useCallback(
+        (index) => {
+            // Get the image being removed
+            const imageToRemove = previewImages[index]
 
-        // If the image was already uploaded, remove it from uploaded images as well
-        if (index < uploadedImages.length) {
-            setUploadedImages((prev) => prev.filter((_, i) => i !== index))
-        }
-    }
+            // Remove from preview images
+            setPreviewImages((prev) => prev.filter((_, i) => i !== index))
+
+            // If it's a string URL (already uploaded), also remove from uploaded images
+            if (typeof imageToRemove === "string") {
+                setUploadedImages((prev) =>
+                    prev.filter((img) => img.url !== imageToRemove)
+                )
+
+                // Also remove from initial images if it was an initial image
+                setInitialImages((prev) =>
+                    prev.filter((img) => img.url !== imageToRemove)
+                )
+            }
+        },
+        [previewImages]
+    )
 
     /**
      * Upload images to the server
      * @returns {Promise<Array<Object>>} - Uploaded image data
      */
-    const uploadImages = async () => {
+    const uploadImages = useCallback(async () => {
         try {
             setIsLoading(true)
             setError(null)
 
-            // Filter out already uploaded images
+            // Filter out already uploaded images (string URLs)
             const filesToUpload = previewImages.filter(
                 (file) => typeof file !== "string"
             )
 
+            // If there are no new files to upload, return empty array
             if (filesToUpload.length === 0) {
-                return uploadedImages
+                console.log("No new files to upload, returning empty array")
+                return []
             }
 
             let result
+            let newlyUploadedData = []
 
             if (multiple) {
                 // Upload multiple images
@@ -106,8 +155,11 @@ const useImageUpload = (options = {}) => {
                 }
 
                 // The server returns the data in the 'data' property
-                const uploadData = result.data || []
-                setUploadedImages((prev) => [...prev, ...uploadData])
+                newlyUploadedData = result.data || []
+
+                // Set uploaded images to be initial images + new uploads
+                // This prevents duplicating images on multiple uploads
+                setUploadedImages([...initialImages, ...newlyUploadedData])
             } else {
                 // Upload single image
                 if (isProperty) {
@@ -122,49 +174,50 @@ const useImageUpload = (options = {}) => {
 
                 // For single image upload, the result is an object, not an array
                 const uploadData = result.data || {}
-                setUploadedImages([uploadData])
+                newlyUploadedData = [uploadData]
+
+                // Set uploaded images to be initial images + new upload
+                setUploadedImages([...initialImages, uploadData])
             }
 
             // Replace file objects with URLs in preview
-            const uploadedData = multiple
-                ? result.data || []
-                : result.data || {}
-            const uploadedUrls = multiple
-                ? uploadedData.map((img) => img.url)
-                : uploadedData.url
-                ? [uploadedData.url]
-                : []
+            const uploadedUrls = newlyUploadedData
+                .map((img) => img.url)
+                .filter(Boolean)
+
             setPreviewImages((prev) =>
-                prev.map((item) =>
-                    typeof item === "string"
-                        ? item
-                        : uploadedUrls.shift() || item
-                )
+                prev.map((item) => {
+                    if (typeof item === "string") return item
+                    // Replace File objects with URLs
+                    const url = uploadedUrls.shift()
+                    return url || item
+                })
             )
 
-            // Return the appropriate data format based on whether it's a single or multiple upload
-            const returnData = multiple ? uploadedData : [uploadedData]
+            // Return only the newly uploaded data
+            console.log(
+                "Upload complete, returning newly uploaded data:",
+                newlyUploadedData
+            )
 
-            // Log the data being returned for debugging
-            console.log("Upload complete, returning data:", returnData)
-
-            return returnData
+            return newlyUploadedData
         } catch (err) {
             setError(err.message || "Failed to upload images")
             throw err
         } finally {
             setIsLoading(false)
         }
-    }
+    }, [multiple, previewImages, initialImages, isProperty])
 
     /**
      * Reset the upload state
      */
-    const resetUpload = () => {
+    const resetUpload = useCallback(() => {
         setPreviewImages([])
         setUploadedImages([])
+        setInitialImages([])
         setError(null)
-    }
+    }, [])
 
     return {
         isLoading,

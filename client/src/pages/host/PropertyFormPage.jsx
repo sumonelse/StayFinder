@@ -289,10 +289,31 @@ The property is conveniently located near public transportation. There's also st
 
     // Handle images uploaded through PropertyImageUploader
     const handleImagesUploaded = (uploadedImages) => {
-        setPropertyData((prev) => ({
-            ...prev,
-            images: uploadedImages,
-        }))
+        // Combine existing images with newly uploaded ones
+        setPropertyData((prev) => {
+            // Extract URLs from both existing and new images
+            const existingUrls = prev.images
+                ? prev.images.map((img) =>
+                      typeof img === "string" ? img : img.url
+                  )
+                : []
+            const newUrls = uploadedImages.map((img) =>
+                typeof img === "string" ? img : img.url
+            )
+
+            // Combine and remove duplicates
+            const allUrls = [...existingUrls, ...newUrls]
+            const uniqueUrls = [...new Set(allUrls)]
+
+            console.log("Existing images:", existingUrls)
+            console.log("New images:", newUrls)
+            console.log("Combined unique images:", uniqueUrls)
+
+            return {
+                ...prev,
+                images: uniqueUrls,
+            }
+        })
 
         // Clear any image-related errors
         if (errors.images) {
