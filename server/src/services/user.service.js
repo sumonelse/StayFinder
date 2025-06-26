@@ -37,11 +37,12 @@ class UserService {
 
         return {
             user: {
-                _id: user._id,
+                _id: user._id.toString(),
                 name: user.name,
                 email: user.email,
                 role: user.role,
                 profilePicture: user.profilePicture,
+                favorites: [], // New users have no favorites
             },
             token,
         }
@@ -69,13 +70,19 @@ class UserService {
         // Generate JWT token
         const token = generateToken(user)
 
+        // Convert favorites to strings
+        const favorites = user.favorites
+            ? user.favorites.map((id) => id.toString())
+            : []
+
         return {
             user: {
-                _id: user._id,
+                _id: user._id.toString(),
                 name: user.name,
                 email: user.email,
                 role: user.role,
                 profilePicture: user.profilePicture,
+                favorites: favorites,
             },
             token,
         }
@@ -91,7 +98,16 @@ class UserService {
         if (!user) {
             throw new Error("User not found")
         }
-        return user
+
+        // Convert the user object to a plain JavaScript object
+        const userObj = user.toObject()
+
+        // Convert ObjectIDs in favorites array to strings
+        if (userObj.favorites && Array.isArray(userObj.favorites)) {
+            userObj.favorites = userObj.favorites.map((id) => id.toString())
+        }
+
+        return userObj
     }
 
     /**
@@ -136,7 +152,15 @@ class UserService {
             throw new Error("User not found")
         }
 
-        return user
+        // Convert the user object to a plain JavaScript object
+        const userObj = user.toObject()
+
+        // Convert ObjectIDs in favorites array to strings
+        if (userObj.favorites && Array.isArray(userObj.favorites)) {
+            userObj.favorites = userObj.favorites.map((id) => id.toString())
+        }
+
+        return userObj
     }
 
     /**
@@ -156,7 +180,15 @@ class UserService {
             throw new Error("User not found")
         }
 
-        return user
+        // Convert the user object to a plain JavaScript object
+        const userObj = user.toObject()
+
+        // Convert ObjectIDs in favorites array to strings
+        if (userObj.favorites && Array.isArray(userObj.favorites)) {
+            userObj.favorites = userObj.favorites.map((id) => id.toString())
+        }
+
+        return userObj
     }
 
     /**
@@ -174,7 +206,15 @@ class UserService {
             throw new Error("User not found")
         }
 
-        return user.favorites
+        // Convert the favorites array to a plain JavaScript array
+        const favorites = user.favorites.map((favorite) => {
+            const favObj = favorite.toObject()
+            // Ensure the _id is a string
+            favObj._id = favObj._id.toString()
+            return favObj
+        })
+
+        return favorites
     }
 
     /**

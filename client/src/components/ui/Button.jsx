@@ -2,9 +2,10 @@ import PropTypes from "prop-types"
 
 /**
  * Button component with consistent styling and variants
+ * Redesigned with Airbnb-style grey/black color scheme
  *
  * @param {Object} props - Component props
- * @param {string} [props.variant='primary'] - Button variant (primary, secondary, outline, ghost, accent, danger)
+ * @param {string} [props.variant='primary'] - Button variant (primary, secondary, dark, outline, ghost, accent, danger)
  * @param {string} [props.size='md'] - Button size (sm, md, lg)
  * @param {boolean} [props.fullWidth=false] - Whether the button should take full width
  * @param {boolean} [props.isLoading=false] - Whether the button is in loading state
@@ -27,36 +28,44 @@ const Button = ({
     type = "button",
     ...props
 }) => {
-    // Base classes
-    const baseClasses = "btn"
-
-    // Variant classes
+    // Variant classes with updated Airbnb-style colors
     const variantClasses = {
-        primary: "btn-primary",
-        secondary: "btn-secondary",
-        outline: "btn-outline",
-        ghost: "btn-ghost",
-        accent: "btn-accent",
-        danger: "btn-danger",
+        primary: "bg-primary-500 text-white hover:bg-primary-600 shadow-sm",
+        secondary:
+            "bg-secondary-100 text-secondary-700 hover:bg-secondary-200 shadow-sm",
+        dark: "bg-secondary-900 text-white hover:bg-secondary-800 shadow-sm",
+        outline:
+            "border border-secondary-300 text-secondary-700 hover:bg-secondary-50",
+        ghost: "text-secondary-700 hover:bg-secondary-50",
+        accent: "bg-accent-500 text-white hover:bg-accent-600 shadow-sm",
+        danger: "bg-danger-600 text-white hover:bg-danger-700 shadow-sm",
     }
 
     // Size classes
     const sizeClasses = {
-        sm: "btn-sm",
-        md: "",
-        lg: "btn-lg",
+        sm: "px-3 py-1.5 text-sm",
+        md: "px-4 py-2",
+        lg: "px-6 py-3 text-lg",
     }
+
+    // Base classes
+    const baseClasses =
+        "inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 focus:outline-none"
 
     // Width classes
     const widthClasses = fullWidth ? "w-full" : ""
+
+    // Disabled classes
+    const disabledClasses =
+        disabled || isLoading ? "opacity-60 cursor-not-allowed" : ""
 
     // Combine all classes
     const buttonClasses = [
         baseClasses,
         variantClasses[variant] || variantClasses.primary,
-        sizeClasses[size] || "",
+        sizeClasses[size] || sizeClasses.md,
         widthClasses,
-        isLoading ? "opacity-80 cursor-wait" : "",
+        disabledClasses,
         className,
     ]
         .filter(Boolean)
@@ -107,6 +116,7 @@ Button.propTypes = {
     variant: PropTypes.oneOf([
         "primary",
         "secondary",
+        "dark",
         "outline",
         "ghost",
         "accent",

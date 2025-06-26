@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 
 /**
  * Input component with consistent styling and variants
+ * Redesigned with Airbnb-style grey/black color scheme
  *
  * @param {Object} props - Component props
  * @param {string} props.id - Input ID
@@ -35,10 +36,13 @@ const Input = forwardRef(
         },
         ref
     ) => {
-        // Base classes
+        // Base classes for Airbnb-style inputs
         const inputClasses = [
-            "input-field",
-            error ? "input-error" : "",
+            "w-full px-3 py-2 border rounded-lg bg-secondary-50 text-secondary-900 placeholder-secondary-400 transition-colors",
+            error
+                ? "border-red-300 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500"
+                : "border-secondary-300 focus:outline-none focus:ring-1 focus:ring-secondary-500 focus:border-secondary-500",
+            disabled ? "bg-secondary-100 cursor-not-allowed" : "",
             leftIcon ? "pl-10" : "",
             rightIcon ? "pr-10" : "",
             className,
@@ -47,12 +51,15 @@ const Input = forwardRef(
             .join(" ")
 
         return (
-            <div className="form-group">
+            <div className="mb-4">
                 {label && (
-                    <label htmlFor={id} className="form-label">
+                    <label
+                        htmlFor={id}
+                        className="block text-sm font-medium text-secondary-700 mb-1"
+                    >
                         {label}
                         {required && (
-                            <span className="text-danger-500 ml-1">*</span>
+                            <span className="text-red-500 ml-1">*</span>
                         )}
                     </label>
                 )}
@@ -91,13 +98,20 @@ const Input = forwardRef(
                 </div>
 
                 {error && (
-                    <p id={`${id}-error`} className="form-error" role="alert">
+                    <p
+                        id={`${id}-error`}
+                        className="mt-1 text-sm text-red-600"
+                        role="alert"
+                    >
                         {error}
                     </p>
                 )}
 
                 {hint && !error && (
-                    <p id={`${id}-hint`} className="form-hint">
+                    <p
+                        id={`${id}-hint`}
+                        className="mt-1 text-sm text-secondary-500"
+                    >
                         {hint}
                     </p>
                 )}

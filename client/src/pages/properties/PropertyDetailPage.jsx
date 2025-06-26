@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react"
 import { useParams, useNavigate } from "react-router-dom"
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import {
     FaStar,
     FaMapMarkerAlt,
@@ -59,6 +59,7 @@ import {
 const PropertyDetailPage = () => {
     const { id } = useParams()
     const navigate = useNavigate()
+    const queryClient = useQueryClient()
     const { user, isAuthenticated, addToFavorites, removeFromFavorites } =
         useAuth()
 
@@ -85,11 +86,23 @@ const PropertyDetailPage = () => {
         isLoading: propertyLoading,
         isError: propertyError,
     } = useQuery({
-        queryKey: ["property", id],
-        queryFn: () => propertyService.getPropertyById(id),
-    })
+        queryKey: ["property", id, user?.favorites],
+        queryFn: async () => {
+            const propertyData = await propertyService.getPropertyById(id)
 
-    console.log("property:", property)
+            // Mark property as favorite if it's in the user's favorites list
+            if (isAuthenticated) {
+                // Ensure user has a favorites array
+                const favorites = user?.favorites || []
+
+                propertyData.isFavorite = favorites.some(
+                    (favId) => String(favId) === String(id)
+                )
+            }
+
+            return propertyData
+        },
+    })
 
     // Fetch property reviews
     const { data: reviewsData, isLoading: reviewsLoading } = useQuery({
@@ -159,7 +172,14 @@ const PropertyDetailPage = () => {
     }
 
     // Check if property is in favorites
-    const isFavorite = user?.favorites?.includes(id)
+    // Ensure user has a favorites array
+    const favorites = user?.favorites || []
+
+    const isInFavorites = favorites.some(
+        (favId) => String(favId) === String(id)
+    )
+
+    const isFavorite = property?.isFavorite || isInFavorites
 
     // Handle favorite toggle
     const handleToggleFavorite = async () => {
@@ -169,6 +189,18 @@ const PropertyDetailPage = () => {
         }
 
         try {
+            // Update the UI immediately for better user experience
+            // Create a new property object with updated isFavorite status
+            const updatedProperty = { ...property, isFavorite: !isFavorite }
+
+            // Update the cache with the new property data
+            // This will cause the UI to update immediately
+            queryClient.setQueryData(
+                ["property", id, user?.favorites],
+                updatedProperty
+            )
+
+            // Then perform the actual API call
             if (isFavorite) {
                 await removeFromFavorites(id)
             } else {
@@ -176,6 +208,8 @@ const PropertyDetailPage = () => {
             }
         } catch (err) {
             console.error("Error toggling favorite:", err)
+            // Revert the UI change if there was an error
+            queryClient.invalidateQueries(["property", id, user?.favorites])
         }
     }
 

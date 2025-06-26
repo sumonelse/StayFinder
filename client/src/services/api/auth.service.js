@@ -11,6 +11,15 @@ const authService = {
      */
     async register(userData) {
         const response = await api.post("/auth/register", userData)
+
+        // Ensure user has a favorites array
+        if (!response.data.user.favorites) {
+            response.data.user.favorites = []
+            console.log(
+                "Added missing favorites array to user data in register API"
+            )
+        }
+
         return response.data
     },
 
@@ -22,6 +31,15 @@ const authService = {
      */
     async login(email, password) {
         const response = await api.post("/auth/login", { email, password })
+
+        // Ensure user has a favorites array
+        if (!response.data.user.favorites) {
+            response.data.user.favorites = []
+            console.log(
+                "Added missing favorites array to user data in login API"
+            )
+        }
+
         return response.data
     },
 
@@ -31,6 +49,15 @@ const authService = {
      */
     async getCurrentUser() {
         const response = await api.get("/auth/me")
+
+        // Ensure user has a favorites array
+        if (!response.data.user.favorites) {
+            response.data.user.favorites = []
+            console.log(
+                "Added missing favorites array to user data in getCurrentUser API"
+            )
+        }
+
         return response.data.user
     },
 

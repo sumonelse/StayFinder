@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react"
 import { useSearchParams } from "react-router-dom"
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import {
     FaSearch,
     FaMapMarkerAlt,
@@ -49,6 +49,7 @@ const PropertyListPage = () => {
     const { addToFavorites, removeFromFavorites, user, isAuthenticated } =
         useAuth()
     const [searchParams, setSearchParams] = useSearchParams()
+    const queryClient = useQueryClient()
     const [filters, setFilters] = useState({
         page: parseInt(searchParams.get("page") || "1"),
         limit: parseInt(searchParams.get("limit") || "20"), // Increased limit for more properties per page
@@ -83,9 +84,34 @@ const PropertyListPage = () => {
 
     // Fetch properties with filters
     const { data, isLoading, isError, error } = useQuery({
-        queryKey: ["properties", filters],
-        queryFn: () => propertyService.getAllProperties(filters),
+        queryKey: ["properties", filters, user?.favorites],
+        queryFn: async () => {
+            const result = await propertyService.getAllProperties(filters)
+
+            // Mark properties as favorites if they're in the user's favorites list
+            if (isAuthenticated && result.properties) {
+                // Ensure user has a favorites array
+                const favorites = user?.favorites || []
+
+                result.properties = result.properties.map((property) => ({
+                    ...property,
+                    isFavorite: favorites.some(
+                        (favId) => String(favId) === String(property._id)
+                    ),
+                }))
+            }
+
+            return result
+        },
     })
+
+    // Log user favorites when component mounts
+    useEffect(() => {
+        console.log(
+            "PropertyListPage - User favorites on mount:",
+            user?.favorites
+        )
+    }, [user?.favorites])
 
     // Update URL when filters change - with debounce to prevent flickering
     useEffect(() => {
@@ -160,16 +186,43 @@ const PropertyListPage = () => {
     const handleToggleFavorite = async (propertyId) => {
         try {
             const isFavorite = data?.properties.some(
-                (property) => property._id === propertyId && property.isFavorite
+                (property) =>
+                    String(property._id) === String(propertyId) &&
+                    property.isFavorite
             )
 
+            // Update the UI immediately for better user experience
+            const updatedProperties = data.properties.map((property) => {
+                if (String(property._id) === String(propertyId)) {
+                    return { ...property, isFavorite: !isFavorite }
+                }
+                return property
+            })
+
+            // Create a new data object with updated properties
+            const updatedData = { ...data, properties: updatedProperties }
+
+            // Update the cache with the new data
+            // This will cause the UI to update immediately
+            queryClient.setQueryData(
+                ["properties", filters, user?.favorites],
+                updatedData
+            )
+
+            // Then perform the actual API call
             if (isFavorite) {
                 await removeFromFavorites(propertyId)
             } else {
                 await addToFavorites(propertyId)
             }
         } catch (err) {
-            // Silent error handling
+            console.error("Error toggling favorite:", err)
+            // Revert the UI change if there was an error
+            queryClient.invalidateQueries([
+                "properties",
+                filters,
+                user?.favorites,
+            ])
         }
     }
 

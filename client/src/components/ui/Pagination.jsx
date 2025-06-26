@@ -4,6 +4,7 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa"
 
 /**
  * Pagination component for navigating through pages
+ * Redesigned with Airbnb-style grey/black color scheme
  *
  * @param {Object} props - Component props
  * @param {number} props.currentPage - Current active page
@@ -68,75 +69,79 @@ const Pagination = ({
             className={`flex justify-center ${className}`}
             aria-label="Pagination"
         >
-            <ul className="inline-flex items-center -space-x-px">
+            <div className="flex items-center space-x-2">
                 {/* Previous button */}
-                <li>
-                    <button
-                        onClick={() =>
-                            currentPage > 1 && onPageChange(currentPage - 1)
-                        }
-                        disabled={currentPage === 1}
-                        className={`px-3 py-2 ml-0 leading-tight rounded-l-lg border ${
-                            currentPage === 1
-                                ? "bg-secondary-100 text-secondary-400 cursor-not-allowed"
-                                : "bg-white text-secondary-500 hover:bg-secondary-50 hover:text-secondary-700"
-                        } border-secondary-300`}
-                        aria-label="Previous page"
-                    >
-                        <FaChevronLeft className="w-4 h-4" />
-                    </button>
-                </li>
+                <button
+                    onClick={() =>
+                        currentPage > 1 && onPageChange(currentPage - 1)
+                    }
+                    disabled={currentPage === 1}
+                    className={`px-4 py-2 rounded-lg border ${
+                        currentPage === 1
+                            ? "bg-secondary-50 text-secondary-400 cursor-not-allowed"
+                            : "bg-white text-secondary-700 hover:bg-secondary-50"
+                    } border-secondary-200 font-medium text-sm transition-colors`}
+                    aria-label="Previous page"
+                >
+                    <div className="flex items-center">
+                        <FaChevronLeft className="w-3 h-3 mr-1" />
+                        <span>Previous</span>
+                    </div>
+                </button>
 
                 {/* Page numbers */}
-                {pageNumbers.map((pageNumber, index) => (
-                    <li key={`${pageNumber}-${index}`}>
-                        {pageNumber === "..." ? (
-                            <span className="px-3 py-2 leading-tight border border-secondary-300 bg-white text-secondary-500">
-                                ...
-                            </span>
-                        ) : (
-                            <button
-                                onClick={() =>
-                                    pageNumber !== currentPage &&
-                                    onPageChange(pageNumber)
-                                }
-                                className={`px-3 py-2 leading-tight border ${
-                                    pageNumber === currentPage
-                                        ? "bg-secondary-50 text-secondary-600 border-secondary-300 z-10"
-                                        : "bg-white text-secondary-500 hover:bg-secondary-50 hover:text-secondary-700 border-secondary-300"
-                                }`}
-                                aria-current={
-                                    pageNumber === currentPage
-                                        ? "page"
-                                        : undefined
-                                }
-                                aria-label={`Page ${pageNumber}`}
-                            >
-                                {pageNumber}
-                            </button>
-                        )}
-                    </li>
-                ))}
+                <div className="flex items-center space-x-1">
+                    {pageNumbers.map((pageNumber, index) => (
+                        <div key={`${pageNumber}-${index}`}>
+                            {pageNumber === "..." ? (
+                                <span className="px-2 py-2 text-secondary-500">
+                                    ...
+                                </span>
+                            ) : (
+                                <button
+                                    onClick={() =>
+                                        pageNumber !== currentPage &&
+                                        onPageChange(pageNumber)
+                                    }
+                                    className={`px-3 py-2 rounded-lg text-sm font-medium ${
+                                        pageNumber === currentPage
+                                            ? "bg-secondary-900 text-white"
+                                            : "bg-white text-secondary-700 hover:bg-secondary-50 border border-secondary-200"
+                                    }`}
+                                    aria-current={
+                                        pageNumber === currentPage
+                                            ? "page"
+                                            : undefined
+                                    }
+                                    aria-label={`Page ${pageNumber}`}
+                                >
+                                    {pageNumber}
+                                </button>
+                            )}
+                        </div>
+                    ))}
+                </div>
 
                 {/* Next button */}
-                <li>
-                    <button
-                        onClick={() =>
-                            currentPage < totalPages &&
-                            onPageChange(currentPage + 1)
-                        }
-                        disabled={currentPage === totalPages}
-                        className={`px-3 py-2 leading-tight rounded-r-lg border ${
-                            currentPage === totalPages
-                                ? "bg-secondary-100 text-secondary-400 cursor-not-allowed"
-                                : "bg-white text-secondary-500 hover:bg-secondary-50 hover:text-secondary-700"
-                        } border-secondary-300`}
-                        aria-label="Next page"
-                    >
-                        <FaChevronRight className="w-4 h-4" />
-                    </button>
-                </li>
-            </ul>
+                <button
+                    onClick={() =>
+                        currentPage < totalPages &&
+                        onPageChange(currentPage + 1)
+                    }
+                    disabled={currentPage === totalPages}
+                    className={`px-4 py-2 rounded-lg border ${
+                        currentPage === totalPages
+                            ? "bg-secondary-50 text-secondary-400 cursor-not-allowed"
+                            : "bg-white text-secondary-700 hover:bg-secondary-50"
+                    } border-secondary-200 font-medium text-sm transition-colors`}
+                    aria-label="Next page"
+                >
+                    <div className="flex items-center">
+                        <span>Next</span>
+                        <FaChevronRight className="w-3 h-3 ml-1" />
+                    </div>
+                </button>
+            </div>
         </nav>
     )
 }

@@ -12,7 +12,8 @@ const USER_KEY = "stayfinder_user"
 const encrypt = (data) => {
     try {
         return btoa(JSON.stringify(data))
-    } catch {
+    } catch (error) {
+        console.error("Error encrypting data:", error)
         return null
     }
 }
@@ -23,7 +24,8 @@ const encrypt = (data) => {
 const decrypt = (encryptedData) => {
     try {
         return JSON.parse(atob(encryptedData))
-    } catch {
+    } catch (error) {
+        console.error("Error decrypting data:", error)
         return null
     }
 }
@@ -56,6 +58,13 @@ export const getAuthToken = () => {
  */
 export const setUserData = (userData) => {
     if (userData) {
+        // Ensure favorites is an array
+        if (!userData.favorites) {
+            userData = { ...userData, favorites: [] }
+        } else if (!Array.isArray(userData.favorites)) {
+            userData = { ...userData, favorites: [] }
+        }
+
         const encryptedData = encrypt(userData)
         localStorage.setItem(USER_KEY, encryptedData)
     } else {
@@ -69,7 +78,16 @@ export const setUserData = (userData) => {
 export const getUserData = () => {
     const encryptedData = localStorage.getItem(USER_KEY)
     if (encryptedData) {
-        return decrypt(encryptedData)
+        const userData = decrypt(encryptedData)
+
+        // Ensure favorites is an array
+        if (userData && !userData.favorites) {
+            userData.favorites = []
+        } else if (userData && !Array.isArray(userData.favorites)) {
+            userData.favorites = []
+        }
+
+        return userData
     }
     return null
 }

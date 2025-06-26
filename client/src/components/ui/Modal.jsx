@@ -5,6 +5,7 @@ import ReactDOM from "react-dom"
 
 /**
  * Modal component for displaying content in an overlay
+ * Redesigned with Airbnb-style grey/black color scheme
  *
  * @param {Object} props - Component props
  * @param {boolean} props.isOpen - Whether the modal is open
@@ -93,7 +94,7 @@ const Modal = ({
 
     return ReactDOM.createPortal(
         <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm transition-opacity overflow-y-auto"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-secondary-900/50 backdrop-blur-sm transition-opacity overflow-y-auto"
             onClick={handleOverlayClick}
             onMouseDown={(e) => e.stopPropagation()}
             aria-modal="true"
@@ -103,20 +104,20 @@ const Modal = ({
             <div
                 ref={modalRef}
                 onClick={(e) => e.stopPropagation()}
-                className={`${getModalWidth()} w-full bg-white rounded-2xl shadow-xl transform transition-all duration-300 ease-in-out animate-scaleIn my-8 max-h-[90vh] flex flex-col`}
+                className={`${getModalWidth()} w-full bg-white rounded-lg shadow-lg transform transition-all duration-300 ease-in-out animate-scaleIn my-8 max-h-[90vh] flex flex-col`}
             >
                 {title && (
                     <div className="flex items-center justify-between px-6 py-4 border-b border-secondary-200">
                         <h3
                             id="modal-title"
-                            className="text-lg font-semibold text-black"
+                            className="text-lg font-medium text-secondary-900"
                         >
                             {title}
                         </h3>
                         {showCloseButton && (
                             <button
                                 type="button"
-                                className="text-secondary-400 hover:text-secondary-600 focus:outline-none focus:ring-2 focus:ring-black rounded-full p-2 hover:bg-secondary-100 transition-colors"
+                                className="text-secondary-500 hover:text-secondary-700 focus:outline-none rounded-full p-2 hover:bg-secondary-100 transition-colors"
                                 onClick={onClose}
                                 aria-label="Close modal"
                             >
@@ -133,7 +134,7 @@ const Modal = ({
                     {!title && showCloseButton && (
                         <button
                             type="button"
-                            className="absolute top-4 right-4 text-secondary-400 hover:text-secondary-600 focus:outline-none focus:ring-2 focus:ring-black rounded-full p-2 hover:bg-secondary-100 transition-colors z-10"
+                            className="absolute top-4 right-4 text-secondary-500 hover:text-secondary-700 focus:outline-none rounded-full p-2 hover:bg-secondary-100 transition-colors z-10"
                             onClick={onClose}
                             aria-label="Close modal"
                         >
