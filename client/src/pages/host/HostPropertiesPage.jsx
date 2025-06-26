@@ -12,6 +12,8 @@ import {
     FaSpinner,
     FaStar,
     FaFilter,
+    FaEllipsisH,
+    FaExclamationTriangle,
 } from "react-icons/fa"
 import { propertyService } from "../../services/api"
 import { formatPrice } from "../../utils/currency"
@@ -20,6 +22,7 @@ import { useAuth } from "../../context/AuthContext"
 /**
  * Host properties page component
  * Displays a list of properties owned by the host
+ * Redesigned with Airbnb-style grey/black color scheme
  */
 const HostPropertiesPage = () => {
     const { user } = useAuth()
@@ -113,11 +116,13 @@ const HostPropertiesPage = () => {
     // Loading state or waiting for user data
     if (isLoading || !user || !user._id) {
         return (
-            <div className="container mx-auto px-4 py-8">
-                <h1 className="text-3xl font-bold mb-6">Your Properties</h1>
+            <div className="max-w-7xl mx-auto px-4 py-8">
+                <h1 className="text-2xl font-medium text-secondary-900 mb-6">
+                    Your Properties
+                </h1>
                 <div className="animate-pulse">
-                    <div className="h-12 bg-secondary-200 rounded mb-6"></div>
-                    <div className="bg-white rounded-lg shadow-md p-6">
+                    <div className="h-12 bg-secondary-200 rounded-lg mb-6"></div>
+                    <div className="bg-white rounded-lg shadow-sm p-6">
                         <div className="h-8 bg-secondary-200 rounded w-1/4 mb-6"></div>
                         <div className="space-y-4">
                             {[...Array(5)].map((_, index) => (
@@ -136,9 +141,12 @@ const HostPropertiesPage = () => {
     // Error state
     if (isError) {
         return (
-            <div className="container mx-auto px-4 py-8">
-                <h1 className="text-3xl font-bold mb-6">Your Properties</h1>
-                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+            <div className="max-w-7xl mx-auto px-4 py-8">
+                <h1 className="text-2xl font-medium text-secondary-900 mb-6">
+                    Your Properties
+                </h1>
+                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-start">
+                    <FaExclamationTriangle className="text-red-500 mt-0.5 mr-2" />
                     <p>
                         Error loading properties:{" "}
                         {error?.message || "Please try again later."}
@@ -149,14 +157,16 @@ const HostPropertiesPage = () => {
     }
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
-                <h1 className="text-3xl font-bold">Your Properties</h1>
+        <div className="max-w-7xl mx-auto">
+            <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
+                <h1 className="text-2xl font-medium text-secondary-900">
+                    Your Properties
+                </h1>
 
                 <div className="mt-4 md:mt-0">
                     <Link
                         to="/host/properties/add"
-                        className="inline-flex items-center bg-primary-600 text-white px-4 py-2 rounded-md font-medium hover:bg-primary-700 transition-colors"
+                        className="inline-flex items-center bg-primary-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-primary-600 transition-colors"
                     >
                         <FaPlus className="mr-2" />
                         <span>Add New Property</span>
@@ -165,7 +175,7 @@ const HostPropertiesPage = () => {
             </div>
 
             {/* Search and filters */}
-            <div className="bg-white p-4 rounded-lg shadow-md mb-6">
+            <div className="bg-white p-5 rounded-lg shadow-sm border border-secondary-100 mb-6">
                 <div className="flex flex-col md:flex-row gap-4">
                     <form
                         onSubmit={handleSearch}
@@ -180,12 +190,12 @@ const HostPropertiesPage = () => {
                                 name="search"
                                 placeholder="Search properties..."
                                 defaultValue={filters.search}
-                                className="w-full pl-10 pr-3 py-2 border border-secondary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                className="w-full pl-10 pr-3 py-2 border border-secondary-300 rounded-lg bg-secondary-50 focus:outline-none focus:ring-1 focus:ring-secondary-500 focus:border-secondary-500"
                             />
                         </div>
                         <button
                             type="submit"
-                            className="ml-2 px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700"
+                            className="ml-2 px-4 py-2 bg-secondary-900 text-white rounded-lg hover:bg-secondary-800 transition-colors"
                         >
                             Search
                         </button>
@@ -194,7 +204,7 @@ const HostPropertiesPage = () => {
                     <button
                         type="button"
                         onClick={() => setIsFilterOpen(!isFilterOpen)}
-                        className="md:w-auto w-full px-4 py-2 bg-secondary-100 text-secondary-700 rounded-md hover:bg-secondary-200 flex items-center justify-center"
+                        className="md:w-auto w-full px-4 py-2 bg-secondary-100 text-secondary-700 rounded-lg hover:bg-secondary-200 flex items-center justify-center"
                     >
                         <FaFilter className="mr-2" />
                         <span>Filters</span>
@@ -203,7 +213,7 @@ const HostPropertiesPage = () => {
 
                 {/* Advanced Filters */}
                 {isFilterOpen && (
-                    <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-secondary-100">
                         <div>
                             <label
                                 htmlFor="status"
@@ -216,7 +226,7 @@ const HostPropertiesPage = () => {
                                 name="status"
                                 value={filters.status}
                                 onChange={handleFilterChange}
-                                className="w-full p-2 border border-secondary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                className="w-full p-2 border border-secondary-300 rounded-lg bg-secondary-50 focus:outline-none focus:ring-1 focus:ring-secondary-500"
                             >
                                 <option value="">All Statuses</option>
                                 <option value="available">Available</option>
@@ -238,7 +248,7 @@ const HostPropertiesPage = () => {
                                 name="type"
                                 value={filters.type}
                                 onChange={handleFilterChange}
-                                className="w-full p-2 border border-secondary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                                className="w-full p-2 border border-secondary-300 rounded-lg bg-secondary-50 focus:outline-none focus:ring-1 focus:ring-secondary-500"
                             >
                                 <option value="">All Types</option>
                                 <option value="apartment">Apartment</option>
@@ -254,16 +264,16 @@ const HostPropertiesPage = () => {
 
             {/* No properties message */}
             {data?.properties?.length === 0 && (
-                <div className="bg-white rounded-lg shadow-md p-8 text-center">
-                    <h2 className="text-xl font-semibold mb-2">
+                <div className="bg-white rounded-lg shadow-sm p-8 text-center border border-secondary-100">
+                    <h2 className="text-xl font-medium text-secondary-900 mb-2">
                         You don't have any properties yet
                     </h2>
-                    <p className="text-secondary-600 mb-6">
+                    <p className="text-secondary-500 mb-6">
                         Start by adding your first property to rent out.
                     </p>
                     <Link
                         to="/host/properties/add"
-                        className="inline-flex items-center bg-primary-600 text-white px-6 py-3 rounded-md font-medium hover:bg-primary-700 transition-colors"
+                        className="inline-flex items-center bg-primary-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-600 transition-colors"
                     >
                         <FaPlus className="mr-2" />
                         <span>Add Property</span>
@@ -273,11 +283,11 @@ const HostPropertiesPage = () => {
 
             {/* Properties list */}
             {data?.properties?.length > 0 && (
-                <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="bg-white rounded-lg shadow-sm overflow-hidden border border-secondary-100">
                     <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-secondary-200">
-                            <thead className="bg-secondary-50">
-                                <tr>
+                        <table className="min-w-full">
+                            <thead>
+                                <tr className="border-b border-secondary-200">
                                     <th
                                         scope="col"
                                         className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider"
@@ -316,14 +326,17 @@ const HostPropertiesPage = () => {
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className="bg-white divide-y divide-secondary-200">
+                            <tbody className="divide-y divide-secondary-100">
                                 {data.properties.map((property) => (
-                                    <tr key={property._id}>
+                                    <tr
+                                        key={property._id}
+                                        className="hover:bg-secondary-50"
+                                    >
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <div className="flex items-center">
-                                                <div className="flex-shrink-0 h-10 w-10">
+                                                <div className="flex-shrink-0 h-12 w-12">
                                                     <img
-                                                        className="h-10 w-10 rounded-md object-cover"
+                                                        className="h-12 w-12 rounded-md object-cover"
                                                         src={
                                                             property
                                                                 .images[0] ||
@@ -348,7 +361,7 @@ const HostPropertiesPage = () => {
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-sm text-secondary-900">
+                                            <div className="text-sm font-medium text-secondary-900">
                                                 {property.address?.city ||
                                                     "N/A"}
                                             </div>
@@ -358,7 +371,7 @@ const HostPropertiesPage = () => {
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-sm text-secondary-900">
+                                            <div className="text-sm font-medium text-secondary-900">
                                                 {formatPrice(property.price)}
                                             </div>
                                             <div className="text-sm text-secondary-500">
@@ -372,7 +385,7 @@ const HostPropertiesPage = () => {
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <div className="flex items-center">
                                                 <FaStar className="text-yellow-500 mr-1" />
-                                                <span>
+                                                <span className="text-secondary-900 font-medium">
                                                     {property.avgRating
                                                         ? property.avgRating.toFixed(
                                                               1
@@ -388,7 +401,7 @@ const HostPropertiesPage = () => {
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <span
-                                                className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                                                className={`px-2.5 py-0.5 inline-flex text-xs leading-5 font-medium rounded-full ${
                                                     property.isAvailable
                                                         ? "bg-green-100 text-green-800"
                                                         : "bg-red-100 text-red-800"
@@ -400,17 +413,17 @@ const HostPropertiesPage = () => {
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                            <div className="flex space-x-2">
+                                            <div className="flex space-x-3">
                                                 <Link
                                                     to={`/host/properties/${property._id}`}
-                                                    className="text-primary-600 hover:text-primary-900"
+                                                    className="text-secondary-600 hover:text-secondary-900"
                                                     title="View property"
                                                 >
                                                     <FaEye />
                                                 </Link>
                                                 <Link
                                                     to={`/host/properties/${property._id}/edit`}
-                                                    className="text-indigo-600 hover:text-indigo-900"
+                                                    className="text-secondary-600 hover:text-secondary-900"
                                                     title="Edit property"
                                                 >
                                                     <FaEdit />
@@ -426,8 +439,8 @@ const HostPropertiesPage = () => {
                                                     }
                                                     className={`transition-colors disabled:opacity-50 ${
                                                         property.isAvailable
-                                                            ? "text-green-600 hover:text-green-900"
-                                                            : "text-red-600 hover:text-red-900"
+                                                            ? "text-green-600 hover:text-green-800"
+                                                            : "text-secondary-600 hover:text-secondary-900"
                                                     }`}
                                                     title={
                                                         property.isAvailable
@@ -450,7 +463,7 @@ const HostPropertiesPage = () => {
                                                         )
                                                         setShowDeleteModal(true)
                                                     }}
-                                                    className="text-red-600 hover:text-red-900"
+                                                    className="text-secondary-600 hover:text-red-600"
                                                     title="Delete property"
                                                 >
                                                     <FaTrash />
@@ -472,7 +485,7 @@ const HostPropertiesPage = () => {
                         <button
                             onClick={() => handlePageChange(filters.page - 1)}
                             disabled={filters.page === 1}
-                            className="px-3 py-1 rounded-md mr-2 bg-white border border-secondary-300 disabled:opacity-50"
+                            className="px-4 py-2 rounded-lg mr-2 bg-white border border-secondary-200 text-secondary-700 disabled:opacity-50 disabled:text-secondary-400"
                         >
                             Previous
                         </button>
@@ -481,10 +494,10 @@ const HostPropertiesPage = () => {
                                 <button
                                     key={index}
                                     onClick={() => handlePageChange(index + 1)}
-                                    className={`px-3 py-1 rounded-md ${
+                                    className={`px-3 py-2 rounded-lg ${
                                         filters.page === index + 1
-                                            ? "bg-primary-600 text-white"
-                                            : "bg-white border border-secondary-300"
+                                            ? "bg-secondary-900 text-white"
+                                            : "bg-white border border-secondary-200 text-secondary-700 hover:bg-secondary-50"
                                     }`}
                                 >
                                     {index + 1}
@@ -494,7 +507,7 @@ const HostPropertiesPage = () => {
                         <button
                             onClick={() => handlePageChange(filters.page + 1)}
                             disabled={filters.page === data.totalPages}
-                            className="px-3 py-1 rounded-md ml-2 bg-white border border-secondary-300 disabled:opacity-50"
+                            className="px-4 py-2 rounded-lg ml-2 bg-white border border-secondary-200 text-secondary-700 disabled:opacity-50 disabled:text-secondary-400"
                         >
                             Next
                         </button>
@@ -504,26 +517,26 @@ const HostPropertiesPage = () => {
 
             {/* Delete confirmation modal */}
             {showDeleteModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-lg max-w-md w-full p-6">
-                        <h2 className="text-xl font-semibold mb-4">
+                <div className="fixed inset-0 bg-secondary-900 bg-opacity-50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-lg max-w-md w-full p-6 shadow-lg">
+                        <h2 className="text-xl font-medium text-secondary-900 mb-4">
                             Delete Property
                         </h2>
-                        <p className="text-secondary-700 mb-6">
+                        <p className="text-secondary-600 mb-6">
                             Are you sure you want to delete this property? This
                             action cannot be undone.
                         </p>
                         <div className="flex justify-end space-x-3">
                             <button
                                 onClick={() => setShowDeleteModal(false)}
-                                className="px-4 py-2 border border-secondary-300 rounded-md hover:bg-secondary-50"
+                                className="px-4 py-2 border border-secondary-300 rounded-lg text-secondary-700 hover:bg-secondary-50"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={handleDeleteProperty}
                                 disabled={deletePropertyMutation.isLoading}
-                                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:bg-red-300"
+                                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:bg-red-400"
                             >
                                 {deletePropertyMutation.isLoading
                                     ? "Deleting..."
