@@ -4,9 +4,6 @@ import { useQuery } from "@tanstack/react-query"
 import {
     FaStar,
     FaMapMarkerAlt,
-    FaBed,
-    FaBath,
-    FaUsers,
     FaHeart,
     FaRegHeart,
     FaArrowLeft,
@@ -91,6 +88,8 @@ const PropertyDetailPage = () => {
         queryKey: ["property", id],
         queryFn: () => propertyService.getPropertyById(id),
     })
+
+    console.log("property:", property)
 
     // Fetch property reviews
     const { data: reviewsData, isLoading: reviewsLoading } = useQuery({
@@ -772,9 +771,15 @@ const PropertyDetailPage = () => {
                                         House rules
                                     </h3>
                                     <div className="space-y-2 text-sm text-secondary-600">
-                                        <p>Check-in: 3:00 PM - 9:00 PM</p>
-                                        <p>Checkout: 11:00 AM</p>
-                                        <p>8 guests maximum</p>
+                                        <p>
+                                            Check-in: {property.rules.checkIn}
+                                        </p>
+                                        <p>
+                                            Checkout: {property.rules.checkOut}
+                                        </p>
+                                        <p>
+                                            {property.maxGuests} guests maximum
+                                        </p>
                                         <button
                                             onClick={() =>
                                                 setShowRulesModal(true)
