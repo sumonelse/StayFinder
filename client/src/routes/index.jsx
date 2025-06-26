@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import {
     MainLayout,
@@ -6,31 +7,65 @@ import {
     ErrorLayout,
     PrintLayout,
 } from "../layouts"
-import HomePage from "../pages/HomePage"
-import LoginPage from "../pages/auth/LoginPage"
-import RegisterPage from "../pages/auth/RegisterPage"
-import ForgotPasswordPage from "../pages/auth/ForgotPasswordPage"
-import ResetPasswordPage from "../pages/auth/ResetPasswordPage"
-import PropertyListPage from "../pages/properties/PropertyListPage"
-import PropertyDetailPage from "../pages/properties/PropertyDetailPage"
-import PropertyReviewsPage from "../pages/properties/PropertyReviewsPage"
-import BookingPage from "../pages/bookings/BookingPage"
-import BookingListPage from "../pages/bookings/BookingListPage"
-import BookingDetailPage from "../pages/bookings/BookingDetailPage"
-import AddReviewPage from "../pages/reviews/AddReviewPage"
-import ProfilePage from "../pages/profile/ProfilePage"
-import FavoritesPage from "../pages/profile/FavoritesPage"
-import HostDashboardPage from "../pages/host/HostDashboardPage"
-import HostPropertiesPage from "../pages/host/HostPropertiesPage"
-import HostBookingsPage from "../pages/host/HostBookingsPage"
-import PropertyFormPage from "../pages/host/PropertyFormPage"
-import HostPropertyDetailPage from "../pages/host/HostPropertyDetailPage"
-
-import AdminDashboardPage from "../pages/admin/AdminDashboardPage"
-import AdminPropertiesPage from "../pages/admin/AdminPropertiesPage"
-
-import NotFoundPage from "../pages/NotFoundPage"
+import { LoadingFallback } from "../components/ui"
 import ProtectedRoute from "./ProtectedRoute"
+
+// Lazy load page components
+// Home and frequently accessed pages
+const HomePage = lazy(() => import("../pages/HomePage"))
+const NotFoundPage = lazy(() => import("../pages/NotFoundPage"))
+
+// Auth pages
+const LoginPage = lazy(() => import("../pages/auth/LoginPage"))
+const RegisterPage = lazy(() => import("../pages/auth/RegisterPage"))
+const ForgotPasswordPage = lazy(() =>
+    import("../pages/auth/ForgotPasswordPage")
+)
+const ResetPasswordPage = lazy(() => import("../pages/auth/ResetPasswordPage"))
+
+// Property pages
+const PropertyListPage = lazy(() =>
+    import("../pages/properties/PropertyListPage")
+)
+const PropertyDetailPage = lazy(() =>
+    import("../pages/properties/PropertyDetailPage")
+)
+const PropertyReviewsPage = lazy(() =>
+    import("../pages/properties/PropertyReviewsPage")
+)
+
+// Booking pages
+const BookingPage = lazy(() => import("../pages/bookings/BookingPage"))
+const BookingListPage = lazy(() => import("../pages/bookings/BookingListPage"))
+const BookingDetailPage = lazy(() =>
+    import("../pages/bookings/BookingDetailPage")
+)
+
+// Review pages
+const AddReviewPage = lazy(() => import("../pages/reviews/AddReviewPage"))
+
+// Profile pages
+const ProfilePage = lazy(() => import("../pages/profile/ProfilePage"))
+const FavoritesPage = lazy(() => import("../pages/profile/FavoritesPage"))
+
+// Host pages
+const HostDashboardPage = lazy(() => import("../pages/host/HostDashboardPage"))
+const HostPropertiesPage = lazy(() =>
+    import("../pages/host/HostPropertiesPage")
+)
+const HostBookingsPage = lazy(() => import("../pages/host/HostBookingsPage"))
+const PropertyFormPage = lazy(() => import("../pages/host/PropertyFormPage"))
+const HostPropertyDetailPage = lazy(() =>
+    import("../pages/host/HostPropertyDetailPage")
+)
+
+// Admin pages
+const AdminDashboardPage = lazy(() =>
+    import("../pages/admin/AdminDashboardPage")
+)
+const AdminPropertiesPage = lazy(() =>
+    import("../pages/admin/AdminPropertiesPage")
+)
 
 const router = createBrowserRouter([
     // Main Layout - For public pages and user pages
@@ -40,41 +75,75 @@ const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <HomePage />,
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <HomePage />
+                    </Suspense>
+                ),
             },
             {
                 path: "login",
-                element: <LoginPage />,
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <LoginPage />
+                    </Suspense>
+                ),
             },
             {
                 path: "register",
-                element: <RegisterPage />,
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <RegisterPage />
+                    </Suspense>
+                ),
             },
             {
                 path: "forgot-password",
-                element: <ForgotPasswordPage />,
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <ForgotPasswordPage />
+                    </Suspense>
+                ),
             },
             {
                 path: "reset-password",
-                element: <ResetPasswordPage />,
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <ResetPasswordPage />
+                    </Suspense>
+                ),
             },
             {
                 path: "properties",
-                element: <PropertyListPage />,
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <PropertyListPage />
+                    </Suspense>
+                ),
             },
             {
                 path: "properties/:id",
-                element: <PropertyDetailPage />,
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <PropertyDetailPage />
+                    </Suspense>
+                ),
             },
             {
                 path: "properties/:id/reviews",
-                element: <PropertyReviewsPage />,
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <PropertyReviewsPage />
+                    </Suspense>
+                ),
             },
             {
                 path: "reviews/add",
                 element: (
                     <ProtectedRoute>
-                        <AddReviewPage />
+                        <Suspense fallback={<LoadingFallback />}>
+                            <AddReviewPage />
+                        </Suspense>
                     </ProtectedRoute>
                 ),
             },
@@ -82,7 +151,9 @@ const router = createBrowserRouter([
                 path: "properties/:id/book",
                 element: (
                     <ProtectedRoute>
-                        <BookingPage />
+                        <Suspense fallback={<LoadingFallback />}>
+                            <BookingPage />
+                        </Suspense>
                     </ProtectedRoute>
                 ),
             },
@@ -90,7 +161,9 @@ const router = createBrowserRouter([
                 path: "bookings",
                 element: (
                     <ProtectedRoute>
-                        <BookingListPage />
+                        <Suspense fallback={<LoadingFallback />}>
+                            <BookingListPage />
+                        </Suspense>
                     </ProtectedRoute>
                 ),
             },
@@ -98,7 +171,9 @@ const router = createBrowserRouter([
                 path: "bookings/:id",
                 element: (
                     <ProtectedRoute>
-                        <BookingDetailPage />
+                        <Suspense fallback={<LoadingFallback />}>
+                            <BookingDetailPage />
+                        </Suspense>
                     </ProtectedRoute>
                 ),
             },
@@ -106,7 +181,9 @@ const router = createBrowserRouter([
                 path: "profile",
                 element: (
                     <ProtectedRoute>
-                        <ProfilePage />
+                        <Suspense fallback={<LoadingFallback />}>
+                            <ProfilePage />
+                        </Suspense>
                     </ProtectedRoute>
                 ),
             },
@@ -114,7 +191,9 @@ const router = createBrowserRouter([
                 path: "favorites",
                 element: (
                     <ProtectedRoute>
-                        <FavoritesPage />
+                        <Suspense fallback={<LoadingFallback />}>
+                            <FavoritesPage />
+                        </Suspense>
                     </ProtectedRoute>
                 ),
             },
@@ -132,27 +211,51 @@ const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <HostDashboardPage />,
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <HostDashboardPage />
+                    </Suspense>
+                ),
             },
             {
                 path: "properties",
-                element: <HostPropertiesPage />,
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <HostPropertiesPage />
+                    </Suspense>
+                ),
             },
             {
                 path: "bookings",
-                element: <HostBookingsPage />,
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <HostBookingsPage />
+                    </Suspense>
+                ),
             },
             {
                 path: "properties/add",
-                element: <PropertyFormPage />,
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <PropertyFormPage />
+                    </Suspense>
+                ),
             },
             {
                 path: "properties/:id/edit",
-                element: <PropertyFormPage />,
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <PropertyFormPage />
+                    </Suspense>
+                ),
             },
             {
                 path: "properties/:id",
-                element: <HostPropertyDetailPage />,
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <HostPropertyDetailPage />
+                    </Suspense>
+                ),
             },
         ],
     },
@@ -168,11 +271,19 @@ const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <AdminDashboardPage />,
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <AdminDashboardPage />
+                    </Suspense>
+                ),
             },
             {
                 path: "properties",
-                element: <AdminPropertiesPage />,
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <AdminPropertiesPage />
+                    </Suspense>
+                ),
             },
         ],
     },
@@ -186,7 +297,9 @@ const router = createBrowserRouter([
                 path: "booking/:id",
                 element: (
                     <ProtectedRoute>
-                        <BookingDetailPage printMode={true} />
+                        <Suspense fallback={<LoadingFallback />}>
+                            <BookingDetailPage printMode={true} />
+                        </Suspense>
                     </ProtectedRoute>
                 ),
             },
@@ -201,7 +314,11 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "*",
-                element: <NotFoundPage />,
+                element: (
+                    <Suspense fallback={<LoadingFallback />}>
+                        <NotFoundPage />
+                    </Suspense>
+                ),
             },
         ],
     },

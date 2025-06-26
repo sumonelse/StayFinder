@@ -28,7 +28,14 @@ import {
 import { FiCompass } from "react-icons/fi"
 import { RiVipCrownFill } from "react-icons/ri"
 import { MdOutlineVerified, MdLocationOn, MdRecommend } from "react-icons/md"
-import { Button, Input, DatePicker, Spinner, Alert } from "../components/ui"
+import {
+    Button,
+    Input,
+    DatePicker,
+    Spinner,
+    Alert,
+    PropertyCardSkeleton,
+} from "../components/ui"
 import { formatPrice } from "../utils/currency"
 import propertyService from "../services/api/property.service"
 import AuthContext from "../context/AuthContext"
@@ -1068,8 +1075,12 @@ const HomePage = () => {
                     </div>
 
                     {loading ? (
-                        <div className="flex justify-center items-center py-20">
-                            <Spinner size="lg" />
+                        <div className="py-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                                {[...Array(8)].map((_, index) => (
+                                    <PropertyCardSkeleton key={index} />
+                                ))}
+                            </div>
                         </div>
                     ) : error ? (
                         <div className="text-center py-10">

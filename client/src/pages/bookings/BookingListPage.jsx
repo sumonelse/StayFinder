@@ -11,6 +11,7 @@ import {
 } from "react-icons/fa"
 import { bookingService } from "../../services/api"
 import { formatPrice } from "../../utils/currency"
+import { BookingCardSkeleton } from "../../components/ui"
 
 /**
  * Booking list page component
@@ -110,22 +111,9 @@ const BookingListPage = () => {
                     <h1 className="text-2xl md:text-3xl font-semibold text-black mb-8">
                         Your trips
                     </h1>
-                    <div className="animate-pulse space-y-4">
+                    <div className="space-y-4">
                         {[...Array(3)].map((_, index) => (
-                            <div
-                                key={index}
-                                className="bg-white rounded-2xl shadow-sm border border-secondary-200 overflow-hidden"
-                            >
-                                <div className="md:flex">
-                                    <div className="md:w-1/3 h-48 md:h-40 bg-secondary-200"></div>
-                                    <div className="p-6 md:w-2/3">
-                                        <div className="h-5 bg-secondary-200 rounded w-3/4 mb-3"></div>
-                                        <div className="h-4 bg-secondary-200 rounded w-1/2 mb-3"></div>
-                                        <div className="h-4 bg-secondary-200 rounded w-2/3 mb-3"></div>
-                                        <div className="h-4 bg-secondary-200 rounded w-1/3"></div>
-                                    </div>
-                                </div>
-                            </div>
+                            <BookingCardSkeleton key={index} />
                         ))}
                     </div>
                 </div>

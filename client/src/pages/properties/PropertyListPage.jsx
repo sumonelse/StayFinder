@@ -39,7 +39,13 @@ import { propertyService } from "../../services/api"
 import { useAuth } from "../../context/AuthContext"
 import PropertyCard from "../../components/properties/PropertyCard"
 import FilterModal from "../../components/properties/FilterModal"
-import { Card, Badge, Button, Spinner } from "../../components/ui"
+import {
+    Card,
+    Badge,
+    Button,
+    Spinner,
+    PropertyCardSkeleton,
+} from "../../components/ui"
 import { getCurrencySymbol } from "../../utils/currency"
 
 /**
@@ -721,12 +727,16 @@ const PropertyListPage = () => {
                 {/* Results Section - Airbnb Style */}
                 <div className="px-4 py-4">
                     {isLoading ? (
-                        <div className="flex justify-center items-center py-20">
-                            <Spinner size="lg" />
-                            <p className="ml-4 text-secondary-600">
+                        <>
+                            <p className="text-secondary-600 mb-6 text-center">
                                 Finding your perfect stays...
                             </p>
-                        </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                                {[...Array(8)].map((_, index) => (
+                                    <PropertyCardSkeleton key={index} />
+                                ))}
+                            </div>
+                        </>
                     ) : isError ? (
                         <div className="text-center py-16 bg-white rounded-xl shadow-sm border border-secondary-100">
                             <div className="bg-red-50 text-red-700 p-6 rounded-xl max-w-lg mx-auto">

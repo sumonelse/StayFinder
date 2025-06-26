@@ -18,6 +18,7 @@ import {
 import { propertyService } from "../../services/api"
 import { formatPrice } from "../../utils/currency"
 import { useAuth } from "../../context/AuthContext"
+import { HostPropertyCardSkeleton } from "../../components/ui"
 
 /**
  * Host properties page component
@@ -120,19 +121,14 @@ const HostPropertiesPage = () => {
                 <h1 className="text-2xl font-medium text-secondary-900 mb-6">
                     Your Properties
                 </h1>
-                <div className="animate-pulse">
-                    <div className="h-12 bg-secondary-200 rounded-lg mb-6"></div>
-                    <div className="bg-white rounded-lg shadow-sm p-6">
-                        <div className="h-8 bg-secondary-200 rounded w-1/4 mb-6"></div>
-                        <div className="space-y-4">
-                            {[...Array(5)].map((_, index) => (
-                                <div
-                                    key={index}
-                                    className="h-20 bg-secondary-200 rounded"
-                                ></div>
-                            ))}
-                        </div>
-                    </div>
+                <div className="flex justify-between items-center mb-6">
+                    <div className="h-10 bg-gray-200 rounded-lg w-64 animate-pulse"></div>
+                    <div className="h-10 bg-gray-200 rounded-lg w-32 animate-pulse"></div>
+                </div>
+                <div className="space-y-4">
+                    {[...Array(3)].map((_, index) => (
+                        <HostPropertyCardSkeleton key={index} />
+                    ))}
                 </div>
             </div>
         )

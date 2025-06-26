@@ -48,6 +48,7 @@ import RulesModal from "../../components/property/RulesModal"
 import ReportModal from "../../components/property/ReportModal"
 import DescriptionModal from "../../components/property/DescriptionModal"
 import { formatPrice } from "../../utils/currency"
+import { PropertyDetailSkeleton } from "../../components/ui"
 import {
     calculateBookingPrice,
     calculateNights,
@@ -241,25 +242,7 @@ const PropertyDetailPage = () => {
         return (
             <div className="min-h-screen bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                    <div className="animate-pulse">
-                        {/* Header skeleton */}
-                        <div className="h-6 bg-secondary-200 rounded w-20 mb-6"></div>
-                        <div className="h-8 bg-secondary-200 rounded w-2/3 mb-4"></div>
-                        <div className="h-4 bg-secondary-200 rounded w-1/2 mb-8"></div>
-
-                        {/* Image skeleton */}
-                        <div className="h-96 bg-secondary-200 rounded-xl mb-8"></div>
-
-                        {/* Content skeleton */}
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                            <div className="lg:col-span-2 space-y-8">
-                                <div className="h-32 bg-secondary-200 rounded"></div>
-                                <div className="h-48 bg-secondary-200 rounded"></div>
-                                <div className="h-64 bg-secondary-200 rounded"></div>
-                            </div>
-                            <div className="h-96 bg-secondary-200 rounded-xl"></div>
-                        </div>
-                    </div>
+                    <PropertyDetailSkeleton />
                 </div>
             </div>
         )
