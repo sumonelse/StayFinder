@@ -126,6 +126,7 @@ export default {
                 "slide-up": "slideUp 0.3s ease-out",
                 "scale-in": "scaleIn 0.2s ease-out",
                 "bounce-subtle": "bounceSubtle 0.6s ease-in-out",
+                "slow-zoom": "slowZoom 20s ease-out infinite",
             },
             keyframes: {
                 fadeIn: {
@@ -143,6 +144,11 @@ export default {
                 bounceSubtle: {
                     "0%, 100%": { transform: "translateY(0)" },
                     "50%": { transform: "translateY(-2px)" },
+                },
+                slowZoom: {
+                    "0%": { transform: "scale(1)" },
+                    "50%": { transform: "scale(1.05)" },
+                    "100%": { transform: "scale(1)" },
                 },
             },
         },
