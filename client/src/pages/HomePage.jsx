@@ -54,6 +54,8 @@ const HomePage = () => {
         popular: [],
     })
 
+    console.log("properties:", properties)
+
     // Fetch properties from backend
     useEffect(() => {
         const fetchProperties = async () => {
@@ -338,13 +340,13 @@ const HomePage = () => {
                 <div className="container mx-auto px-4 py-12 relative z-10">
                     <div className="max-w-5xl mx-auto">
                         <div className="text-center mb-8">
-                            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-dark-900 mb-4 font-heading">
+                            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-secondary-900 mb-4 font-heading">
                                 Find your{" "}
                                 <span className="text-primary-600">
                                     perfect stay
                                 </span>
                             </h1>
-                            <p className="text-lg text-dark-600 max-w-2xl mx-auto">
+                            <p className="text-lg text-secondary-600 max-w-2xl mx-auto">
                                 Discover unique places to stay around the world
                             </p>
                         </div>
@@ -420,33 +422,33 @@ const HomePage = () => {
                             </form>
 
                             <div className="flex flex-wrap items-center gap-2 mt-4">
-                                <span className="text-dark-500 text-sm">
+                                <span className="text-secondary-500 text-sm">
                                     Popular:
                                 </span>
                                 <button
                                     type="button"
-                                    className="text-sm text-dark-600 hover:text-primary-600 hover:underline transition-colors"
+                                    className="text-sm text-secondary-600 hover:text-primary-600 hover:underline transition-colors"
                                 >
                                     Beach
                                 </button>
-                                <span className="text-dark-300">•</span>
+                                <span className="text-secondary-300">•</span>
                                 <button
                                     type="button"
-                                    className="text-sm text-dark-600 hover:text-primary-600 hover:underline transition-colors"
+                                    className="text-sm text-secondary-600 hover:text-primary-600 hover:underline transition-colors"
                                 >
                                     Mountain
                                 </button>
-                                <span className="text-dark-300">•</span>
+                                <span className="text-secondary-300">•</span>
                                 <button
                                     type="button"
-                                    className="text-sm text-dark-600 hover:text-primary-600 hover:underline transition-colors"
+                                    className="text-sm text-secondary-600 hover:text-primary-600 hover:underline transition-colors"
                                 >
                                     City
                                 </button>
-                                <span className="text-dark-300">•</span>
+                                <span className="text-secondary-300">•</span>
                                 <button
                                     type="button"
-                                    className="text-sm text-dark-600 hover:text-primary-600 hover:underline transition-colors"
+                                    className="text-sm text-secondary-600 hover:text-primary-600 hover:underline transition-colors"
                                 >
                                     Countryside
                                 </button>
@@ -460,7 +462,7 @@ const HomePage = () => {
             <section className="py-12">
                 <div className="container mx-auto px-4">
                     <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-2xl font-semibold text-dark-900">
+                        <h2 className="text-2xl font-semibold text-secondary-900">
                             Explore destinations
                         </h2>
                         <Link
@@ -487,10 +489,10 @@ const HomePage = () => {
                                         className="w-full aspect-square object-cover transition-transform duration-300 group-hover:scale-105"
                                     />
                                 </div>
-                                <h3 className="font-medium text-dark-900 group-hover:text-primary-600">
+                                <h3 className="font-medium text-secondary-900 group-hover:text-primary-600">
                                     {destination.name}
                                 </h3>
-                                <p className="text-dark-500 text-sm">
+                                <p className="text-secondary-500 text-sm">
                                     {destination.count} properties
                                 </p>
                             </Link>
@@ -503,7 +505,7 @@ const HomePage = () => {
             <section className="py-12 bg-white">
                 <div className="container mx-auto px-4">
                     <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-2xl font-semibold text-dark-900">
+                        <h2 className="text-2xl font-semibold text-secondary-900">
                             Places to stay
                         </h2>
                         <div className="flex items-center">
@@ -513,8 +515,8 @@ const HomePage = () => {
                                     onClick={() => setActiveTab("all")}
                                     className={`px-4 py-1.5 text-sm font-medium rounded-full transition-colors ${
                                         activeTab === "all"
-                                            ? "bg-dark-900 text-white"
-                                            : "text-dark-600 hover:bg-secondary-100"
+                                            ? "bg-secondary-900 text-white"
+                                            : "text-secondary-600 hover:bg-secondary-100"
                                     }`}
                                 >
                                     All
@@ -523,8 +525,8 @@ const HomePage = () => {
                                     onClick={() => setActiveTab("luxury")}
                                     className={`px-4 py-1.5 text-sm font-medium rounded-full transition-colors ${
                                         activeTab === "luxury"
-                                            ? "bg-dark-900 text-white"
-                                            : "text-dark-600 hover:bg-secondary-100"
+                                            ? "bg-secondary-900 text-white"
+                                            : "text-secondary-600 hover:bg-secondary-100"
                                     }`}
                                 >
                                     Luxury
@@ -533,8 +535,8 @@ const HomePage = () => {
                                     onClick={() => setActiveTab("trending")}
                                     className={`px-4 py-1.5 text-sm font-medium rounded-full transition-colors ${
                                         activeTab === "trending"
-                                            ? "bg-dark-900 text-white"
-                                            : "text-dark-600 hover:bg-secondary-100"
+                                            ? "bg-secondary-900 text-white"
+                                            : "text-secondary-600 hover:bg-secondary-100"
                                     }`}
                                 >
                                     Trending
@@ -543,8 +545,8 @@ const HomePage = () => {
                                     onClick={() => setActiveTab("popular")}
                                     className={`px-4 py-1.5 text-sm font-medium rounded-full transition-colors ${
                                         activeTab === "popular"
-                                            ? "bg-dark-900 text-white"
-                                            : "text-dark-600 hover:bg-secondary-100"
+                                            ? "bg-secondary-900 text-white"
+                                            : "text-secondary-600 hover:bg-secondary-100"
                                     }`}
                                 >
                                     Popular
@@ -566,8 +568,8 @@ const HomePage = () => {
                             onClick={() => setActiveTab("all")}
                             className={`px-4 py-1.5 text-sm font-medium rounded-full whitespace-nowrap transition-colors ${
                                 activeTab === "all"
-                                    ? "bg-dark-900 text-white"
-                                    : "bg-secondary-100 text-dark-600"
+                                    ? "bg-secondary-900 text-white"
+                                    : "bg-secondary-100 text-secondary-600"
                             }`}
                         >
                             All
@@ -576,8 +578,8 @@ const HomePage = () => {
                             onClick={() => setActiveTab("luxury")}
                             className={`px-4 py-1.5 text-sm font-medium rounded-full whitespace-nowrap transition-colors ${
                                 activeTab === "luxury"
-                                    ? "bg-dark-900 text-white"
-                                    : "bg-secondary-100 text-dark-600"
+                                    ? "bg-secondary-900 text-white"
+                                    : "bg-secondary-100 text-secondary-600"
                             }`}
                         >
                             Luxury
@@ -586,8 +588,8 @@ const HomePage = () => {
                             onClick={() => setActiveTab("trending")}
                             className={`px-4 py-1.5 text-sm font-medium rounded-full whitespace-nowrap transition-colors ${
                                 activeTab === "trending"
-                                    ? "bg-dark-900 text-white"
-                                    : "bg-secondary-100 text-dark-600"
+                                    ? "bg-secondary-900 text-white"
+                                    : "bg-secondary-100 text-secondary-600"
                             }`}
                         >
                             Trending
@@ -596,8 +598,8 @@ const HomePage = () => {
                             onClick={() => setActiveTab("popular")}
                             className={`px-4 py-1.5 text-sm font-medium rounded-full whitespace-nowrap transition-colors ${
                                 activeTab === "popular"
-                                    ? "bg-dark-900 text-white"
-                                    : "bg-secondary-100 text-dark-600"
+                                    ? "bg-secondary-900 text-white"
+                                    : "bg-secondary-100 text-secondary-600"
                             }`}
                         >
                             Popular
@@ -610,7 +612,7 @@ const HomePage = () => {
                         </div>
                     ) : error ? (
                         <div className="text-center py-10">
-                            <p className="text-dark-500 mb-4">{error}</p>
+                            <p className="text-secondary-500 mb-4">{error}</p>
                             <Button
                                 variant="outline"
                                 onClick={() => window.location.reload()}
@@ -622,7 +624,7 @@ const HomePage = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                             {filteredProperties.length === 0 ? (
                                 <div className="col-span-full text-center py-10">
-                                    <p className="text-dark-500">
+                                    <p className="text-secondary-500">
                                         No properties found in this category.
                                     </p>
                                 </div>
@@ -664,7 +666,7 @@ const HomePage = () => {
                                                                 60 *
                                                                 1000
                                                     ) && (
-                                                    <div className="absolute top-3 left-3 bg-white text-dark-900 text-xs font-medium px-2 py-1 rounded-md">
+                                                    <div className="absolute top-3 left-3 bg-white text-secondary-900 text-xs font-medium px-2 py-1 rounded-md">
                                                         New
                                                     </div>
                                                 )}
@@ -672,35 +674,35 @@ const HomePage = () => {
 
                                         <div className="flex justify-between items-start">
                                             <div>
-                                                <h3 className="font-medium text-dark-900 mb-1">
+                                                <h3 className="font-medium text-secondary-900 mb-1">
                                                     {property.title}
                                                 </h3>
-                                                <p className="text-dark-500 text-sm mb-1">
-                                                    {property.location
+                                                <p className="text-secondary-500 text-sm mb-1">
+                                                    {property.address
                                                         ? `${
-                                                              property.location
+                                                              property.address
                                                                   .city
                                                           }${
-                                                              property.location
+                                                              property.address
                                                                   .state
-                                                                  ? `, ${property.location.state}`
+                                                                  ? `, ${property.address.state}`
                                                                   : ""
                                                           }`
                                                         : "Location not specified"}
                                                 </p>
-                                                <p className="text-dark-500 text-sm mb-2">
+                                                <p className="text-secondary-500 text-sm mb-2">
                                                     {property.bedrooms || 0}{" "}
                                                     beds ·{" "}
                                                     {property.bathrooms || 0}{" "}
                                                     baths
                                                 </p>
                                                 <p className="font-medium">
-                                                    <span className="text-dark-900">
+                                                    <span className="text-secondary-900">
                                                         {formatPrice(
                                                             property.price
                                                         )}
                                                     </span>
-                                                    <span className="text-dark-500">
+                                                    <span className="text-secondary-500">
                                                         {" "}
                                                         night
                                                     </span>
@@ -728,7 +730,7 @@ const HomePage = () => {
             {/* How It Works Section - Simplified */}
             <section className="py-12 bg-secondary-50">
                 <div className="container mx-auto px-4">
-                    <h2 className="text-2xl font-semibold text-dark-900 mb-8 text-center">
+                    <h2 className="text-2xl font-semibold text-secondary-900 mb-8 text-center">
                         How it works
                     </h2>
 
@@ -740,7 +742,7 @@ const HomePage = () => {
                             <h3 className="text-lg font-medium mb-2">
                                 Find the perfect place
                             </h3>
-                            <p className="text-dark-500 text-sm">
+                            <p className="text-secondary-500 text-sm">
                                 Browse verified homes with accurate photos and
                                 details
                             </p>
@@ -753,7 +755,7 @@ const HomePage = () => {
                             <h3 className="text-lg font-medium mb-2">
                                 Book with confidence
                             </h3>
-                            <p className="text-dark-500 text-sm">
+                            <p className="text-secondary-500 text-sm">
                                 Secure payments, clear cancellation policies,
                                 and no hidden fees
                             </p>
@@ -766,7 +768,7 @@ const HomePage = () => {
                             <h3 className="text-lg font-medium mb-2">
                                 Enjoy your stay
                             </h3>
-                            <p className="text-dark-500 text-sm">
+                            <p className="text-secondary-500 text-sm">
                                 24/7 customer support and local tips for a
                                 memorable experience
                             </p>
@@ -780,10 +782,10 @@ const HomePage = () => {
                 <div className="container mx-auto px-4">
                     <div className="flex flex-col md:flex-row gap-8 items-center">
                         <div className="md:w-1/2">
-                            <h2 className="text-2xl font-semibold text-dark-900 mb-4">
+                            <h2 className="text-2xl font-semibold text-secondary-900 mb-4">
                                 Why guests love StayFinder
                             </h2>
-                            <p className="text-dark-600 mb-6">
+                            <p className="text-secondary-600 mb-6">
                                 Join millions of happy travelers who have found
                                 their perfect stay with us
                             </p>
@@ -794,10 +796,10 @@ const HomePage = () => {
                                         <MdOutlineVerified size={20} />
                                     </div>
                                     <div>
-                                        <h3 className="font-medium text-dark-900 mb-1">
+                                        <h3 className="font-medium text-secondary-900 mb-1">
                                             Verified listings
                                         </h3>
-                                        <p className="text-dark-500 text-sm">
+                                        <p className="text-secondary-500 text-sm">
                                             All properties are carefully
                                             reviewed for quality and accuracy
                                         </p>
@@ -809,10 +811,10 @@ const HomePage = () => {
                                         <FaShieldAlt size={20} />
                                     </div>
                                     <div>
-                                        <h3 className="font-medium text-dark-900 mb-1">
+                                        <h3 className="font-medium text-secondary-900 mb-1">
                                             Secure payments
                                         </h3>
-                                        <p className="text-dark-500 text-sm">
+                                        <p className="text-secondary-500 text-sm">
                                             Your booking is protected with our
                                             secure payment system
                                         </p>
@@ -824,10 +826,10 @@ const HomePage = () => {
                                         <FaComments size={20} />
                                     </div>
                                     <div>
-                                        <h3 className="font-medium text-dark-900 mb-1">
+                                        <h3 className="font-medium text-secondary-900 mb-1">
                                             24/7 support
                                         </h3>
-                                        <p className="text-dark-500 text-sm">
+                                        <p className="text-secondary-500 text-sm">
                                             Our team is available around the
                                             clock to help with any issues
                                         </p>
@@ -853,10 +855,10 @@ const HomePage = () => {
                     <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-sm overflow-hidden">
                         <div className="flex flex-col md:flex-row">
                             <div className="md:w-1/2 p-8 md:p-10 flex flex-col justify-center">
-                                <h2 className="text-2xl md:text-3xl font-semibold text-dark-900 mb-4">
+                                <h2 className="text-2xl md:text-3xl font-semibold text-secondary-900 mb-4">
                                     Ready to start your journey?
                                 </h2>
-                                <p className="text-dark-600 mb-6">
+                                <p className="text-secondary-600 mb-6">
                                     Find your perfect place to stay and create
                                     memories that last a lifetime
                                 </p>
