@@ -92,8 +92,18 @@ const PropertyImageUploader = ({
         try {
             console.log("Before upload - uploadedImages:", uploadedImages)
             console.log("Before upload - previewImages:", previewImages)
+
+            // Upload the images
             const result = await uploadImages()
             console.log("After upload - result:", result)
+
+            // Wait for state updates to complete
+            setTimeout(() => {
+                console.log(
+                    "After upload (delayed) - uploadedImages:",
+                    uploadedImages
+                )
+            }, 100)
 
             console.log("After upload - uploadedImages:", uploadedImages)
 
