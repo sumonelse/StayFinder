@@ -140,17 +140,32 @@ const useImageUpload = (options = {}) => {
             // Remove from preview images
             setPreviewImages((prev) => prev.filter((_, i) => i !== index))
 
-            // If it's a string URL (already uploaded), also remove from uploaded images
             if (typeof imageToRemove === "string") {
+                // If it's a string URL (already uploaded), remove from uploaded images
                 setUploadedImages((prev) =>
                     prev.filter((img) => img.url !== imageToRemove)
                 )
 
-                // Also remove from initial images if it was an initial image
+                // Also remove from initial images
                 setInitialImages((prev) =>
                     prev.filter((img) => img.url !== imageToRemove)
                 )
+            } else if (
+                imageToRemove instanceof File &&
+                imageToRemove.isInitial
+            ) {
+                // If it's a File object with isInitial flag, remove from uploaded and initial images
+                const fileUrl = imageToRemove.url
+                if (fileUrl) {
+                    setUploadedImages((prev) =>
+                        prev.filter((img) => img.url !== fileUrl)
+                    )
+                    setInitialImages((prev) =>
+                        prev.filter((img) => img.url !== fileUrl)
+                    )
+                }
             }
+            // For new files that haven't been uploaded yet, we don't need to remove anything from uploadedImages
         },
         [previewImages]
     )
@@ -169,9 +184,15 @@ const useImageUpload = (options = {}) => {
                 (file) => typeof file !== "string"
             )
 
-            // If there are no new files to upload, return the current uploaded images
+            // If there are no new files to upload, return a standardized format of the current uploaded images
             if (filesToUpload.length === 0) {
-                return uploadedImages
+                // Ensure all returned images have a consistent format
+                const standardizedImages = uploadedImages.map((img) => ({
+                    url: img.url,
+                    publicId: img.publicId || "",
+                    isInitial: true,
+                }))
+                return standardizedImages
             }
 
             let result
@@ -266,8 +287,28 @@ const useImageUpload = (options = {}) => {
                 })
             })
 
-            // Return all uploaded images (both initial and newly uploaded)
-            return [...initialImages, ...newlyUploadedData]
+            // Return all uploaded images with a consistent format
+            const allUploadedImages = [...initialImages, ...newlyUploadedData]
+
+            // Standardize the format of all images
+            const standardizedImages = allUploadedImages.map((img) => ({
+                url: img.url,
+                publicId: img.publicId || "",
+                isInitial: img.isInitial || false,
+            }))
+
+            // Remove any duplicates based on URL
+            const uniqueImages = []
+            const urls = new Set()
+
+            standardizedImages.forEach((img) => {
+                if (!urls.has(img.url)) {
+                    urls.add(img.url)
+                    uniqueImages.push(img)
+                }
+            })
+
+            return uniqueImages
         } catch (err) {
             setError(err.message || "Failed to upload images")
             throw err

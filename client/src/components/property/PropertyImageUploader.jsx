@@ -42,27 +42,31 @@ const PropertyImageUploader = ({
         const normalizeUrl = (img) =>
             typeof img === "string" ? img : img.url || ""
 
-        // Check if initialImages have changed
-        const prevUrls = prevInitialImagesRef.current.map(normalizeUrl)
-        const currentUrls = initialImages.map(normalizeUrl)
+        // Extract URLs from initialImages
+        const currentUrls = initialImages.map(normalizeUrl).filter(Boolean)
 
-        // Only process if the URLs have changed
+        // Extract URLs from previous initialImages
+        const prevUrls = prevInitialImagesRef.current
+            .map(normalizeUrl)
+            .filter(Boolean)
+
+        // Check if the arrays have the same length and all URLs match
         const hasChanged =
-            prevUrls.length !== currentUrls.length ||
+            currentUrls.length !== prevUrls.length ||
+            !currentUrls.every((url) => prevUrls.includes(url)) ||
             !prevUrls.every((url) => currentUrls.includes(url))
 
         if (hasChanged) {
+            console.log("Initial images have changed, resetting uploader state")
+
             // Update the ref with current initialImages
             prevInitialImagesRef.current = [...initialImages]
 
             // Reset the state
             resetUpload()
 
-            // Extract URLs from initialImages
-            const imageUrls = initialImages.map(normalizeUrl).filter(Boolean)
-
             // Create mock File objects for each URL
-            const mockFiles = imageUrls.map((url) => {
+            const mockFiles = currentUrls.map((url) => {
                 // Create a mock file object with the URL and isInitial flag
                 const mockFile = new File([""], "image.jpg", {
                     type: "image/jpeg",
@@ -98,13 +102,10 @@ const PropertyImageUploader = ({
             // If we have a propertyId, update the property with the new images
             if (propertyId) {
                 try {
-                    // Extract URLs from all uploaded images
+                    // Extract URLs from all uploaded images (now in standardized format)
                     const allImageUrls = allUploadedImages
-                        .map((img) => {
-                            if (typeof img === "string") return img
-                            return img.url || ""
-                        })
-                        .filter((url) => url)
+                        .map((img) => img.url)
+                        .filter(Boolean)
 
                     // Remove any duplicate URLs that might have been created
                     const uniqueImageUrls = [...new Set(allImageUrls)]

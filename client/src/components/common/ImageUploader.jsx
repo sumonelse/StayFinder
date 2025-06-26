@@ -1,4 +1,4 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import PropTypes from "prop-types"
 import { FiUpload, FiX } from "react-icons/fi"
 
@@ -16,6 +16,7 @@ const ImageUploader = ({
 }) => {
     const [dragActive, setDragActive] = useState(false)
     const [error, setError] = useState("")
+    const [objectUrls, setObjectUrls] = useState({})
     const inputRef = useRef(null)
 
     // Handle file selection
@@ -88,6 +89,41 @@ const ImageUploader = ({
         }
     }
 
+    // Create and manage object URLs for File objects
+    useEffect(() => {
+        const newObjectUrls = {}
+
+        // Create object URLs for File objects
+        previewImages.forEach((image, index) => {
+            if (typeof image !== "string" && image instanceof File) {
+                // Check if we already have an object URL for this file
+                if (!objectUrls[index]) {
+                    newObjectUrls[index] = URL.createObjectURL(image)
+                } else {
+                    // Keep the existing object URL
+                    newObjectUrls[index] = objectUrls[index]
+                }
+            }
+        })
+
+        // Revoke any object URLs that are no longer needed
+        Object.entries(objectUrls).forEach(([index, url]) => {
+            if (!newObjectUrls[index]) {
+                URL.revokeObjectURL(url)
+            }
+        })
+
+        // Update state with new object URLs
+        setObjectUrls(newObjectUrls)
+
+        // Clean up all object URLs when component unmounts
+        return () => {
+            Object.values(newObjectUrls).forEach((url) =>
+                URL.revokeObjectURL(url)
+            )
+        }
+    }, [previewImages, objectUrls])
+
     return (
         <div className={`w-full ${className}`}>
             <div
@@ -133,7 +169,7 @@ const ImageUploader = ({
                                 src={
                                     typeof image === "string"
                                         ? image
-                                        : URL.createObjectURL(image)
+                                        : objectUrls[index] || ""
                                 }
                                 alt={`Preview ${index + 1}`}
                                 className="w-full h-24 object-cover rounded-lg"
