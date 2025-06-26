@@ -43,7 +43,7 @@ export const propertyValidators = {
             "any.required": "Price is required",
         }),
         pricePeriod: Joi.string()
-            .valid("night", "week", "month")
+            .valid("night", "weekly", "monthly")
             .default("night"),
         bedrooms: Joi.number().required().min(0).messages({
             "number.base": "Number of bedrooms must be a number",
@@ -172,7 +172,7 @@ export const propertyValidators = {
             "number.base": "Price must be a number",
             "number.min": "Price cannot be negative",
         }),
-        pricePeriod: Joi.string().valid("night", "week", "month"),
+        pricePeriod: Joi.string().valid("night", "weekly", "month"),
         bedrooms: Joi.number().min(0).messages({
             "number.base": "Number of bedrooms must be a number",
             "number.min": "Bedrooms cannot be negative",
@@ -263,6 +263,7 @@ export const validateProperty = (schema, property = "body", options = {}) => {
         }))
 
         console.log("Validation errors:", errors)
+        console.log("body", req.body)
 
         return res.status(400).json({
             success: false,

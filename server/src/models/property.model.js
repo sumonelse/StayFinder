@@ -35,7 +35,7 @@ const propertySchema = new mongoose.Schema(
         },
         pricePeriod: {
             type: String,
-            enum: ["night", "week", "month"],
+            enum: ["night", "weekly", "monthly"],
             default: "night",
         },
         bedrooms: {
