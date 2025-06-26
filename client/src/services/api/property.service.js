@@ -141,8 +141,80 @@ const propertyService = {
      * @returns {Promise<Array>} Array of properties
      */
     async getNearbyProperties(params) {
-        const response = await api.get("/properties/nearby", { params })
-        return response.data.properties
+        try {
+            if (!params.lat || !params.lng) {
+                throw new Error("Latitude and longitude are required")
+            }
+
+            const response = await api.get("/properties/nearby", { params })
+
+            // Calculate distance from user if not provided by the API
+            if (
+                response.data.properties &&
+                response.data.properties.length > 0
+            ) {
+                const properties = response.data.properties.map((property) => {
+                    // If the API doesn't provide distance, calculate it
+                    if (
+                        !property.distance &&
+                        property.location &&
+                        property.location.coordinates
+                    ) {
+                        const [lng, lat] = property.location.coordinates
+                        property.distance = this.calculateDistance(
+                            params.lat,
+                            params.lng,
+                            lat,
+                            lng
+                        )
+                    }
+                    return property
+                })
+
+                // Sort by distance
+                return properties.sort(
+                    (a, b) =>
+                        (a.distance || Infinity) - (b.distance || Infinity)
+                )
+            }
+
+            return response.data.properties
+        } catch (error) {
+            console.error("Error fetching nearby properties:", error)
+            throw error
+        }
+    },
+
+    /**
+     * Calculate distance between two coordinates using Haversine formula
+     * @param {number} lat1 - Latitude of first point
+     * @param {number} lon1 - Longitude of first point
+     * @param {number} lat2 - Latitude of second point
+     * @param {number} lon2 - Longitude of second point
+     * @returns {number} Distance in kilometers
+     */
+    calculateDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371 // Radius of the earth in km
+        const dLat = this.deg2rad(lat2 - lat1)
+        const dLon = this.deg2rad(lon2 - lon1)
+        const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(this.deg2rad(lat1)) *
+                Math.cos(this.deg2rad(lat2)) *
+                Math.sin(dLon / 2) *
+                Math.sin(dLon / 2)
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+        const distance = R * c // Distance in km
+        return Math.round(distance * 10) / 10 // Round to 1 decimal place
+    },
+
+    /**
+     * Convert degrees to radians
+     * @param {number} deg - Degrees
+     * @returns {number} Radians
+     */
+    deg2rad(deg) {
+        return deg * (Math.PI / 180)
     },
 
     /**
