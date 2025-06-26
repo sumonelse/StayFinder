@@ -38,11 +38,13 @@ const PropertyImageUploader = ({
             return
         }
 
+        // Normalize URLs for comparison
+        const normalizeUrl = (img) =>
+            typeof img === "string" ? img : img.url || ""
+
         // Check if initialImages have changed
-        const prevUrls = prevInitialImagesRef.current.map(
-            (img) => img.url || img
-        )
-        const currentUrls = initialImages.map((img) => img.url || img)
+        const prevUrls = prevInitialImagesRef.current.map(normalizeUrl)
+        const currentUrls = initialImages.map(normalizeUrl)
 
         // Only process if the URLs have changed
         const hasChanged =
@@ -50,35 +52,35 @@ const PropertyImageUploader = ({
             !prevUrls.every((url) => currentUrls.includes(url))
 
         if (hasChanged) {
-            console.log(
-                "PropertyImageUploader - Initial images changed, resetting state"
-            )
-
             // Update the ref with current initialImages
             prevInitialImagesRef.current = [...initialImages]
 
             // Reset the state
             resetUpload()
 
-            console.log(
-                "PropertyImageUploader - Setting initial images:",
-                initialImages
-            )
-
             // Extract URLs from initialImages
-            const imageUrls = initialImages.map((img) => img.url || img)
-            console.log(
-                "PropertyImageUploader - Extracted image URLs:",
-                imageUrls
-            )
+            const imageUrls = initialImages.map(normalizeUrl).filter(Boolean)
 
             // Create mock File objects for each URL
             const mockFiles = imageUrls.map((url) => {
+                // Create a mock file object with the URL and isInitial flag
                 const mockFile = new File([""], "image.jpg", {
                     type: "image/jpeg",
                 })
-                Object.defineProperty(mockFile, "isInitial", { value: true })
-                Object.defineProperty(mockFile, "url", { value: url })
+
+                // Use defineProperty to ensure these properties are properly set
+                Object.defineProperty(mockFile, "isInitial", {
+                    value: true,
+                    writable: false,
+                    enumerable: true,
+                })
+
+                Object.defineProperty(mockFile, "url", {
+                    value: url,
+                    writable: false,
+                    enumerable: true,
+                })
+
                 return mockFile
             })
 
@@ -90,29 +92,14 @@ const PropertyImageUploader = ({
     // Handle upload button click
     const handleUpload = async () => {
         try {
-            console.log("Before upload - uploadedImages:", uploadedImages)
-            console.log("Before upload - previewImages:", previewImages)
-
-            // Upload the images
-            const result = await uploadImages()
-            console.log("After upload - result:", result)
-
-            // Wait for state updates to complete
-            setTimeout(() => {
-                console.log(
-                    "After upload (delayed) - uploadedImages:",
-                    uploadedImages
-                )
-            }, 100)
-
-            console.log("After upload - uploadedImages:", uploadedImages)
+            // Upload the images - this returns all uploaded images (both initial and newly uploaded)
+            const allUploadedImages = await uploadImages()
 
             // If we have a propertyId, update the property with the new images
             if (propertyId) {
                 try {
-                    // Get all image URLs from the uploadedImages state
-                    // This includes both initial images and newly uploaded ones
-                    const allImageUrls = uploadedImages
+                    // Extract URLs from all uploaded images
+                    const allImageUrls = allUploadedImages
                         .map((img) => {
                             if (typeof img === "string") return img
                             return img.url || ""
@@ -122,23 +109,10 @@ const PropertyImageUploader = ({
                     // Remove any duplicate URLs that might have been created
                     const uniqueImageUrls = [...new Set(allImageUrls)]
 
-                    console.log(
-                        "PropertyImageUploader - All image URLs:",
-                        allImageUrls
-                    )
-                    console.log(
-                        "PropertyImageUploader - Unique image URLs:",
-                        uniqueImageUrls
-                    )
-
                     // Update the property with all images
                     await propertyService.updateProperty(propertyId, {
                         images: uniqueImageUrls,
                     })
-
-                    console.log(
-                        "Property images updated in backend successfully"
-                    )
                 } catch (updateError) {
                     console.error(
                         "Failed to update property images in backend:",
@@ -150,11 +124,8 @@ const PropertyImageUploader = ({
 
             // Notify parent component about uploaded images
             if (onImagesUploaded) {
-                // result contains only newly uploaded images
-                onImagesUploaded(result)
-
-                // Log the result for debugging
-                console.log("Property images upload successful:", result)
+                // Pass all uploaded images to the parent component
+                onImagesUploaded(allUploadedImages)
             }
         } catch (err) {
             console.error("Upload failed:", err)

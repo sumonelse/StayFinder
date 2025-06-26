@@ -25,19 +25,25 @@ const useImageUpload = (options = {}) => {
         (files) => {
             setError(null)
 
+            // Ensure files is always an array
+            const fileArray = Array.isArray(files) ? files : [files]
+
             if (multiple) {
                 // For multiple files
-                if (previewImages.length + files.length > maxFiles) {
+                if (previewImages.length + fileArray.length > maxFiles) {
                     setError(`You can only upload up to ${maxFiles} images.`)
                     return
                 }
 
                 // Check if any files are initial images (already uploaded)
-                const initialFiles = files.filter((file) => file.isInitial)
-                const newFiles = files.filter((file) => !file.isInitial)
+                const initialFiles = fileArray.filter(
+                    (file) => file.isInitial === true
+                )
+                const newFiles = fileArray.filter((file) => !file.isInitial)
 
                 // Add initial files to both preview and uploaded arrays
                 if (initialFiles.length > 0) {
+                    // Extract URLs from initial files
                     const initialUrls = initialFiles.map((file) => file.url)
 
                     // Get existing URLs to avoid duplicates
@@ -51,12 +57,6 @@ const useImageUpload = (options = {}) => {
                     )
 
                     if (uniqueInitialUrls.length > 0) {
-                        // Add to preview images
-                        setPreviewImages((prev) => [
-                            ...prev,
-                            ...uniqueInitialUrls,
-                        ])
-
                         // Create image objects for initial images
                         const initialImageObjects = uniqueInitialUrls.map(
                             (url) => ({
@@ -65,6 +65,12 @@ const useImageUpload = (options = {}) => {
                                 isInitial: true,
                             })
                         )
+
+                        // Add to preview images
+                        setPreviewImages((prev) => [
+                            ...prev,
+                            ...uniqueInitialUrls,
+                        ])
 
                         // Add to uploaded images
                         setUploadedImages((prev) => [
@@ -85,8 +91,10 @@ const useImageUpload = (options = {}) => {
                     setPreviewImages((prev) => [...prev, ...newFiles])
                 }
             } else {
-                // For single file
-                const file = Array.isArray(files) ? files[0] : files
+                // For single file mode
+                const file = fileArray[0]
+
+                if (!file) return
 
                 // Check if it's an initial image (already uploaded)
                 if (file.isInitial) {
@@ -161,9 +169,9 @@ const useImageUpload = (options = {}) => {
                 (file) => typeof file !== "string"
             )
 
-            // If there are no new files to upload, return empty array
+            // If there are no new files to upload, return the current uploaded images
             if (filesToUpload.length === 0) {
-                return []
+                return uploadedImages
             }
 
             let result
@@ -194,10 +202,11 @@ const useImageUpload = (options = {}) => {
 
                 // Set uploaded images to be initial images + new uploads
                 // This prevents duplicating images on multiple uploads
-                setUploadedImages([...initialImages, ...uniqueNewImages])
+                const updatedImages = [...initialImages, ...uniqueNewImages]
+                setUploadedImages(updatedImages)
 
                 // After upload, all images should be considered "initial" for future uploads
-                setInitialImages([...initialImages, ...uniqueNewImages])
+                setInitialImages(updatedImages)
             } else {
                 // Upload single image
                 if (isProperty) {
@@ -221,10 +230,11 @@ const useImageUpload = (options = {}) => {
 
                 if (!isDuplicate) {
                     // Set uploaded images to be initial images + new upload
-                    setUploadedImages([...initialImages, uploadData])
+                    const updatedImages = [...initialImages, uploadData]
+                    setUploadedImages(updatedImages)
 
                     // After upload, all images should be considered "initial" for future uploads
-                    setInitialImages([...initialImages, uploadData])
+                    setInitialImages(updatedImages)
                 }
             }
 
@@ -234,13 +244,13 @@ const useImageUpload = (options = {}) => {
                 .filter(Boolean)
 
             // Create a new array where all File objects are replaced with their URLs
-            const updatedPreviewImages = (prev) => {
+            setPreviewImages((prevPreviewImages) => {
                 // First, create a mapping of File objects to their new URLs
                 const fileToUrlMap = new Map()
                 let urlIndex = 0
 
                 // Map each File object to a URL
-                prev.forEach((item) => {
+                prevPreviewImages.forEach((item) => {
                     if (
                         typeof item !== "string" &&
                         urlIndex < uploadedUrls.length
@@ -250,20 +260,14 @@ const useImageUpload = (options = {}) => {
                 })
 
                 // Now replace each File with its URL
-                const result = prev.map((item) => {
+                return prevPreviewImages.map((item) => {
                     if (typeof item === "string") return item
                     return fileToUrlMap.get(item) || item
                 })
+            })
 
-                return result
-            }
-
-            // Update preview images with URLs instead of File objects
-            setPreviewImages(updatedPreviewImages)
-
-            // Return only the newly uploaded data
-
-            return newlyUploadedData
+            // Return all uploaded images (both initial and newly uploaded)
+            return [...initialImages, ...newlyUploadedData]
         } catch (err) {
             setError(err.message || "Failed to upload images")
             throw err
@@ -274,6 +278,7 @@ const useImageUpload = (options = {}) => {
         multiple,
         previewImages,
         initialImages,
+        uploadedImages,
         isProperty,
         setPreviewImages,
         setUploadedImages,
