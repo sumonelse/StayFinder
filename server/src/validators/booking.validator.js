@@ -68,7 +68,7 @@ export const bookingValidators = {
                 "any.only": "Status must be either 'confirmed' or 'cancelled'",
                 "any.re quired": "Status is required",
             }),
-        cancelReason: Joi.string()
+        reason: Joi.string()
             .allow("")
             .max(500)
             .when("status", {
@@ -131,6 +131,9 @@ export const validateBooking = (schema, property = "body") => {
             field: detail.path.join("."),
             message: detail.message,
         }))
+
+        console.log("err", error)
+        console.log("body", req.body)
 
         return res.status(400).json({
             success: false,

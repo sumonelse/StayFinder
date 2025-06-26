@@ -83,7 +83,7 @@ const BookingDetailPage = () => {
         mutationFn: () =>
             bookingService.updateBookingStatus(id, {
                 status: "cancelled",
-                cancelReason,
+                reason: cancelReason,
             }),
         onSuccess: () => {
             queryClient.invalidateQueries(["booking", id])
