@@ -141,7 +141,7 @@ const LocationMap = ({ coordinates, title, height = "300px" }) => {
     return (
         <div
             ref={mapRef}
-            className="rounded-xl border border-secondary-100 overflow-hidden"
+            className="rounded-xl border border-secondary-100 overflow-hidden z-10"
             style={{ height }}
         ></div>
     )

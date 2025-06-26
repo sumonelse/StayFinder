@@ -195,8 +195,8 @@ const PropertyDetailPage = () => {
         // Navigate to booking page with selected dates
         navigate(`/properties/${id}/book`, {
             state: {
-                startDate: selectedDates.startDate,
-                endDate: selectedDates.endDate,
+                checkInDate: selectedDates.startDate,
+                checkOutDate: selectedDates.endDate,
                 guests: guestCount,
                 priceDetails: bookingPriceDetails,
             },

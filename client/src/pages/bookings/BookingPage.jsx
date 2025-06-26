@@ -38,22 +38,25 @@ const BookingPage = () => {
     const location = useLocation()
     const { user } = useAuth()
 
-    // Parse query parameters
-    const queryParams = new URLSearchParams(location.search)
-    const checkInParam = queryParams.get("checkIn")
-    const checkOutParam = queryParams.get("checkOut")
-    const guestsParam = queryParams.get("guests")
+    // Get data from navigation state (passed from PropertyDetailPage)
+    const navigationState = location.state || {}
+    const {
+        checkInDate: stateCheckInDate,
+        checkOutDate: stateCheckOutDate,
+        guests: stateGuests,
+        priceDetails: statePriceDetails,
+    } = navigationState
 
     // Scroll to top on page load
     useEffect(() => {
         window.scrollTo(0, 0)
     }, [])
 
-    // Form state
+    // Form state - prioritize navigation state over query parameters
     const [bookingData, setBookingData] = useState({
-        checkInDate: checkInParam || "",
-        checkOutDate: checkOutParam || "",
-        numberOfGuests: guestsParam ? parseInt(guestsParam) : 1,
+        checkInDate: stateCheckInDate || "",
+        checkOutDate: stateCheckOutDate || "",
+        numberOfGuests: stateGuests || 1,
         specialRequests: "",
     })
 
@@ -127,6 +130,15 @@ const BookingPage = () => {
                 serviceFee: 0,
                 total: 0,
             }
+        }
+
+        // Use passed price details if dates match (optimization)
+        if (
+            statePriceDetails &&
+            stateCheckInDate === bookingData.checkInDate &&
+            stateCheckOutDate === bookingData.checkOutDate
+        ) {
+            return statePriceDetails
         }
 
         return calculateBookingPrice(
