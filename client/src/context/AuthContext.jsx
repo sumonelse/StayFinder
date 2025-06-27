@@ -109,7 +109,12 @@ export const AuthProvider = ({ children }) => {
             })
             return user
         } catch (err) {
+            // Handle login errors gracefully
             setError(err.message || "Login failed")
+
+            // Make sure we're not clearing auth data on login failures
+            // This prevents the 404 error when login fails
+
             throw err
         } finally {
             setIsLoading(false)

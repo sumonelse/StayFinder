@@ -30,17 +30,23 @@ const authService = {
      * @returns {Promise<Object>} User data and token
      */
     async login(email, password) {
-        const response = await api.post("/auth/login", { email, password })
+        try {
+            const response = await api.post("/auth/login", { email, password })
 
-        // Ensure user has a favorites array
-        if (!response.data.user.favorites) {
-            response.data.user.favorites = []
-            console.log(
-                "Added missing favorites array to user data in login API"
-            )
+            // Ensure user has a favorites array
+            if (!response.data.user.favorites) {
+                response.data.user.favorites = []
+                console.log(
+                    "Added missing favorites array to user data in login API"
+                )
+            }
+
+            return response.data
+        } catch (error) {
+            // Properly handle login errors without causing navigation issues
+            console.error("Login error:", error.message)
+            throw error
         }
-
-        return response.data
     },
 
     /**

@@ -37,8 +37,14 @@ api.interceptors.response.use(
             error.message ||
             "Something went wrong"
 
-        // Handle token expiration
-        if (error.response?.status === 401) {
+        // Handle token expiration - but only for authenticated routes, not login failures
+        if (
+            error.response?.status === 401 &&
+            error.config.url !== "/auth/login" &&
+            !error.config.url.includes("/auth/register") &&
+            error.config.url !== "/auth/login" &&
+            !error.config.url.includes("/auth/register")
+        ) {
             // Clear all auth data using the utility function
             localStorage.removeItem("stayfinder_token")
             localStorage.removeItem("stayfinder_user")
