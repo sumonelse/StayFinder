@@ -1,5 +1,6 @@
 import cloudinary from "../config/cloudinary.js"
 import fs from "fs"
+import logger from "../utils/logger.js"
 
 /**
  * Service for handling image uploads to Cloudinary
@@ -13,7 +14,16 @@ class UploadService {
      * @returns {Promise<Object>} - Cloudinary upload result
      */
     async uploadImage(fileBuffer, originalName, folder = "stayfinder") {
+        const startTime = Date.now()
+
         try {
+            logger.info("Starting image upload", {
+                originalName,
+                folder,
+                fileSize: fileBuffer.length,
+                fileType: this.getFileExtension(originalName),
+            })
+
             // Convert buffer to base64 data URI for Cloudinary
             const base64Data = `data:image/${this.getFileExtension(originalName)};base64,${fileBuffer.toString("base64")}`
 
@@ -23,11 +33,31 @@ class UploadService {
                 resource_type: "image",
             })
 
+            const uploadTime = Date.now() - startTime
+
+            logger.info("Image upload successful", {
+                originalName,
+                folder,
+                fileSize: fileBuffer.length,
+                uploadTime: `${uploadTime}ms`,
+                cloudinaryUrl: result.secure_url,
+                publicId: result.public_id,
+            })
+
             return {
                 url: result.secure_url,
                 publicId: result.public_id,
             }
         } catch (error) {
+            const uploadTime = Date.now() - startTime
+
+            logger.error("Image upload failed", error, {
+                originalName,
+                folder,
+                fileSize: fileBuffer.length,
+                uploadTime: `${uploadTime}ms`,
+            })
+
             throw error
         }
     }
@@ -57,12 +87,45 @@ class UploadService {
      * @returns {Promise<Array<Object>>} - Array of Cloudinary upload results
      */
     async uploadMultipleImages(files, folder = "stayfinder") {
+        const startTime = Date.now()
+
         try {
+            logger.info("Starting multiple image upload", {
+                fileCount: files.length,
+                folder,
+                files: files.map((f) => ({
+                    name: f.originalname,
+                    size: f.buffer.length,
+                })),
+            })
+
             const uploadPromises = files.map((file) =>
                 this.uploadImage(file.buffer, file.originalname, folder)
             )
-            return await Promise.all(uploadPromises)
+
+            const results = await Promise.all(uploadPromises)
+            const uploadTime = Date.now() - startTime
+
+            logger.info("Multiple image upload successful", {
+                fileCount: files.length,
+                folder,
+                uploadTime: `${uploadTime}ms`,
+                results: results.map((r) => ({
+                    url: r.url,
+                    publicId: r.publicId,
+                })),
+            })
+
+            return results
         } catch (error) {
+            const uploadTime = Date.now() - startTime
+
+            logger.error("Multiple image upload failed", error, {
+                fileCount: files.length,
+                folder,
+                uploadTime: `${uploadTime}ms`,
+            })
+
             throw error
         }
     }

@@ -6,15 +6,25 @@ import path from "path"
  */
 class Logger {
     constructor() {
-        this.logDir = path.join(process.cwd(), "logs")
-        this.ensureLogDirectory()
+        this.isProduction = process.env.NODE_ENV === "production"
+        this.isVercel = process.env.VERCEL === "1"
+
+        // Only create log directory in development
+        if (!this.isProduction && !this.isVercel) {
+            this.logDir = path.join(process.cwd(), "logs")
+            this.ensureLogDirectory()
+        }
     }
 
     /**
-     * Ensure logs directory exists
+     * Ensure logs directory exists (development only)
      */
     ensureLogDirectory() {
-        if (!fs.existsSync(this.logDir)) {
+        if (
+            !this.isProduction &&
+            !this.isVercel &&
+            !fs.existsSync(this.logDir)
+        ) {
             fs.mkdirSync(this.logDir, { recursive: true })
         }
     }
@@ -41,9 +51,17 @@ class Logger {
     }
 
     /**
-     * Write log to file
+     * Write log to file (development only) or structured console output (production)
      */
     writeToFile(filename, content) {
+        // In production/Vercel, output structured logs to console instead of files
+        if (this.isProduction || this.isVercel) {
+            // Output structured JSON for log aggregation services
+            console.log(content)
+            return
+        }
+
+        // Development: write to files as before
         const logPath = path.join(this.logDir, filename)
         const logLine = content + "\n"
 
@@ -193,23 +211,35 @@ class Logger {
     }
 
     /**
-     * Clean old log files (keep last 30 days)
+     * Clean old log files (development only)
      */
     cleanOldLogs() {
-        const thirtyDaysAgo = new Date()
-        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+        // Skip log cleaning in production/Vercel
+        if (this.isProduction || this.isVercel) {
+            return
+        }
 
-        const logFiles = fs.readdirSync(this.logDir)
+        try {
+            const thirtyDaysAgo = new Date()
+            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
 
-        logFiles.forEach((file) => {
-            const filePath = path.join(this.logDir, file)
-            const stats = fs.statSync(filePath)
+            const logFiles = fs.readdirSync(this.logDir)
 
-            if (stats.mtime < thirtyDaysAgo) {
-                fs.unlinkSync(filePath)
-                this.info(`Deleted old log file: ${file}`)
+            logFiles.forEach((file) => {
+                const filePath = path.join(this.logDir, file)
+                const stats = fs.statSync(filePath)
+
+                if (stats.mtime < thirtyDaysAgo) {
+                    fs.unlinkSync(filePath)
+                    this.info(`Deleted old log file: ${file}`)
+                }
+            })
+        } catch (error) {
+            // Silently fail in production
+            if (!this.isProduction) {
+                console.error("Failed to clean logs:", error)
             }
-        })
+        }
     }
 }
 
