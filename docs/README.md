@@ -11,7 +11,6 @@ Welcome to the StayFinder documentation. This guide provides comprehensive infor
 5. [Frontend Documentation](#frontend-documentation)
 6. [API Reference](#api-reference)
 7. [Deployment Guide](#deployment-guide)
-8. [Contributing Guidelines](#contributing-guidelines)
 
 ## Introduction
 
@@ -72,9 +71,3 @@ StayFinder follows a client-server architecture with a RESTful API:
 -   [Backend Deployment](./deployment/backend.md)
 -   [Frontend Deployment](./deployment/frontend.md)
 -   [Environment Configuration](./deployment/environment.md)
-
-## Contributing Guidelines
-
--   [Code Style Guide](./contributing/code-style.md)
--   [Pull Request Process](./contributing/pull-requests.md)
--   [Issue Reporting](./contributing/issues.md)

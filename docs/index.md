@@ -41,10 +41,6 @@ StayFinder is a full-stack property rental application that allows users to find
 
 -   [Environment Configuration](./deployment/environment.md)
 
-### Contributing
-
--   [Code Style Guide](./contributing/code-style.md)
-
 ## Key Features
 
 StayFinder offers a range of features for different user roles:
@@ -138,10 +134,6 @@ server/
 │   └── validators/      # Request validation schemas
 └── server.js            # Entry point
 ```
-
-## Contributing
-
-We welcome contributions to StayFinder! Please read our [Code Style Guide](./contributing/code-style.md) before submitting pull requests.
 
 ## License
 
