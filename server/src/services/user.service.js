@@ -28,6 +28,7 @@ class UserService {
             phone: userData.phone || "",
             bio: userData.bio || "",
             profilePicture: userData.profilePicture || "",
+            hostingSince: userData.role === "host" ? new Date() : null, // Set hostingSince if user is registering as a host
         })
 
         await user.save()
@@ -117,16 +118,33 @@ class UserService {
      * @returns {Object} Updated user object
      */
     async updateUserProfile(userId, updateData) {
-        const user = await User.findByIdAndUpdate(
-            userId,
-            {
-                name: updateData.name,
-                phone: updateData.phone,
-                bio: updateData.bio,
-                profilePicture: updateData.profilePicture,
-            },
-            { new: true, runValidators: true }
-        ).select("-password")
+        // First, get the current user to check if role is changing
+        const currentUser = await User.findById(userId)
+        if (!currentUser) {
+            throw new Error("User not found")
+        }
+
+        // Prepare update object
+        const updateObj = {
+            name: updateData.name,
+            phone: updateData.phone,
+            bio: updateData.bio,
+            profilePicture: updateData.profilePicture,
+        }
+
+        // If role is being updated to host and user wasn't a host before, set hostingSince
+        if (updateData.role === "host" && currentUser.role !== "host") {
+            updateObj.role = "host"
+            updateObj.hostingSince = new Date()
+        } else if (updateData.role) {
+            // Otherwise just update the role if it's provided
+            updateObj.role = updateData.role
+        }
+
+        const user = await User.findByIdAndUpdate(userId, updateObj, {
+            new: true,
+            runValidators: true,
+        }).select("-password")
 
         if (!user) {
             throw new Error("User not found")

@@ -1044,9 +1044,13 @@ const BookingDetailPage = () => {
                                     <div className="flex items-center mb-4">
                                         <span className="bg-secondary-100 text-secondary-700 text-sm px-3 py-1 rounded-full border border-secondary-200">
                                             Host since{" "}
-                                            {new Date(
-                                                booking.host.createdAt
-                                            ).getFullYear()}
+                                            {booking.host.hostingSince
+                                                ? new Date(
+                                                      booking.host.hostingSince
+                                                  ).getFullYear()
+                                                : new Date(
+                                                      booking.host.createdAt
+                                                  ).getFullYear()}
                                         </span>
                                         {booking.host.isSuperhost && (
                                             <span className="bg-yellow-50 text-yellow-700 text-sm px-3 py-1 rounded-full border border-yellow-100 ml-2">

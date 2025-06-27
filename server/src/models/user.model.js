@@ -34,6 +34,10 @@ const userSchema = new mongoose.Schema(
             enum: ["user", "host", "admin"],
             default: "user",
         },
+        hostingSince: {
+            type: Date,
+            default: null,
+        },
         isVerified: {
             type: Boolean,
             default: false,

@@ -86,16 +86,37 @@ class PropertyService {
     /**
      * Get a single property by ID
      * @param {String} propertyId - Property ID
-     * @returns {Object} Property object
+     * @returns {Object} Property object with host information including hosting duration
      */
     async getPropertyById(propertyId) {
         const property = await Property.findById(propertyId).populate(
             "host",
-            "name email profilePicture bio"
+            "name email profilePicture bio hostingSince"
         )
 
         if (!property) {
             throw new Error("Property not found")
+        }
+
+        // Calculate hosting duration if hostingSince is available
+        if (property.host && property.host.hostingSince) {
+            const now = new Date()
+            const hostingSince = new Date(property.host.hostingSince)
+            const durationInYears = Math.floor(
+                (now - hostingSince) / (365.25 * 24 * 60 * 60 * 1000)
+            )
+
+            // Add hosting duration to the property object
+            property._doc.hostingDuration = {
+                years: durationInYears,
+                hostingSince: property.host.hostingSince,
+            }
+        } else {
+            // Set default values if hostingSince is not available
+            property._doc.hostingDuration = {
+                years: null,
+                hostingSince: null,
+            }
         }
 
         return property

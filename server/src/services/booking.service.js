@@ -366,7 +366,7 @@ class BookingService {
             },
             {
                 path: "host",
-                select: "name email profilePicture",
+                select: "name email profilePicture hostingSince createdAt",
             },
         ]
 
@@ -422,7 +422,7 @@ class BookingService {
             })
             .populate({
                 path: "host",
-                select: "name email profilePicture phone",
+                select: "name email profilePicture phone hostingSince createdAt",
             })
 
         if (!booking) {

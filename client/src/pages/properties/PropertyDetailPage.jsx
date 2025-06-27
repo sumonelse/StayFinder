@@ -464,7 +464,23 @@ const PropertyDetailPage = () => {
                                                 className="text-secondary-500 mr-1"
                                                 size={12}
                                             />
-                                            <span>Hosting for 3 years</span>
+                                            {property.hostingDuration &&
+                                            property.hostingDuration.years !==
+                                                null ? (
+                                                <span>
+                                                    Hosting for{" "}
+                                                    {
+                                                        property.hostingDuration
+                                                            .years
+                                                    }{" "}
+                                                    {property.hostingDuration
+                                                        .years === 1
+                                                        ? "year"
+                                                        : "years"}
+                                                </span>
+                                            ) : (
+                                                <span>New host</span>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
