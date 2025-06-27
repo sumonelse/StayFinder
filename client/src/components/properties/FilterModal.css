@@ -1,57 +1,21 @@
-/* Styles for the ReactSlider component */
-.horizontal-slider {
-    width: 100%;
-    height: 8px;
-    border-radius: 4px;
-    background-color: #e5e7eb;
-    margin: 20px 0;
+/* Styles for the react-range component */
+.range-track {
+    transition: background 0.2s ease;
 }
 
-.horizontal-slider .track {
-    top: 0;
-    bottom: 0;
-    background: #4f46e5;
-    border-radius: 4px;
+.range-thumb {
+    transition: all 0.2s ease;
 }
 
-.horizontal-slider .track-0 {
-    background: #e5e7eb;
+.range-thumb:hover {
+    box-shadow: 0 0 0 5px rgba(79, 70, 229, 0.1) !important;
 }
 
-.horizontal-slider .track-1 {
-    background: #4f46e5;
+.range-thumb.active {
+    box-shadow: 0 0 0 5px rgba(79, 70, 229, 0.2) !important;
 }
 
-.horizontal-slider .track-2 {
-    background: #e5e7eb;
-}
-
-.horizontal-slider .thumb {
-    width: 24px;
-    height: 24px;
-    background: white;
-    border: 2px solid #4f46e5;
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    top: -8px;
-}
-
-.horizontal-slider .thumb::after {
-    content: "";
-    width: 6px;
-    height: 6px;
-    background: #4f46e5;
-    border-radius: 50%;
-}
-
-.horizontal-slider .thumb:hover {
-    box-shadow: 0 0 0 5px rgba(79, 70, 229, 0.1);
-}
-
-.horizontal-slider .thumb.active {
-    box-shadow: 0 0 0 5px rgba(79, 70, 229, 0.2);
+/* Focus styles for accessibility */
+.range-thumb:focus {
+    box-shadow: 0 0 0 5px rgba(79, 70, 229, 0.2) !important;
 }

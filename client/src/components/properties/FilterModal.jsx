@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import PropTypes from "prop-types"
-import ReactSlider from "react-slider"
+import { Range } from "react-range"
 import "./FilterModal.css"
 import {
     FaMapMarkerAlt,
@@ -37,17 +37,23 @@ const FilterModal = ({
     onFilterApply,
     onClearFilters,
 }) => {
+    // Price slider constants
+    const PRICE_MIN = 0
+    const PRICE_MAX = 50000
+    const PRICE_STEP = 50
     // Local state for filters (to avoid applying changes immediately)
     const [localFilters, setLocalFilters] = useState({ ...filters })
     // Track which category is expanded
     const [expandedCategory, setExpandedCategory] = useState("propertyType")
     // Track if any changes were made
     const [hasChanges, setHasChanges] = useState(false)
+    // Track validation errors
+    const [priceErrors, setPriceErrors] = useState({ min: "", max: "" })
 
     // Price range state for the slider
     const [priceRange, setPriceRange] = useState([
-        parseInt(localFilters.minPrice) || 0,
-        parseInt(localFilters.maxPrice) || 10000,
+        parseInt(localFilters.minPrice) || PRICE_MIN,
+        parseInt(localFilters.maxPrice) || PRICE_MAX,
     ])
 
     // Reset local filters when modal opens
@@ -55,10 +61,11 @@ const FilterModal = ({
         if (isOpen) {
             setLocalFilters({ ...filters })
             setPriceRange([
-                parseInt(filters.minPrice) || 0,
-                parseInt(filters.maxPrice) || 10000,
+                parseInt(filters.minPrice) || PRICE_MIN,
+                parseInt(filters.maxPrice) || PRICE_MAX,
             ])
             setHasChanges(false)
+            setPriceErrors({ min: "", max: "" })
         }
     }, [isOpen, filters])
 
@@ -84,6 +91,29 @@ const FilterModal = ({
         { name: "BBQ", icon: <MdOutdoorGrill />, value: "bbq" },
         { name: "Pet Friendly", icon: <MdPets />, value: "pet friendly" },
     ]
+
+    // Helper function to constrain price values and validate
+    const validateAndConstrainPrice = (
+        value,
+        min = PRICE_MIN,
+        max = PRICE_MAX
+    ) => {
+        if (value === "" || value === null || value === undefined) {
+            return { value: min, error: "" }
+        }
+
+        const numValue = parseInt(value) || 0
+        let error = ""
+
+        if (numValue < min) {
+            error = `Minimum value is ${getCurrencySymbol()}${min.toLocaleString()}`
+        } else if (numValue > max) {
+            error = `Maximum value is ${getCurrencySymbol()}${max.toLocaleString()}`
+        }
+
+        const constrainedValue = Math.max(min, Math.min(max, numValue))
+        return { value: constrainedValue, error }
+    }
 
     // Handle local filter changes
     const handleLocalFilterChange = (e) => {
@@ -153,7 +183,8 @@ const FilterModal = ({
             amenities: "",
         }
         setLocalFilters(clearedFilters)
-        setPriceRange([0, 10000])
+        setPriceRange([PRICE_MIN, PRICE_MAX])
+        setPriceErrors({ min: "", max: "" })
         setHasChanges(true)
     }
 
@@ -183,14 +214,23 @@ const FilterModal = ({
             isOpen={isOpen}
             onClose={onClose}
             title={
-                <div className="flex items-center justify-center w-full">
-                    <span className="font-medium text-secondary-900">
-                        Filters
-                    </span>
-                    {countActiveFilters() > 0 && (
-                        <span className="ml-2 bg-secondary-100 text-secondary-800 text-xs font-medium px-2 py-0.5 rounded-full">
-                            {countActiveFilters()}
+                <div className="flex flex-col items-center justify-center w-full">
+                    <div className="flex items-center">
+                        <span className="font-medium text-secondary-900">
+                            Filters
                         </span>
+                        {countActiveFilters() > 0 && (
+                            <span className="ml-2 bg-secondary-100 text-secondary-800 text-xs font-medium px-2 py-0.5 rounded-full">
+                                {countActiveFilters()}
+                            </span>
+                        )}
+                    </div>
+                    {(priceErrors.min || priceErrors.max) && (
+                        <div className="mt-2 text-xs text-red-600 bg-red-50 px-3 py-1 rounded-full">
+                            ⚠️ Price range: {getCurrencySymbol()}
+                            {PRICE_MIN.toLocaleString()} - {getCurrencySymbol()}
+                            {PRICE_MAX.toLocaleString()}
+                        </div>
                     )}
                 </div>
             }
@@ -287,46 +327,219 @@ const FilterModal = ({
                             </span>
                         </div>
                         <div className="bg-white p-4 rounded-xl">
-                            {/* Interactive price range slider using ReactSlider */}
+                            {/* Interactive price range slider using react-range */}
                             <div className="mb-6 px-2">
-                                <ReactSlider
-                                    className="horizontal-slider"
-                                    thumbClassName="thumb"
-                                    trackClassName="track"
-                                    value={priceRange}
-                                    ariaLabel={[
-                                        "Minimum price",
-                                        "Maximum price",
-                                    ]}
-                                    ariaValuetext={(state) =>
-                                        `${getCurrencySymbol()}${
-                                            state.valueNow
-                                        }`
+                                {/* Safe Range component with error boundary */}
+                                {(() => {
+                                    try {
+                                        // Ensure values are within bounds
+                                        const safeValues = [
+                                            Math.max(
+                                                PRICE_MIN,
+                                                Math.min(
+                                                    PRICE_MAX,
+                                                    priceRange[0]
+                                                )
+                                            ),
+                                            Math.max(
+                                                PRICE_MIN,
+                                                Math.min(
+                                                    PRICE_MAX,
+                                                    priceRange[1]
+                                                )
+                                            ),
+                                        ]
+
+                                        return (
+                                            <Range
+                                                values={safeValues}
+                                                step={PRICE_STEP}
+                                                min={PRICE_MIN}
+                                                max={PRICE_MAX}
+                                                onChange={(values) => {
+                                                    setPriceRange(values)
+                                                    setLocalFilters((prev) => ({
+                                                        ...prev,
+                                                        minPrice:
+                                                            values[0].toString(),
+                                                        maxPrice:
+                                                            values[1].toString(),
+                                                    }))
+                                                    setHasChanges(true)
+                                                }}
+                                                renderTrack={({
+                                                    props,
+                                                    children,
+                                                }) => (
+                                                    <div
+                                                        onMouseDown={
+                                                            props.onMouseDown
+                                                        }
+                                                        onTouchStart={
+                                                            props.onTouchStart
+                                                        }
+                                                        style={{
+                                                            ...props.style,
+                                                            height: "36px",
+                                                            display: "flex",
+                                                            width: "100%",
+                                                        }}
+                                                    >
+                                                        <div
+                                                            ref={props.ref}
+                                                            className="range-track"
+                                                            style={{
+                                                                height: "8px",
+                                                                width: "100%",
+                                                                borderRadius:
+                                                                    "4px",
+                                                                background: `linear-gradient(to right, #e5e7eb 0%, #e5e7eb ${
+                                                                    ((priceRange[0] -
+                                                                        PRICE_MIN) /
+                                                                        (PRICE_MAX -
+                                                                            PRICE_MIN)) *
+                                                                    100
+                                                                }%, #4f46e5 ${
+                                                                    ((priceRange[0] -
+                                                                        PRICE_MIN) /
+                                                                        (PRICE_MAX -
+                                                                            PRICE_MIN)) *
+                                                                    100
+                                                                }%, #4f46e5 ${
+                                                                    ((priceRange[1] -
+                                                                        PRICE_MIN) /
+                                                                        (PRICE_MAX -
+                                                                            PRICE_MIN)) *
+                                                                    100
+                                                                }%, #e5e7eb ${
+                                                                    ((priceRange[1] -
+                                                                        PRICE_MIN) /
+                                                                        (PRICE_MAX -
+                                                                            PRICE_MIN)) *
+                                                                    100
+                                                                }%, #e5e7eb 100%)`,
+                                                                alignSelf:
+                                                                    "center",
+                                                            }}
+                                                        >
+                                                            {children}
+                                                        </div>
+                                                    </div>
+                                                )}
+                                                renderThumb={({
+                                                    props,
+                                                    isDragged,
+                                                }) => (
+                                                    <div
+                                                        {...props}
+                                                        className={`range-thumb ${
+                                                            isDragged
+                                                                ? "active"
+                                                                : ""
+                                                        }`}
+                                                        style={{
+                                                            ...props.style,
+                                                            height: "24px",
+                                                            width: "24px",
+                                                            borderRadius: "50%",
+                                                            backgroundColor:
+                                                                "white",
+                                                            border: "2px solid #4f46e5",
+                                                            display: "flex",
+                                                            justifyContent:
+                                                                "center",
+                                                            alignItems:
+                                                                "center",
+                                                            boxShadow: isDragged
+                                                                ? "0 0 0 5px rgba(79, 70, 229, 0.2)"
+                                                                : "0 2px 4px rgba(0, 0, 0, 0.1)",
+                                                            cursor: "pointer",
+                                                            outline: "none",
+                                                        }}
+                                                        aria-label={
+                                                            props.key === 0
+                                                                ? "Minimum price"
+                                                                : "Maximum price"
+                                                        }
+                                                    >
+                                                        <div
+                                                            style={{
+                                                                width: "6px",
+                                                                height: "6px",
+                                                                backgroundColor:
+                                                                    "#4f46e5",
+                                                                borderRadius:
+                                                                    "50%",
+                                                            }}
+                                                        />
+                                                    </div>
+                                                )}
+                                            />
+                                        )
+                                    } catch (error) {
+                                        console.error(
+                                            "Range component error:",
+                                            error
+                                        )
+                                        return (
+                                            <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
+                                                <div className="text-red-600 text-sm font-medium mb-2">
+                                                    Price Range Error
+                                                </div>
+                                                <div className="text-red-500 text-xs mb-3">
+                                                    Please enter values between{" "}
+                                                    {getCurrencySymbol()}
+                                                    {PRICE_MIN.toLocaleString()}{" "}
+                                                    and {getCurrencySymbol()}
+                                                    {PRICE_MAX.toLocaleString()}
+                                                </div>
+                                                <button
+                                                    onClick={() => {
+                                                        setPriceRange([
+                                                            PRICE_MIN,
+                                                            PRICE_MAX,
+                                                        ])
+                                                        setLocalFilters(
+                                                            (prev) => ({
+                                                                ...prev,
+                                                                minPrice: "",
+                                                                maxPrice: "",
+                                                            })
+                                                        )
+                                                        setPriceErrors({
+                                                            min: "",
+                                                            max: "",
+                                                        })
+                                                    }}
+                                                    className="px-3 py-1 bg-red-100 text-red-700 rounded text-xs hover:bg-red-200"
+                                                >
+                                                    Reset Range
+                                                </button>
+                                            </div>
+                                        )
                                     }
-                                    pearling
-                                    min={0}
-                                    max={10000}
-                                    minDistance={500}
-                                    onChange={(value) => {
-                                        setPriceRange(value)
-                                        setLocalFilters((prev) => ({
-                                            ...prev,
-                                            minPrice: value[0].toString(),
-                                            maxPrice: value[1].toString(),
-                                        }))
-                                        setHasChanges(true)
-                                    }}
-                                />
+                                })()}
                             </div>
 
                             {/* Current price range display */}
                             <div className="mt-2 mb-4 text-center">
                                 <span className="text-sm font-medium text-secondary-700">
                                     Current range: {getCurrencySymbol()}
-                                    {formatPrice(priceRange[0])} -{" "}
-                                    {getCurrencySymbol()}
-                                    {formatPrice(priceRange[1])}
+                                    {Math.max(
+                                        PRICE_MIN,
+                                        Math.min(PRICE_MAX, priceRange[0])
+                                    ).toLocaleString()}{" "}
+                                    - {getCurrencySymbol()}
+                                    {Math.max(
+                                        PRICE_MIN,
+                                        Math.min(PRICE_MAX, priceRange[1])
+                                    ).toLocaleString()}
                                 </span>
+                                <div className="text-xs text-secondary-500 mt-1">
+                                    Range: {getCurrencySymbol()}
+                                    {PRICE_MIN} - {getCurrencySymbol()}
+                                    {PRICE_MAX}
+                                </div>
                             </div>
 
                             <div className="flex items-center gap-4">
@@ -346,38 +559,113 @@ const FilterModal = ({
                                             placeholder="0"
                                             value={localFilters.minPrice}
                                             onChange={(e) => {
+                                                const inputValue =
+                                                    e.target.value
                                                 handleLocalFilterChange(e)
-                                                const newMinPrice =
-                                                    parseInt(e.target.value) ||
-                                                    0
+
+                                                if (inputValue === "") {
+                                                    setPriceRange([
+                                                        PRICE_MIN,
+                                                        priceRange[1],
+                                                    ])
+                                                    return
+                                                }
+
+                                                // Clear previous error
+                                                setPriceErrors((prev) => ({
+                                                    ...prev,
+                                                    min: "",
+                                                }))
+
+                                                const validation =
+                                                    validateAndConstrainPrice(
+                                                        inputValue,
+                                                        PRICE_MIN,
+                                                        PRICE_MAX
+                                                    )
+
+                                                // Set error if validation failed
+                                                if (validation.error) {
+                                                    setPriceErrors((prev) => ({
+                                                        ...prev,
+                                                        min: validation.error,
+                                                    }))
+                                                }
+                                                const currentMaxPrice =
+                                                    parseInt(
+                                                        localFilters.maxPrice
+                                                    ) || PRICE_MAX
 
                                                 // Ensure min price is not greater than max price
                                                 if (
-                                                    localFilters.maxPrice &&
-                                                    newMinPrice >
-                                                        parseInt(
-                                                            localFilters.maxPrice
-                                                        )
+                                                    validation.value >
+                                                    currentMaxPrice
                                                 ) {
+                                                    const constrainedMax =
+                                                        Math.max(
+                                                            validation.value,
+                                                            currentMaxPrice
+                                                        )
                                                     setLocalFilters((prev) => ({
                                                         ...prev,
+                                                        minPrice:
+                                                            validation.value.toString(),
                                                         maxPrice:
-                                                            e.target.value,
+                                                            constrainedMax.toString(),
                                                     }))
                                                     setPriceRange([
-                                                        newMinPrice,
-                                                        newMinPrice,
+                                                        validation.value,
+                                                        constrainedMax,
                                                     ])
                                                 } else {
                                                     setPriceRange([
-                                                        newMinPrice,
+                                                        validation.value,
                                                         priceRange[1],
                                                     ])
                                                 }
                                             }}
-                                            min="0"
-                                            className="w-full pl-7 py-2 border border-secondary-300 rounded-lg focus:ring-2 focus:ring-secondary-200 focus:border-secondary-400"
+                                            min={PRICE_MIN}
+                                            max={PRICE_MAX}
+                                            onBlur={(e) => {
+                                                const value =
+                                                    parseInt(e.target.value) ||
+                                                    0
+                                                if (value > PRICE_MAX) {
+                                                    setLocalFilters((prev) => ({
+                                                        ...prev,
+                                                        minPrice:
+                                                            PRICE_MAX.toString(),
+                                                    }))
+                                                    setPriceRange([
+                                                        PRICE_MAX,
+                                                        Math.max(
+                                                            PRICE_MAX,
+                                                            priceRange[1]
+                                                        ),
+                                                    ])
+                                                } else if (value < PRICE_MIN) {
+                                                    setLocalFilters((prev) => ({
+                                                        ...prev,
+                                                        minPrice:
+                                                            PRICE_MIN.toString(),
+                                                    }))
+                                                    setPriceRange([
+                                                        PRICE_MIN,
+                                                        priceRange[1],
+                                                    ])
+                                                }
+                                            }}
+                                            className={`w-full pl-7 py-2 border rounded-lg focus:ring-2 focus:ring-secondary-200 ${
+                                                priceErrors.min
+                                                    ? "border-red-300 focus:border-red-400"
+                                                    : "border-secondary-300 focus:border-secondary-400"
+                                            }`}
                                         />
+                                        {priceErrors.min && (
+                                            <div className="mt-1 text-xs text-red-600">
+                                                {priceErrors.min}
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
 
@@ -401,48 +689,141 @@ const FilterModal = ({
                                             placeholder="Any"
                                             value={localFilters.maxPrice}
                                             onChange={(e) => {
+                                                const inputValue =
+                                                    e.target.value
                                                 handleLocalFilterChange(e)
-                                                const newMaxPrice =
-                                                    parseInt(e.target.value) ||
-                                                    10000
+
+                                                if (inputValue === "") {
+                                                    setPriceRange([
+                                                        priceRange[0],
+                                                        PRICE_MAX,
+                                                    ])
+                                                    return
+                                                }
+
+                                                // Clear previous error
+                                                setPriceErrors((prev) => ({
+                                                    ...prev,
+                                                    max: "",
+                                                }))
+
+                                                const validation =
+                                                    validateAndConstrainPrice(
+                                                        inputValue,
+                                                        PRICE_MIN,
+                                                        PRICE_MAX
+                                                    )
+
+                                                // Set error if validation failed
+                                                if (validation.error) {
+                                                    setPriceErrors((prev) => ({
+                                                        ...prev,
+                                                        max: validation.error,
+                                                    }))
+                                                }
+                                                const currentMinPrice =
+                                                    parseInt(
+                                                        localFilters.minPrice
+                                                    ) || PRICE_MIN
 
                                                 // Ensure max price is not less than min price
                                                 if (
-                                                    localFilters.minPrice &&
-                                                    newMaxPrice <
-                                                        parseInt(
-                                                            localFilters.minPrice
-                                                        )
+                                                    validation.value <
+                                                    currentMinPrice
                                                 ) {
+                                                    const constrainedMin =
+                                                        Math.min(
+                                                            validation.value,
+                                                            currentMinPrice
+                                                        )
                                                     setLocalFilters((prev) => ({
                                                         ...prev,
                                                         minPrice:
-                                                            e.target.value,
+                                                            constrainedMin.toString(),
+                                                        maxPrice:
+                                                            validation.value.toString(),
                                                     }))
                                                     setPriceRange([
-                                                        newMaxPrice,
-                                                        newMaxPrice,
+                                                        constrainedMin,
+                                                        validation.value,
                                                     ])
                                                 } else {
                                                     setPriceRange([
                                                         priceRange[0],
-                                                        newMaxPrice,
+                                                        validation.value,
                                                     ])
                                                 }
                                             }}
-                                            min={localFilters.minPrice || "0"}
-                                            className="w-full pl-7 py-2 border border-secondary-300 rounded-lg focus:ring-2 focus:ring-secondary-200 focus:border-secondary-400"
+                                            min={
+                                                localFilters.minPrice ||
+                                                PRICE_MIN
+                                            }
+                                            max={PRICE_MAX}
+                                            onBlur={(e) => {
+                                                const value =
+                                                    parseInt(e.target.value) ||
+                                                    PRICE_MAX
+                                                if (value > PRICE_MAX) {
+                                                    setLocalFilters((prev) => ({
+                                                        ...prev,
+                                                        maxPrice:
+                                                            PRICE_MAX.toString(),
+                                                    }))
+                                                    setPriceRange([
+                                                        priceRange[0],
+                                                        PRICE_MAX,
+                                                    ])
+                                                } else if (value < PRICE_MIN) {
+                                                    setLocalFilters((prev) => ({
+                                                        ...prev,
+                                                        maxPrice:
+                                                            PRICE_MIN.toString(),
+                                                    }))
+                                                    setPriceRange([
+                                                        Math.min(
+                                                            PRICE_MIN,
+                                                            priceRange[0]
+                                                        ),
+                                                        PRICE_MIN,
+                                                    ])
+                                                }
+                                            }}
+                                            className={`w-full pl-7 py-2 border rounded-lg focus:ring-2 focus:ring-secondary-200 ${
+                                                priceErrors.max
+                                                    ? "border-red-300 focus:border-red-400"
+                                                    : "border-secondary-300 focus:border-secondary-400"
+                                            }`}
                                         />
+                                        {priceErrors.max && (
+                                            <div className="mt-1 text-xs text-red-600">
+                                                {priceErrors.max}
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             </div>
 
                             <div className="mt-6 flex justify-between text-sm text-secondary-500">
-                                <span>{getCurrencySymbol()}0</span>
-                                <span>{getCurrencySymbol()}2500</span>
-                                <span>{getCurrencySymbol()}5000</span>
-                                <span>{getCurrencySymbol()}7500</span>
-                                <span>{getCurrencySymbol()}10000+</span>
+                                <span>
+                                    {getCurrencySymbol()}
+                                    {PRICE_MIN}
+                                </span>
+                                <span>
+                                    {getCurrencySymbol()}
+                                    {PRICE_MAX * 0.25}
+                                </span>
+                                <span>
+                                    {getCurrencySymbol()}
+                                    {PRICE_MAX * 0.5}
+                                </span>
+                                <span>
+                                    {getCurrencySymbol()}
+                                    {PRICE_MAX * 0.75}
+                                </span>
+                                <span>
+                                    {getCurrencySymbol()}
+                                    {PRICE_MAX}+
+                                </span>
                             </div>
 
                             <div className="mt-4 flex flex-wrap gap-2">
@@ -478,7 +859,8 @@ const FilterModal = ({
                                             minPrice: "",
                                             maxPrice: "",
                                         }))
-                                        setPriceRange([0, 10000])
+                                        setPriceRange([PRICE_MIN, PRICE_MAX])
+                                        setPriceErrors({ min: "", max: "" })
                                         setHasChanges(true)
                                     }}
                                     className={`px-3 py-1.5 text-sm rounded-full border ${
