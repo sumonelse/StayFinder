@@ -4,44 +4,66 @@ import connectDB from "./src/config/db.js"
 import { config } from "./src/config/config.js"
 import { createDatabaseIndexes } from "./src/config/indexes.js"
 
-const startServer = async () => {
-    try {
-        // Load environment variables
-        dotenv.config()
+// Check if we're running in Vercel
+const isVercel = process.env.VERCEL === "1"
 
-        // Connect to MongoDB with proper error handling
-        await connectDB()
+// Initialize database connection
+// This is executed once when the serverless function is cold started
+if (isVercel) {
+    // Load environment variables
+    dotenv.config()
 
-        // Create database indexes
-        // await createDatabaseIndexes()
+    // Connect to MongoDB (don't await here for Vercel)
+    connectDB().catch((err) => {
+        console.error("❌ Failed to connect to database:", err.message)
+    })
 
-        const PORT = config.port || 5000
+    console.log("🚀 Server initialized for Vercel serverless deployment")
+} else {
+    // For local development, start a traditional server
+    const startServer = async () => {
+        try {
+            // Load environment variables
+            dotenv.config()
 
-        const server = app.listen(PORT, () => {
-            console.log(`🚀 Server running on port ${PORT}`)
-            console.log(`🌐 Environment: ${config.env}`)
-        })
+            // Connect to MongoDB with proper error handling
+            await connectDB()
 
-        // Graceful shutdown handling
-        process.on("SIGTERM", () => {
-            console.log("SIGTERM received, shutting down gracefully")
-            server.close(() => {
-                console.log("Server closed")
-                process.exit(0)
+            // Create database indexes
+            // await createDatabaseIndexes()
+
+            const PORT = config.port || 5000
+
+            const server = app.listen(PORT, () => {
+                console.log(`🚀 Server running on port ${PORT}`)
+                console.log(`🌐 Environment: ${config.env}`)
             })
-        })
 
-        process.on("SIGINT", () => {
-            console.log("SIGINT received, shutting down gracefully")
-            server.close(() => {
-                console.log("Server closed")
-                process.exit(0)
+            // Graceful shutdown handling
+            process.on("SIGTERM", () => {
+                console.log("SIGTERM received, shutting down gracefully")
+                server.close(() => {
+                    console.log("Server closed")
+                    process.exit(0)
+                })
             })
-        })
-    } catch (error) {
-        console.error("❌ Failed to start server:", error.message)
-        process.exit(1)
+
+            process.on("SIGINT", () => {
+                console.log("SIGINT received, shutting down gracefully")
+                server.close(() => {
+                    console.log("Server closed")
+                    process.exit(0)
+                })
+            })
+        } catch (error) {
+            console.error("❌ Failed to start server:", error.message)
+            process.exit(1)
+        }
     }
+
+    startServer()
 }
 
-startServer()
+// Export the Express app for Vercel serverless functions
+// This is what Vercel will use to handle incoming requests
+export default app
