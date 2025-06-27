@@ -448,8 +448,12 @@ const PropertyDetailPage = () => {
                                                 className="text-black mr-1"
                                                 size={12}
                                             />
-                                            <span className="font-medium text-black">
-                                                4.9
+
+                                            <span className="font-medium text-black text-sm">
+                                                {property.avgRating.toFixed(1)}
+                                            </span>
+                                            <span className="text-secondary-600 ml-1 text-sm">
+                                                ({property.reviewCount})
                                             </span>
                                             <span className="ml-1">
                                                 Host rating
@@ -906,23 +910,6 @@ const PropertyDetailPage = () => {
                                         <span className="text-secondary-600 ml-1 text-base">
                                             / night
                                         </span>
-                                        {(property.cleaningFee > 0 ||
-                                            property.serviceFee > 0) && (
-                                            <span className="text-secondary-600 ml-2 text-sm">
-                                                +{" "}
-                                                {property.cleaningFee > 0 &&
-                                                    `${formatPrice(
-                                                        property.cleaningFee
-                                                    )} cleaning fee`}
-                                                {property.cleaningFee > 0 &&
-                                                    property.serviceFee > 0 &&
-                                                    ", "}
-                                                {property.serviceFee > 0 &&
-                                                    `${formatPrice(
-                                                        property.serviceFee
-                                                    )} service fee`}
-                                            </span>
-                                        )}
                                     </div>
                                     {property.avgRating > 0 && (
                                         <div className="flex items-center bg-secondary-50 px-2 py-1 rounded-lg">
