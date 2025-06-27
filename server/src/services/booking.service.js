@@ -500,9 +500,9 @@ class BookingService {
         }
 
         // Validate cancellation reason
-        if (status === "cancelled" && !reason) {
-            throw new Error("Cancellation reason is required")
-        }
+        // if (status === "cancelled" && !reason) {
+        //     throw new Error("Cancellation reason is required")
+        // }
 
         // Store previous status for logging
         const previousStatus = booking.status
