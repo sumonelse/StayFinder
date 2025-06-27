@@ -24,7 +24,7 @@ const propertySchema = z.object({
         "other",
     ]),
     price: z.number().positive("Price must be positive"),
-    pricePeriod: z.enum(["night", "week", "month"]),
+    pricePeriod: z.enum(["night", "weekly", "monthly"]),
     cleaningFee: z
         .number()
         .min(0, "Cleaning fee must be non-negative")
@@ -279,8 +279,8 @@ const PropertyForm = ({
                                 className="mt-1 block w-full rounded-md border-secondary-300 shadow-sm focus:border-secondary-500 focus:ring-secondary-500"
                             >
                                 <option value="night">Per Night</option>
-                                <option value="week">Per Week</option>
-                                <option value="month">Per Month</option>
+                                <option value="weekly">Per Week</option>
+                                <option value="monthly">Per Month</option>
                             </select>
                             {errors.pricePeriod && (
                                 <p className="mt-1 text-sm text-red-600">

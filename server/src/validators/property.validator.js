@@ -172,7 +172,7 @@ export const propertyValidators = {
             "number.base": "Price must be a number",
             "number.min": "Price cannot be negative",
         }),
-        pricePeriod: Joi.string().valid("night", "weekly", "month"),
+        pricePeriod: Joi.string().valid("night", "weekly", "monthly"),
         bedrooms: Joi.number().min(0).messages({
             "number.base": "Number of bedrooms must be a number",
             "number.min": "Bedrooms cannot be negative",
