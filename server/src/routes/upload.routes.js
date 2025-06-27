@@ -6,13 +6,8 @@ import { uploadLimiter } from "../middlewares/rateLimit.middleware.js"
 
 const router = express.Router()
 
-// Create uploads directory if it doesn't exist
-import fs from "fs"
-import path from "path"
-const uploadsDir = path.join(process.cwd(), "uploads")
-if (!fs.existsSync(uploadsDir)) {
-    fs.mkdirSync(uploadsDir, { recursive: true })
-}
+// Note: Using memory storage for Vercel compatibility
+// Files are handled in memory and uploaded directly to Cloudinary
 
 // Routes
 router.post(

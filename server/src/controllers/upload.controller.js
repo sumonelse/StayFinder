@@ -19,7 +19,8 @@ class UploadController extends BaseController {
 
             const folder = req.body.folder || "stayfinder"
             const result = await uploadService.uploadImage(
-                req.file.path,
+                req.file.buffer,
+                req.file.originalname,
                 folder
             )
 
@@ -46,9 +47,8 @@ class UploadController extends BaseController {
             }
 
             const folder = req.body.folder || "stayfinder"
-            const filePaths = req.files.map((file) => file.path)
             const results = await uploadService.uploadMultipleImages(
-                filePaths,
+                req.files,
                 folder
             )
 
