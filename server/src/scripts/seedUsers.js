@@ -32,9 +32,11 @@ const seedUsers = async () => {
         await User.deleteMany({})
         console.log("Deleted existing users")
 
-        // Insert users directly - the User model will hash passwords automatically
-        // through its pre-save middleware hook
-        await User.insertMany(users)
+        // Create and save users individually to ensure password hashing middleware runs
+        for (const userData of users) {
+            const user = new User(userData)
+            await user.save()
+        }
         console.log(`${users.length} users seeded successfully!`)
 
         // Disconnect from the database

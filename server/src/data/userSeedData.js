@@ -1,6 +1,6 @@
 /**
  * Sample user data for seeding the database
- * Note: In a real application, passwords would be hashed before storing
+ * Passwords will be hashed by the User model's pre-save middleware
  */
 
 export const users = [
