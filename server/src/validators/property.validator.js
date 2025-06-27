@@ -45,6 +45,14 @@ export const propertyValidators = {
         pricePeriod: Joi.string()
             .valid("night", "weekly", "monthly")
             .default("night"),
+        serviceFee: Joi.number().min(0).default(0).messages({
+            "number.base": "Service fee must be a number",
+            "number.min": "Service fee cannot be negative",
+        }),
+        cleaningFee: Joi.number().min(0).default(0).messages({
+            "number.base": "Cleaning fee must be a number",
+            "number.min": "Cleaning fee cannot be negative",
+        }),
         bedrooms: Joi.number().required().min(0).messages({
             "number.base": "Number of bedrooms must be a number",
             "number.min": "Bedrooms cannot be negative",
@@ -173,6 +181,14 @@ export const propertyValidators = {
             "number.min": "Price cannot be negative",
         }),
         pricePeriod: Joi.string().valid("night", "weekly", "monthly"),
+        serviceFee: Joi.number().min(0).messages({
+            "number.base": "Service fee must be a number",
+            "number.min": "Service fee cannot be negative",
+        }),
+        cleaningFee: Joi.number().min(0).messages({
+            "number.base": "Cleaning fee must be a number",
+            "number.min": "Cleaning fee cannot be negative",
+        }),
         bedrooms: Joi.number().min(0).messages({
             "number.base": "Number of bedrooms must be a number",
             "number.min": "Bedrooms cannot be negative",

@@ -906,6 +906,23 @@ const PropertyDetailPage = () => {
                                         <span className="text-secondary-600 ml-1 text-base">
                                             / night
                                         </span>
+                                        {(property.cleaningFee > 0 ||
+                                            property.serviceFee > 0) && (
+                                            <span className="text-secondary-600 ml-2 text-sm">
+                                                +{" "}
+                                                {property.cleaningFee > 0 &&
+                                                    `${formatPrice(
+                                                        property.cleaningFee
+                                                    )} cleaning fee`}
+                                                {property.cleaningFee > 0 &&
+                                                    property.serviceFee > 0 &&
+                                                    ", "}
+                                                {property.serviceFee > 0 &&
+                                                    `${formatPrice(
+                                                        property.serviceFee
+                                                    )} service fee`}
+                                            </span>
+                                        )}
                                     </div>
                                     {property.avgRating > 0 && (
                                         <div className="flex items-center bg-secondary-50 px-2 py-1 rounded-lg">
@@ -1147,6 +1164,22 @@ const PropertyDetailPage = () => {
                                 night
                             </span>
                         </div>
+                        {(property.cleaningFee > 0 ||
+                            property.serviceFee > 0) && (
+                            <span className="text-secondary-600 text-xs">
+                                {property.cleaningFee > 0 &&
+                                    `+${formatPrice(
+                                        property.cleaningFee
+                                    )} cleaning`}
+                                {property.cleaningFee > 0 &&
+                                    property.serviceFee > 0 &&
+                                    ", "}
+                                {property.serviceFee > 0 &&
+                                    `+${formatPrice(
+                                        property.serviceFee
+                                    )} service`}
+                            </span>
+                        )}
                         {property.avgRating > 0 && (
                             <div className="flex items-center mt-1">
                                 <FaStar className="text-black mr-1" size={10} />

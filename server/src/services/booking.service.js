@@ -414,7 +414,7 @@ class BookingService {
         const booking = await Booking.findById(bookingId)
             .populate({
                 path: "property",
-                select: "title type address location images price pricePeriod bedrooms bathrooms maxGuests amenities",
+                select: "title type address location images price pricePeriod bedrooms bathrooms maxGuests amenities serviceFee cleaningFee",
             })
             .populate({
                 path: "guest",

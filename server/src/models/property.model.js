@@ -38,6 +38,16 @@ const propertySchema = new mongoose.Schema(
             enum: ["night", "weekly", "monthly"],
             default: "night",
         },
+        serviceFee: {
+            type: Number,
+            min: [0, "Service fee cannot be negative"],
+            default: 0,
+        },
+        cleaningFee: {
+            type: Number,
+            min: [0, "Cleaning fee cannot be negative"],
+            default: 0,
+        },
         bedrooms: {
             type: Number,
             required: [true, "Number of bedrooms is required"],
