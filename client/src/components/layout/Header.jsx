@@ -414,29 +414,65 @@ const Header = () => {
                                         </div>
 
                                         {/* Dashboard Section */}
-                                        {user?.role === "host" && (
+                                        {(user?.role === "host" ||
+                                            user?.role === "admin") && (
                                             <div className="py-1">
                                                 <h3 className="px-4 py-1 text-xs font-semibold text-secondary-500 uppercase tracking-wider">
                                                     Dashboard
                                                 </h3>
-                                                <Link
-                                                    to="/host"
-                                                    className="flex items-center px-4 py-2.5 text-secondary-700 hover:bg-secondary-50 hover:text-primary-600 focus:outline-none focus:bg-secondary-50 focus:text-primary-600"
-                                                    onClick={closeMenus}
-                                                    role="menuitem"
-                                                >
-                                                    <FaHome className="mr-3 text-secondary-400" />
-                                                    <span>Host Dashboard</span>
-                                                </Link>
-                                                <Link
-                                                    to="/host/properties"
-                                                    className="flex items-center px-4 py-2.5 text-secondary-700 hover:bg-secondary-50 hover:text-primary-600 focus:outline-none focus:bg-secondary-50 focus:text-primary-600"
-                                                    onClick={closeMenus}
-                                                    role="menuitem"
-                                                >
-                                                    <FaBuilding className="mr-3 text-secondary-400" />
-                                                    <span>My Properties</span>
-                                                </Link>
+                                                {user?.role === "host" && (
+                                                    <>
+                                                        <Link
+                                                            to="/host"
+                                                            className="flex items-center px-4 py-2.5 text-secondary-700 hover:bg-secondary-50 hover:text-primary-600 focus:outline-none focus:bg-secondary-50 focus:text-primary-600"
+                                                            onClick={closeMenus}
+                                                            role="menuitem"
+                                                        >
+                                                            <FaHome className="mr-3 text-secondary-400" />
+                                                            <span>
+                                                                Host Dashboard
+                                                            </span>
+                                                        </Link>
+                                                        <Link
+                                                            to="/host/properties"
+                                                            className="flex items-center px-4 py-2.5 text-secondary-700 hover:bg-secondary-50 hover:text-primary-600 focus:outline-none focus:bg-secondary-50 focus:text-primary-600"
+                                                            onClick={closeMenus}
+                                                            role="menuitem"
+                                                        >
+                                                            <FaBuilding className="mr-3 text-secondary-400" />
+                                                            <span>
+                                                                My Properties
+                                                            </span>
+                                                        </Link>
+                                                    </>
+                                                )}
+                                                {user?.role === "admin" && (
+                                                    <>
+                                                        <Link
+                                                            to="/admin"
+                                                            className="flex items-center px-4 py-2.5 text-secondary-700 hover:bg-secondary-50 hover:text-primary-600 focus:outline-none focus:bg-secondary-50 focus:text-primary-600"
+                                                            onClick={closeMenus}
+                                                            role="menuitem"
+                                                        >
+                                                            <FaHome className="mr-3 text-secondary-400" />
+                                                            <span>
+                                                                Admin Dashboard
+                                                            </span>
+                                                        </Link>
+                                                        <Link
+                                                            to="/admin/properties"
+                                                            className="flex items-center px-4 py-2.5 text-secondary-700 hover:bg-secondary-50 hover:text-primary-600 focus:outline-none focus:bg-secondary-50 focus:text-primary-600"
+                                                            onClick={closeMenus}
+                                                            role="menuitem"
+                                                        >
+                                                            <FaBuilding className="mr-3 text-secondary-400" />
+                                                            <span>
+                                                                Manage
+                                                                Properties
+                                                            </span>
+                                                        </Link>
+                                                    </>
+                                                )}
                                             </div>
                                         )}
 
@@ -755,45 +791,87 @@ const Header = () => {
                             </nav>
                         </div>
 
-                        {/* Dashboard Section - Only for hosts */}
-                        {isAuthenticated && user?.role === "host" && (
-                            <div className="mb-6">
-                                <h3 className="text-xs font-semibold text-secondary-500 uppercase tracking-wider mb-2 px-2">
-                                    Dashboard
-                                </h3>
-                                <nav className="flex flex-col space-y-1 bg-secondary-50 rounded-xl overflow-hidden">
-                                    <NavLink
-                                        to="/host"
-                                        className={({ isActive }) =>
-                                            `flex items-center p-3 ${
-                                                isActive
-                                                    ? "bg-secondary-50 text-secondary-600 font-medium border-l-4 border-secondary-500"
-                                                    : "text-secondary-700 hover:bg-secondary-100 border-l-4 border-transparent"
-                                            } focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors duration-200`
-                                        }
-                                        onClick={closeMenus}
-                                    >
-                                        <FaHome className="mr-3 text-lg" />
-                                        <span>Host Dashboard</span>
-                                    </NavLink>
+                        {/* Dashboard Section - For hosts and admins */}
+                        {isAuthenticated &&
+                            (user?.role === "host" ||
+                                user?.role === "admin") && (
+                                <div className="mb-6">
+                                    <h3 className="text-xs font-semibold text-secondary-500 uppercase tracking-wider mb-2 px-2">
+                                        Dashboard
+                                    </h3>
+                                    <nav className="flex flex-col space-y-1 bg-secondary-50 rounded-xl overflow-hidden">
+                                        {user?.role === "host" && (
+                                            <>
+                                                <NavLink
+                                                    to="/host"
+                                                    className={({ isActive }) =>
+                                                        `flex items-center p-3 ${
+                                                            isActive
+                                                                ? "bg-secondary-50 text-secondary-600 font-medium border-l-4 border-secondary-500"
+                                                                : "text-secondary-700 hover:bg-secondary-100 border-l-4 border-transparent"
+                                                        } focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors duration-200`
+                                                    }
+                                                    onClick={closeMenus}
+                                                >
+                                                    <FaHome className="mr-3 text-lg" />
+                                                    <span>Host Dashboard</span>
+                                                </NavLink>
 
-                                    <NavLink
-                                        to="/host/properties"
-                                        className={({ isActive }) =>
-                                            `flex items-center p-3 ${
-                                                isActive
-                                                    ? "bg-secondary-50 text-secondary-600 font-medium border-l-4 border-secondary-500"
-                                                    : "text-secondary-700 hover:bg-secondary-100 border-l-4 border-transparent"
-                                            } focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors duration-200`
-                                        }
-                                        onClick={closeMenus}
-                                    >
-                                        <FaBuilding className="mr-3 text-lg" />
-                                        <span>My Properties</span>
-                                    </NavLink>
-                                </nav>
-                            </div>
-                        )}
+                                                <NavLink
+                                                    to="/host/properties"
+                                                    className={({ isActive }) =>
+                                                        `flex items-center p-3 ${
+                                                            isActive
+                                                                ? "bg-secondary-50 text-secondary-600 font-medium border-l-4 border-secondary-500"
+                                                                : "text-secondary-700 hover:bg-secondary-100 border-l-4 border-transparent"
+                                                        } focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors duration-200`
+                                                    }
+                                                    onClick={closeMenus}
+                                                >
+                                                    <FaBuilding className="mr-3 text-lg" />
+                                                    <span>My Properties</span>
+                                                </NavLink>
+                                            </>
+                                        )}
+
+                                        {user?.role === "admin" && (
+                                            <>
+                                                <NavLink
+                                                    to="/admin"
+                                                    className={({ isActive }) =>
+                                                        `flex items-center p-3 ${
+                                                            isActive
+                                                                ? "bg-secondary-50 text-secondary-600 font-medium border-l-4 border-secondary-500"
+                                                                : "text-secondary-700 hover:bg-secondary-100 border-l-4 border-transparent"
+                                                        } focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors duration-200`
+                                                    }
+                                                    onClick={closeMenus}
+                                                >
+                                                    <FaHome className="mr-3 text-lg" />
+                                                    <span>Admin Dashboard</span>
+                                                </NavLink>
+
+                                                <NavLink
+                                                    to="/admin/properties"
+                                                    className={({ isActive }) =>
+                                                        `flex items-center p-3 ${
+                                                            isActive
+                                                                ? "bg-secondary-50 text-secondary-600 font-medium border-l-4 border-secondary-500"
+                                                                : "text-secondary-700 hover:bg-secondary-100 border-l-4 border-transparent"
+                                                        } focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 transition-colors duration-200`
+                                                    }
+                                                    onClick={closeMenus}
+                                                >
+                                                    <FaBuilding className="mr-3 text-lg" />
+                                                    <span>
+                                                        Manage Properties
+                                                    </span>
+                                                </NavLink>
+                                            </>
+                                        )}
+                                    </nav>
+                                </div>
+                            )}
 
                         {/* Account Section */}
                         {isAuthenticated && (
