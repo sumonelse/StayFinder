@@ -122,8 +122,8 @@ const HostPropertiesPage = () => {
                     Your Properties
                 </h1>
                 <div className="flex justify-between items-center mb-6">
-                    <div className="h-10 bg-gray-200 rounded-lg w-64 animate-pulse"></div>
-                    <div className="h-10 bg-gray-200 rounded-lg w-32 animate-pulse"></div>
+                    <div className="h-10 bg-secondary-200 rounded-lg w-64 animate-pulse"></div>
+                    <div className="h-10 bg-secondary-200 rounded-lg w-32 animate-pulse"></div>
                 </div>
                 <div className="space-y-4">
                     {[...Array(3)].map((_, index) => (
@@ -162,7 +162,7 @@ const HostPropertiesPage = () => {
                 <div className="mt-4 md:mt-0">
                     <Link
                         to="/host/properties/add"
-                        className="inline-flex items-center bg-primary-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-primary-600 transition-colors"
+                        className="inline-flex items-center bg-black text-white px-4 py-2 rounded-lg font-medium hover:bg-secondary-800 transition-colors"
                     >
                         <FaPlus className="mr-2" />
                         <span>Add New Property</span>
@@ -171,7 +171,7 @@ const HostPropertiesPage = () => {
             </div>
 
             {/* Search and filters */}
-            <div className="bg-white p-5 rounded-lg shadow-sm border border-secondary-100 mb-6">
+            <div className="bg-white p-5 rounded-lg shadow-sm border border-secondary-200 mb-6">
                 <div className="flex flex-col md:flex-row gap-4">
                     <form
                         onSubmit={handleSearch}
@@ -186,12 +186,12 @@ const HostPropertiesPage = () => {
                                 name="search"
                                 placeholder="Search properties..."
                                 defaultValue={filters.search}
-                                className="w-full pl-10 pr-3 py-2 border border-secondary-300 rounded-lg bg-secondary-50 focus:outline-none focus:ring-1 focus:ring-secondary-500 focus:border-secondary-500"
+                                className="w-full pl-10 pr-3 py-2 border border-secondary-300 rounded-lg bg-secondary-50 focus:outline-none focus:ring-1 focus:ring-black focus:border-black"
                             />
                         </div>
                         <button
                             type="submit"
-                            className="ml-2 px-4 py-2 bg-secondary-900 text-white rounded-lg hover:bg-secondary-800 transition-colors"
+                            className="ml-2 px-4 py-2 bg-black text-white rounded-lg hover:bg-secondary-800 transition-colors"
                         >
                             Search
                         </button>
@@ -222,7 +222,7 @@ const HostPropertiesPage = () => {
                                 name="status"
                                 value={filters.status}
                                 onChange={handleFilterChange}
-                                className="w-full p-2 border border-secondary-300 rounded-lg bg-secondary-50 focus:outline-none focus:ring-1 focus:ring-secondary-500"
+                                className="w-full p-2 border border-secondary-300 rounded-lg bg-secondary-50 focus:outline-none focus:ring-1 focus:ring-black focus:border-black"
                             >
                                 <option value="">All Statuses</option>
                                 <option value="available">Available</option>
@@ -244,7 +244,7 @@ const HostPropertiesPage = () => {
                                 name="type"
                                 value={filters.type}
                                 onChange={handleFilterChange}
-                                className="w-full p-2 border border-secondary-300 rounded-lg bg-secondary-50 focus:outline-none focus:ring-1 focus:ring-secondary-500"
+                                className="w-full p-2 border border-secondary-300 rounded-lg bg-secondary-50 focus:outline-none focus:ring-1 focus:ring-black focus:border-black"
                             >
                                 <option value="">All Types</option>
                                 <option value="apartment">Apartment</option>
@@ -279,7 +279,7 @@ const HostPropertiesPage = () => {
 
             {/* Properties list */}
             {data?.properties?.length > 0 && (
-                <div className="bg-white rounded-lg shadow-sm overflow-hidden border border-secondary-100">
+                <div className="bg-white rounded-lg shadow-sm overflow-hidden border border-secondary-200">
                     <div className="overflow-x-auto">
                         <table className="min-w-full">
                             <thead>
@@ -334,8 +334,8 @@ const HostPropertiesPage = () => {
                                                     <img
                                                         className="h-12 w-12 rounded-md object-cover"
                                                         src={
-                                                            property
-                                                                .images[0] ||
+                                                            property.images[0]
+                                                                .url ||
                                                             "https://via.placeholder.com/40x40?text=Property"
                                                         }
                                                         alt={property.title}
@@ -380,7 +380,7 @@ const HostPropertiesPage = () => {
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <div className="flex items-center">
-                                                <FaStar className="text-yellow-500 mr-1" />
+                                                <FaStar className="text-black mr-1" />
                                                 <span className="text-secondary-900 font-medium">
                                                     {property.avgRating
                                                         ? property.avgRating.toFixed(
@@ -399,7 +399,7 @@ const HostPropertiesPage = () => {
                                             <span
                                                 className={`px-2.5 py-0.5 inline-flex text-xs leading-5 font-medium rounded-full ${
                                                     property.isAvailable
-                                                        ? "bg-green-100 text-green-800"
+                                                        ? "bg-secondary-100 text-secondary-800"
                                                         : "bg-red-100 text-red-800"
                                                 }`}
                                             >
@@ -412,14 +412,14 @@ const HostPropertiesPage = () => {
                                             <div className="flex space-x-3">
                                                 <Link
                                                     to={`/host/properties/${property._id}`}
-                                                    className="text-secondary-600 hover:text-secondary-900"
+                                                    className="text-secondary-600 hover:text-black"
                                                     title="View property"
                                                 >
                                                     <FaEye />
                                                 </Link>
                                                 <Link
                                                     to={`/host/properties/${property._id}/edit`}
-                                                    className="text-secondary-600 hover:text-secondary-900"
+                                                    className="text-secondary-600 hover:text-black"
                                                     title="Edit property"
                                                 >
                                                     <FaEdit />
@@ -435,8 +435,8 @@ const HostPropertiesPage = () => {
                                                     }
                                                     className={`transition-colors disabled:opacity-50 ${
                                                         property.isAvailable
-                                                            ? "text-green-600 hover:text-green-800"
-                                                            : "text-secondary-600 hover:text-secondary-900"
+                                                            ? "text-black hover:text-secondary-700"
+                                                            : "text-secondary-600 hover:text-black"
                                                     }`}
                                                     title={
                                                         property.isAvailable

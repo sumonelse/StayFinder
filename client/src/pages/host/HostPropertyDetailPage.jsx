@@ -185,7 +185,7 @@ const HostPropertyDetailPage = () => {
                 <div>
                     <button
                         onClick={() => navigate("/host/properties")}
-                        className="flex items-center text-primary-600 hover:text-primary-800 mb-2"
+                        className="flex items-center text-secondary-600 hover:text-black mb-2"
                     >
                         <FaArrowLeft className="mr-2" />
                         <span>Back to properties</span>
@@ -201,7 +201,7 @@ const HostPropertyDetailPage = () => {
                         </span>
                         <span className="mx-2">•</span>
                         <div className="flex items-center">
-                            <FaStar className="text-yellow-500 mr-1" />
+                            <FaStar className="text-black mr-1" />
                             <span>
                                 {property.avgRating
                                     ? `${property.avgRating.toFixed(1)} (${
@@ -222,7 +222,7 @@ const HostPropertyDetailPage = () => {
                     </Link>
                     <Link
                         to={`/host/properties/${id}/edit`}
-                        className="inline-flex items-center bg-primary-600 text-white px-4 py-2 rounded-md font-medium hover:bg-primary-700 transition-colors"
+                        className="inline-flex items-center bg-black text-white px-4 py-2 rounded-md font-medium hover:bg-secondary-800 transition-colors"
                     >
                         <FaEdit className="mr-2" />
                         <span>Edit</span>
@@ -234,18 +234,20 @@ const HostPropertyDetailPage = () => {
             <div
                 className={`mb-6 p-4 rounded-lg flex items-center justify-between ${
                     property.isAvailable
-                        ? "bg-green-50 border border-green-200"
-                        : "bg-red-50 border border-red-200"
+                        ? "bg-secondary-50 border border-secondary-200"
+                        : "bg-secondary-50 border border-secondary-200"
                 }`}
             >
                 <div className="flex items-center">
                     <div
                         className={`p-2 rounded-full mr-3 ${
-                            property.isAvailable ? "bg-green-100" : "bg-red-100"
+                            property.isAvailable
+                                ? "bg-secondary-100"
+                                : "bg-secondary-100"
                         }`}
                     >
                         {property.isAvailable ? (
-                            <FaCheckCircle className="text-green-600" />
+                            <FaCheckCircle className="text-black" />
                         ) : (
                             <FaRegBell className="text-red-600" />
                         )}
@@ -254,8 +256,8 @@ const HostPropertyDetailPage = () => {
                         <h3
                             className={`font-medium ${
                                 property.isAvailable
-                                    ? "text-green-800"
-                                    : "text-red-800"
+                                    ? "text-secondary-900"
+                                    : "text-secondary-900"
                             }`}
                         >
                             {property.isAvailable
@@ -274,8 +276,8 @@ const HostPropertyDetailPage = () => {
                     disabled={toggleAvailabilityMutation.isPending}
                     className={`px-4 py-2 rounded-md font-medium transition-colors ${
                         property.isAvailable
-                            ? "bg-white text-red-600 border border-red-300 hover:bg-red-50"
-                            : "bg-white text-green-600 border border-green-300 hover:bg-green-50"
+                            ? "bg-white text-red-600 border border-secondary-300 hover:bg-secondary-50"
+                            : "bg-black text-white border border-black hover:bg-secondary-800"
                     } disabled:opacity-50`}
                 >
                     {toggleAvailabilityMutation.isPending ? (
@@ -387,10 +389,10 @@ const HostPropertyDetailPage = () => {
                     {/* Property details cards */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                         {/* Property overview */}
-                        <div className="bg-white rounded-xl shadow-sm p-6 border border-secondary-100">
+                        <div className="bg-white rounded-xl shadow-sm p-6 border border-secondary-200">
                             <div className="flex items-center mb-4">
-                                <div className="p-2 rounded-full bg-primary-50 mr-3">
-                                    <FaHome className="text-primary-600" />
+                                <div className="p-2 rounded-full bg-secondary-100 mr-3">
+                                    <FaHome className="text-secondary-700" />
                                 </div>
                                 <h2 className="text-xl font-semibold text-secondary-900">
                                     Property Overview
@@ -453,7 +455,7 @@ const HostPropertyDetailPage = () => {
                                         {property.description}
                                     </p>
                                     <button
-                                        className="text-primary-600 hover:text-primary-800 text-sm font-medium mt-2"
+                                        className="text-black hover:text-secondary-700 text-sm font-medium mt-2 underline"
                                         onClick={() =>
                                             document
                                                 .getElementById(
@@ -471,10 +473,10 @@ const HostPropertyDetailPage = () => {
                         </div>
 
                         {/* Pricing information */}
-                        <div className="bg-white rounded-xl shadow-sm p-6 border border-secondary-100">
+                        <div className="bg-white rounded-xl shadow-sm p-6 border border-secondary-200">
                             <div className="flex items-center mb-4">
-                                <div className="p-2 rounded-full bg-green-50 mr-3">
-                                    <FaTag className="text-green-600" />
+                                <div className="p-2 rounded-full bg-secondary-100 mr-3">
+                                    <FaTag className="text-secondary-700" />
                                 </div>
                                 <h2 className="text-xl font-semibold text-secondary-900">
                                     Pricing
@@ -520,7 +522,7 @@ const HostPropertyDetailPage = () => {
                                 <div className="pt-3 mt-3 border-t border-secondary-100">
                                     <Link
                                         to={`/host/properties/${id}/edit`}
-                                        className="text-primary-600 hover:text-primary-800 text-sm font-medium flex items-center"
+                                        className="text-black hover:text-secondary-700 text-sm font-medium flex items-center underline"
                                     >
                                         <FaEdit className="mr-1" size={14} />
                                         Update pricing
@@ -533,11 +535,11 @@ const HostPropertyDetailPage = () => {
                     {/* Full description section */}
                     <div
                         id="full-description"
-                        className="bg-white rounded-xl shadow-sm p-6 border border-secondary-100 mb-8"
+                        className="bg-white rounded-xl shadow-sm p-6 border border-secondary-200 mb-8"
                     >
                         <div className="flex items-center mb-4">
-                            <div className="p-2 rounded-full bg-secondary-50 mr-3">
-                                <FaInfoCircle className="text-secondary-600" />
+                            <div className="p-2 rounded-full bg-secondary-100 mr-3">
+                                <FaInfoCircle className="text-secondary-700" />
                             </div>
                             <h2 className="text-xl font-semibold text-secondary-900">
                                 About this property
@@ -552,10 +554,10 @@ const HostPropertyDetailPage = () => {
                     </div>
 
                     {/* Amenities section */}
-                    <div className="bg-white rounded-xl shadow-sm p-6 border border-secondary-100 mb-8">
+                    <div className="bg-white rounded-xl shadow-sm p-6 border border-secondary-200 mb-8">
                         <div className="flex items-center mb-4">
-                            <div className="p-2 rounded-full bg-blue-50 mr-3">
-                                <FaCheckCircle className="text-blue-600" />
+                            <div className="p-2 rounded-full bg-secondary-100 mr-3">
+                                <FaCheckCircle className="text-secondary-700" />
                             </div>
                             <h2 className="text-xl font-semibold text-secondary-900">
                                 Amenities
@@ -569,7 +571,7 @@ const HostPropertyDetailPage = () => {
                                         key={amenity}
                                         className="flex items-center p-3 bg-secondary-50 rounded-lg"
                                     >
-                                        <FaCheckCircle className="text-green-500 mr-2 flex-shrink-0" />
+                                        <FaCheckCircle className="text-black mr-2 flex-shrink-0" />
                                         <span className="text-secondary-800 capitalize">
                                             {amenity}
                                         </span>
@@ -583,7 +585,7 @@ const HostPropertyDetailPage = () => {
                                 </p>
                                 <Link
                                     to={`/host/properties/${id}/edit`}
-                                    className="text-primary-600 hover:text-primary-800 text-sm font-medium"
+                                    className="text-black hover:text-secondary-700 text-sm font-medium underline"
                                 >
                                     Add amenities to attract more guests
                                 </Link>
@@ -592,11 +594,11 @@ const HostPropertyDetailPage = () => {
                     </div>
 
                     {/* Recent bookings */}
-                    <div className="bg-white rounded-xl shadow-sm p-6 border border-secondary-100 mb-8">
+                    <div className="bg-white rounded-xl shadow-sm p-6 border border-secondary-200 mb-8">
                         <div className="flex justify-between items-center mb-4">
                             <div className="flex items-center">
-                                <div className="p-2 rounded-full bg-purple-50 mr-3">
-                                    <FaRegCalendarCheck className="text-purple-600" />
+                                <div className="p-2 rounded-full bg-secondary-100 mr-3">
+                                    <FaRegCalendarCheck className="text-secondary-700" />
                                 </div>
                                 <h2 className="text-xl font-semibold text-secondary-900">
                                     Recent Bookings
@@ -604,7 +606,7 @@ const HostPropertyDetailPage = () => {
                             </div>
                             <Link
                                 to={`/host/bookings?propertyId=${id}`}
-                                className="text-primary-600 hover:text-primary-800 flex items-center text-sm font-medium"
+                                className="text-black hover:text-secondary-700 flex items-center text-sm font-medium underline"
                             >
                                 View all
                                 <FaChevronRight className="ml-1" size={12} />
@@ -639,7 +641,7 @@ const HostPropertyDetailPage = () => {
                                             "_blank"
                                         )
                                     }
-                                    className="text-primary-600 hover:text-primary-800 text-sm font-medium"
+                                    className="text-black hover:text-secondary-700 text-sm font-medium underline"
                                 >
                                     View your public listing
                                 </button>
@@ -674,14 +676,14 @@ const HostPropertyDetailPage = () => {
                                                 className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${
                                                     booking.status ===
                                                     "confirmed"
-                                                        ? "bg-green-100 text-green-800"
+                                                        ? "bg-secondary-100 text-secondary-800"
                                                         : booking.status ===
                                                           "pending"
                                                         ? "bg-yellow-100 text-yellow-800"
                                                         : booking.status ===
                                                           "cancelled"
                                                         ? "bg-red-100 text-red-800"
-                                                        : "bg-primary-100 text-primary-800"
+                                                        : "bg-secondary-100 text-secondary-800"
                                                 }`}
                                             >
                                                 {booking.status
@@ -713,7 +715,7 @@ const HostPropertyDetailPage = () => {
                                         <div className="flex justify-between items-center pt-2 border-t border-secondary-100">
                                             <Link
                                                 to={`/host/bookings/${booking._id}`}
-                                                className="text-primary-600 hover:text-primary-800 text-sm font-medium"
+                                                className="text-black hover:text-secondary-700 text-sm font-medium underline"
                                             >
                                                 View details
                                             </Link>
@@ -730,10 +732,10 @@ const HostPropertyDetailPage = () => {
                     </div>
 
                     {/* Calendar Manager */}
-                    <div className="bg-white rounded-xl shadow-sm p-6 border border-secondary-100 mb-8">
+                    <div className="bg-white rounded-xl shadow-sm p-6 border border-secondary-200 mb-8">
                         <div className="flex items-center mb-4">
-                            <div className="p-2 rounded-full bg-orange-50 mr-3">
-                                <FaCalendarAlt className="text-orange-600" />
+                            <div className="p-2 rounded-full bg-secondary-100 mr-3">
+                                <FaCalendarAlt className="text-secondary-700" />
                             </div>
                             <h2 className="text-xl font-semibold text-secondary-900">
                                 Availability Calendar
@@ -751,14 +753,14 @@ const HostPropertyDetailPage = () => {
                 <div className="lg:col-span-1">
                     <div className="sticky top-8 space-y-6">
                         {/* Quick actions card */}
-                        <div className="bg-white rounded-xl shadow-sm p-6 border border-secondary-100">
+                        <div className="bg-white rounded-xl shadow-sm p-6 border border-secondary-200">
                             <h2 className="text-lg font-semibold text-secondary-900 mb-4">
                                 Quick Actions
                             </h2>
                             <div className="space-y-3">
                                 <Link
                                     to={`/host/properties/${id}/edit`}
-                                    className="flex items-center justify-between w-full px-4 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+                                    className="flex items-center justify-between w-full px-4 py-3 bg-black text-white rounded-lg hover:bg-secondary-800 transition-colors"
                                 >
                                     <span className="flex items-center">
                                         <FaEdit className="mr-2" />
@@ -780,7 +782,7 @@ const HostPropertyDetailPage = () => {
 
                                 <button
                                     onClick={() => setShowDeleteModal(true)}
-                                    className="flex items-center justify-between w-full px-4 py-3 bg-white border border-red-300 text-red-600 rounded-lg hover:bg-red-50 transition-colors"
+                                    className="flex items-center justify-between w-full px-4 py-3 bg-white border border-secondary-300 text-red-600 rounded-lg hover:bg-secondary-50 transition-colors"
                                 >
                                     <span className="flex items-center">
                                         <FaTrash className="mr-2" />
@@ -792,10 +794,10 @@ const HostPropertyDetailPage = () => {
                         </div>
 
                         {/* Property stats card */}
-                        <div className="bg-white rounded-xl shadow-sm p-6 border border-secondary-100">
+                        <div className="bg-white rounded-xl shadow-sm p-6 border border-secondary-200">
                             <div className="flex items-center mb-4">
-                                <div className="p-2 rounded-full bg-blue-50 mr-3">
-                                    <FaChartLine className="text-blue-600" />
+                                <div className="p-2 rounded-full bg-secondary-100 mr-3">
+                                    <FaChartLine className="text-secondary-700" />
                                 </div>
                                 <h2 className="text-lg font-semibold text-secondary-900">
                                     Performance Stats
@@ -808,7 +810,7 @@ const HostPropertyDetailPage = () => {
                                         <span className="text-secondary-700 text-sm">
                                             Total Revenue
                                         </span>
-                                        <span className="text-green-600 font-medium">
+                                        <span className="text-black font-medium">
                                             {formatPrice(
                                                 bookingsData?.totalRevenue || 0
                                             )}
@@ -816,7 +818,7 @@ const HostPropertyDetailPage = () => {
                                     </div>
                                     <div className="w-full bg-secondary-200 rounded-full h-2">
                                         <div
-                                            className="bg-green-500 h-2 rounded-full"
+                                            className="bg-black h-2 rounded-full"
                                             style={{
                                                 width: `${Math.min(
                                                     100,
@@ -834,7 +836,7 @@ const HostPropertyDetailPage = () => {
                                     <div className="bg-secondary-50 p-4 rounded-lg">
                                         <div className="flex items-center mb-1">
                                             <FaRegCalendarCheck
-                                                className="text-primary-600 mr-2"
+                                                className="text-secondary-700 mr-2"
                                                 size={14}
                                             />
                                             <span className="text-secondary-700 text-sm">
@@ -849,7 +851,7 @@ const HostPropertyDetailPage = () => {
                                     <div className="bg-secondary-50 p-4 rounded-lg">
                                         <div className="flex items-center mb-1">
                                             <FaPercentage
-                                                className="text-purple-600 mr-2"
+                                                className="text-secondary-700 mr-2"
                                                 size={14}
                                             />
                                             <span className="text-secondary-700 text-sm">
@@ -890,7 +892,7 @@ const HostPropertyDetailPage = () => {
                                         <span
                                             className={`font-medium ${
                                                 property.isAvailable
-                                                    ? "text-green-600"
+                                                    ? "text-black"
                                                     : "text-red-600"
                                             }`}
                                         >
@@ -904,41 +906,41 @@ const HostPropertyDetailPage = () => {
                         </div>
 
                         {/* Tips card */}
-                        <div className="bg-primary-50 rounded-xl shadow-sm p-6 border border-primary-100">
+                        <div className="bg-secondary-50 rounded-xl shadow-sm p-6 border border-secondary-200">
                             <div className="flex items-center mb-4">
-                                <div className="p-2 rounded-full bg-primary-100 mr-3">
-                                    <FaRegLightbulb className="text-primary-600" />
+                                <div className="p-2 rounded-full bg-secondary-100 mr-3">
+                                    <FaRegLightbulb className="text-secondary-700" />
                                 </div>
-                                <h2 className="text-lg font-semibold text-primary-900">
+                                <h2 className="text-lg font-semibold text-secondary-900">
                                     Hosting Tips
                                 </h2>
                             </div>
 
                             <div className="space-y-4">
                                 <div className="flex items-start">
-                                    <FaCheckCircle className="text-primary-600 mt-1 mr-2 flex-shrink-0" />
-                                    <p className="text-sm text-primary-800">
+                                    <FaCheckCircle className="text-black mt-1 mr-2 flex-shrink-0" />
+                                    <p className="text-sm text-secondary-800">
                                         Add high-quality photos to showcase your
                                         property's best features
                                     </p>
                                 </div>
                                 <div className="flex items-start">
-                                    <FaCheckCircle className="text-primary-600 mt-1 mr-2 flex-shrink-0" />
-                                    <p className="text-sm text-primary-800">
+                                    <FaCheckCircle className="text-black mt-1 mr-2 flex-shrink-0" />
+                                    <p className="text-sm text-secondary-800">
                                         Keep your calendar up to date to avoid
                                         double bookings
                                     </p>
                                 </div>
                                 <div className="flex items-start">
-                                    <FaCheckCircle className="text-primary-600 mt-1 mr-2 flex-shrink-0" />
-                                    <p className="text-sm text-primary-800">
+                                    <FaCheckCircle className="text-black mt-1 mr-2 flex-shrink-0" />
+                                    <p className="text-sm text-secondary-800">
                                         Respond quickly to booking requests to
                                         improve your response rate
                                     </p>
                                 </div>
                                 <div className="flex items-start">
-                                    <FaCheckCircle className="text-primary-600 mt-1 mr-2 flex-shrink-0" />
-                                    <p className="text-sm text-primary-800">
+                                    <FaCheckCircle className="text-black mt-1 mr-2 flex-shrink-0" />
+                                    <p className="text-sm text-secondary-800">
                                         Consider seasonal pricing to maximize
                                         your earnings
                                     </p>
@@ -989,7 +991,7 @@ const HostPropertyDetailPage = () => {
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
                     <div className="bg-white rounded-xl max-w-md w-full p-6">
                         <div className="flex items-center mb-4">
-                            <div className="p-2 rounded-full bg-red-100 mr-3">
+                            <div className="p-2 rounded-full bg-secondary-100 mr-3">
                                 <FaExclamationCircle className="text-red-600" />
                             </div>
                             <h2 className="text-xl font-semibold text-secondary-900">
@@ -1004,7 +1006,7 @@ const HostPropertyDetailPage = () => {
                         <div className="flex justify-end space-x-3">
                             <button
                                 onClick={() => setShowDeleteModal(false)}
-                                className="px-4 py-2 border border-secondary-300 rounded-lg hover:bg-secondary-50 font-medium"
+                                className="px-4 py-2 border border-secondary-300 rounded-lg hover:bg-secondary-50 font-medium text-secondary-700"
                             >
                                 Cancel
                             </button>

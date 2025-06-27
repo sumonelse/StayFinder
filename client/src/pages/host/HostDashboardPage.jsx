@@ -37,7 +37,7 @@ const HostDashboardPage = () => {
         },
         enabled: !!user?._id, // Only run query if user ID is available
     })
-
+    console.log("propertiesData:", propertiesData)
     // Fetch host bookings
     const { data: bookingsData, isLoading: bookingsLoading } = useQuery({
         queryKey: ["hostBookings", user?._id, { limit: 5 }],
@@ -64,7 +64,7 @@ const HostDashboardPage = () => {
             }
         }
 
-        const totalProperties = propertiesData.totalProperties || 0
+        const totalProperties = propertiesData.properties.length || 0
         const activeBookings = bookingsData.bookings.filter(
             (booking) => booking.status === "confirmed"
         ).length
@@ -402,7 +402,7 @@ const HostDashboardPage = () => {
                                 <div className="h-48 overflow-hidden relative">
                                     <img
                                         src={
-                                            property.images[0] ||
+                                            property.images[0].url ||
                                             "https://via.placeholder.com/300x200?text=No+Image"
                                         }
                                         alt={property.title}
