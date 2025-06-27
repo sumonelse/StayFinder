@@ -33,7 +33,7 @@ PORT=5000
 NODE_ENV=development
 
 # MongoDB Configuration
-MONGODB_URI=mongodb://localhost:27017/stayfinder
+DB_URI=mongodb://localhost:27017/stayfinder
 
 # JWT Configuration
 JWT_SECRET=your_jwt_secret_key

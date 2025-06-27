@@ -16,7 +16,7 @@ PORT=5000
 NODE_ENV=development
 
 # MongoDB Configuration
-MONGODB_URI=mongodb://localhost:27017/stayfinder
+DB_URI=mongodb://localhost:27017/stayfinder
 
 # JWT Configuration
 JWT_SECRET=your_jwt_secret_key
@@ -70,7 +70,7 @@ Development environment is used for local development.
 ```
 NODE_ENV=development
 PORT=5000
-MONGODB_URI=mongodb://localhost:27017/stayfinder
+DB_URI=mongodb://localhost:27017/stayfinder
 LOG_LEVEL=debug
 CORS_ORIGIN=http://localhost:5173
 ```
@@ -90,7 +90,7 @@ Staging environment is used for testing before production deployment.
 ```
 NODE_ENV=staging
 PORT=5000
-MONGODB_URI=mongodb://mongodb:27017/stayfinder
+DB_URI=mongodb://mongodb:27017/stayfinder
 LOG_LEVEL=info
 CORS_ORIGIN=https://staging.stayfinder.com
 ```
@@ -110,7 +110,7 @@ Production environment is used for the live application.
 ```
 NODE_ENV=production
 PORT=5000
-MONGODB_URI=mongodb://mongodb:27017/stayfinder
+DB_URI=mongodb://mongodb:27017/stayfinder
 LOG_LEVEL=error
 CORS_ORIGIN=https://stayfinder.com
 ```
@@ -146,7 +146,7 @@ For better organization, the application uses a centralized configuration object
 export const config = {
     env: process.env.NODE_ENV || "development",
     port: process.env.PORT || 5000,
-    mongodbUri: process.env.MONGODB_URI,
+    mongodbUri: process.env.DB_URI,
     jwt: {
         secret: process.env.JWT_SECRET,
         expiresIn: process.env.JWT_EXPIRES_IN || "7d",
@@ -241,7 +241,7 @@ jobs:
               env:
                   NODE_ENV: production
                   PORT: 5000
-                  MONGODB_URI: ${{ secrets.MONGODB_URI }}
+                  DB_URI: ${{ secrets.DB_URI }}
                   JWT_SECRET: ${{ secrets.JWT_SECRET }}
                   JWT_EXPIRES_IN: ${{ secrets.JWT_EXPIRES_IN }}
                   CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
@@ -290,7 +290,7 @@ If the application fails to start or behaves unexpectedly, check that all requir
 // src/config/validateEnv.js
 export const validateEnv = () => {
     const requiredEnvVars = [
-        "MONGODB_URI",
+        "DB_URI",
         "JWT_SECRET",
         "CLOUDINARY_CLOUD_NAME",
         "CLOUDINARY_API_KEY",
