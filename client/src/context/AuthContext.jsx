@@ -37,24 +37,12 @@ export const AuthProvider = ({ children }) => {
                 const token = getAuthToken()
                 const userData = getUserData()
 
-                console.log("Auth check - token:", token ? "exists" : "none")
-                console.log("Auth check - userData:", userData)
-
                 if (token && checkIsAuthenticated()) {
                     // Token exists and is valid
                     if (userData) {
-                        console.log("Setting user from localStorage:", userData)
-                        console.log(
-                            "User favorites from localStorage:",
-                            userData.favorites
-                        )
-
                         // Ensure user has a favorites array
                         if (!userData.favorites) {
                             userData.favorites = []
-                            console.log(
-                                "Added missing favorites array to user data"
-                            )
                         }
 
                         setUser(userData)
@@ -65,14 +53,6 @@ export const AuthProvider = ({ children }) => {
                             try {
                                 const refreshedData =
                                     await authService.getCurrentUser()
-                                console.log(
-                                    "Refreshed user data:",
-                                    refreshedData
-                                )
-                                console.log(
-                                    "Refreshed favorites:",
-                                    refreshedData.favorites
-                                )
                                 setUser(refreshedData)
                                 // Also update localStorage
                                 setUserData(refreshedData)
@@ -83,14 +63,6 @@ export const AuthProvider = ({ children }) => {
                     } else {
                         // Token exists but no user data, fetch from server
                         const freshUserData = await authService.getCurrentUser()
-                        console.log(
-                            "Fetched fresh user data from server:",
-                            freshUserData
-                        )
-                        console.log(
-                            "Fresh user favorites:",
-                            freshUserData.favorites
-                        )
                         setUser(freshUserData)
                         setUserData(freshUserData)
                         setIsAuthenticated(true)
@@ -209,11 +181,8 @@ export const AuthProvider = ({ children }) => {
     // Add property to favorites
     const addToFavorites = async (propertyId) => {
         try {
-            console.log("Adding to favorites:", propertyId)
             const updatedUser = await authService.addToFavorites(propertyId)
-            console.log("Updated user from server:", updatedUser)
             const newUserData = { ...user, favorites: updatedUser.favorites }
-            console.log("New user data:", newUserData)
             setUser(newUserData)
             // Also update the user data in localStorage
             setUserData(newUserData)
@@ -227,13 +196,10 @@ export const AuthProvider = ({ children }) => {
     // Remove property from favorites
     const removeFromFavorites = async (propertyId) => {
         try {
-            console.log("Removing from favorites:", propertyId)
             const updatedUser = await authService.removeFromFavorites(
                 propertyId
             )
-            console.log("Updated user from server:", updatedUser)
             const newUserData = { ...user, favorites: updatedUser.favorites }
-            console.log("New user data:", newUserData)
             setUser(newUserData)
             // Also update the user data in localStorage
             setUserData(newUserData)

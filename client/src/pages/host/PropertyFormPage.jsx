@@ -126,8 +126,6 @@ The property is conveniently located near public transportation. There's also st
     // Use useEffect to update form data when property details are loaded
     useEffect(() => {
         if (isEditMode && propertyDetails) {
-            console.log("Property data fetched:", propertyDetails)
-
             // Ensure all required fields are present in the data
             setPropertyData({
                 ...propertyData, // Keep default values for any missing fields
@@ -182,11 +180,9 @@ The property is conveniently located near public transportation. There's also st
     // Update property mutation
     const updatePropertyMutation = useMutation({
         mutationFn: (data) => {
-            console.log("Sending update data:", data)
             return propertyService.updateProperty(id, data)
         },
         onSuccess: (data) => {
-            console.log("Update successful:", data)
             navigate(`/host/properties/${id}`, {
                 state: { success: true },
             })
@@ -304,10 +300,6 @@ The property is conveniently located near public transportation. There's also st
             // Combine and remove duplicates
             const allUrls = [...existingUrls, ...newUrls]
             const uniqueUrls = [...new Set(allUrls)]
-
-            console.log("Existing images:", existingUrls)
-            console.log("New images:", newUrls)
-            console.log("Combined unique images:", uniqueUrls)
 
             return {
                 ...prev,
@@ -619,7 +611,6 @@ The property is conveniently located near public transportation. There's also st
                     id,
                     submissionData
                 )
-                console.log("Property updated successfully:", updatedProperty)
                 navigate(`/host/properties/${id}`, {
                     state: { success: true },
                 })

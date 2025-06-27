@@ -107,8 +107,6 @@ export const validateUser = (schema, property = "body") => {
             field: detail.path.join("."),
             message: detail.message,
         }))
-        console.log("body", req.body)
-        console.log("err", errors)
 
         return res.status(400).json({
             success: false,

@@ -154,10 +154,6 @@ const PropertyForm = ({
             const allUrls = [...existingUrls, ...newUrls]
             const uniqueUrls = [...new Set(allUrls)]
 
-            console.log("PropertyForm - Existing images:", existingUrls)
-            console.log("PropertyForm - New images:", newUrls)
-            console.log("PropertyForm - Combined unique images:", uniqueUrls)
-
             return uniqueUrls
         })
     }

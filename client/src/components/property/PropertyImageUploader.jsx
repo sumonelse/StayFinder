@@ -57,8 +57,6 @@ const PropertyImageUploader = ({
             !prevUrls.every((url) => currentUrls.includes(url))
 
         if (hasChanged) {
-            console.log("Initial images have changed, resetting uploader state")
-
             // Update the ref with current initialImages
             prevInitialImagesRef.current = [...initialImages]
 

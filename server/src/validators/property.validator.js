@@ -278,9 +278,6 @@ export const validateProperty = (schema, property = "body", options = {}) => {
             message: detail.message,
         }))
 
-        console.log("Validation errors:", errors)
-        console.log("body", req.body)
-
         return res.status(400).json({
             success: false,
             message: "Validation failed",
